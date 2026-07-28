@@ -1,0 +1,32 @@
+{
+  "name": "ctrlbot-remotion",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Programmatic training videos and motion graphics for CTRLbot IoT.",
+  "scripts": {
+    "dev": "remotion studio src/index.ts",
+    "check": "tsc --noEmit && remotion compositions src/index.ts",
+    "bundle": "remotion bundle src/index.ts",
+    "render:overview": "remotion render src/index.ts CTRLbot-Overview out/ctrlbot-overview.mp4",
+    "render:lesson": "remotion render src/index.ts CTRLbot-Training-Lesson out/ctrlbot-training-lesson.mp4 --props=props/getting-started.json",
+    "render:short": "remotion render src/index.ts CTRLbot-Feature-Short out/ctrlbot-feature-short.mp4 --props=props/feature-short.json",
+    "render:thumbnail": "remotion still src/index.ts CTRLbot-Thumbnail out/ctrlbot-thumbnail.png",
+    "render:all": "node scripts/render-all.mjs"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.500",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "remotion": "4.0.500",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "24.1.0",
+    "@types/react": "19.1.9",
+    "@types/react-dom": "19.1.7",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "title": "Build your first CTRLbot system",
+  "subtitle": "From a device driver to a client-ready control interface",
+  "audience": "AV integrators",
+  "learningObjectives": [
+    "Choose a driver from the catalog",
+    "Create and test a secure connection",
+    "Build a repeatable power preset",
+    "Hand off a simplified End User Interface"
+  ],
+  "chapters": [
+    {
+      "kind": "drivers",
+      "title": "1. Choose a device driver",
+      "narration": "Start in Device Drivers. Search by manufacturer, choose the matching control profile, and confirm the supported model and command set.",
+      "bullets": ["Search the bundled catalog", "Verify IP, serial, or IR control", "Review commands before connecting"],
+      "durationInSeconds": 8,
+      "callout": "Start with the exact model whenever possible"
+    },
+    {
+      "kind": "connection",
+      "title": "2. Configure the connection",
+      "narration": "Give the device a room-friendly label, enter its address and port, then test the connection before saving it.",
+      "bullets": ["Use a clear room label", "Select TCP, Telnet, SSH, RS-232, or IR", "Store credentials securely"],
+      "durationInSeconds": 8,
+      "callout": "Credentials are referenced securely—not stored in plaintext"
+    },
+    {
+      "kind": "presets",
+      "title": "3. Build a preset",
+      "narration": "Combine commands and delays into an ordered workflow. Test the sequence, then make it available to the operator.",
+      "bullets": ["Add commands in execution order", "Insert delays for device warm-up", "Use discrete power commands"],
+      "durationInSeconds": 8,
+      "callout": "A preset should always end in a known state"
+    },
+    {
+      "kind": "eui",
+      "title": "4. Switch to the End User Interface",
+      "narration": "The End User Interface turns installer configuration into a simplified, kiosk-style control surface for the client.",
+      "bullets": ["Run power workflows", "Route sources to displays", "Control volume and microphone mute"],
+      "durationInSeconds": 8,
+      "callout": "Press and hold the top-left control for two seconds to return to Setup"
+    }
+  ],
+  "closing": "Your first system is ready to control",
+  "accentColor": "#008FD4",
+  "showCaptions": true
+}
