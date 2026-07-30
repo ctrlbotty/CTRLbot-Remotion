@@ -1,0 +1,294 @@
+{
+  "captureDate": "2026-07-29",
+  "assets": [
+    {
+      "path": "captures/tablet/onboarding.png",
+      "type": "image",
+      "device": "tablet",
+      "description": "Welcome and privacy notice",
+      "source": "SM-X210_2026-07-29_11-24-24.png"
+    },
+    {
+      "path": "captures/tablet/driver-catalog.png",
+      "type": "image",
+      "device": "tablet",
+      "description": "Device Drivers catalog",
+      "source": "SM-X210_2026-07-29_11-25-37.png"
+    },
+    {
+      "path": "captures/tablet/driver-detail.png",
+      "type": "image",
+      "device": "tablet",
+      "description": "Driver detail and specifications",
+      "source": "SM-X210_2026-07-29_11-26-42.png"
+    },
+    {
+      "path": "captures/tablet/connection-test.png",
+      "type": "image",
+      "device": "tablet",
+      "description": "Connected device commands and response",
+      "source": "SM-X210_2026-07-29_11-29-27.png"
+    },
+    {
+      "path": "captures/tablet/test-device.png",
+      "type": "image",
+      "device": "tablet",
+      "description": "Device control test surface",
+      "source": "SM-X210_2026-07-29_11-30-21.png"
+    },
+    {
+      "path": "captures/tablet/switching-preview.png",
+      "type": "image",
+      "device": "tablet",
+      "description": "Switching test surface",
+      "source": "SM-X210_2026-07-29_11-30-57.png"
+    },
+    {
+      "path": "captures/tablet/presets.png",
+      "type": "image",
+      "device": "tablet",
+      "description": "System power presets",
+      "source": "SM-X210_2026-07-29_11-31-36.png"
+    },
+    {
+      "path": "captures/tablet/preset-power-on.png",
+      "type": "image",
+      "device": "tablet",
+      "description": "Power On preset editor",
+      "source": "SM-X210_2026-07-29_11-31-47.png"
+    },
+    {
+      "path": "captures/tablet/preset-power-off.png",
+      "type": "image",
+      "device": "tablet",
+      "description": "Power Off preset editor",
+      "source": "SM-X210_2026-07-29_11-32-53.png"
+    },
+    {
+      "path": "captures/tablet/audio.png",
+      "type": "image",
+      "device": "tablet",
+      "description": "Audio command mapping",
+      "source": "SM-X210_2026-07-29_11-34-31.png"
+    },
+    {
+      "path": "captures/tablet/eui-switching.png",
+      "type": "image",
+      "device": "tablet",
+      "description": "Tablet EUI switching layout",
+      "source": "SM-X210_2026-07-29_11-53-53.png"
+    },
+    {
+      "path": "captures/tablet/eui-power-off.png",
+      "type": "image",
+      "device": "tablet",
+      "description": "Tablet EUI power-off state",
+      "source": "SM-X210_2026-07-29_11-54-11.png"
+    },
+    {
+      "path": "captures/tablet/eui-welcome.png",
+      "type": "image",
+      "device": "tablet",
+      "description": "Tablet EUI welcome state",
+      "source": "SM-X210_2026-07-29_11-54-18.png"
+    },
+    {
+      "path": "captures/tablet/eui-power-on.png",
+      "type": "image",
+      "device": "tablet",
+      "description": "Tablet EUI power-on state",
+      "source": "SM-X210_2026-07-29_11-54-26.png"
+    },
+    {
+      "path": "captures/phone/onboarding.png",
+      "type": "image",
+      "device": "phone",
+      "description": "Welcome and privacy notice",
+      "source": "SM-A102U1_2026-07-29_13-54-25.png"
+    },
+    {
+      "path": "captures/phone/driver-catalog.png",
+      "type": "image",
+      "device": "phone",
+      "description": "Device Drivers catalog",
+      "source": "SM-A102U1_2026-07-29_13-57-34.png"
+    },
+    {
+      "path": "captures/phone/driver-detail.png",
+      "type": "image",
+      "device": "phone",
+      "description": "Driver detail",
+      "source": "SM-A102U1_2026-07-29_13-58-09.png"
+    },
+    {
+      "path": "captures/phone/connection-test.png",
+      "type": "image",
+      "device": "phone",
+      "description": "Connected device commands and response",
+      "source": "SM-A102U1_2026-07-29_13-59-37.png"
+    },
+    {
+      "path": "captures/phone/audio.png",
+      "type": "image",
+      "device": "phone",
+      "description": "Audio command mapping",
+      "source": "SM-A102U1_2026-07-29_14-05-08.png"
+    },
+    {
+      "path": "captures/phone/presets.png",
+      "type": "image",
+      "device": "phone",
+      "description": "System power presets",
+      "source": "SM-A102U1_2026-07-29_14-05-13.png"
+    },
+    {
+      "path": "captures/phone/preset-editor.png",
+      "type": "image",
+      "device": "phone",
+      "description": "Preset editor",
+      "source": "SM-A102U1_2026-07-29_14-05-17.png"
+    },
+    {
+      "path": "captures/phone/switching.png",
+      "type": "image",
+      "device": "phone",
+      "description": "Switching configuration",
+      "source": "SM-A102U1_2026-07-29_14-05-23.png"
+    },
+    {
+      "path": "captures/phone/eui-switching.png",
+      "type": "image",
+      "device": "phone",
+      "description": "Phone EUI switching layout",
+      "source": "SM-A102U1_2026-07-29_14-07-58.png"
+    },
+    {
+      "path": "captures/phone/eui-routing.png",
+      "type": "image",
+      "device": "phone",
+      "description": "Phone EUI routed outputs",
+      "source": "SM-A102U1_2026-07-29_14-08-06.png"
+    },
+    {
+      "path": "captures/phone/eui-power-off.png",
+      "type": "image",
+      "device": "phone",
+      "description": "Phone EUI power-off state",
+      "source": "SM-A102U1_2026-07-29_14-08-13.png"
+    },
+    {
+      "path": "captures/phone/eui-welcome.png",
+      "type": "image",
+      "device": "phone",
+      "description": "Phone EUI welcome state",
+      "source": "SM-A102U1_2026-07-29_14-08-19.png"
+    },
+    {
+      "path": "captures/phone/eui-power-on.png",
+      "type": "image",
+      "device": "phone",
+      "description": "Phone EUI power-on state",
+      "source": "SM-A102U1_2026-07-29_14-08-25.png"
+    },
+    {
+      "path": "captures/tablet/driver-catalog.mp4",
+      "type": "video",
+      "device": "tablet",
+      "description": "Browse and inspect a tablet driver",
+      "source": "CTRLbot IoT Walkthrough.mp4",
+      "sourceStartInSeconds": 135,
+      "durationInSeconds": 16,
+      "audio": false
+    },
+    {
+      "path": "captures/tablet/connection-test.mp4",
+      "type": "video",
+      "device": "tablet",
+      "description": "Test a tablet device connection",
+      "source": "CTRLbot IoT Walkthrough.mp4",
+      "sourceStartInSeconds": 238,
+      "durationInSeconds": 16,
+      "audio": false
+    },
+    {
+      "path": "captures/tablet/preset-builder.mp4",
+      "type": "video",
+      "device": "tablet",
+      "description": "Edit a tablet power preset",
+      "source": "CTRLbot IoT Walkthrough.mp4",
+      "sourceStartInSeconds": 356,
+      "durationInSeconds": 16,
+      "audio": false
+    },
+    {
+      "path": "captures/tablet/switching.mp4",
+      "type": "video",
+      "device": "tablet",
+      "description": "Test tablet many-to-many switching",
+      "source": "CTRLbot IoT Walkthrough.mp4",
+      "sourceStartInSeconds": 620,
+      "durationInSeconds": 18,
+      "audio": false
+    },
+    {
+      "path": "captures/tablet/eui.mp4",
+      "type": "video",
+      "device": "tablet",
+      "description": "Operate the tablet EUI",
+      "source": "CTRLbot IoT Walkthrough.mp4",
+      "sourceStartInSeconds": 500,
+      "durationInSeconds": 18,
+      "audio": false
+    },
+    {
+      "path": "captures/phone/driver-catalog.mp4",
+      "type": "video",
+      "device": "phone",
+      "description": "Browse a phone driver",
+      "source": "SM-A102U1_2026-07-29_15-22-19.mp4",
+      "sourceStartInSeconds": 138,
+      "durationInSeconds": 16,
+      "audio": false
+    },
+    {
+      "path": "captures/phone/connection-test.mp4",
+      "type": "video",
+      "device": "phone",
+      "description": "Test a phone device connection",
+      "source": "SM-A102U1_2026-07-29_15-22-19.mp4",
+      "sourceStartInSeconds": 225,
+      "durationInSeconds": 16,
+      "audio": false
+    },
+    {
+      "path": "captures/phone/preset-builder.mp4",
+      "type": "video",
+      "device": "phone",
+      "description": "Edit a phone power preset",
+      "source": "SM-A102U1_2026-07-29_15-22-19.mp4",
+      "sourceStartInSeconds": 318,
+      "durationInSeconds": 16,
+      "audio": false
+    },
+    {
+      "path": "captures/phone/switching.mp4",
+      "type": "video",
+      "device": "phone",
+      "description": "Configure phone switching",
+      "source": "SM-A102U1_2026-07-29_15-22-19.mp4",
+      "sourceStartInSeconds": 370,
+      "durationInSeconds": 16,
+      "audio": false
+    },
+    {
+      "path": "captures/phone/eui.mp4",
+      "type": "video",
+      "device": "phone",
+      "description": "Operate the phone EUI",
+      "source": "SM-A102U1_2026-07-29_15-22-19.mp4",
+      "sourceStartInSeconds": 480,
+      "durationInSeconds": 18,
+      "audio": false
+    }
+  ]
+}

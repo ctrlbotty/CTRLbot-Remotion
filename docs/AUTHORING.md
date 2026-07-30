@@ -6,9 +6,34 @@
 2. **Write the narration first.** Keep each chapter focused on one app surface. At a natural training pace, plan roughly 125–150 spoken words per minute.
 3. **Turn the script into structured props.** Copy `props/getting-started.json`; each chapter becomes one visual block.
 4. **Preview in Remotion Studio.** Edit text in the Props panel or reload the JSON file. Check safe margins and caption length.
-5. **Add real captures where accuracy matters.** Put sanitized captures in `public/captures/`. The built-in app mockups are ideal for conceptual explanation and highlights; actual tap-by-tap instruction should use a current app recording.
+5. **Use current product capture.** Put sanitized captures in `public/captures/`. Conceptual explanation can use diagrams, but any visible app surface should come from a reviewed build rather than a parallel mock UI.
 6. **Record narration.** Put approved audio in `public/audio/`. Keep a clean master WAV and render-delivery AAC/MP3 as separate assets.
 7. **Render and review.** Verify the full video, not only a few frames. Check text, timing, audio sync, product behavior, and the final frame.
+
+## First-use walkthrough props
+
+The v1.0 phone and tablet walkthroughs share `props/first-use.json`. The copy and scene durations are common; the composition selects the matching device capture automatically.
+
+```json
+{
+  "title": "First-use walkthrough",
+  "subtitle": "From first launch to a room-ready End User Interface.",
+  "version": "1.0",
+  "accentColor": "#008FD4",
+  "steps": [
+    {
+      "id": "privacy",
+      "eyebrow": "First launch",
+      "title": "Review privacy",
+      "body": "Select Get Started...",
+      "durationInSeconds": 3.5
+    }
+  ],
+  "closing": "Your room is ready."
+}
+```
+
+The required step IDs are `privacy`, `drivers`, `connection`, `activities`, `eui`, and `handoff`. Keep this order unless the product manual changes. The registered phone and tablet defaults inject the `device` prop.
 
 ## Lesson props
 
@@ -25,7 +50,13 @@
       "narration": "Caption and voiceover script for this chapter.",
       "bullets": ["Step one", "Step two", "Step three"],
       "durationInSeconds": 8,
-      "callout": "Important detail"
+      "callout": "Important detail",
+      "capture": {
+        "source": "captures/tablet/connection-test.mp4",
+        "type": "video",
+        "device": "tablet",
+        "label": "Current tablet UI"
+      }
     }
   ],
   "closing": "The room is ready",
@@ -47,6 +78,8 @@ Supported `kind` values:
 
 `durationInSeconds` must be 4–90 seconds. The composition’s total frame count is recalculated by `calculateMetadata()`.
 
+`capture` is optional. When omitted, the chapter uses the reviewed v1.0 tablet still for its chapter kind. When present, `source` is relative to `public/`, `type` is `image` or `video`, and `device` is `phone` or `tablet`. Keep video clips longer than the chapter that uses them.
+
 ## Copy standards
 
 - Use the app’s visible terminology: **Device**, **Connect**, **Activities**, **Presets**, **Switching**, **Audio**, and **End User Interface**.
@@ -60,13 +93,16 @@ Supported `kind` values:
 - 16:9 training: 1920×1080 at 30fps.
 - Vertical features: 1080×1920 at 30fps.
 - CTRLbot blue: `#008FD4`; success green: `#4EA72E`; alert red: `#FF5A64`.
+- Always write **CTRLbot** with this exact casing and render the name in Audiowide.
+- Use Audiowide for all bold display and UI text; use the body stack only for regular-weight supporting copy.
+- Use the canonical icon in `public/brand/ctrlbot-icon-white.png`; do not redraw or recolor it.
 - Keep essential text at least 68px from 16:9 edges.
 - Animate with frame-derived values only. Do not add CSS transitions, keyframes, or timers.
 - Use restrained springs for entrances; training content should feel confident rather than bouncy.
 
 ## Adding captures and voiceover
 
-The current compositions are fully renderable without external media. When adding real screen recordings:
+The current compositions use the reviewed media under `public/captures/`. When replacing or adding screen recordings:
 
 - record a clean Android emulator or dedicated demo device;
 - use only fictional room names and private-range demo IPs;

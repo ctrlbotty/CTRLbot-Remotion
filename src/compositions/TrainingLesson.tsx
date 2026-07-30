@@ -3,12 +3,13 @@ import {
   Series,
   useCurrentFrame,
 } from 'remotion';
-import {AppShell, type AppScreen} from '../components/AppShell';
-import {CtrlbotMark, CtrlbotWordmark} from '../components/Brand';
+import {CtrlbotMark, CtrlbotName, CtrlbotWordmark} from '../components/Brand';
 import {Icon, type IconName} from '../components/Icons';
+import {ProductCapture, type CaptureAsset} from '../components/ProductCapture';
 import {BulletList, Callout, CaptionBand, GlassCard, SceneFrame, TitleBlock} from '../components/Scene';
 import {reveal} from '../design/animation';
 import {palette, seconds, typography} from '../design/theme';
+import {captures} from '../media/captures';
 import type {LessonChapter, TrainingLessonProps} from './schemas';
 
 export const LESSON_INTRO_DURATION = seconds(5);
@@ -33,7 +34,7 @@ const Intro = ({props}: {props: TrainingLessonProps}) => (
       <div style={{display: 'grid', placeItems: 'center'}}>
         <div style={{width: 410, height: 410, borderRadius: '50%', display: 'grid', placeItems: 'center', background: `radial-gradient(circle, ${props.accentColor}4A 0%, ${props.accentColor}15 42%, transparent 70%)`}}>
           <div style={{width: 230, height: 230, borderRadius: 60, display: 'grid', placeItems: 'center', border: `1px solid ${props.accentColor}88`, background: 'rgba(5,8,9,.86)', boxShadow: `0 0 100px ${props.accentColor}45`}}>
-            <CtrlbotMark size={150} accent={props.accentColor} />
+            <CtrlbotMark size={150} />
           </div>
         </div>
       </div>
@@ -58,7 +59,7 @@ const Objectives = ({props}: {props: TrainingLessonProps}) => {
                 <Icon name={icons[index]} size={27} color={props.accentColor} />
               </div>
               <div style={{fontFamily: typography.mono, fontSize: 12, color: props.accentColor, letterSpacing: 1.4, marginTop: 22}}>OBJECTIVE {String(index + 1).padStart(2, '0')}</div>
-              <div style={{fontSize: 20, lineHeight: 1.35, color: palette.white, fontWeight: 730, marginTop: 11}}>{objective}</div>
+              <div style={{fontFamily: typography.bold, fontSize: 20, lineHeight: 1.35, color: palette.white, fontWeight: 730, marginTop: 11}}>{objective}</div>
             </GlassCard>
           );
         })}
@@ -67,9 +68,13 @@ const Objectives = ({props}: {props: TrainingLessonProps}) => {
   );
 };
 
-const screenForChapter = (chapter: LessonChapter): AppScreen => {
-  if (chapter.kind === 'concept') return 'drivers';
-  return chapter.kind;
+const fallbackCapture: Record<LessonChapter['kind'], CaptureAsset> = {
+  concept: {source: captures.tablet.driversStill, type: 'image', device: 'tablet', label: 'Current tablet UI'},
+  drivers: {source: captures.tablet.driversStill, type: 'image', device: 'tablet', label: 'Current tablet UI'},
+  connection: {source: captures.tablet.connectionStill, type: 'image', device: 'tablet', label: 'Current tablet UI'},
+  presets: {source: captures.tablet.presetsStill, type: 'image', device: 'tablet', label: 'Current tablet UI'},
+  switching: {source: captures.tablet.switchingStill, type: 'image', device: 'tablet', label: 'Current tablet UI'},
+  eui: {source: captures.tablet.euiStill, type: 'image', device: 'tablet', label: 'Current tablet EUI'},
 };
 
 const Chapter = ({
@@ -89,7 +94,11 @@ const Chapter = ({
       <div style={{marginTop: 36}}><BulletList items={chapter.bullets} accent={props.accentColor} delay={14} /></div>
       {chapter.callout ? <div style={{display: 'inline-flex', marginTop: 30}}><Callout accent={props.accentColor} delay={34}>{chapter.callout}</Callout></div> : null}
     </div>
-    <AppShell screen={screenForChapter(chapter)} accent={props.accentColor} scale={chapter.kind === 'eui' ? 0.78 : 0.76} style={{position: 'absolute', right: chapter.kind === 'eui' ? 15 : -115, top: chapter.kind === 'eui' ? 180 : 165, transformOrigin: 'top right'}} />
+    <ProductCapture
+      capture={chapter.capture ?? fallbackCapture[chapter.kind]}
+      accent={props.accentColor}
+      style={{position: 'absolute', right: 52, top: 184, width: 1160, height: 770}}
+    />
     {props.showCaptions ? <CaptionBand accent={props.accentColor}>{chapter.narration}</CaptionBand> : null}
   </SceneFrame>
 );
@@ -102,8 +111,8 @@ const Recap = ({props}: {props: TrainingLessonProps}) => {
       <div style={{position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', padding: 90}}>
         <div style={{width: 1380}}>
           <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-            <TitleBlock eyebrow="Lesson complete" title={props.closing} subtitle="Use this same content model to create the next CTRLbot training module." accent={props.accentColor} maxWidth={970} titleSize={67} />
-            <CtrlbotMark size={120} accent={props.accentColor} />
+            <TitleBlock eyebrow="Lesson complete" title={props.closing} subtitle={<>Use this same content model to create the next <CtrlbotName /> training module.</>} accent={props.accentColor} maxWidth={970} titleSize={67} />
+            <CtrlbotMark size={120} />
           </div>
           <div style={{display: 'grid', gridTemplateColumns: `repeat(${recap.length},1fr)`, gap: 13, marginTop: 65}}>
             {recap.map((chapter, index) => {
@@ -111,7 +120,7 @@ const Recap = ({props}: {props: TrainingLessonProps}) => {
               return (
                 <div key={chapter.title} style={{minHeight: 150, borderRadius: 15, padding: 18, background: palette.panel, border: `1px solid ${palette.line}`, opacity, transform: `translateY(${(1 - opacity) * 20}px)`}}>
                   <div style={{fontFamily: typography.mono, color: props.accentColor, fontSize: 12}}>0{index + 1}</div>
-                  <div style={{color: palette.white, fontSize: 17, fontWeight: 720, lineHeight: 1.32, marginTop: 16}}>{chapter.title.replace(/^\d+\.\s*/, '')}</div>
+                  <div style={{color: palette.white, fontFamily: typography.bold, fontSize: 17, fontWeight: 720, lineHeight: 1.32, marginTop: 16}}>{chapter.title.replace(/^\d+\.\s*/, '')}</div>
                 </div>
               );
             })}

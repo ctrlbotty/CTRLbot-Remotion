@@ -7,12 +7,13 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from 'remotion';
-import {AppShell, type AppScreen} from '../components/AppShell';
-import {CtrlbotMark, CtrlbotWordmark} from '../components/Brand';
+import {CtrlbotMark, CtrlbotName, CtrlbotWordmark} from '../components/Brand';
 import {Icon, type IconName} from '../components/Icons';
+import {ProductCapture, type CaptureAsset} from '../components/ProductCapture';
 import {BulletList, Callout, GlassCard, GridBackdrop, SceneFrame, TitleBlock} from '../components/Scene';
 import {drift, pulse, reveal} from '../design/animation';
 import {palette, seconds, typography} from '../design/theme';
+import {captures, type ProductArea} from '../media/captures';
 import type {OverviewProps} from './schemas';
 
 export const OVERVIEW_SCENES = {
@@ -42,7 +43,7 @@ const IntroScene = ({duration, title, subtitle, accent}: {duration: number; titl
             <div key={ring} style={{position: 'absolute', inset: 12 + ring * 28, borderRadius: '50%', border: `1px solid ${accent}${ring === 0 ? 'AA' : '55'}`, transform: `rotate(${orbit * (ring % 2 === 0 ? 1 : -1)}deg)`, borderTopColor: 'transparent', borderBottomColor: ring === 1 ? accent : 'transparent'}} />
           ))}
           <div style={{width: 126, height: 126, borderRadius: 34, display: 'grid', placeItems: 'center', background: 'rgba(8,12,14,.92)', border: `1px solid ${accent}88`, boxShadow: `0 0 70px ${accent}55`}}>
-            <CtrlbotMark size={84} accent={accent} />
+            <CtrlbotMark size={84} />
           </div>
         </div>
       </div>
@@ -59,7 +60,7 @@ const IntroScene = ({duration, title, subtitle, accent}: {duration: number; titl
 const flowNodes: {label: string; detail: string; icon: IconName}[] = [
   {label: 'Driver', detail: 'Device knowledge', icon: 'device'},
   {label: 'Connection', detail: 'Live control path', icon: 'connection'},
-  {label: 'Activity', detail: 'Repeatable workflow', icon: 'preset'},
+  {label: 'Activities', detail: 'Repeatable workflows', icon: 'preset'},
   {label: 'EUI', detail: 'Client-ready control', icon: 'home'},
 ];
 
@@ -70,7 +71,7 @@ const SystemMapScene = ({duration, accent}: {duration: number; accent: string}) 
   return (
     <SceneFrame durationInFrames={duration} accent={accent} label="How CTRLbot works" index={1} total={6}>
       <div style={{position: 'absolute', top: 160, left: 80, right: 80}}>
-        <TitleBlock eyebrow="A system, not a pile of screens" title="Build once. Control the whole room." subtitle="CTRLbot turns device-specific commands into a clear path from installer setup to everyday operation." accent={accent} maxWidth={1050} titleSize={65} />
+        <TitleBlock eyebrow="A system, not a pile of screens" title="Build once. Control the whole room." subtitle={<><CtrlbotName /> turns device-specific commands into a clear path from installer setup to everyday operation.</>} accent={accent} maxWidth={1050} titleSize={65} />
       </div>
       <div style={{position: 'absolute', left: 105, right: 105, top: 535, display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 48}}>
         <div style={{position: 'absolute', left: '10%', right: '10%', top: 70, height: 3, background: palette.line}}>
@@ -84,7 +85,7 @@ const SystemMapScene = ({duration, accent}: {duration: number; accent: string}) 
               <div style={{width: 58, height: 58, borderRadius: 16, display: 'grid', placeItems: 'center', color: accent, background: `${accent}21`, border: `1px solid ${accent}66`}}>
                 <Icon name={node.icon} size={29} color={accent} />
               </div>
-              <div style={{fontSize: 22, color: palette.white, fontWeight: 800, marginTop: 22}}>{node.label}</div>
+              <div style={{fontFamily: typography.bold, fontSize: 22, color: palette.white, fontWeight: 800, marginTop: 22}}>{node.label}</div>
               <div style={{fontSize: 14, color: palette.muted, marginTop: 7}}>{node.detail}</div>
             </GlassCard>
           );
@@ -94,7 +95,7 @@ const SystemMapScene = ({duration, accent}: {duration: number; accent: string}) 
   );
 };
 
-const featureCopy: Record<AppScreen, {eyebrow: string; title: ReactNode; subtitle: string; bullets: string[]; callout: string}> = {
+const featureCopy: Record<ProductArea, {eyebrow: string; title: ReactNode; subtitle: string; bullets: string[]; callout: string}> = {
   drivers: {
     eyebrow: 'Device intelligence',
     title: <>Start with the <span style={{color: palette.blue}}>right driver.</span></>,
@@ -106,8 +107,8 @@ const featureCopy: Record<AppScreen, {eyebrow: string; title: ReactNode; subtitl
     eyebrow: 'Secure configuration',
     title: <>Connect. Test. <span style={{color: palette.blue}}>Know.</span></>,
     subtitle: 'Configure the live control path and verify the device response before the room is handed over.',
-    bullets: ['TCP, Telnet, SSH, serial bridging, and IR', 'Room-friendly device labels', 'Credentials referenced through secure storage'],
-    callout: 'Validate the response before saving',
+    bullets: ['TCP, Telnet, SSH, serial bridging, and IR', 'Device name, address, port, and protocol', 'Received data confirms the live path'],
+    callout: 'Validate the response before handoff',
   },
   presets: {
     eyebrow: 'Workflow automation',
@@ -132,7 +133,15 @@ const featureCopy: Record<AppScreen, {eyebrow: string; title: ReactNode; subtitl
   },
 };
 
-const AppFeatureScene = ({duration, screen, accent, index}: {duration: number; screen: AppScreen; accent: string; index: number}) => {
+const featureCapture: Record<ProductArea, CaptureAsset> = {
+  drivers: {source: captures.tablet.drivers, type: 'video', device: 'tablet', label: 'Current tablet UI'},
+  connection: {source: captures.tablet.connection, type: 'video', device: 'tablet', label: 'Current tablet UI'},
+  presets: {source: captures.tablet.presets, type: 'video', device: 'tablet', label: 'Current tablet UI'},
+  switching: {source: captures.tablet.switching, type: 'video', device: 'tablet', label: 'Current tablet UI'},
+  eui: {source: captures.tablet.eui, type: 'video', device: 'tablet', label: 'Current tablet EUI'},
+};
+
+const AppFeatureScene = ({duration, screen, accent, index}: {duration: number; screen: ProductArea; accent: string; index: number}) => {
   const copy = featureCopy[screen];
   return (
     <SceneFrame durationInFrames={duration} accent={accent} index={index} total={6}>
@@ -141,7 +150,7 @@ const AppFeatureScene = ({duration, screen, accent, index}: {duration: number; s
         <div style={{marginTop: 35}}><BulletList items={copy.bullets} accent={accent} delay={16} /></div>
         <div style={{marginTop: 28, display: 'inline-flex'}}><Callout accent={accent} delay={34}>{copy.callout}</Callout></div>
       </div>
-      <AppShell screen={screen} accent={accent} scale={screen === 'eui' ? 0.78 : 0.76} style={{position: 'absolute', right: screen === 'eui' ? 15 : -118, top: screen === 'eui' ? 180 : 170, transformOrigin: 'top right'}} />
+      <ProductCapture capture={featureCapture[screen]} accent={accent} style={{position: 'absolute', right: 54, top: 186, width: 1160, height: 770}} />
     </SceneFrame>
   );
 };
@@ -159,7 +168,7 @@ const OutroScene = ({duration, accent}: {duration: number; accent: string}) => {
             <div style={{fontFamily: typography.display, fontSize: 70, color: accent, fontWeight: 900, letterSpacing: -3, marginTop: 4}}>Not the complexity.</div>
           </div>
           <div style={{marginTop: 42, color: palette.muted, fontSize: 22}}>Training-ready motion graphics built from the product itself.</div>
-          <div style={{marginTop: 36, padding: '15px 24px', borderRadius: 12, border: `1px solid ${accent}99`, background: `${accent}20`, color: palette.white, fontFamily: typography.mono, fontSize: 16, letterSpacing: 1.3}}>CTRLbot IoT · Configure → Automate → Operate</div>
+          <div style={{marginTop: 36, padding: '15px 24px', borderRadius: 12, border: `1px solid ${accent}99`, background: `${accent}20`, color: palette.white, fontFamily: typography.brand, fontSize: 16, letterSpacing: 1.3}}>CTRLbot IoT · Configure → Automate → Operate</div>
         </div>
       </div>
     </SceneFrame>

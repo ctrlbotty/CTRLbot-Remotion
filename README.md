@@ -2,16 +2,18 @@
 
 A reusable motion-design and training-video system for the native Android app in `../CTRLbot-IoT`.
 
-The repository ships with four ready-to-preview compositions:
+The repository ships with six ready-to-preview compositions. The v1.0 first-use pair is the current release deliverable:
 
 | Composition | Format | Purpose |
 |---|---:|---|
-| `CTRLbot-Overview` | 1920×1080, ~52s | Product story covering drivers, connections, presets, switching, and EUI |
-| `CTRLbot-Training-Lesson` | 1920×1080, variable | JSON-driven training lesson with chapters, learning objectives, callouts, and captions |
-| `CTRLbot-Feature-Short` | 1080×1920, 12s | Vertical product/social feature teaser |
-| `CTRLbot-Thumbnail` | 1920×1080 still | Training-series cover image |
+| `CTRLbot-First-Use-Phone` | 1080×1920, 36.5s | Concise first-use walkthrough using the current phone portrait UI |
+| `CTRLbot-First-Use-Tablet` | 1920×1080, 36.5s | Matching first-use walkthrough using the current tablet landscape UI |
+| `CTRLbot-Overview` | 1920×1080, ~52s | Capture-backed product story covering drivers, connections, presets, switching, and EUI |
+| `CTRLbot-Training-Lesson` | 1920×1080, variable | JSON-driven training lesson with optional phone/tablet capture per chapter |
+| `CTRLbot-Feature-Short` | 1080×1920, 12s | Vertical product/social teaser using the current phone EUI |
+| `CTRLbot-Thumbnail` | 1920×1080 still | Training-series cover using the current tablet EUI |
 
-All UI animation is built with React, CSS/SVG, `useCurrentFrame()`, `interpolate()`, and `spring()`. The mock UI follows the Android app’s dark visual system, `#008FD4` accent, current sidebar, Device Drivers workflow, Activities tabs, and End User Interface.
+Motion graphics are built with React, CSS/SVG, `useCurrentFrame()`, `interpolate()`, and `spring()`. Product surfaces use sanitized v1.0 phone/tablet capture loaded through `staticFile()`; the code does not maintain a parallel mock implementation of the app UI.
 
 ## Start here
 
@@ -28,17 +30,33 @@ Remotion Studio opens with every composition grouped in the sidebar. Select `CTR
 
 ```powershell
 npm run check
+npm run render:first-use
 npm run render:overview
 npm run render:lesson
 npm run render:short
 npm run render:thumbnail
 ```
 
-Outputs are written to `out/`. Render all four with:
+Outputs are written to `out/`. The first-use pair renders to:
+
+- `out/ctrlbot-first-use-phone-v1.0.mp4`
+- `out/ctrlbot-first-use-tablet-v1.0.mp4`
+
+Render every registered family with:
 
 ```powershell
 npm run render:all
 ```
+
+## Refresh the phone and tablet captures
+
+The checked-in media is a curated, muted subset of the July 29, 2026 walkthrough package. To rebuild it from the sibling capture folder:
+
+```powershell
+npm run ingest:captures -- "../CTRLbot Mirror"
+```
+
+The ingest script copies selected screenshots, trims short H.264 clips from both walkthroughs, removes their audio, and writes `public/captures/manifest.json`. See [Capture Ingest Review](docs/CAPTURE-INGEST.md) for the observed UI, selection decisions, and publication caveats.
 
 ## Create another training lesson
 
@@ -58,14 +76,14 @@ npx remotion render src/index.ts CTRLbot-Training-Lesson out/your-lesson.mp4 --p
 
 Chapter kinds are `concept`, `drivers`, `connection`, `presets`, `switching`, and `eui`. Each kind selects a matching animated product surface. The total duration is calculated from chapter durations automatically.
 
-See [Authoring Guide](docs/AUTHORING.md) for the content schema and media workflow, [Content Roadmap](docs/CONTENT-ROADMAP.md) for the proposed training series, and [Remotion Research](docs/REMOTION-RESEARCH.md) for the architecture decisions.
+See [First-Use Walkthrough](docs/FIRST-USE-WALKTHROUGH.md) for the approved source mapping and storyboard, [Authoring Guide](docs/AUTHORING.md) for the content schema and media workflow, [Capture Ingest Review](docs/CAPTURE-INGEST.md) for this capture set, [Content Roadmap](docs/CONTENT-ROADMAP.md) for the proposed training series, [UI Fidelity and Content Repurposing](docs/UI-FIDELITY-AND-CONTENT-REPURPOSING.md) for the reference-material and multi-channel strategy, and [Remotion Research](docs/REMOTION-RESEARCH.md) for the architecture decisions.
 
 ## Repository map
 
 ```text
 src/
-  components/       CTRLbot logo, UI mockups, scene chrome, icons
-  compositions/     Overview, lesson, vertical short, thumbnail
+  components/       Canonical CTRLbot branding, capture presentation, scene chrome, icons
+  compositions/     First-use variants, overview, lesson, vertical short, thumbnail
   design/           Color, type, timing, and animation tokens
 props/               Renderable lesson/product inputs
 public/              Optional captures, audio, images, and fonts

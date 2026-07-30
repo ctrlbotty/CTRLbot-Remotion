@@ -11,7 +11,11 @@
     "render:lesson": "remotion render src/index.ts CTRLbot-Training-Lesson out/ctrlbot-training-lesson.mp4 --props=props/getting-started.json",
     "render:short": "remotion render src/index.ts CTRLbot-Feature-Short out/ctrlbot-feature-short.mp4 --props=props/feature-short.json",
     "render:thumbnail": "remotion still src/index.ts CTRLbot-Thumbnail out/ctrlbot-thumbnail.png",
-    "render:all": "node scripts/render-all.mjs"
+    "render:first-use:phone": "remotion render src/index.ts CTRLbot-First-Use-Phone out/ctrlbot-first-use-phone-v1.0.mp4 --codec=h264 --crf=18 --muted --timeout=120000",
+    "render:first-use:tablet": "remotion render src/index.ts CTRLbot-First-Use-Tablet out/ctrlbot-first-use-tablet-v1.0.mp4 --codec=h264 --crf=18 --muted --timeout=120000",
+    "render:first-use": "node scripts/render-first-use.mjs",
+    "render:all": "node scripts/render-all.mjs",
+    "ingest:captures": "node scripts/ingest-captures.mjs"
   },
   "dependencies": {
     "@remotion/cli": "4.0.500",

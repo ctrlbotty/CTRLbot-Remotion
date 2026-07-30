@@ -17,6 +17,13 @@ export const overviewSchema = z.object({
 
 export type OverviewProps = z.infer<typeof overviewSchema>;
 
+export const captureAssetSchema = z.object({
+  source: z.string(),
+  type: z.enum(['image', 'video']),
+  device: z.enum(['phone', 'tablet']),
+  label: z.string().optional(),
+});
+
 export const lessonChapterSchema = z.object({
   kind: chapterKindSchema,
   title: z.string(),
@@ -24,6 +31,7 @@ export const lessonChapterSchema = z.object({
   bullets: z.array(z.string()).min(1).max(5),
   durationInSeconds: z.number().min(4).max(90),
   callout: z.string().optional(),
+  capture: captureAssetSchema.optional(),
 });
 
 export const trainingLessonSchema = z.object({
@@ -48,3 +56,34 @@ export const featureShortSchema = z.object({
 });
 
 export type FeatureShortProps = z.infer<typeof featureShortSchema>;
+
+export const firstUseStepIdSchema = z.enum([
+  'privacy',
+  'drivers',
+  'connection',
+  'activities',
+  'eui',
+  'handoff',
+]);
+
+export const firstUseStepSchema = z.object({
+  id: firstUseStepIdSchema,
+  eyebrow: z.string(),
+  title: z.string(),
+  body: z.string(),
+  durationInSeconds: z.number().min(2).max(12),
+});
+
+export const firstUseWalkthroughSchema = z.object({
+  device: z.enum(['phone', 'tablet']),
+  title: z.string(),
+  subtitle: z.string(),
+  version: z.string(),
+  accentColor: z.string(),
+  steps: z.array(firstUseStepSchema).length(6),
+  closing: z.string(),
+});
+
+export type FirstUseStepId = z.infer<typeof firstUseStepIdSchema>;
+export type FirstUseStep = z.infer<typeof firstUseStepSchema>;
+export type FirstUseWalkthroughProps = z.infer<typeof firstUseWalkthroughSchema>;

@@ -1,13 +1,20 @@
 import {Composition, Folder, Still, type CalculateMetadataFunction} from 'remotion';
 import featureShortDefaultsJson from '../props/feature-short.json';
+import firstUseDefaultsJson from '../props/first-use.json';
 import lessonDefaultsJson from '../props/getting-started.json';
 import {FeatureShort, FEATURE_SHORT_DURATION} from './compositions/FeatureShort';
+import {
+  FirstUseWalkthrough,
+  getFirstUseDuration,
+} from './compositions/FirstUseWalkthrough';
 import {ProductOverview, OVERVIEW_DURATION} from './compositions/Overview';
 import {
   featureShortSchema,
+  firstUseWalkthroughSchema,
   overviewSchema,
   trainingLessonSchema,
   type FeatureShortProps,
+  type FirstUseWalkthroughProps,
   type OverviewProps,
   type TrainingLessonProps,
 } from './compositions/schemas';
@@ -23,13 +30,42 @@ const overviewDefaults: OverviewProps = {
 
 const lessonDefaults = lessonDefaultsJson as TrainingLessonProps;
 const featureShortDefaults = featureShortDefaultsJson as FeatureShortProps;
+const firstUseDefaults = firstUseDefaultsJson as Omit<FirstUseWalkthroughProps, 'device'>;
 
 const calculateLessonMetadata: CalculateMetadataFunction<TrainingLessonProps> = ({props}) => ({
   durationInFrames: getLessonDuration(props),
 });
 
+const calculateFirstUseMetadata: CalculateMetadataFunction<FirstUseWalkthroughProps> = ({props}) => ({
+  durationInFrames: getFirstUseDuration(props),
+});
+
 export const RemotionRoot = () => (
   <>
+    <Folder name="CTRLbot-First-Use">
+      <Composition
+        id="CTRLbot-First-Use-Phone"
+        component={FirstUseWalkthrough}
+        schema={firstUseWalkthroughSchema}
+        defaultProps={{...firstUseDefaults, device: 'phone'}}
+        calculateMetadata={calculateFirstUseMetadata}
+        durationInFrames={getFirstUseDuration({...firstUseDefaults, device: 'phone'})}
+        fps={video.fps}
+        width={video.verticalWidth}
+        height={video.verticalHeight}
+      />
+      <Composition
+        id="CTRLbot-First-Use-Tablet"
+        component={FirstUseWalkthrough}
+        schema={firstUseWalkthroughSchema}
+        defaultProps={{...firstUseDefaults, device: 'tablet'}}
+        calculateMetadata={calculateFirstUseMetadata}
+        durationInFrames={getFirstUseDuration({...firstUseDefaults, device: 'tablet'})}
+        fps={video.fps}
+        width={video.width}
+        height={video.height}
+      />
+    </Folder>
     <Folder name="CTRLbot-Videos">
       <Composition
         id="CTRLbot-Overview"

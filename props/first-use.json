@@ -1,0 +1,51 @@
+{
+  "title": "First-use walkthrough",
+  "subtitle": "From first launch to a room-ready End User Interface.",
+  "version": "1.0",
+  "accentColor": "#008FD4",
+  "steps": [
+    {
+      "id": "privacy",
+      "eyebrow": "First launch",
+      "title": "Review privacy",
+      "body": "Select Get Started. Configuration stays on this Android device, and credentials are encrypted locally.",
+      "durationInSeconds": 3.5
+    },
+    {
+      "id": "drivers",
+      "eyebrow": "Device",
+      "title": "Find a driver",
+      "body": "Search by manufacturer or model, review the driver, then select + to create a connection.",
+      "durationInSeconds": 5.5
+    },
+    {
+      "id": "connection",
+      "eyebrow": "Connect",
+      "title": "Connect and test",
+      "body": "Enter the address and port, connect, then send a safe command. Successful changes save automatically.",
+      "durationInSeconds": 6
+    },
+    {
+      "id": "activities",
+      "eyebrow": "Activities",
+      "title": "Review the room",
+      "body": "Check Power On and Power Off presets, Switching, and Audio. Test the actual equipment before handoff.",
+      "durationInSeconds": 7.5
+    },
+    {
+      "id": "eui",
+      "eyebrow": "End User Interface",
+      "title": "Hand off simple control",
+      "body": "Open the EUI for system power, source routing, and the room audio controls supported by the configured devices.",
+      "durationInSeconds": 5.5
+    },
+    {
+      "id": "handoff",
+      "eyebrow": "Installer access",
+      "title": "Return to setup",
+      "body": "Press and hold the upper-left CTRLbot control for two seconds. A quick tap intentionally does nothing.",
+      "durationInSeconds": 3.5
+    }
+  ],
+  "closing": "Your room is ready."
+}

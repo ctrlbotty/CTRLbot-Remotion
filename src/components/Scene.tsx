@@ -117,7 +117,7 @@ export const SceneFrame = ({
             <div
               style={{
                 color: palette.muted,
-                fontFamily: typography.mono,
+              fontFamily: typography.brand,
                 fontSize: 16,
                 letterSpacing: 2.4,
                 textTransform: 'uppercase',
@@ -216,6 +216,7 @@ export const TitleBlock = ({
             alignItems: 'center',
             gap: 12,
             color: accent,
+            fontFamily: typography.bold,
             fontSize: 17,
             fontWeight: 800,
             letterSpacing: 3.4,
@@ -329,8 +330,10 @@ export const Callout = ({
         alignItems: 'center',
         gap: 13,
         color: palette.white,
+        fontFamily: typography.bold,
         fontSize: 18,
         fontWeight: 650,
+        lineHeight: 1.35,
         padding: '15px 18px',
         borderRadius: 14,
         background: 'rgba(10,15,18,.88)',

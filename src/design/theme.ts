@@ -18,7 +18,9 @@ export const palette = {
 
 export const typography = {
   body: 'Inter, Avenir Next, Segoe UI, Arial, sans-serif',
-  display: 'Arial Black, Inter, Segoe UI, sans-serif',
+  brand: 'Audiowide, Inter, Segoe UI, sans-serif',
+  bold: 'Audiowide, Inter, Segoe UI, sans-serif',
+  display: 'Audiowide, Inter, Segoe UI, sans-serif',
   mono: 'SFMono-Regular, Consolas, Liberation Mono, monospace',
 } as const;
 

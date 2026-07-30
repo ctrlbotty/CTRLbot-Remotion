@@ -4,7 +4,7 @@
   "audience": "AV integrators",
   "learningObjectives": [
     "Choose a driver from the catalog",
-    "Create and test a secure connection",
+    "Create and test a device connection",
     "Build a repeatable power preset",
     "Hand off a simplified End User Interface"
   ],
@@ -15,15 +15,27 @@
       "narration": "Start in Device Drivers. Search by manufacturer, choose the matching control profile, and confirm the supported model and command set.",
       "bullets": ["Search the bundled catalog", "Verify IP, serial, or IR control", "Review commands before connecting"],
       "durationInSeconds": 8,
-      "callout": "Start with the exact model whenever possible"
+      "callout": "Start with the exact model whenever possible",
+      "capture": {
+        "source": "captures/tablet/driver-catalog.mp4",
+        "type": "video",
+        "device": "tablet",
+        "label": "Current tablet UI"
+      }
     },
     {
       "kind": "connection",
       "title": "2. Configure the connection",
-      "narration": "Give the device a room-friendly label, enter its address and port, then test the connection before saving it.",
-      "bullets": ["Use a clear room label", "Select TCP, Telnet, SSH, RS-232, or IR", "Store credentials securely"],
+      "narration": "Confirm the device name and protocol, enter its private address and port, then send a command and review the received response.",
+      "bullets": ["Confirm the device name and protocol", "Enter the private address and port", "Review the received response"],
       "durationInSeconds": 8,
-      "callout": "Credentials are referenced securely—not stored in plaintext"
+      "callout": "Credentials are referenced securely—not stored in plaintext",
+      "capture": {
+        "source": "captures/tablet/connection-test.mp4",
+        "type": "video",
+        "device": "tablet",
+        "label": "Current tablet UI"
+      }
     },
     {
       "kind": "presets",
@@ -31,7 +43,13 @@
       "narration": "Combine commands and delays into an ordered workflow. Test the sequence, then make it available to the operator.",
       "bullets": ["Add commands in execution order", "Insert delays for device warm-up", "Use discrete power commands"],
       "durationInSeconds": 8,
-      "callout": "A preset should always end in a known state"
+      "callout": "A preset should always end in a known state",
+      "capture": {
+        "source": "captures/tablet/preset-builder.mp4",
+        "type": "video",
+        "device": "tablet",
+        "label": "Current tablet UI"
+      }
     },
     {
       "kind": "eui",
@@ -39,7 +57,13 @@
       "narration": "The End User Interface turns installer configuration into a simplified, kiosk-style control surface for the client.",
       "bullets": ["Run power workflows", "Route sources to displays", "Control volume and microphone mute"],
       "durationInSeconds": 8,
-      "callout": "Press and hold the top-left control for two seconds to return to Setup"
+      "callout": "Press and hold the top-left control for two seconds to return to Setup",
+      "capture": {
+        "source": "captures/tablet/eui.mp4",
+        "type": "video",
+        "device": "tablet",
+        "label": "Current tablet EUI"
+      }
     }
   ],
   "closing": "Your first system is ready to control",

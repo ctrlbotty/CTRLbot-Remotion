@@ -4,6 +4,8 @@ import {spawnSync} from 'node:child_process';
 mkdirSync('out', {recursive: true});
 
 const jobs = [
+  ['render:first-use:phone'],
+  ['render:first-use:tablet'],
   ['render:overview'],
   ['render:lesson'],
   ['render:short'],
