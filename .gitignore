@@ -3,9 +3,18 @@ out/
 dist/
 .DS_Store
 *.log
+
+# Media is ignored by default, then re-included under public/ — the curated captures
+# and app assets there are inputs to a render, not outputs of one.
 *.mp4
 *.webm
 *.mov
 *.wav
 *.mp3
 !public/**
+
+# Installed Remotion agent skills. skills-lock.json pins the versions, so these are
+# reproducible with `npx skills add remotion-dev/skills`. .claude/skills holds
+# absolute symlinks into this checkout and would break on any other machine.
+.agents/
+.claude/skills/

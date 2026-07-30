@@ -1,127 +1,205 @@
-# Authoring CTRLbot training videos
+# Authoring a scene
 
-## Recommended workflow
+The workflow is: decide what the viewer must see, write the shot list, then let the
+copy follow the camera. `src/scenes/EuiHandoff.tsx` is the worked example — read it
+before adding anything.
 
-1. **Choose one observable outcome.** A lesson should end with the learner able to perform a task, such as “create and test a projector connection.”
-2. **Write the narration first.** Keep each chapter focused on one app surface. At a natural training pace, plan roughly 125–150 spoken words per minute.
-3. **Turn the script into structured props.** Copy `props/getting-started.json`; each chapter becomes one visual block.
-4. **Preview in Remotion Studio.** Edit text in the Props panel or reload the JSON file. Check safe margins and caption length.
-5. **Use current product capture.** Put sanitized captures in `public/captures/`. Conceptual explanation can use diagrams, but any visible app surface should come from a reviewed build rather than a parallel mock UI.
-6. **Record narration.** Put approved audio in `public/audio/`. Keep a clean master WAV and render-delivery AAC/MP3 as separate assets.
-7. **Render and review.** Verify the full video, not only a few frames. Check text, timing, audio sync, product behavior, and the final frame.
+## 1. Pick the surface
 
-## First-use walkthrough props
+If the scene explains a control the viewer will operate, use a live rebuild from
+`src/app-ui/`. Live surfaces can be zoomed into, isolated, and changed mid-shot.
 
-The v1.0 phone and tablet walkthroughs share `props/first-use.json`. The copy and scene durations are common; the composition selects the matching device capture automatically.
+If the scene only needs to establish context — a screen going by, a workflow being
+skimmed — a capture from `public/captures/` is cheaper and perfectly faithful. Use
+`<Video>` or `<CanvasImage>`; don't build a component for it.
 
-```json
-{
-  "title": "First-use walkthrough",
-  "subtitle": "From first launch to a room-ready End User Interface.",
-  "version": "1.0",
-  "accentColor": "#008FD4",
-  "steps": [
-    {
-      "id": "privacy",
-      "eyebrow": "First launch",
-      "title": "Review privacy",
-      "body": "Select Get Started...",
-      "durationInSeconds": 3.5
-    }
-  ],
-  "closing": "Your room is ready."
-}
+Building a new live surface means reading the app's layout XML, not a screenshot.
+`PhoneEui.tsx` lists the exact files its geometry came from — do the same. Screenshots
+lie about spacing, and a rebuild that is 6dp off reads as wrong without the viewer
+knowing why.
+
+## 2. Name the regions
+
+A live surface exports a regions map in its own dp coordinate space:
+
+```tsx
+export const EUI_REGIONS = {
+  full: {x: 0, y: 0, width: 360, height: 780},
+  outputCell: (index: number) => ({ /* derived from the layout constants */ }),
+};
 ```
 
-The required step IDs are `privacy`, `drivers`, `connection`, `activities`, `eui`, and `handoff`. Keep this order unless the product manual changes. The registered phone and tablet defaults inject the `device` prop.
+Derive regions from the same constants that lay the UI out. Then a layout change moves
+the camera targets with it, instead of leaving the camera pointing at where a control
+used to be.
 
-## Lesson props
+## 3. Write the shot list
 
-```json
-{
-  "title": "Lesson title",
-  "subtitle": "One-sentence promise",
-  "audience": "AV integrators",
-  "learningObjectives": ["Outcome one", "Outcome two"],
-  "chapters": [
-    {
-      "kind": "connection",
-      "title": "Configure the connection",
-      "narration": "Caption and voiceover script for this chapter.",
-      "bullets": ["Step one", "Step two", "Step three"],
-      "durationInSeconds": 8,
-      "callout": "Important detail",
-      "capture": {
-        "source": "captures/tablet/connection-test.mp4",
-        "type": "video",
-        "device": "tablet",
-        "label": "Current tablet UI"
-      }
-    }
-  ],
-  "closing": "The room is ready",
-  "accentColor": "#008FD4",
-  "showCaptions": true
-}
+```tsx
+<Camera
+  contentSize={PHONE_VIEWPORT}
+  shots={[
+    {at: 0, region: EUI_REGIONS.full},
+    {at: 26, region: EUI_REGIONS.full},
+    {at: 64, region: frameWidth(centerOf(TAPPED_CARD), PHONE_VIEWPORT.width * 0.78)},
+  ]}
+>
 ```
 
-Supported `kind` values:
+Two shots with the same region hold the camera still between them. Always hold before
+and after a move, or the camera never rests and the viewer never reads anything.
 
-| Kind | Animated product surface |
+`frameWidth(center, width)` states a shot as "this much of the interface across". On
+portrait that is the honest control, because width decides how much is visible. `0.78`
+of the content width is a gentle 1.3x; `0.5` is 2x and will crop a full-width row.
+
+The camera clamps to the content plane, so you cannot accidentally frame past the edge
+of the UI into empty background.
+
+## 4. Carry emphasis with annotations, not zoom
+
+In a 1080×1920 frame, a full-width portrait UI cannot be zoomed far without cropping
+the interface. So:
+
+- `<Spotlight region>` dims everything else. This is the workhorse.
+- `<FocusRing region>` outlines the control.
+- `<TapIndicator x y>` shows the press.
+
+All three go *inside* `<Camera>`, in content coordinates, so they travel with the UI.
+
+**Match the annotation's `radius` to the control.** The EUI's display panels are
+square-cornered, so a rounded ring over one disagrees with the panel edge at every
+corner and reads as sloppy. Default is `0`; pass `6` for the source cards, `8` for
+anything on the app's 8dp shape.
+
+**`emphasizeTypes` on `<DriverCatalog>`** widens the gaps between the device-type card
+colours. The shipped greys sit within 6 points of each other (`#2D2D2D` / `#2F2F2F` /
+`#333333`) — fine on a panel at arm's length, but they collapse into h264 banding at
+viewing distance. Turn it on only for a scene that is specifically teaching device
+types; leave it off everywhere else so the surface stays exact.
+
+## 5. Put copy outside the camera
+
+`<Callout>` goes outside `<Camera>` so the zoom never changes its type size. On
+portrait, `side="bottom"` and `side="top"` render a gradient scrim — the interface stays
+visible through it and it reads as a designed third rather than a box dropped on the
+product. `side="left"` / `"right"` use a card, for landscape cuts with real space beside
+the UI.
+
+Pacing is explicit: named frame constants at the top of each scene, and the shot
+list's `at` values. Scene *lengths* live in `scenes/shared.ts` and are the single
+source for both the cut and the registered composition. A line on screen for less time
+than it takes to read is wasted — the current cut runs about 2.6s per copy beat.
+
+## 6. Register and check
+
+Each scene is its own `<Composition>` in `src/Root.tsx`, metadata inline:
+
+```tsx
+<Composition
+  id="Scene-EUI-Handoff"
+  component={EuiHandoff}
+  durationInFrames={780}
+  fps={30}
+  width={1080}
+  height={1920}
+/>
+```
+
+Then:
+
+```bash
+npm run check
+npm run still -- First-Run-Phone out/frame.png --frame=1200
+```
+
+Render stills at moments where copy has finished staggering in — roughly 25 frames
+after each `<Sequence from>`. Sampling mid-stagger shows missing text and reads as a
+bug that isn't there.
+
+## House motion
+
+Copy these easing literals inline. Studio can only keyframe values it can read
+statically, so do not import them from a constant.
+
+| Purpose | Curve |
 |---|---|
-| `concept` | Device Drivers overview surface |
-| `drivers` | Searchable driver catalog and command detail |
-| `connection` | Connection form and live test terminal |
-| `presets` | Preset list and ordered sequence builder |
-| `switching` | Many-to-many routing matrix |
-| `eui` | Full-screen client End User Interface |
+| Entrance, settle | `Easing.bezier(0.16, 1, 0.3, 1)` |
+| Exit | `Easing.bezier(0.7, 0, 0.84, 0)` |
+| Camera move | `Easing.bezier(0.65, 0, 0.35, 1)` |
+| Emphasis pop | `Easing.spring({damping: 200})` |
+| Cross-fade | `Easing.linear` |
 
-`durationInSeconds` must be 4–90 seconds. The composition’s total frame count is recalculated by `calculateMetadata()`.
+Never spring a camera move. Springs overshoot, and an overshooting camera on a UI reads
+as a wobble rather than a deliberate push-in.
 
-`capture` is optional. When omitted, the chapter uses the reviewed v1.0 tablet still for its chapter kind. When present, `source` is relative to `public/`, `type` is `image` or `video`, and `device` is `phone` or `tablet`. Keep video clips longer than the chapter that uses them.
+Training content should feel confident, not bouncy.
+
+## Type and color
+
+Three faces, following [ctrlbot.io](../../2%20-%20CTRLbot.io/ctrlbot-io-site/index.html):
+
+| Face | Use | Sizes |
+|---|---|---|
+| **Audiowide** | Scene headlines, the `CTRLbot` wordmark | `type.display` / `type.title` only |
+| **Montserrat** | All readable copy — titles, body, UI text | `type.heading` and below |
+| **Space Mono** | Small uppercase eyebrows, technical labels | `type.label`, `.12em`, uppercase |
+
+The site sets its `.display` class on `h2`/`h3` and drops to Space Mono at 11px for
+every nav item and eyebrow. Keep that restraint. Audiowide is a texture: past a
+headline's worth of words it stops reading as language, and in motion graphics the
+text is delivering the message, not the font.
+
+Audiowide is set at weight 400, `line-height: 0.98`, `letter-spacing: 0` — its caps are
+tall, and the default line-height leaves a hole under every headline. Space Mono labels
+are weight 700 at `.12em`, uppercase.
+
+Write the product name as **CTRLbot**, that exact camel case, always in Audiowide. The
+lockup is `public/brand/cbot_banner_white.png` — one white wordmark, no two-tone split.
+Do not redraw or recolor it. `public/app-assets/ic_ctrlbot.svg` is the mark on its own,
+via `<AppIcon name="ic_ctrlbot">`.
+
+Colors come from `src/design/theme.ts`, which is built on tokens generated from the
+app's `res/values/colors.xml` and `res/color/*.xml`. CTRLbot blue is `#008FD4`; success
+green is `#4EA72E`. If the app doesn't define a color, question whether it belongs on
+screen.
+
+Keep essential text at least 72px from the frame edge — that is what `<Callout>`'s edge
+padding is set to.
 
 ## Copy standards
 
-- Use the app’s visible terminology: **Device**, **Connect**, **Activities**, **Presets**, **Switching**, **Audio**, and **End User Interface**.
-- Write action-led titles: “Test the connection,” not “Connection testing information.”
-- Keep on-screen bullets under roughly 55 characters when possible.
-- Captions may be longer but should usually fit in two lines.
-- Never put real credentials, customer names, public IPs, SSH fingerprints, or proprietary device details in props or captures.
+- Use the app's visible terminology: **Device**, **Connect**, **Activities**,
+  **Presets**, **Switching**, **Audio**, **End User Interface**.
+- Write action-led titles: "Test the connection," not "Connection testing information."
+- Keep a callout title under roughly 40 characters and the body to two lines.
+- Never put real credentials, customer names, public IPs, host fingerprints, or
+  proprietary device details in copy or captures.
 
-## Visual standards
+Check claims against `docs/CTRLbot-IoT-User-Manual.md` and `docs/About_CTRLbot_IoT.md`
+— both synced from the app repo by `npm run sync:tokens`. Product guardrails are in
+[FIRST-USE-WALKTHROUGH.md](FIRST-USE-WALKTHROUGH.md).
 
-- 16:9 training: 1920×1080 at 30fps.
-- Vertical features: 1080×1920 at 30fps.
-- CTRLbot blue: `#008FD4`; success green: `#4EA72E`; alert red: `#FF5A64`.
-- Always write **CTRLbot** with this exact casing and render the name in Audiowide.
-- Use Audiowide for all bold display and UI text; use the body stack only for regular-weight supporting copy.
-- Use the canonical icon in `public/brand/ctrlbot-icon-white.png`; do not redraw or recolor it.
-- Keep essential text at least 68px from 16:9 edges.
-- Animate with frame-derived values only. Do not add CSS transitions, keyframes, or timers.
-- Use restrained springs for entrances; training content should feel confident rather than bouncy.
+## Adding captures
 
-## Adding captures and voiceover
+When replacing or adding screen recordings:
 
-The current compositions use the reviewed media under `public/captures/`. When replacing or adding screen recordings:
-
-- record a clean Android emulator or dedicated demo device;
+- record a clean emulator or dedicated demo device;
 - use only fictional room names and private-range demo IPs;
 - crop system notifications and unrelated personal UI;
-- preserve a 16:9 or device-native master;
-- place the sanitized file under `public/captures/` and load it with Remotion’s `staticFile()` helper;
-- use `OffthreadVideo` for deterministic frame extraction during rendering.
-
-For narration, keep a transcript in the lesson JSON even when audio is present. That keeps captions, review copy, and future localization in one structured source.
+- preserve a device-native master;
+- place the sanitized file under `public/captures/` and load it with `staticFile()`.
 
 ## Review checklist
 
 - [ ] Task matches the current Android build.
 - [ ] No deferred or hidden feature is taught as available.
 - [ ] No secrets or customer-identifying data appear.
-- [ ] Captions match narration and remain legible.
+- [ ] Copy is legible for long enough to read.
 - [ ] Commands and safety guidance are technically correct.
-- [ ] Intro states the outcome within the first 10 seconds.
-- [ ] Every chapter demonstrates or explains one action.
-- [ ] Closing reinforces what the learner can now do.
+- [ ] Every scene demonstrates or explains one action.
+- [ ] Audiowide appears only on headlines and the wordmark.
+- [ ] Annotation corner radii match the controls they frame.
+- [ ] The camera holds still before and after each move.
 - [ ] `npm run check` passes.
 - [ ] Full render has been watched end to end.

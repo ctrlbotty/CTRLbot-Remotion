@@ -1,113 +1,126 @@
-import {Composition, Folder, Still, type CalculateMetadataFunction} from 'remotion';
-import featureShortDefaultsJson from '../props/feature-short.json';
-import firstUseDefaultsJson from '../props/first-use.json';
-import lessonDefaultsJson from '../props/getting-started.json';
-import {FeatureShort, FEATURE_SHORT_DURATION} from './compositions/FeatureShort';
+import {Composition, Folder, Still} from 'remotion';
+import {FirstRun, firstRunDuration} from './compositions/FirstRun';
+import {BrandCard} from './scenes/BrandCard';
+import {BuildRoom} from './scenes/BuildRoom';
+import {ConnectAndTest} from './scenes/ConnectAndTest';
+import {EuiHandoff} from './scenes/EuiHandoff';
+import {CtrlbotIntro} from './scenes/CtrlbotIntro';
+import {DeviceSetup} from './scenes/DeviceSetup';
 import {
-  FirstUseWalkthrough,
-  getFirstUseDuration,
-} from './compositions/FirstUseWalkthrough';
-import {ProductOverview, OVERVIEW_DURATION} from './compositions/Overview';
-import {
-  featureShortSchema,
-  firstUseWalkthroughSchema,
-  overviewSchema,
-  trainingLessonSchema,
-  type FeatureShortProps,
-  type FirstUseWalkthroughProps,
-  type OverviewProps,
-  type TrainingLessonProps,
-} from './compositions/schemas';
-import {getLessonDuration, TrainingLesson} from './compositions/TrainingLesson';
-import {Thumbnail} from './compositions/Thumbnail';
-import {palette, video} from './design/theme';
+  PhoneCaptureProof,
+  PhoneCatalogProof,
+  PhoneConnectionProof,
+  PhoneEuiProof,
+  TabletCaptureProof,
+  TabletCatalogProof,
+  TabletConnectionProof,
+  TabletEuiProof,
+} from './scenes/SurfaceProofs';
 
-const overviewDefaults: OverviewProps = {
-  title: 'Control the room. Not the complexity.',
-  subtitle: 'Configure AV and IoT devices, automate room workflows, and hand off a focused control experience.',
-  accentColor: palette.blue,
-};
-
-const lessonDefaults = lessonDefaultsJson as TrainingLessonProps;
-const featureShortDefaults = featureShortDefaultsJson as FeatureShortProps;
-const firstUseDefaults = firstUseDefaultsJson as Omit<FirstUseWalkthroughProps, 'device'>;
-
-const calculateLessonMetadata: CalculateMetadataFunction<TrainingLessonProps> = ({props}) => ({
-  durationInFrames: getLessonDuration(props),
-});
-
-const calculateFirstUseMetadata: CalculateMetadataFunction<FirstUseWalkthroughProps> = ({props}) => ({
-  durationInFrames: getFirstUseDuration(props),
-});
+// Three layers, deliberately:
+//
+//   First-Run        the deliverable
+//   Scenes           each registered on its own, so it can be retimed and keyframed in
+//                    Studio in isolation — and double-clicked into from the cut
+//   Surface-Proofs   an app surface at natural dp size with nothing on top, for checking
+//                    fidelity against a screenshot before any of it is animated
 
 export const RemotionRoot = () => (
   <>
-    <Folder name="CTRLbot-First-Use">
+    <Folder name="First-Run">
       <Composition
-        id="CTRLbot-First-Use-Phone"
-        component={FirstUseWalkthrough}
-        schema={firstUseWalkthroughSchema}
-        defaultProps={{...firstUseDefaults, device: 'phone'}}
-        calculateMetadata={calculateFirstUseMetadata}
-        durationInFrames={getFirstUseDuration({...firstUseDefaults, device: 'phone'})}
-        fps={video.fps}
-        width={video.verticalWidth}
-        height={video.verticalHeight}
+        id="First-Run-Phone"
+        component={FirstRun}
+        defaultProps={{device: 'phone' as const}}
+        durationInFrames={firstRunDuration()}
+        fps={30}
+        width={1080}
+        height={1920}
       />
       <Composition
-        id="CTRLbot-First-Use-Tablet"
-        component={FirstUseWalkthrough}
-        schema={firstUseWalkthroughSchema}
-        defaultProps={{...firstUseDefaults, device: 'tablet'}}
-        calculateMetadata={calculateFirstUseMetadata}
-        durationInFrames={getFirstUseDuration({...firstUseDefaults, device: 'tablet'})}
-        fps={video.fps}
-        width={video.width}
-        height={video.height}
+        id="First-Run-Tablet"
+        component={FirstRun}
+        defaultProps={{device: 'tablet' as const}}
+        durationInFrames={firstRunDuration()}
+        fps={30}
+        width={1920}
+        height={1080}
       />
     </Folder>
-    <Folder name="CTRLbot-Videos">
+
+    <Folder name="Scenes-Phone">
       <Composition
-        id="CTRLbot-Overview"
-        component={ProductOverview}
-        schema={overviewSchema}
-        defaultProps={overviewDefaults}
-        durationInFrames={OVERVIEW_DURATION}
-        fps={video.fps}
-        width={video.width}
-        height={video.height}
+        id="Scene-Open"
+        component={BrandCard}
+        defaultProps={{
+          device: 'phone' as const,
+          eyebrow: 'Quick start',
+          headline: 'Program your first room',
+          subhead:
+            'Start to finish, from the device in your hand. No rack, no laptop, no programming.',
+          kicker: 'Phone · 2 minutes',
+        }}
+        durationInFrames={300}
+        fps={30}
+        width={1080}
+        height={1920}
       />
       <Composition
-        id="CTRLbot-Training-Lesson"
-        component={TrainingLesson}
-        schema={trainingLessonSchema}
-        defaultProps={lessonDefaults}
-        calculateMetadata={calculateLessonMetadata}
-        durationInFrames={getLessonDuration(lessonDefaults)}
-        fps={video.fps}
-        width={video.width}
-        height={video.height}
+        id="Scene-CTRLbot"
+        component={CtrlbotIntro}
+        defaultProps={{device: 'phone' as const}}
+        durationInFrames={440}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="Scene-Device"
+        component={DeviceSetup}
+        defaultProps={{device: 'phone' as const}}
+        durationInFrames={620}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="Scene-Connect-And-Test"
+        component={ConnectAndTest}
+        defaultProps={{device: 'phone' as const}}
+        durationInFrames={600}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="Scene-Build-Room"
+        component={BuildRoom}
+        defaultProps={{device: 'phone' as const}}
+        durationInFrames={540}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="Scene-EUI-Handoff"
+        component={EuiHandoff}
+        defaultProps={{device: 'phone' as const}}
+        durationInFrames={780}
+        fps={30}
+        width={1080}
+        height={1920}
       />
     </Folder>
-    <Folder name="CTRLbot-Social">
-      <Composition
-        id="CTRLbot-Feature-Short"
-        component={FeatureShort}
-        schema={featureShortSchema}
-        defaultProps={featureShortDefaults}
-        durationInFrames={FEATURE_SHORT_DURATION}
-        fps={video.fps}
-        width={video.verticalWidth}
-        height={video.verticalHeight}
-      />
-    </Folder>
-    <Folder name="CTRLbot-Stills">
-      <Still
-        id="CTRLbot-Thumbnail"
-        component={Thumbnail}
-        width={video.width}
-        height={video.height}
-      />
+
+    <Folder name="Surface-Proofs">
+      <Still id="Proof-Phone-EUI" component={PhoneEuiProof} width={360} height={780} />
+      <Still id="Proof-Tablet-EUI" component={TabletEuiProof} width={1280} height={800} />
+      <Still id="Proof-Phone-Catalog" component={PhoneCatalogProof} width={360} height={780} />
+      <Still id="Proof-Tablet-Catalog" component={TabletCatalogProof} width={1280} height={800} />
+      <Still id="Proof-Phone-Connection" component={PhoneConnectionProof} width={360} height={780} />
+      <Still id="Proof-Tablet-Connection" component={TabletConnectionProof} width={1280} height={800} />
+      <Still id="Proof-Phone-Capture" component={PhoneCaptureProof} width={360} height={780} />
+      <Still id="Proof-Tablet-Capture" component={TabletCaptureProof} width={1280} height={800} />
     </Folder>
   </>
 );

@@ -1,17 +1,49 @@
-import {cancelRender, continueRender, delayRender, staticFile} from 'remotion';
+// Fonts, loaded so renders block until the faces are ready.
+//
+// Montserrat and Audiowide are copied out of the app's res/font by
+// `npm run sync:tokens`, so the video uses the exact files the app ships rather
+// than a web lookalike. Space Mono has no app equivalent and comes from Google
+// Fonts, matching ctrlbot.io.
+//
+// Montserrat carries all readable copy. Audiowide is headlines and the wordmark.
+// Space Mono is small uppercase labels.
 
-if (typeof document !== 'undefined' && typeof FontFace !== 'undefined') {
-  const handle = delayRender('Loading the CTRLbot Audiowide brand font');
-  const audiowide = new FontFace(
-    'Audiowide',
-    `url(${staticFile('fonts/Audiowide-Regular.ttf')})`,
-    {style: 'normal', weight: '100 900'},
-  );
+import {loadFont} from '@remotion/fonts';
+import {loadFont as loadSpaceMono} from '@remotion/google-fonts/SpaceMono';
+import {staticFile} from 'remotion';
 
-  audiowide.load()
-    .then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      continueRender(handle);
-    })
-    .catch((error) => cancelRender(error));
-}
+loadSpaceMono('normal', {weights: ['400', '700'], subsets: ['latin']});
+
+export const fontsReady = Promise.all([
+  loadFont({
+    family: 'Montserrat',
+    url: staticFile('fonts/Montserrat-Thin.ttf'),
+    weight: '100',
+  }),
+  loadFont({
+    family: 'Montserrat',
+    url: staticFile('fonts/Montserrat-Light.ttf'),
+    weight: '300',
+  }),
+  loadFont({
+    family: 'Montserrat',
+    url: staticFile('fonts/Montserrat-Regular.ttf'),
+    weight: '400',
+  }),
+  loadFont({
+    family: 'Montserrat',
+    url: staticFile('fonts/Montserrat-Bold.ttf'),
+    weight: '700',
+  }),
+  loadFont({
+    family: 'Montserrat',
+    url: staticFile('fonts/Montserrat-Italic.ttf'),
+    weight: '400',
+    style: 'italic',
+  }),
+  loadFont({
+    family: 'Audiowide',
+    url: staticFile('fonts/Audiowide-Regular.ttf'),
+    weight: '400',
+  }),
+]);

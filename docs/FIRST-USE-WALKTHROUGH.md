@@ -40,18 +40,37 @@ The Markdown manual and the 20-page illustrated PDF agree on the first-use path.
 - No passwords, customer identifiers, public IP addresses, host fingerprints, or production credentials appear.
 - Captured walkthrough audio remains removed; no unapproved narration or music is introduced.
 
-## Render inputs and outputs
+## Status
 
-Shared copy and timing live in `props/first-use.json`. Device-specific media is selected from `src/media/captures.ts` by `CTRLbot-First-Use-Phone` and `CTRLbot-First-Use-Tablet`.
+The editorial content above — approved sources, storyboard, and guardrails — is
+current and still governs this material.
 
-```powershell
-npm run render:first-use:phone
-npm run render:first-use:tablet
-# or both
-npm run render:first-use
-```
+The v1.0 compositions that implemented it are **not**, and neither is the six-step
+storyboard above. Both were replaced when the project was rebuilt around the camera
+architecture.
 
-Expected files:
+## What shipped instead
 
-- `out/ctrlbot-first-use-phone-v1.0.mp4`
-- `out/ctrlbot-first-use-tablet-v1.0.mp4`
+The cut is now seven scenes, in `src/compositions/FirstRun.tsx`:
+
+| # | Scene | Source |
+|---|---|---|
+| 1 | Open — quick start framing | Brand |
+| 2 | CTRLbot — the nav and the in-app FAQ | Live |
+| 3 | Device — catalog, scroll, add | Live |
+| 4 | Connect and test | Live |
+| 5 | Build the room — presets, switching, audio | Captures |
+| 6 | EUI handoff — route, volume, press-and-hold exit | Live |
+| 7 | Close | Brand |
+
+Two deliberate departures from the storyboard:
+
+**The privacy step is gone.** The privacy notice is shown before this video plays, so
+repeating it would spend six seconds telling the viewer something they had just read.
+The guardrails above still apply to any copy that touches the subject.
+
+**CTRLbot AI replaces it.** What an integrator needs first is where things live and
+where to get help, not a second look at a notice they have already dismissed.
+
+The editorial guardrails, approved sources and product claims in the sections above
+remain in force. See [ROADMAP.md](ROADMAP.md) for outstanding work.

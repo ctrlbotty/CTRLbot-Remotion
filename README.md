@@ -1,105 +1,122 @@
 # CTRLbot Remotion
 
-A reusable motion-design and training-video system for the native Android app in `../CTRLbot-IoT`.
+Motion graphics and training video for CTRLbot IoT, the native Android app in
+[`../CTRLbot-IoT`](../CTRLbot-IoT).
 
-The repository ships with six ready-to-preview compositions. The v1.0 first-use pair is the current release deliverable:
-
-| Composition | Format | Purpose |
-|---|---:|---|
-| `CTRLbot-First-Use-Phone` | 1080×1920, 36.5s | Concise first-use walkthrough using the current phone portrait UI |
-| `CTRLbot-First-Use-Tablet` | 1920×1080, 36.5s | Matching first-use walkthrough using the current tablet landscape UI |
-| `CTRLbot-Overview` | 1920×1080, ~52s | Capture-backed product story covering drivers, connections, presets, switching, and EUI |
-| `CTRLbot-Training-Lesson` | 1920×1080, variable | JSON-driven training lesson with optional phone/tablet capture per chapter |
-| `CTRLbot-Feature-Short` | 1080×1920, 12s | Vertical product/social teaser using the current phone EUI |
-| `CTRLbot-Thumbnail` | 1920×1080 still | Training-series cover using the current tablet EUI |
-
-Motion graphics are built with React, CSS/SVG, `useCurrentFrame()`, `interpolate()`, and `spring()`. Product surfaces use sanitized v1.0 phone/tablet capture loaded through `staticFile()`; the code does not maintain a parallel mock implementation of the app UI.
+The app's design tokens, fonts and iconography are pulled straight out of its Android
+resources, and its key screens are rebuilt as live React — so the camera can push into a
+single control, change UI state mid-shot, and hold on the result.
 
 ## Start here
 
-Requirements: Node.js 18 or newer. Node 20 LTS is recommended.
+Requires Node.js 20 LTS or newer.
 
-```powershell
+```bash
 npm install
+npm run sync:tokens
 npm run dev
 ```
 
-Remotion Studio opens with every composition grouped in the sidebar. Select `CTRLbot-Training-Lesson` and use the Props panel to edit lesson content interactively.
+`sync:tokens` reads `../CTRLbot-IoT/app/src/main/res`. Point at a different checkout with
+`npm run sync:tokens -- ../path/to/CTRLbot-IoT`.
 
-## Validate and render
+## Compositions
 
-```powershell
-npm run check
-npm run render:first-use
-npm run render:overview
-npm run render:lesson
-npm run render:short
-npm run render:thumbnail
+| Composition | Format | Status |
+|---|---:|---|
+| `First-Run-Phone` | 1080×1920, 115s | Complete, under review |
+| `First-Run-Tablet` | 1920×1080, 115s | **Not built** — scenes render but are phone-framed |
+
+Plus one `Scene-*` composition per scene, for retiming and keyframing in isolation, and
+one `Proof-*` still per app surface, for checking fidelity against a screenshot.
+
+The first run is seven scenes: open, CTRLbot AI, Device, Connect and test, Build the
+room, EUI handoff, close. It is silent and caption-led — understandable with the sound
+off, because that is how it plays embedded in docs and on social.
+
+## Render
+
+```bash
+npm run render -- First-Run-Phone out/ctrlbot-first-run-phone.mp4 --codec=h264 --crf=20 --muted
 ```
 
-Outputs are written to `out/`. The first-use pair renders to:
-
-- `out/ctrlbot-first-use-phone-v1.0.mp4`
-- `out/ctrlbot-first-use-tablet-v1.0.mp4`
-
-Render every registered family with:
-
-```powershell
-npm run render:all
+```bash
+npm run still -- Scene-Device out/frame.png --frame=520
 ```
 
-## Refresh the phone and tablet captures
+Outputs go to `out/`, which is not tracked.
 
-The checked-in media is a curated, muted subset of the July 29, 2026 walkthrough package. To rebuild it from the sibling capture folder:
-
-```powershell
-npm run ingest:captures -- "../CTRLbot Mirror"
-```
-
-The ingest script copies selected screenshots, trims short H.264 clips from both walkthroughs, removes their audio, and writes `public/captures/manifest.json`. See [Capture Ingest Review](docs/CAPTURE-INGEST.md) for the observed UI, selection decisions, and publication caveats.
-
-## Create another training lesson
-
-1. Duplicate `props/getting-started.json`.
-2. Update the title, objectives, chapter copy, durations, and callouts.
-3. Preview the file without changing code:
-
-```powershell
-npx remotion studio src/index.ts --props=props/your-lesson.json
-```
-
-4. Render it:
-
-```powershell
-npx remotion render src/index.ts CTRLbot-Training-Lesson out/your-lesson.mp4 --props=props/your-lesson.json
-```
-
-Chapter kinds are `concept`, `drivers`, `connection`, `presets`, `switching`, and `eui`. Each kind selects a matching animated product surface. The total duration is calculated from chapter durations automatically.
-
-See [First-Use Walkthrough](docs/FIRST-USE-WALKTHROUGH.md) for the approved source mapping and storyboard, [Authoring Guide](docs/AUTHORING.md) for the content schema and media workflow, [Capture Ingest Review](docs/CAPTURE-INGEST.md) for this capture set, [Content Roadmap](docs/CONTENT-ROADMAP.md) for the proposed training series, [UI Fidelity and Content Repurposing](docs/UI-FIDELITY-AND-CONTENT-REPURPOSING.md) for the reference-material and multi-channel strategy, and [Remotion Research](docs/REMOTION-RESEARCH.md) for the architecture decisions.
-
-## Repository map
+## How it fits together
 
 ```text
 src/
-  components/       Canonical CTRLbot branding, capture presentation, scene chrome, icons
-  compositions/     First-use variants, overview, lesson, vertical short, thumbnail
-  design/           Color, type, timing, and animation tokens
-props/               Renderable lesson/product inputs
-public/              Optional captures, audio, images, and fonts
-scripts/             Batch render entry points
-docs/                Research, authoring, and content strategy
+  design/
+    tokens.generated.ts   colors, color state lists, dimens, type scale, shapes — from the app
+    theme.ts              curated, video-facing decisions built on those tokens
+    motion.ts             the house easing curves
+  app-ui/
+    viewports.ts          the one definition of how big a surface is
+    PhoneEui / TabletEui  the End User Interface, portrait and landscape
+    DriverCatalog         Device Drivers, both form factors
+    ConnectionPanel       Configure Connection, both form factors
+    CtrlbotAi             the in-app FAQ and troubleshooter
+    PhoneNavMenu          the setup nav sheet, expanded and collapsed
+    CapturedScreen        a screenshot cropped to its screen and scaled to viewport size
+    AppIcon               the app's own icons, tintable
+  camera/
+    Camera.tsx            a camera over a fixed-size content plane
+    Annotations.tsx       Spotlight, FocusRing, TapIndicator, Callout
+  scenes/                 one file per scene, plus shared.ts for lengths
+  compositions/
+    FirstRun.tsx          the cut
 ```
+
+The important split is between `app-ui/` and `camera/`. An app surface renders at its
+natural dp size and knows nothing about video; the camera decides what the frame is
+looking at. That separation is what makes a push-in onto one control possible, and it is
+why every region is expressed in the same units as the Android layout.
+
+## Design rules
+
+**Three faces, following [ctrlbot.io](../../2%20-%20CTRLbot.io/ctrlbot-io-site/index.html).**
+Audiowide for headlines and the `CTRLbot` wordmark only; Montserrat (the app's own face)
+for all readable copy; Space Mono for small uppercase eyebrows. Audiowide is a texture —
+in motion graphics the text carries the message, not the font.
+
+**Colors come from the app.** `res/values/colors.xml` and `res/color/*.xml` are the
+palette. `src/design/theme.ts` maps them to semantic names and adds only the display type
+ramp that video needs and a phone UI does not.
+
+**Framing on portrait is width-bound.** In a 1080×1920 frame you cannot zoom far on a
+full-width portrait UI without cropping it. Emphasis comes from `<Spotlight>` and
+`<FocusRing>`; the camera makes modest, composed moves.
+
+## Agent skills
+
+The official Remotion skills are installed in `.agents/skills` and symlinked into
+`.claude/skills`. `remotion-markup` and `remotion-interactivity` shape how code here is
+written. Reinstall with `npx skills add remotion-dev/skills` (pinned by `skills-lock.json`).
+
+## Where to pick up
+
+[docs/ROADMAP.md](docs/ROADMAP.md) has the outstanding work for the phone cut and the
+full plan for the tablet cut, with the known issues and the gotchas that have already
+cost time.
 
 ## Product accuracy
 
-Before publishing a lesson, compare the copy and UI flow with `../CTRLbot-IoT/AGENTS.md`, current Android resources, and a current build of the app. In particular:
+Check copy against [`../CTRLbot-IoT/AGENTS.md`](../CTRLbot-IoT/AGENTS.md), the Android
+resources, and a current build before publishing. EndPoint switching is deferred and
+hidden; power presets use discrete Power On and Power Off commands; the EUI exits through
+a two-second press-and-hold in the top-left; no credentials or customer identifiers may
+appear.
 
-- EndPoint switching is currently deferred and hidden; do not train users to select it.
-- Power presets use discrete Power On and Power Off commands; toggle-only devices do not join those system presets.
-- Credentials must never appear in captures or JSON props.
-- The EUI exits through a two-second press-and-hold in the top-left area.
+Reference material in `docs/` — the user manual and product overview — is synced from the
+app repo by `npm run sync:tokens`, so it cannot drift.
 
 ## Licensing
 
-Remotion uses a source-available license with free eligibility for individuals and for-profit organizations up to three people, plus non-profits and evaluation. Larger for-profit organizations need a company license. Confirm the current terms before commercial production: [Remotion License](https://github.com/remotion-dev/remotion/blob/main/LICENSE.md).
+Remotion is source-available, free for individuals and for-profit organizations up to
+three people, plus non-profits and evaluation. Larger for-profit organizations need a
+company license. Confirm before commercial production:
+[Remotion License](https://github.com/remotion-dev/remotion/blob/main/LICENSE.md).
