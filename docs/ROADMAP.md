@@ -1,6 +1,6 @@
 # Roadmap
 
-State as of 2026-07-30. Read [AUTHORING.md](AUTHORING.md) first — it is the how; this is
+State as of 2026-07-31. Read [AUTHORING.md](AUTHORING.md) first — it is the how; this is
 the what and the why.
 
 ---
@@ -11,14 +11,26 @@ the what and the why.
 tablet surfaces, capture cropping, three-face type system, and phone/tablet scene
 registrations. `npm run check` passes.
 
-**`First-Run-Phone`: complete at 125.33s; Review 04 is approved for now.** Preserve it as
-the editorial reference while building the tablet cut. Optional phone polish is deferred,
-not active work.
+**`First-Run-Phone`: complete at 120s; Review 13 is the current file.** Every line of
+copy was reviewed against `CTRLbot-IoT-User-Manual.md` on 2026-07-31 and is now locked —
+the full approved script is tabled in [TABLET-HANDOFF.md](TABLET-HANDOFF.md). Preserve
+this cut as the editorial reference while building the tablet. Optional phone polish is
+deferred, not active work.
 
-**`First-Run-Tablet`: renderable baseline, not a review draft.** Full-cut stills now load
-through every scene, the shared XML-derived tablet rail exists, and the missing tablet
-Switching capture mapping is fixed. Camera paths, CTRLbot, and Connect still need real
-landscape work.
+**`First-Run-Tablet`: built out and renderable end to end at 1920×1200; Review 08 is
+current.** Every scene has landscape surfaces, landscape camera paths and the locked copy.
+`CtrlbotAi` and `ConnectionPanel` join `DriverCatalog` in laying out beside the shared
+tablet rail, the Device menu beat targets the rail rather than phone coordinates, and the
+EUI shot list is authored for landscape.
+
+The frame is **16:10, not 16:9** — Android tablets are 16:10 and the app surface is
+1280×800, so 1920×1200 is exactly 1.5× the viewport and a full-frame shot fills the frame
+edge to edge. At 1080 it left a black bar down each side.
+
+One thing needs checking rather than deciding: there is **no tablet capture of
+Activities → Switching**, so that panel is a live rebuild from the manual's landscape
+description. Verify it against a real build before publishing — see the top of
+[TABLET-HANDOFF.md](TABLET-HANDOFF.md).
 
 The next-agent brief is [TABLET-HANDOFF.md](TABLET-HANDOFF.md). It records the current
 Android sources, scene-by-scene gaps, exact full-cut frame map, and recommended build
@@ -29,7 +41,7 @@ order.
 ## Phase 1 — phone cut
 
 Paused by product-owner direction. The current review file is
-`out/first-run-phone-review-04.mp4`; `out/` is ignored and reproducible. Do not change the
+`out/first-run-phone-review-13.mp4`; `out/` is ignored and reproducible. Do not change the
 phone cut while building the tablet unless a shared fix is necessary and the phone full
 cut is re-verified.
 
@@ -37,14 +49,11 @@ cut is re-verified.
 
 ## Phase 2 — tablet cut
 
-Start with [TABLET-HANDOFF.md](TABLET-HANDOFF.md), then work in batches of two or three
-changes. The high-level order is:
+Built. `out/first-run-tablet-review-08.mp4`. [TABLET-HANDOFF.md](TABLET-HANDOFF.md) records
+what each scene does, the landscape composition rules that fell out of building it, the
+missing Switching capture, and the judgement calls left open.
 
-1. Build the tablet CTRLbot surface from the curated WebView captures and shared rail.
-2. Fit Connect into the rail's content frame and retarget its camera/annotations.
-3. Recompose Device and the three Build Room capture beats for right-side copy.
-4. Re-author EUI camera paths for landscape while preserving the phone-approved story.
-5. Verify settled moments in `First-Run-Tablet`, then watch the complete encoded cut.
+Copy was never on this list. It is locked, shared, and inherited through `device`.
 
 All seven tablet scenes are registered under `Scenes-Tablet`; use them for authoring, but
 report fixes only after rendering the corresponding full-cut frame.
@@ -74,7 +83,19 @@ frame on their own centre and let the clamp slide the frame back inside.
 **Menus are full-width.** `closeShotWidth` crops their icons; menu beats use `0.94`.
 
 **Copy goes opposite the subject.** The nav sheet is at the bottom, so its callouts go to
-the top.
+the top. On landscape this is load-bearing rather than tidy: the EUI's audio strip runs the
+full width along the bottom, exactly where the copy card sits, so that beat takes `top` on
+both form factors.
+
+**`closeShotWidth('tablet')` is for edges, not for centred content.** At 0.52 the camera is
+at ~2.4x and `clampToContent` will not let the frame slide far enough to move a centred
+control out from under the copy card — the content plane runs out first. Use
+`wideShotWidth` (0.86) on anything the surface centres, and keep 0.52 for controls hard
+against an edge, where the clamp works *for* you.
+
+**A card pinned top-to-bottom owns a third of the frame.** The landscape callout used to be
+640 wide and full height; it is now 580 and hugs its content. Everything above it is free,
+which is where the landscape surfaces put their toolbars and action rows.
 
 **`TransitionSeries` matches children by component identity.** A `<Cut />` helper wrapping
 `<TransitionSeries.Transition>` is rejected at render time.
@@ -82,9 +103,28 @@ the top.
 **Annotation `radius` must match the control.** The EUI's display panels are square; a
 rounded ring over one disagrees at every corner. Default is `0`.
 
+**Where the app's own state change tells the story, do not annotate it.** Many-to-One
+opens cold — nothing routed, display grey — and a source is then selected. The card
+turning blue and the display filling happen in the same frame, and a ring or a spotlight
+over that only competes with the thing it is pointing at. Hold both in one shot and let
+the interface do it. Annotate where the viewer would otherwise not know *where* to look;
+not where the screen has already told them.
+
 **Composition listing is not render verification.** `npm run check` can pass while a
 device-specific capture path fails later in the cut. Render a settled full-cut frame in
 every scene after changing capture mappings or form-factor branches.
+
+**Look at a capture before you map it.** `captures/tablet/switching-preview.png` and
+`switching.mp4` are both Connect → Test Device Drivers, not Activities → Switching. The
+name got one mapped into the Activities scene, and the tablet cut doubled back to a
+Connect screen in the middle of the Activities beat. The filename is not the screen.
+
+**A matched-aspect frame cannot be pushed into without cropping.** 1920x1200 against a
+1280x800 surface means a full-frame shot fits exactly — so any zoom past 1.0 crops all
+four edges at once. Build Room's 0.9 push took the setup rail off the left, the tab strip
+off the top, and the run/copy/delete icons off the right of every preset row. Where a
+scene is about chrome at the edges of a screen, lock the camera off and let the
+annotations carry the motion.
 
 **The tablet rail consumes real app width.** Current `_setup_main.xml` gives it 200dp;
 `frame_setup` starts after the rail. A 1280dp-wide setup surface cannot simply be placed

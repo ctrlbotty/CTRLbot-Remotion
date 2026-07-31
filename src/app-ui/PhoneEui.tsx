@@ -310,20 +310,43 @@ const SourceCard = ({
   </div>
 );
 
+/**
+ * How far the source strip is scrolled, in dp, to bring `index` into view.
+ *
+ * The strip holds about two and a half cards, so selecting anything past the second one
+ * highlights a card nobody can see. This is the minimum scroll that reveals the card,
+ * plus a peek of the next one — the same thing a real scroll view does when you tab onto
+ * an off-screen child. Exported so a scene can interpolate between two positions rather
+ * than jumping.
+ */
+export const phoneInputScrollFor = (index: number, inputCount: number) => {
+  const pitch = CARD_WIDTH + CARD_MARGIN * 2;
+  const cardRight = 8 + CARD_MARGIN + index * pitch + CARD_WIDTH;
+  const contentWidth = 8 + inputCount * pitch + 8;
+  const peek = 30;
+  return Math.max(
+    0,
+    Math.min(cardRight + peek - PHONE_VIEWPORT.width, contentWidth - PHONE_VIEWPORT.width),
+  );
+};
+
 export const PhoneEui = ({
   outputs,
   inputs,
   selectedInput,
   volume,
   speakerMuted = false,
+  inputScroll = 0,
 }: {
   outputs: EuiOutput[];
   inputs: EuiInput[];
-  /** Index into `inputs`. */
-  selectedInput: number;
+  /** Index into `inputs`, or null for the cold state — nothing selected yet. */
+  selectedInput: number | null;
   /** 0..1 */
   volume: number;
   speakerMuted?: boolean;
+  /** Source-strip scroll in dp. See phoneInputScrollFor(). */
+  inputScroll?: number;
 }) => (
   // Column layout mirrors av_switch_nxo.xml: the grid takes its natural height, the
   // ALL row absorbs the leftover and centres in it, the source strip and volume bar
@@ -371,7 +394,9 @@ export const PhoneEui = ({
         <OutputCell
           key={output.label}
           output={output}
-          selectedSource={inputs[selectedInput]?.label ?? null}
+          selectedSource={
+            selectedInput === null ? null : (inputs[selectedInput]?.label ?? null)
+          }
         />
       ))}
     </div>
@@ -405,7 +430,8 @@ export const PhoneEui = ({
       />
     </div>
 
-    {/* Source strip — 2.5 cards visible, the third half-cut as the scroll cue. */}
+    {/* Source strip — 2.5 cards visible, the third half-cut as the scroll cue. The inner
+        row slides so a selected card past the second one is actually on screen. */}
     <div
       style={{
         height: STRIP_HEIGHT,
@@ -418,9 +444,18 @@ export const PhoneEui = ({
         overflow: 'hidden',
       }}
     >
-      {inputs.map((input, index) => (
-        <SourceCard key={input.label} input={input} selected={index === selectedInput} />
-      ))}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          flex: '0 0 auto',
+          translate: `${-inputScroll}px 0px`,
+        }}
+      >
+        {inputs.map((input, index) => (
+          <SourceCard key={input.label} input={input} selected={index === selectedInput} />
+        ))}
+      </div>
     </div>
 
     {/* Volume bar */}
@@ -488,13 +523,15 @@ export const PhoneEuiManyToOne = ({
   outputLabel = 'Display 1',
 }: {
   inputs: EuiInput[];
-  selectedInput: number;
+  /** Index into `inputs`, or null for the cold state — nothing routed yet. */
+  selectedInput: number | null;
   /** 0..1 */
   volume: number;
   speakerMuted?: boolean;
   outputLabel?: string;
 }) => {
-  const selectedSource = inputs[selectedInput];
+  const selectedSource = selectedInput === null ? undefined : inputs[selectedInput];
+  const routed = selectedSource !== undefined;
 
   return (
     <div
@@ -558,24 +595,32 @@ export const PhoneEuiManyToOne = ({
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: 20,
-                backgroundImage: `url(${staticFile('app-assets/disp_lg_blue.png')})`,
+                // Grey and empty until something is routed to it — the same pair of
+                // states the matrix output cells use.
+                backgroundImage: `url(${staticFile(
+                  routed ? 'app-assets/disp_lg_blue.png' : 'app-assets/disp_lg_grey.png',
+                )})`,
                 backgroundSize: '100% 100%',
                 backgroundRepeat: 'no-repeat',
               }}
             >
-              <AppIcon name="ic_hdmi_icon" size={60} tint={appColors.white} />
-              <span
-                style={{
-                  fontFamily: 'Montserrat, sans-serif',
-                  fontWeight: 400,
-                  fontSize: appTextStyles.TitleSecondary.sizeSp,
-                  letterSpacing: 0.4,
-                  textTransform: 'uppercase',
-                  color: appColors.white,
-                }}
-              >
-                {selectedSource?.label}
-              </span>
+              {routed ? (
+                <>
+                  <AppIcon name="ic_hdmi_icon" size={60} tint={appColors.white} />
+                  <span
+                    style={{
+                      fontFamily: 'Montserrat, sans-serif',
+                      fontWeight: 400,
+                      fontSize: appTextStyles.TitleSecondary.sizeSp,
+                      letterSpacing: 0.4,
+                      textTransform: 'uppercase',
+                      color: appColors.white,
+                    }}
+                  >
+                    {selectedSource.label}
+                  </span>
+                </>
+              ) : null}
             </div>
             <div
               style={{

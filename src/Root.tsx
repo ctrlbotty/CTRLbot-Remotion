@@ -1,6 +1,6 @@
 import {Composition, Folder, Still} from 'remotion';
 import {FirstRun, firstRunDuration} from './compositions/FirstRun';
-import {BrandCard} from './scenes/BrandCard';
+import {BrandCard, BrandBackground} from './scenes/BrandCard';
 import {BuildRoom} from './scenes/BuildRoom';
 import {ConnectAndTest} from './scenes/ConnectAndTest';
 import {EuiHandoff} from './scenes/EuiHandoff';
@@ -11,10 +11,12 @@ import {
   PhoneCaptureProof,
   PhoneCatalogProof,
   PhoneConnectionProof,
+  PhoneCtrlbotProof,
   PhoneEuiProof,
   TabletCaptureProof,
   TabletCatalogProof,
   TabletConnectionProof,
+  TabletCtrlbotProof,
   TabletEuiProof,
 } from './scenes/SurfaceProofs';
 
@@ -45,7 +47,7 @@ export const RemotionRoot = () => (
         durationInFrames={firstRunDuration()}
         fps={30}
         width={1920}
-        height={1080}
+        height={1200}
       />
     </Folder>
 
@@ -56,8 +58,8 @@ export const RemotionRoot = () => (
         defaultProps={{
           device: 'phone',
           eyebrow: 'Quick start',
-          headline: 'Program your first room',
-          subhead: 'No software, no laptop; program it with your thumbs.',
+          headline: 'Control your first room',
+          subhead: 'No processor, no laptop, no software. So easy. Program it with your thumbs.',
           kicker: 'Phone · 2 minutes',
         }}
         durationInFrames={SCENE_FRAMES.open}
@@ -116,8 +118,7 @@ export const RemotionRoot = () => (
         defaultProps={{
           device: 'phone',
           headline: 'Your room is ready',
-          subhead:
-            'Configure and operate a compatible room from one app, with the setup kept out of the way.',
+          subhead: 'Configure it, test it, hand it over — with the setup tucked out of the way.',
           kicker: 'ctrlbot.io',
         }}
         durationInFrames={SCENE_FRAMES.close}
@@ -134,14 +135,14 @@ export const RemotionRoot = () => (
         defaultProps={{
           device: 'tablet',
           eyebrow: 'Quick start',
-          headline: 'Program your first room',
-          subhead: 'No software, no laptop; program it with your thumbs.',
+          headline: 'Control your first room',
+          subhead: 'No processor, no laptop, no software. So easy. Program it with your thumbs.',
           kicker: 'Tablet · 2 minutes',
         }}
         durationInFrames={SCENE_FRAMES.open}
         fps={30}
         width={1920}
-        height={1080}
+        height={1200}
       />
       <Composition
         id="Scene-Tablet-CTRLbot"
@@ -150,7 +151,7 @@ export const RemotionRoot = () => (
         durationInFrames={SCENE_FRAMES.ctrlbot}
         fps={30}
         width={1920}
-        height={1080}
+        height={1200}
       />
       <Composition
         id="Scene-Tablet-Device"
@@ -159,7 +160,7 @@ export const RemotionRoot = () => (
         durationInFrames={SCENE_FRAMES.device}
         fps={30}
         width={1920}
-        height={1080}
+        height={1200}
       />
       <Composition
         id="Scene-Tablet-Connect-And-Test"
@@ -168,7 +169,7 @@ export const RemotionRoot = () => (
         durationInFrames={SCENE_FRAMES.connect}
         fps={30}
         width={1920}
-        height={1080}
+        height={1200}
       />
       <Composition
         id="Scene-Tablet-Build-Room"
@@ -177,7 +178,7 @@ export const RemotionRoot = () => (
         durationInFrames={SCENE_FRAMES.buildRoom}
         fps={30}
         width={1920}
-        height={1080}
+        height={1200}
       />
       <Composition
         id="Scene-Tablet-EUI-Handoff"
@@ -186,7 +187,7 @@ export const RemotionRoot = () => (
         durationInFrames={SCENE_FRAMES.euiHandoff}
         fps={30}
         width={1920}
-        height={1080}
+        height={1200}
       />
       <Composition
         id="Scene-Tablet-Close"
@@ -194,14 +195,13 @@ export const RemotionRoot = () => (
         defaultProps={{
           device: 'tablet',
           headline: 'Your room is ready',
-          subhead:
-            'Configure and operate a compatible room from one app, with the setup kept out of the way.',
+          subhead: 'Configure it, test it, hand it over — with the setup tucked out of the way.',
           kicker: 'ctrlbot.io',
         }}
         durationInFrames={SCENE_FRAMES.close}
         fps={30}
         width={1920}
-        height={1080}
+        height={1200}
       />
     </Folder>
 
@@ -214,6 +214,10 @@ export const RemotionRoot = () => (
       <Still id="Proof-Tablet-Connection" component={TabletConnectionProof} width={1280} height={800} />
       <Still id="Proof-Phone-Capture" component={PhoneCaptureProof} width={360} height={780} />
       <Still id="Proof-Tablet-Capture" component={TabletCaptureProof} width={1280} height={800} />
+      <Still id="Proof-Phone-CTRLbot" component={PhoneCtrlbotProof} width={360} height={780} />
+      <Still id="Proof-Tablet-CTRLbot" component={TabletCtrlbotProof} width={1280} height={800} />
+      <Still id="Brand-Background-Phone" component={BrandBackground} width={1080} height={1920} />
+      <Still id="Brand-Background-Landscape" component={BrandBackground} width={1920} height={1080} />
     </Folder>
   </>
 );

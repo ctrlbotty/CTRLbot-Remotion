@@ -16,9 +16,9 @@ phone portrait and tablet landscape layouts, with form-factor-specific navigatio
 
 - Audience: AV installer or integrator opening CTRLbot IoT for the first time.
 - Outcome: understand the shortest safe path from first launch to a usable End User Interface.
-- Runtime: 125.33 seconds for the current phone cut; the tablet cut starts from the same scene lengths.
+- Runtime: exactly 120 seconds for both cuts; phone and tablet share the same scene lengths.
 - Delivery: silent, caption-led MP4 that remains understandable without narration.
-- Variants: 1080×1920 phone portrait and 1920×1080 tablet landscape.
+- Variants: 1080×1920 phone portrait and 1920×1200 tablet landscape.
 
 ## Storyboard
 

@@ -191,11 +191,18 @@ export const TapIndicator = ({
  * it and the result reads as a designed third instead of a box dropped on the
  * product. `left` and `right` keep the card treatment, for landscape cuts where
  * there is real space beside the UI.
+ *
+ * `footnote` is for a late warning line that belongs with the copy but lands after it.
+ * It exists because the alternative — a separately positioned line at a hand-picked
+ * `top` — printed across the app's own tab strip on phone and would have landed under
+ * the card on tablet. Anything that has to sit with the copy lays out with the copy.
  */
 export const Callout = ({
   eyebrow,
   title,
   body,
+  footnote,
+  footnoteAt,
   at = 0,
   side = 'bottom',
   name = 'Callout',
@@ -203,6 +210,10 @@ export const Callout = ({
   eyebrow?: string;
   title: string;
   body?: ReactNode;
+  /** A warning line under the body, in the app's warning colour. */
+  footnote?: ReactNode;
+  /** When the footnote fades in, relative to the enclosing Sequence. Defaults to `at`. */
+  footnoteAt?: number;
   at?: number;
   side?: 'bottom' | 'top' | 'left' | 'right';
   name?: string;
@@ -241,9 +252,24 @@ export const Callout = ({
           }
         : {
             [side]: 72,
-            top: 96,
+            // Deliberately no `top`. Pinned top-to-bottom, the card was an 888px-tall
+            // box with three lines of text at the foot of it — it read as an empty
+            // panel, and it took a third of the frame hostage for its whole duration.
+            // Hugging its content frees everything above it, which is where the
+            // landscape surfaces put their toolbars and action rows.
             bottom: 96,
-            maxWidth: 640,
+            // 640 was too greedy. The tablet surfaces centre their own content, and the
+            // camera cannot slide far enough to clear a third of the frame — clampToContent
+            // pins the frame inside the content plane long before the subject gets out
+            // from under the card. Every 20dp given back here is 20dp the composition
+            // does not have to fight for. See CARD_CLEAR_X in scenes/shared.ts.
+            maxWidth: 580,
+            // Overrides the 72 the scrims use. That number is a frame margin, and a card
+            // that already sits 72 off the frame edge does not need a second one inside
+            // it — at 580 wide it left 436 for text, which broke a two-word title onto
+            // its own line.
+            paddingLeft: 44,
+            paddingRight: 44,
             paddingTop: 40,
             paddingBottom: 40,
             justifyContent: 'flex-end',
@@ -346,6 +372,31 @@ export const Callout = ({
           }}
         >
           {body}
+        </Interactive.Div>
+      ) : null}
+      {footnote ? (
+        <Interactive.Div
+          name="Footnote"
+          style={{
+            marginTop: 6,
+            fontFamily: font.ui,
+            fontWeight: 700,
+            fontSize: type.caption,
+            lineHeight: 1.4,
+            color: color.warning,
+            opacity: interpolate(
+              frame,
+              [footnoteAt ?? at, (footnoteAt ?? at) + 24],
+              [0, 1],
+              {
+                easing: Easing.bezier(0.16, 1, 0.3, 1),
+                extrapolateLeft: 'clamp',
+                extrapolateRight: 'clamp',
+              },
+            ),
+          }}
+        >
+          {footnote}
         </Interactive.Div>
       ) : null}
     </Interactive.Div>

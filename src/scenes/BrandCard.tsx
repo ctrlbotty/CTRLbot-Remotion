@@ -8,6 +8,21 @@ import {AbsoluteFill, Easing, Img, Interactive, interpolate, staticFile, useCurr
 import {color, font, type} from '../design/theme';
 import type {Device} from './shared';
 
+import type {ReactNode} from 'react';
+
+export const BrandBackground = ({children}: {children?: ReactNode}) => (
+  <AbsoluteFill style={{backgroundColor: color.void}}>
+    {/* A single accent wash, off-centre, so the card is not a flat black rectangle. */}
+    <AbsoluteFill
+      style={{
+        background:
+          'radial-gradient(60% 45% at 68% 32%, rgba(0,143,212,0.16) 0%, rgba(0,0,0,0) 70%)',
+      }}
+    />
+    {children}
+  </AbsoluteFill>
+);
+
 export const BrandCard = ({
   device,
   eyebrow,
@@ -28,14 +43,7 @@ export const BrandCard = ({
   const isPhone = device === 'phone';
 
   return (
-    <AbsoluteFill style={{backgroundColor: color.void}}>
-      {/* A single accent wash, off-centre, so the card is not a flat black rectangle. */}
-      <AbsoluteFill
-        style={{
-          background:
-            'radial-gradient(60% 45% at 68% 32%, rgba(0,143,212,0.16) 0%, rgba(0,0,0,0) 70%)',
-        }}
-      />
+    <BrandBackground>
       <AbsoluteFill
         style={{
           display: 'flex',
@@ -178,6 +186,6 @@ export const BrandCard = ({
           </Interactive.Div>
         ) : null}
       </AbsoluteFill>
-    </AbsoluteFill>
+    </BrandBackground>
   );
 };

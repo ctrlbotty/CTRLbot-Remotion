@@ -24,8 +24,8 @@ npm run dev
 
 | Composition | Format | Status |
 |---|---:|---|
-| `First-Run-Phone` | 1080×1920, 125.33s | Complete; Review 04 is the current approved-for-now cut |
-| `First-Run-Tablet` | 1920×1080, 125.33s | Renderable baseline only; not framed or timed for review |
+| `First-Run-Phone` | 1080×1920, 120s | Complete; Review 13 is the current cut |
+| `First-Run-Tablet` | 1920×1200, 120s | Complete; Review 08 is the current cut |
 
 Both form factors have one `Scene-*` composition per scene for retiming and keyframing
 in isolation, plus `Proof-*` stills for checking live surfaces against the app.
@@ -99,8 +99,8 @@ written. Reinstall with `npx skills add remotion-dev/skills` (pinned by `skills-
 
 ## Where to pick up
 
-[docs/ROADMAP.md](docs/ROADMAP.md) tracks project state. The concrete next-agent brief is
-[docs/TABLET-HANDOFF.md](docs/TABLET-HANDOFF.md).
+[docs/ROADMAP.md](docs/ROADMAP.md) tracks project state. The tablet implementation notes
+and full-cut frame map are in [docs/TABLET-HANDOFF.md](docs/TABLET-HANDOFF.md).
 
 ## Product accuracy
 

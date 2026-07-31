@@ -286,7 +286,8 @@ export const TabletEui = ({
 }: {
   outputs: EuiOutput[];
   inputs: EuiInput[];
-  selectedInput: number;
+  /** Index into `inputs`, or null for the cold state — nothing selected yet. */
+  selectedInput: number | null;
   /** 0..1 */
   volume: number;
   speakerMuted?: boolean;
@@ -389,7 +390,9 @@ export const TabletEui = ({
           <OutputCell
             key={output.label}
             output={output}
-            selectedSource={inputs[selectedInput]?.label ?? null}
+            selectedSource={
+              selectedInput === null ? null : (inputs[selectedInput]?.label ?? null)
+            }
           />
         ))}
       </div>
@@ -482,13 +485,15 @@ export const TabletEuiManyToOne = ({
   outputLabel = 'Display 1',
 }: {
   inputs: EuiInput[];
-  selectedInput: number;
+  /** Index into `inputs`, or null for the cold state — nothing routed yet. */
+  selectedInput: number | null;
   /** 0..1 */
   volume: number;
   speakerMuted?: boolean;
   outputLabel?: string;
 }) => {
-  const selectedSource = inputs[selectedInput];
+  const selectedSource = selectedInput === null ? undefined : inputs[selectedInput];
+  const routed = selectedSource !== undefined;
 
   return (
     <div
@@ -594,28 +599,36 @@ export const TabletEuiManyToOne = ({
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: appDimens.euiNx1DisplayIconGap,
-                backgroundImage: `url(${staticFile('app-assets/disp_lg_blue.png')})`,
+                // Grey and empty until something is routed to it — the same pair of
+                // states the matrix output cells use.
+                backgroundImage: `url(${staticFile(
+                  routed ? 'app-assets/disp_lg_blue.png' : 'app-assets/disp_lg_grey.png',
+                )})`,
                 backgroundSize: '100% 100%',
                 backgroundRepeat: 'no-repeat',
               }}
             >
-              <AppIcon
-                name="ic_hdmi_icon"
-                size={appDimens.euiNx1DisplayIcon}
-                tint={appColors.white}
-              />
-              <span
-                style={{
-                  fontFamily: 'Montserrat, sans-serif',
-                  fontWeight: 400,
-                  fontSize: appTextStyles.TitleSecondary.sizeSp * 2,
-                  letterSpacing: 0.8,
-                  textTransform: 'uppercase',
-                  color: appColors.white,
-                }}
-              >
-                {selectedSource?.label}
-              </span>
+              {routed ? (
+                <>
+                  <AppIcon
+                    name="ic_hdmi_icon"
+                    size={appDimens.euiNx1DisplayIcon}
+                    tint={appColors.white}
+                  />
+                  <span
+                    style={{
+                      fontFamily: 'Montserrat, sans-serif',
+                      fontWeight: 400,
+                      fontSize: appTextStyles.TitleSecondary.sizeSp * 2,
+                      letterSpacing: 0.8,
+                      textTransform: 'uppercase',
+                      color: appColors.white,
+                    }}
+                  >
+                    {selectedSource.label}
+                  </span>
+                </>
+              ) : null}
             </div>
             <div
               style={{

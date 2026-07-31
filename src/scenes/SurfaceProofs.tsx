@@ -9,6 +9,7 @@ import {PHONE_VIEWPORT, PhoneEui} from '../app-ui/PhoneEui';
 import {TABLET_VIEWPORT, TabletEui} from '../app-ui/TabletEui';
 import {CATALOG_VIEWPORT, DriverCatalog, type DriverEntry} from '../app-ui/DriverCatalog';
 import {CapturedScreen} from '../app-ui/CapturedScreen';
+import {CtrlbotAi} from '../app-ui/CtrlbotAi';
 import {
   CONNECTION_VIEWPORT,
   ConnectionPanel,
@@ -122,6 +123,24 @@ export const PhoneConnectionProof = () => (
       commands={COMMANDS}
       terminal={TERMINAL}
     />
+  </AbsoluteFill>
+);
+
+/**
+ * CTRLbot AI is the one surface with no layout XML behind it — it is a WebView — so its
+ * proof is compared against `captures/tablet/ctrlbot-ai-core.png` rather than against
+ * res/. Check the rail carries four destinations and no EUI launcher: at this point in
+ * the story no connection has been saved.
+ */
+export const TabletCtrlbotProof = () => (
+  <AbsoluteFill style={{width: TABLET_VIEWPORT.width, height: TABLET_VIEWPORT.height}}>
+    <CtrlbotAi device="tablet" promptFocused />
+  </AbsoluteFill>
+);
+
+export const PhoneCtrlbotProof = () => (
+  <AbsoluteFill style={{width: PHONE_VIEWPORT.width, height: PHONE_VIEWPORT.height}}>
+    <CtrlbotAi device="phone" promptFocused />
   </AbsoluteFill>
 );
 

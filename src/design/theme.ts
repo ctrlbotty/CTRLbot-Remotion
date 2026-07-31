@@ -95,10 +95,17 @@ export const radius = {
 /** 8pt spacing scale. */
 export const space = (steps: number) => steps * 8;
 
-/** Canvas presets. Phone is portrait, tablet is landscape — matching the app. */
+/**
+ * Canvas presets. Phone is portrait, tablet is landscape — matching the app.
+ *
+ * Landscape is 16:10, not 16:9. Android tablets are 16:10 and the app's own surface is
+ * 1280x800, so 1920x1200 is exactly 1.5x the viewport: a full-frame shot fills the frame
+ * edge to edge with no letterboxing, and every dp in the layout maps to a whole 1.5
+ * pixels. At 1080 the same shot left a black bar down each side.
+ */
 export const canvas = {
   fps: 30,
-  landscape: {width: 1920, height: 1080},
+  landscape: {width: 1920, height: 1200},
   portrait: {width: 1080, height: 1920},
 } as const;
 

@@ -47,8 +47,8 @@ export const FirstRun = ({device}: {device: Device}) => (
         <BrandCard
           device={device}
           eyebrow="Quick start"
-          headline="Program your first room"
-          subhead="No software, no laptop; program it with your thumbs."
+          headline="Control your first room"
+          subhead="No processor, no laptop, no software. So easy. Program it with your thumbs."
           kicker={device === 'phone' ? 'Phone · 2 minutes' : 'Tablet · 2 minutes'}
         />
       </TransitionSeries.Sequence>
@@ -101,7 +101,7 @@ export const FirstRun = ({device}: {device: Device}) => (
         <BrandCard
           device={device}
           headline="Your room is ready"
-          subhead="Configure and operate a compatible room from one app, with the setup kept out of the way."
+          subhead="Configure it, test it, hand it over — with the setup tucked out of the way."
           kicker="ctrlbot.io"
         />
       </TransitionSeries.Sequence>

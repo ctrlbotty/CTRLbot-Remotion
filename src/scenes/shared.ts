@@ -27,14 +27,39 @@ export const copySideFor = (device: Device): 'bottom' | 'right' =>
 export const closeShotWidth = (device: Device) =>
   device === 'phone' ? 0.78 : 0.52;
 
-/** Scene lengths in frames at 30fps. Kept together so the cut is readable at a glance. */
+/**
+ * How much of a 1920-wide frame is left clear by the landscape copy card.
+ *
+ * The card is pinned `right: 72` at `maxWidth: 580`, so it owns everything past this
+ * point. Anything the viewer has to read — field text, a label, a question — must land
+ * to the left of it.
+ */
+export const CARD_CLEAR_X = 1920 - 72 - 580;
+
+/**
+ * A wide landscape shot: a real push, but wide enough that centred content still clears
+ * the copy card.
+ *
+ * This exists because `closeShotWidth('tablet')` is unusable on any surface that centres
+ * its own content. At 0.52 the camera is at ~2.4x, and `clampToContent` will not let the
+ * frame slide far enough right to move a centred control out from under the card — the
+ * content plane runs out first. Reach for this on centred surfaces (CTRLbot AI, the
+ * catalog list) and keep 0.52 for genuinely small controls near an edge, where the clamp
+ * works *for* you.
+ */
+export const wideShotWidth = 0.86;
+
+/**
+ * Scene lengths in frames at 30fps. The seven scenes total 3720 frames; subtract the
+ * six 20-frame overlaps and both full cuts land at exactly 3600 frames / 2:00.
+ */
 export const SCENE_FRAMES = {
   open: 210,
-  ctrlbot: 440,
-  device: 620,
-  connect: 780,
-  buildRoom: 540,
-  euiHandoff: 1080,
+  ctrlbot: 420,
+  device: 600,
+  connect: 740,
+  buildRoom: 520,
+  euiHandoff: 1020,
   close: 210,
 } as const;
 

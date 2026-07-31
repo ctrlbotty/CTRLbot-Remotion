@@ -1,9 +1,11 @@
 // Scene 3 — Device, where setup begins.
 //
 // Deliberately narrow: this is the menu, this is the catalog, this is how you add a
-// device. Search, sort and the driver detail sheet are all real features, and none of
-// them belong in a quick start — the integrator needs the shortest path to a device on
-// the list, not a tour of the filters.
+// device. Search and sort are named in the copy, because both controls are on screen for
+// the whole scene and a viewer who cannot see how to find their own projector in a
+// 124-driver list will stop watching — but neither is demonstrated. The driver detail
+// sheet is left out entirely. The integrator needs the shortest path to a device on the
+// list, not a tour of the filters.
 
 import {AbsoluteFill, Easing, Sequence, interpolate, useCurrentFrame} from 'remotion';
 import {Camera, centerOf, frameWidth} from '../camera/Camera';
@@ -15,12 +17,19 @@ import {
   type DriverEntry,
 } from '../app-ui/DriverCatalog';
 import {PhoneNavMenu, navRegions} from '../app-ui/PhoneNavMenu';
+import {tabletNavRegions} from '../app-ui/TabletNavRail';
 import {color} from '../design/theme';
 import {closeShotWidth, copySideFor, type Device as DeviceKind} from './shared';
 
 // A full-width sheet cannot be pushed into like a small control — 0.78 crops the icons
 // off both edges. The menu beat is a gentle emphasis move, not a zoom.
 const MENU_SHOT_WIDTH = 0.94;
+
+// The landscape equivalent. The rail is against the left edge, so asking to be centred
+// on it lets clampToContent slide the frame back inside the content plane and leave the
+// rail hard left — clear of the copy card without any offset arithmetic.
+const RAIL_SHOT_WIDTH = 0.72;
+const RAIL_SHOT_Y = 150;
 
 /** The bundled catalog, in the order the app lists it. */
 const DRIVERS: DriverEntry[] = [
@@ -44,9 +53,21 @@ const SCROLL_CARDS = 3;
 
 export const DeviceSetup = ({device}: {device: DeviceKind}) => {
   const frame = useCurrentFrame();
+  const isPhone = device === 'phone';
   const viewport = CATALOG_VIEWPORT[device];
   const r = catalogRegions(device);
   const expanded = frame < COLLAPSE_FRAME;
+
+  // The menu beat, per form factor. The phone opens a sheet over the catalog; the tablet
+  // rail is already on screen and permanent, so the camera and the spotlight carry it.
+  const menuShot = isPhone
+    ? frameWidth(
+        {x: r.centreX, y: centerOf(navRegions.expanded).y},
+        viewport.width * MENU_SHOT_WIDTH,
+      )
+    : frameWidth({x: 0, y: RAIL_SHOT_Y}, viewport.width * RAIL_SHOT_WIDTH);
+  const menuRegion = isPhone ? navRegions.expanded : tabletNavRegions.full;
+  const menuRow = isPhone ? navRegions.row(1) : tabletNavRegions.row('device');
 
   // Pitch between cards, taken from the regions rather than re-derived.
   const cardPitch = r.card(1).y - r.card(0).y;
@@ -76,21 +97,10 @@ export const DeviceSetup = ({device}: {device: DeviceKind}) => {
         shots={[
           {at: 0, region: r.full},
           {at: 44, region: r.full},
-          // The menu, while it is still open on Device.
-          {
-            at: 116,
-            region: frameWidth(
-              {x: r.centreX, y: centerOf(navRegions.expanded).y},
-              viewport.width * MENU_SHOT_WIDTH,
-            ),
-          },
-          {
-            at: 176,
-            region: frameWidth(
-              {x: r.centreX, y: centerOf(navRegions.expanded).y},
-              viewport.width * MENU_SHOT_WIDTH,
-            ),
-          },
+          // The menu — the phone sheet while it is still open on Device, or the tablet
+          // rail, which never closes.
+          {at: 116, region: menuShot},
+          {at: 176, region: menuShot},
           // Out to watch the catalog scroll.
           {at: 240, region: r.full},
           {at: 400, region: r.full},
@@ -98,18 +108,18 @@ export const DeviceSetup = ({device}: {device: DeviceKind}) => {
           // one frames on its own centre and lets the clamp keep it in shot.
           {at: 476, region: frameWidth(centerOf(scrolledAdd), viewport.width * closeShotWidth(device))},
           {at: 564, region: frameWidth(centerOf(scrolledAdd), viewport.width * closeShotWidth(device))},
-          {at: 620, region: r.full},
+          {at: 600, region: r.full},
         ]}
       >
         <div style={{translate: `0px ${scrollOffset}px`}}>
           <DriverCatalog device={device} drivers={DRIVERS} emphasizeTypes />
         </div>
 
-        {device === 'phone' ? <PhoneNavMenu expanded={expanded} active="device" /> : null}
+        {isPhone ? <PhoneNavMenu expanded={expanded} active="device" /> : null}
 
         <Sequence from={96} durationInFrames={100} layout="none" name="Isolate the menu">
-          <Spotlight region={navRegions.expanded} appearAt={0} radius={0} />
-          <FocusRing region={navRegions.row(1)} appearAt={16} radius={0} name="Device row" />
+          <Spotlight region={menuRegion} appearAt={0} radius={0} />
+          <FocusRing region={menuRow} appearAt={16} radius={0} name="Device row" />
         </Sequence>
 
         <Sequence from={448} durationInFrames={144} layout="none" name="Add the device">
@@ -128,7 +138,7 @@ export const DeviceSetup = ({device}: {device: DeviceKind}) => {
         <Callout
           eyebrow="Device"
           title="Setup starts here"
-          body="Every driver the app ships with, ready to become a device in your room."
+          body="Every driver ships inside the app, ready to become a device in your room."
           at={0}
           side={copySideFor(device)}
         />
@@ -138,17 +148,17 @@ export const DeviceSetup = ({device}: {device: DeviceKind}) => {
         <Callout
           eyebrow="Browse"
           title="Find your equipment"
-          body="Projectors, displays, switchers and end points, colour-coded by type."
+          body="Projectors, displays, switchers and end points. Search by manufacturer or model, or sort by type."
           at={0}
           side={copySideFor(device)}
         />
       </Sequence>
 
-      <Sequence from={440} durationInFrames={180} layout="none" name="Copy: add">
+      <Sequence from={440} durationInFrames={160} layout="none" name="Copy: add">
         <Callout
           eyebrow="Add it"
           title="One tap to add a device"
-          body="Add a device to set up the connection for control."
+          body="The + opens Configure Connection, ready to point at your real equipment."
           at={0}
           side={copySideFor(device)}
         />
