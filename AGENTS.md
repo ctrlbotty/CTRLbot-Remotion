@@ -70,7 +70,7 @@ Point at a different checkout with `npm run sync:tokens -- ../path/to/CTRLbot-Io
 
 ```text
 src/
-  design/       tokens.generated.ts (from the app) + theme.ts (curated) + motion.ts
+  design/       tokens.generated.ts (from the app) + theme.ts (curated)
   app-ui/       live React rebuilds of app surfaces, laid out in dp
                 — viewports.ts is the one definition of how big a surface is
   camera/       Camera rig, Spotlight, FocusRing, TapIndicator, Callout
@@ -84,7 +84,8 @@ push-in onto a single control possible, and it is why regions are expressed in t
 same units as the Android layout.
 
 `src/scenes/EuiHandoff.tsx` is the reference implementation — read it before adding a
-scene. `docs/ROADMAP.md` has the outstanding work and the gotchas that have cost time.
+scene. `docs/ROADMAP.md` has project state and gotchas; `docs/TABLET-HANDOFF.md` is the
+tablet build brief.
 
 ## Framing on portrait
 

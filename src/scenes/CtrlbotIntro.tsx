@@ -16,9 +16,10 @@ import {PhoneNavMenu, navRegions} from '../app-ui/PhoneNavMenu';
 import {color} from '../design/theme';
 import {closeShotWidth, copySideFor, type Device} from './shared';
 
-// A full-width sheet cannot be pushed into like a small control — 0.78 crops the icons
-// off both edges. The menu beat is a gentle emphasis move, not a zoom.
-const MENU_SHOT_WIDTH = 0.94;
+// Keep more context than the other menu beats: this callout sits at the top, and the
+// tighter 0.94 framing lifted the CTRLbot mark directly underneath its copy. The
+// spotlight still carries the emphasis while every menu row remains readable.
+const MENU_SHOT_WIDTH = 1.06;
 
 /** The menu drops away here, revealing the suggestions behind it. */
 const COLLAPSE_FRAME = 236;
@@ -75,10 +76,10 @@ export const CtrlbotIntro = ({device}: {device: Device}) => {
       <Sequence from={12} durationInFrames={96} layout="none" name="Copy: where things live">
         <Callout
           eyebrow="Start here"
-          title="Four places to work"
+          title="Core menus"
           body="CTRLbot for help, Device for drivers, Connect for connections, Set for everything else."
           at={0}
-          side={copySideFor(device)}
+          side={device === 'phone' ? 'top' : copySideFor(device)}
         />
       </Sequence>
 

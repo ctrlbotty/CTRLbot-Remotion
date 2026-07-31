@@ -15,7 +15,7 @@
 
 import {staticFile} from 'remotion';
 import {AppIcon} from './AppIcon';
-import {appColors, appDimens} from '../design/tokens.generated';
+import {appColors, appDimens, appTextStyles} from '../design/tokens.generated';
 import {PHONE_VIEWPORT} from './viewports';
 
 export {PHONE_VIEWPORT} from './viewports';
@@ -37,6 +37,18 @@ const CARD_HEIGHT = 104;
 const CARD_MARGIN = 6;
 const CARD_WIDTH = (PHONE_VIEWPORT.width - 16) / 2.5 - CARD_MARGIN * 2; // 146.4
 const VOLUME_HEIGHT = 56;
+const AUDIO_PADDING = 14;
+const AUDIO_GAP = 14;
+const SPEAKER_SIZE = 26;
+const VOLUME_ICON_SIZE = 20;
+const VOLUME_SLIDER_X =
+  AUDIO_PADDING + SPEAKER_SIZE + AUDIO_GAP + VOLUME_ICON_SIZE + AUDIO_GAP;
+const VOLUME_SLIDER_WIDTH =
+  PHONE_VIEWPORT.width -
+  AUDIO_PADDING * 2 -
+  SPEAKER_SIZE -
+  VOLUME_ICON_SIZE * 2 -
+  AUDIO_GAP * 3;
 const STRIP_BOTTOM_MARGIN = 24; // HorizontalScrollView layout_marginBottom
 const STRIP_TOP = PHONE_VIEWPORT.height - VOLUME_HEIGHT - STRIP_BOTTOM_MARGIN - STRIP_HEIGHT;
 
@@ -46,6 +58,48 @@ const STRIP_TOP = PHONE_VIEWPORT.height - VOLUME_HEIGHT - STRIP_BOTTOM_MARGIN - 
 const GRID_BOTTOM = GRID_TOP + ROW_HEIGHT * 2;
 const ALL_ROW_HEIGHT = 50; // ImageButton is 50dp square
 const ALL_ROW_TOP = GRID_BOTTOM + (STRIP_TOP - GRID_BOTTOM - ALL_ROW_HEIGHT) / 2;
+
+// av_switch_nx1.xml: a centred vertical stack inside the 668dp content viewport.
+// TextAppearance.CtrlBot.TitleSecondary supplies the only non-dimen measurement in the
+// stack; its 15sp text is rendered at a 1.2 line height, then receives the layout's 8dp
+// padding above and below.
+const NX1_ROOT_PADDING = 8;
+const NX1_DISPLAY_WIDTH = 320;
+const NX1_DISPLAY_HEIGHT = 180;
+const NX1_DISPLAY_MARGIN = 8;
+const NX1_LABEL_GAP = 8;
+const NX1_LABEL_PADDING = 8;
+const NX1_LABEL_LINE_HEIGHT = appTextStyles.TitleSecondary.sizeSp * 1.2;
+const NX1_LABEL_HEIGHT = NX1_LABEL_LINE_HEIGHT + NX1_LABEL_PADDING * 2;
+const NX1_ARROW_SIZE = 40;
+const NX1_ARROW_MARGIN_TOP = 4;
+const NX1_ARROW_MARGIN_BOTTOM = 10;
+const NX1_STRIP_HEIGHT = 128;
+const NX1_CONTENT_HEIGHT = PHONE_VIEWPORT.height - appDimens.headerHeight - VOLUME_HEIGHT;
+const NX1_STACK_HEIGHT =
+  NX1_DISPLAY_MARGIN * 2 +
+  NX1_DISPLAY_HEIGHT +
+  NX1_LABEL_GAP +
+  NX1_LABEL_HEIGHT +
+  NX1_ARROW_MARGIN_TOP +
+  NX1_ARROW_SIZE +
+  NX1_ARROW_MARGIN_BOTTOM +
+  NX1_STRIP_HEIGHT;
+const NX1_STACK_TOP =
+  appDimens.headerHeight +
+  NX1_ROOT_PADDING +
+  (NX1_CONTENT_HEIGHT - NX1_ROOT_PADDING * 2 - NX1_STACK_HEIGHT) / 2;
+const NX1_STRIP_TOP =
+  NX1_STACK_TOP +
+  NX1_DISPLAY_MARGIN * 2 +
+  NX1_DISPLAY_HEIGHT +
+  NX1_LABEL_GAP +
+  NX1_LABEL_HEIGHT +
+  NX1_ARROW_MARGIN_TOP +
+  NX1_ARROW_SIZE +
+  NX1_ARROW_MARGIN_BOTTOM;
+const NX1_CARD_WIDTH =
+  (PHONE_VIEWPORT.width - NX1_ROOT_PADDING * 2 - 16) / 2.5 - CARD_MARGIN * 2;
 
 /**
  * Named regions in the EUI's own coordinate space, for <Camera> and <FocusRing>.
@@ -88,6 +142,48 @@ export const EUI_REGIONS = {
     width: PHONE_VIEWPORT.width,
     height: VOLUME_HEIGHT,
   },
+  speakerControl: {
+    x: AUDIO_PADDING,
+    y: PHONE_VIEWPORT.height - VOLUME_HEIGHT + (VOLUME_HEIGHT - SPEAKER_SIZE) / 2,
+    width: SPEAKER_SIZE,
+    height: SPEAKER_SIZE,
+  },
+  volumeSlider: {
+    x: VOLUME_SLIDER_X,
+    y: PHONE_VIEWPORT.height - VOLUME_HEIGHT + (VOLUME_HEIGHT - 28) / 2,
+    width: VOLUME_SLIDER_WIDTH,
+    height: 28,
+  },
+} as const;
+
+/** Regions for the portrait Many-to-One surface, derived from av_switch_nx1.xml. */
+export const PHONE_EUI_MANY_TO_ONE_REGIONS = {
+  full: {x: 0, y: 0, width: PHONE_VIEWPORT.width, height: PHONE_VIEWPORT.height},
+  exitControl: {x: 6, y: 12, width: 36, height: 32},
+  displayPanel: {
+    x: (PHONE_VIEWPORT.width - NX1_DISPLAY_WIDTH) / 2,
+    y: NX1_STACK_TOP + NX1_DISPLAY_MARGIN,
+    width: NX1_DISPLAY_WIDTH,
+    height: NX1_DISPLAY_HEIGHT,
+  },
+  inputStrip: {
+    x: NX1_ROOT_PADDING,
+    y: NX1_STRIP_TOP,
+    width: PHONE_VIEWPORT.width - NX1_ROOT_PADDING * 2,
+    height: NX1_STRIP_HEIGHT,
+  },
+  inputTile: (index: number) => ({
+    x: NX1_ROOT_PADDING + 8 + CARD_MARGIN + index * (NX1_CARD_WIDTH + CARD_MARGIN * 2),
+    y: NX1_STRIP_TOP + (NX1_STRIP_HEIGHT - CARD_HEIGHT) / 2,
+    width: NX1_CARD_WIDTH,
+    height: CARD_HEIGHT,
+  }),
+  volumeBar: {
+    x: 0,
+    y: PHONE_VIEWPORT.height - VOLUME_HEIGHT,
+    width: PHONE_VIEWPORT.width,
+    height: VOLUME_HEIGHT,
+  },
 } as const;
 
 export type EuiOutput = {
@@ -99,8 +195,15 @@ export type EuiOutput = {
 export type EuiInput = {label: string};
 
 /** One output cell: a 16:9 panel over a black label bar. */
-const OutputCell = ({output}: {output: EuiOutput}) => {
+const OutputCell = ({
+  output,
+  selectedSource,
+}: {
+  output: EuiOutput;
+  selectedSource: string | null;
+}) => {
   const routed = output.source !== null;
+  const selected = routed && output.source === selectedSource;
 
   return (
     <div style={{width: CELL_WIDTH, margin: CELL_MARGIN}}>
@@ -113,7 +216,7 @@ const OutputCell = ({output}: {output: EuiOutput}) => {
           justifyContent: 'center',
           gap: 10,
           backgroundImage: `url(${staticFile(
-            routed ? 'app-assets/disp_m_blue.png' : 'app-assets/disp_m_grey.png',
+            selected ? 'app-assets/disp_m_blue.png' : 'app-assets/disp_m_grey.png',
           )})`,
           backgroundSize: '100% 100%',
           backgroundRepeat: 'no-repeat',
@@ -161,11 +264,19 @@ const OutputCell = ({output}: {output: EuiOutput}) => {
 };
 
 /** One source card. Selected takes @color/blue at 5dp radius; default is black at 6dp. */
-const SourceCard = ({input, selected}: {input: EuiInput; selected: boolean}) => (
+const SourceCard = ({
+  input,
+  selected,
+  width = CARD_WIDTH,
+}: {
+  input: EuiInput;
+  selected: boolean;
+  width?: number;
+}) => (
   <div
     style={{
       flex: '0 0 auto',
-      width: CARD_WIDTH,
+      width,
       height: CARD_HEIGHT,
       margin: CARD_MARGIN,
       padding: 10,
@@ -204,6 +315,7 @@ export const PhoneEui = ({
   inputs,
   selectedInput,
   volume,
+  speakerMuted = false,
 }: {
   outputs: EuiOutput[];
   inputs: EuiInput[];
@@ -211,6 +323,7 @@ export const PhoneEui = ({
   selectedInput: number;
   /** 0..1 */
   volume: number;
+  speakerMuted?: boolean;
 }) => (
   // Column layout mirrors av_switch_nxo.xml: the grid takes its natural height, the
   // ALL row absorbs the leftover and centres in it, the source strip and volume bar
@@ -255,7 +368,11 @@ export const PhoneEui = ({
       }}
     >
       {outputs.map((output) => (
-        <OutputCell key={output.label} output={output} />
+        <OutputCell
+          key={output.label}
+          output={output}
+          selectedSource={inputs[selectedInput]?.label ?? null}
+        />
       ))}
     </div>
 
@@ -313,14 +430,18 @@ export const PhoneEui = ({
         flex: '0 0 auto',
         display: 'flex',
         alignItems: 'center',
-        gap: 14,
-        paddingLeft: 14,
-        paddingRight: 14,
+        gap: AUDIO_GAP,
+        paddingLeft: AUDIO_PADDING,
+        paddingRight: AUDIO_PADDING,
         backgroundColor: appColors.black,
       }}
     >
-      <AppIcon name="ic_speaker_on" size={26} tint={appColors.white} />
-      <AppIcon name="ic_vol_left" size={20} tint={appColors.white} />
+      <AppIcon
+        name={speakerMuted ? 'ic_speaker_off' : 'ic_speaker_on'}
+        size={SPEAKER_SIZE}
+        tint={appColors.white}
+      />
+      <AppIcon name="ic_vol_left" size={VOLUME_ICON_SIZE} tint={appColors.white} />
       <div
         style={{
           position: 'relative',
@@ -350,7 +471,225 @@ export const PhoneEui = ({
           }}
         />
       </div>
-      <AppIcon name="ic_vol_right" size={20} tint={appColors.white} />
+      <AppIcon name="ic_vol_right" size={VOLUME_ICON_SIZE} tint={appColors.white} />
     </div>
   </div>
 );
+
+/**
+ * Portrait Many-to-One EUI: several source cards feed one 320x180 display panel.
+ * This is the live counterpart of res/layout-port/av_switch_nx1.xml.
+ */
+export const PhoneEuiManyToOne = ({
+  inputs,
+  selectedInput,
+  volume,
+  speakerMuted = false,
+  outputLabel = 'Display 1',
+}: {
+  inputs: EuiInput[];
+  selectedInput: number;
+  /** 0..1 */
+  volume: number;
+  speakerMuted?: boolean;
+  outputLabel?: string;
+}) => {
+  const selectedSource = inputs[selectedInput];
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: PHONE_VIEWPORT.width,
+        height: PHONE_VIEWPORT.height,
+        overflow: 'hidden',
+        backgroundColor: appColors.gray15,
+      }}
+    >
+      {/* _end_ui.xml header */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          height: appDimens.headerHeight,
+          flex: '0 0 auto',
+          paddingLeft: 10,
+          paddingRight: 10,
+          backgroundColor: appColors.black,
+        }}
+      >
+        <AppIcon name="ic_settings2" size={28} tint={appColors.white} />
+        <AppIcon name="ic_power" size={30} />
+      </div>
+
+      {/* av_switch_nx1.xml: the whole stack is centred inside the content viewport. */}
+      <div
+        style={{
+          width: '100%',
+          height: NX1_CONTENT_HEIGHT,
+          flex: '0 0 auto',
+          boxSizing: 'border-box',
+          padding: NX1_ROOT_PADDING,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          backgroundColor: appColors.gray15,
+        }}
+      >
+        <div
+          style={{
+            width: '100%',
+            marginTop: NX1_DISPLAY_MARGIN,
+            marginBottom: NX1_DISPLAY_MARGIN,
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <div style={{width: NX1_DISPLAY_WIDTH}}>
+            <div
+              style={{
+                width: NX1_DISPLAY_WIDTH,
+                height: NX1_DISPLAY_HEIGHT,
+                padding: 10,
+                boxSizing: 'border-box',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 20,
+                backgroundImage: `url(${staticFile('app-assets/disp_lg_blue.png')})`,
+                backgroundSize: '100% 100%',
+                backgroundRepeat: 'no-repeat',
+              }}
+            >
+              <AppIcon name="ic_hdmi_icon" size={60} tint={appColors.white} />
+              <span
+                style={{
+                  fontFamily: 'Montserrat, sans-serif',
+                  fontWeight: 400,
+                  fontSize: appTextStyles.TitleSecondary.sizeSp,
+                  letterSpacing: 0.4,
+                  textTransform: 'uppercase',
+                  color: appColors.white,
+                }}
+              >
+                {selectedSource?.label}
+              </span>
+            </div>
+            <div
+              style={{
+                width: NX1_DISPLAY_WIDTH,
+                marginTop: NX1_LABEL_GAP,
+                paddingTop: NX1_LABEL_PADDING,
+                paddingBottom: NX1_LABEL_PADDING,
+                fontFamily: 'Montserrat, sans-serif',
+                fontWeight: 400,
+                fontSize: appTextStyles.TitleSecondary.sizeSp,
+                lineHeight: `${NX1_LABEL_LINE_HEIGHT}px`,
+                textAlign: 'center',
+                textTransform: 'uppercase',
+                color: appColors.white,
+                backgroundColor: appColors.black,
+              }}
+            >
+              {outputLabel}
+            </div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            width: NX1_ARROW_SIZE,
+            height: NX1_ARROW_SIZE,
+            flex: '0 0 auto',
+            alignSelf: 'center',
+            marginTop: NX1_ARROW_MARGIN_TOP,
+            marginBottom: NX1_ARROW_MARGIN_BOTTOM,
+          }}
+        >
+          <AppIcon
+            name="nav_right"
+            size={NX1_ARROW_SIZE}
+            tint={appColors.black}
+            style={{rotate: '270deg'}}
+          />
+        </div>
+
+        <div
+          style={{
+            width: '100%',
+            height: NX1_STRIP_HEIGHT,
+            flex: '0 0 auto',
+            boxSizing: 'border-box',
+            paddingLeft: 8,
+            paddingRight: 8,
+            display: 'flex',
+            alignItems: 'center',
+            overflow: 'hidden',
+          }}
+        >
+          {inputs.map((input, index) => (
+            <SourceCard
+              key={input.label}
+              input={input}
+              selected={index === selectedInput}
+              width={NX1_CARD_WIDTH}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* _end_ui.xml audio controls */}
+      <div
+        style={{
+          height: VOLUME_HEIGHT,
+          flex: '0 0 auto',
+          display: 'flex',
+          alignItems: 'center',
+          gap: AUDIO_GAP,
+          paddingLeft: AUDIO_PADDING,
+          paddingRight: AUDIO_PADDING,
+          backgroundColor: appColors.black,
+        }}
+      >
+        <AppIcon
+          name={speakerMuted ? 'ic_speaker_off' : 'ic_speaker_on'}
+          size={SPEAKER_SIZE}
+          tint={appColors.white}
+        />
+        <AppIcon name="ic_vol_left" size={VOLUME_ICON_SIZE} tint={appColors.white} />
+        <div
+          style={{
+            position: 'relative',
+            flex: 1,
+            height: 12,
+            backgroundColor: appColors.gray25,
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: `${volume * 100}%`,
+              backgroundColor: appColors.priYellow,
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              left: `${volume * 100}%`,
+              top: -8,
+              width: 10,
+              height: 28,
+              backgroundColor: appColors.white,
+            }}
+          />
+        </div>
+        <AppIcon name="ic_vol_right" size={VOLUME_ICON_SIZE} tint={appColors.white} />
+      </div>
+    </div>
+  );
+};

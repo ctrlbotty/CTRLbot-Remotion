@@ -99,7 +99,7 @@ Each scene is its own `<Composition>` in `src/Root.tsx`, metadata inline:
 <Composition
   id="Scene-EUI-Handoff"
   component={EuiHandoff}
-  durationInFrames={780}
+  durationInFrames={SCENE_FRAMES.euiHandoff}
   fps={30}
   width={1080}
   height={1920}
@@ -176,9 +176,10 @@ padding is set to.
 - Never put real credentials, customer names, public IPs, host fingerprints, or
   proprietary device details in copy or captures.
 
-Check claims against `docs/CTRLbot-IoT-User-Manual.md` and `docs/About_CTRLbot_IoT.md`
-— both synced from the app repo by `npm run sync:tokens`. Product guardrails are in
-[FIRST-USE-WALKTHROUGH.md](FIRST-USE-WALKTHROUGH.md).
+Check claims first against the Android resources/current build and
+`docs/About_CTRLbot_IoT.md`, which is synced by `npm run sync:tokens`.
+`docs/CTRLbot-IoT-User-Manual.md` is a July 29 supporting snapshot, not a substitute for
+the app. Product guardrails are in [FIRST-USE-WALKTHROUGH.md](FIRST-USE-WALKTHROUGH.md).
 
 ## Adding captures
 

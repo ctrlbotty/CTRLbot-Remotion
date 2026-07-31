@@ -24,11 +24,11 @@ npm run dev
 
 | Composition | Format | Status |
 |---|---:|---|
-| `First-Run-Phone` | 1080×1920, 115s | Complete, under review |
-| `First-Run-Tablet` | 1920×1080, 115s | **Not built** — scenes render but are phone-framed |
+| `First-Run-Phone` | 1080×1920, 125.33s | Complete; Review 04 is the current approved-for-now cut |
+| `First-Run-Tablet` | 1920×1080, 125.33s | Renderable baseline only; not framed or timed for review |
 
-Plus one `Scene-*` composition per scene, for retiming and keyframing in isolation, and
-one `Proof-*` still per app surface, for checking fidelity against a screenshot.
+Both form factors have one `Scene-*` composition per scene for retiming and keyframing
+in isolation, plus `Proof-*` stills for checking live surfaces against the app.
 
 The first run is seven scenes: open, CTRLbot AI, Device, Connect and test, Build the
 room, EUI handoff, close. It is silent and caption-led — understandable with the sound
@@ -53,7 +53,6 @@ src/
   design/
     tokens.generated.ts   colors, color state lists, dimens, type scale, shapes — from the app
     theme.ts              curated, video-facing decisions built on those tokens
-    motion.ts             the house easing curves
   app-ui/
     viewports.ts          the one definition of how big a surface is
     PhoneEui / TabletEui  the End User Interface, portrait and landscape
@@ -61,6 +60,7 @@ src/
     ConnectionPanel       Configure Connection, both form factors
     CtrlbotAi             the in-app FAQ and troubleshooter
     PhoneNavMenu          the setup nav sheet, expanded and collapsed
+    TabletNavRail         the shared XML-derived landscape setup rail
     CapturedScreen        a screenshot cropped to its screen and scaled to viewport size
     AppIcon               the app's own icons, tintable
   camera/
@@ -99,9 +99,8 @@ written. Reinstall with `npx skills add remotion-dev/skills` (pinned by `skills-
 
 ## Where to pick up
 
-[docs/ROADMAP.md](docs/ROADMAP.md) has the outstanding work for the phone cut and the
-full plan for the tablet cut, with the known issues and the gotchas that have already
-cost time.
+[docs/ROADMAP.md](docs/ROADMAP.md) tracks project state. The concrete next-agent brief is
+[docs/TABLET-HANDOFF.md](docs/TABLET-HANDOFF.md).
 
 ## Product accuracy
 
@@ -111,8 +110,9 @@ hidden; power presets use discrete Power On and Power Off commands; the EUI exit
 a two-second press-and-hold in the top-left; no credentials or customer identifiers may
 appear.
 
-Reference material in `docs/` — the user manual and product overview — is synced from the
-app repo by `npm run sync:tokens`, so it cannot drift.
+`docs/About_CTRLbot_IoT.md` is synced from the app repo. The July 29 Markdown user manual
+is a useful supporting snapshot, but the Android resources and a current build remain the
+source of truth.
 
 ## Licensing
 

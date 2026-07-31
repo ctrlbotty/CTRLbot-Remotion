@@ -11,6 +11,8 @@ if (!existsSync(sourceDirectory)) {
 }
 
 const screenshots = [
+  ['SM-X210_2026-07-29_11-25-04.png', 'tablet/ctrlbot-ai-core.png', 'CTRLbot AI with the core setup rail'],
+  ['SM-X210_2026-07-29_09-17-01.png', 'tablet/ctrlbot-ai-room.png', 'CTRLbot AI with Activities and EUI available'],
   ['SM-X210_2026-07-29_11-24-24.png', 'tablet/onboarding.png', 'Welcome and privacy notice'],
   ['SM-X210_2026-07-29_11-25-37.png', 'tablet/driver-catalog.png', 'Device Drivers catalog'],
   ['SM-X210_2026-07-29_11-26-42.png', 'tablet/driver-detail.png', 'Driver detail and specifications'],

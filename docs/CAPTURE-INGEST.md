@@ -36,17 +36,14 @@ The product owner confirmed that these captures are the correct v1.0 release ref
 
 ## Remotion usage
 
-Use `ProductCapture` for either stills or videos:
+Use `CapturedScreen` when a scene needs a still capture cropped into the shared app
+viewport:
 
 ```tsx
-<ProductCapture
-  capture={{
-    source: 'captures/tablet/connection-test.mp4',
-    type: 'video',
-    device: 'tablet',
-    label: 'Current tablet UI',
-  }}
-/>
+<CapturedScreen device="tablet" src="captures/tablet/connection-test.png" />
 ```
 
-Training chapters can supply the same object through their optional `capture` prop. `public/captures/manifest.json` is the inventory of normalized files and their source ranges.
+Use Remotion's media components for the curated MP4 excerpts if motion in the capture is
+itself the subject. `public/captures/manifest.json` is the inventory of normalized files
+and their source ranges. The tablet CTRLbot AI captures are included because that content
+is rendered by a WebView and cannot be reconstructed from Android layout XML alone.

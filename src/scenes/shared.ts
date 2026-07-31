@@ -29,13 +29,13 @@ export const closeShotWidth = (device: Device) =>
 
 /** Scene lengths in frames at 30fps. Kept together so the cut is readable at a glance. */
 export const SCENE_FRAMES = {
-  open: 300,
+  open: 210,
   ctrlbot: 440,
   device: 620,
-  connect: 600,
+  connect: 780,
   buildRoom: 540,
-  euiHandoff: 780,
-  close: 300,
+  euiHandoff: 1080,
+  close: 210,
 } as const;
 
 /** Cross-fade length between scenes. */

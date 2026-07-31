@@ -226,7 +226,7 @@ export const Callout = ({
           paddingBottom: EDGE_PAD,
           justifyContent: 'flex-end',
           background:
-            'linear-gradient(to top, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.82) 34%, rgba(0,0,0,0) 100%)',
+            'linear-gradient(to top, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.94) 52%, rgba(0,0,0,0) 100%)',
         }
       : side === 'top'
         ? {
@@ -237,7 +237,7 @@ export const Callout = ({
             paddingBottom: SCRIM_FADE,
             justifyContent: 'flex-start',
             background:
-              'linear-gradient(to bottom, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.82) 34%, rgba(0,0,0,0) 100%)',
+              'linear-gradient(to bottom, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.94) 52%, rgba(0,0,0,0) 100%)',
           }
         : {
             [side]: 72,
@@ -248,7 +248,7 @@ export const Callout = ({
             paddingBottom: 40,
             justifyContent: 'flex-end',
             borderRadius: radius.lg,
-            backgroundColor: 'rgba(26, 26, 26, 0.92)',
+            backgroundColor: 'rgba(26, 26, 26, 0.97)',
             border: '1px solid rgba(255, 255, 255, 0.1)',
             boxShadow: '0 24px 64px rgba(0, 0, 0, 0.55)',
           };
@@ -258,6 +258,7 @@ export const Callout = ({
       name={name}
       style={{
         position: 'absolute',
+        zIndex: 10,
         display: 'flex',
         flexDirection: 'column',
         gap: 14,
@@ -280,7 +281,7 @@ export const Callout = ({
             gap: 12,
             fontFamily: font.mono,
             fontWeight: 700,
-            fontSize: type.label,
+            fontSize: type.body,
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
             color: color.accent,

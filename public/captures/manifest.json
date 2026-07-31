@@ -2,6 +2,20 @@
   "captureDate": "2026-07-29",
   "assets": [
     {
+      "path": "captures/tablet/ctrlbot-ai-core.png",
+      "type": "image",
+      "device": "tablet",
+      "description": "CTRLbot AI with the core setup rail",
+      "source": "SM-X210_2026-07-29_11-25-04.png"
+    },
+    {
+      "path": "captures/tablet/ctrlbot-ai-room.png",
+      "type": "image",
+      "device": "tablet",
+      "description": "CTRLbot AI with Activities and EUI available",
+      "source": "SM-X210_2026-07-29_09-17-01.png"
+    },
+    {
       "path": "captures/tablet/onboarding.png",
       "type": "image",
       "device": "tablet",

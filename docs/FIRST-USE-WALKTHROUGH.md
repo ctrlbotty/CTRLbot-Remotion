@@ -2,20 +2,21 @@
 
 ## Approved sources
 
-This edit is based on the following v1.0 sources, reviewed July 29, 2026:
+This edit is based on the following v1.0 sources, first reviewed July 29 and updated
+against Android resources on July 30, 2026:
 
 - `docs/About_CTRLbot_IoT.md` for product positioning, release boundaries, terminology, and approved claims;
-- `docs/CTRLbot-IoT-User-Manual.md` for the canonical setup sequence and operator guidance;
-- `docs/CTRLbot-IoT-User-Manual.pdf` for the illustrated phone/tablet layouts;
+- `docs/CTRLbot-IoT-User-Manual.md` as a supporting July 29 setup/reference snapshot;
 - the sanitized phone and tablet screenshots and muted walkthrough excerpts listed in `public/captures/manifest.json`.
 
-The Markdown manual and the 20-page illustrated PDF agree on the first-use path. The source walkthroughs show the same controls in phone portrait and tablet landscape layouts.
+The Android app remains authoritative. The source walkthroughs show the same workflow in
+phone portrait and tablet landscape layouts, with form-factor-specific navigation.
 
 ## Editorial goal
 
 - Audience: AV installer or integrator opening CTRLbot IoT for the first time.
 - Outcome: understand the shortest safe path from first launch to a usable End User Interface.
-- Runtime: 36.5 seconds.
+- Runtime: 125.33 seconds for the current phone cut; the tablet cut starts from the same scene lengths.
 - Delivery: silent, caption-led MP4 that remains understandable without narration.
 - Variants: 1080×1920 phone portrait and 1920×1080 tablet landscape.
 
@@ -23,7 +24,8 @@ The Markdown manual and the 20-page illustrated PDF agree on the first-use path.
 
 | Step | On-screen action | Approved guidance |
 |---|---|---|
-| First launch | Review the privacy notice and select **Get Started** | Configuration is local to the Android device; credentials are encrypted locally. |
+| Open | Establish the quick start and device-only programming | No software or laptop is required for the room setup shown here. |
+| CTRLbot | Show the core menus, then the built-in AI help | CTRLbot AI provides the manual, FAQ, and troubleshooting help; setup begins under Device. |
 | Device | Browse or search the bundled driver catalog and select a driver | Review the model before selecting **+** to create a connection. |
 | Connect | Enter the address and port, connect, and send a safe command | Successful connection changes save automatically; verify the real equipment and terminal response. |
 | Activities | Review Presets, Switching, and Audio | Test generated mappings and sequences before handoff. |

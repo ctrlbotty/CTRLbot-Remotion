@@ -7,107 +7,47 @@ the what and the why.
 
 ## Where things stand
 
-**Foundation: done.** Token sync from the app, camera rig, annotation set, five live app
-surfaces, capture cropping, three-face type system. `npm run check` passes.
+**Foundation: done.** Token sync from the app, camera rig, annotation set, live phone and
+tablet surfaces, capture cropping, three-face type system, and phone/tablet scene
+registrations. `npm run check` passes.
 
-**`First-Run-Phone`: complete at 115s, under review.** Seven scenes, all rendering.
+**`First-Run-Phone`: complete at 125.33s; Review 04 is approved for now.** Preserve it as
+the editorial reference while building the tablet cut. Optional phone polish is deferred,
+not active work.
 
-**`First-Run-Tablet`: registered but not built.** It renders — every scene takes a
-`device` prop and falls through to something — but nothing has been framed, timed or
-reviewed for landscape. Treat the current output as a placeholder, not a draft.
+**`First-Run-Tablet`: renderable baseline, not a review draft.** Full-cut stills now load
+through every scene, the shared XML-derived tablet rail exists, and the missing tablet
+Switching capture mapping is fixed. Camera paths, CTRLbot, and Connect still need real
+landscape work.
 
----
-
-## Phase 1 — finish the phone cut
-
-Review feedback is arriving in batches of two or three changes. Work in that grain: make
-the changes, render, verify **in the full cut** rather than only the scene, send it.
-
-### Known open items
-
-1. **Scene 5 (Build the room) is the weakest.** Three captures with slow pushes while the
-   copy does the explaining — noticeably flatter than the live scenes either side. Options,
-   in order of preference: shorten it; rebuild the Switching panel live; leave it as the
-   breather between two dense scenes. Not yet decided.
-
-2. **Brand cards may read sparse.** At 300 frames the open and close cards hold a small
-   block of type in a 1920-tall frame. The internal animation was doubled so it is not
-   static, but the composition itself has not been revisited.
-
-3. **The CTRLbot scene's top copy overlaps the CTRLbot mark.** The scrim carries it, but
-   the mark could move down.
-
-4. **`ic_sort` vs the app.** The sort glyph is now the app's own `ic_sort`. The category
-   filter has no icon, matching the capture. Worth one more look against a current build.
-
-### Verification that is not optional
-
-Render a still **from the full cut**, not just the scene, before reporting a fix. A scene
-composition and its slot in `<TransitionSeries>` are separate durations, and they have
-already disagreed once — every scene was truncated to half its length while the
-composition still claimed the full runtime, so roughly half the cut never played. Scene
-lengths now come from `SCENE_FRAMES` in `scenes/shared.ts` and are used in both places,
-but confirm rather than assume.
-
-```bash
-npm run still -- First-Run-Phone out/check.png --frame=1200
-```
-
-Sample at moments where copy has settled — roughly 25 frames after each `<Sequence from>`.
-Sampling mid-stagger shows missing text and reads as a bug that is not there.
+The next-agent brief is [TABLET-HANDOFF.md](TABLET-HANDOFF.md). It records the current
+Android sources, scene-by-scene gaps, exact full-cut frame map, and recommended build
+order.
 
 ---
 
-## Phase 2 — the tablet cut
+## Phase 1 — phone cut
 
-Everything is device-parameterised already, so this is framing and timing work, not new
-architecture. Roughly in this order:
+Paused by product-owner direction. The current review file is
+`out/first-run-phone-review-04.mp4`; `out/` is ignored and reproducible. Do not change the
+phone cut while building the tablet unless a shared fix is necessary and the phone full
+cut is re-verified.
 
-### 2.1 Surfaces
+---
 
-`TabletEui`, `DriverCatalog` and `ConnectionPanel` all have tablet paths and tablet
-proofs. Render the three `Proof-Tablet-*` stills and compare against captures before
-animating anything.
+## Phase 2 — tablet cut
 
-**`CtrlbotAi` and `PhoneNavMenu` are phone-only.** The tablet uses the left nav rail that
-`DriverCatalog` already draws, not a bottom sheet. Two jobs:
+Start with [TABLET-HANDOFF.md](TABLET-HANDOFF.md), then work in batches of two or three
+changes. The high-level order is:
 
-- Extract that rail into its own component so `CtrlbotAi` and `ConnectionPanel` can use it.
-- Build the tablet CTRLbot AI layout. There is no capture of it yet — ask for one rather
-  than inventing it.
+1. Build the tablet CTRLbot surface from the curated WebView captures and shared rail.
+2. Fit Connect into the rail's content frame and retarget its camera/annotations.
+3. Recompose Device and the three Build Room capture beats for right-side copy.
+4. Re-author EUI camera paths for landscape while preserving the phone-approved story.
+5. Verify settled moments in `First-Run-Tablet`, then watch the complete encoded cut.
 
-`CapturedScreen` has a tablet crop box (`208, 205, 3216, 2022`) that has been verified
-against `captures/tablet/onboarding.png` only. Check it against the other tablet captures.
-
-### 2.2 Framing
-
-Landscape is where the camera can actually work. `closeShotWidth('tablet')` is `0.52`
-against the phone's `0.78` — width is not the binding dimension there, so real push-ins
-are available and `<Spotlight>` can do less.
-
-`copySideFor('tablet')` returns `'right'`, which gives `<Callout>` its card treatment in
-the margin beside the UI rather than a scrim over it. That is the main reason the tablet
-cut should feel less cramped. It has never been rendered — verify the card does not
-collide with the UI at `closeShotWidth` zoom.
-
-### 2.3 Scene-by-scene
-
-Each scene needs its camera path re-authored for landscape. The shot **lists** are
-device-agnostic in structure but their values are phone-tuned. Specifically:
-
-| Scene | Tablet work |
-|---|---|
-| Open / Close | Banner and type sizes already branch on `isPhone`; check line breaks at 1920 wide |
-| CTRLbot | Needs the tablet AI surface first (2.1) |
-| Device | Nav rail instead of the bottom sheet; the scroll and the `+` still apply |
-| Connect and test | `connectionRegions('tablet')` puts CONNECT on the same row as host and port, not its own — the shot list assumes the phone's stacked layout |
-| Build the room | Tablet captures exist for all three panels |
-| EUI handoff | `TABLET_EUI_REGIONS.sourceRow` replaces `inputTile`; already wired |
-
-### 2.4 Register scene compositions
-
-`Root.tsx` registers `Scene-*` for phone only. Add a `Scenes-Tablet` folder so tablet
-scenes can be previewed in isolation too.
+All seven tablet scenes are registered under `Scenes-Tablet`; use them for authoring, but
+report fixes only after rendering the corresponding full-cut frame.
 
 ---
 
@@ -142,6 +82,18 @@ the top.
 **Annotation `radius` must match the control.** The EUI's display panels are square; a
 rounded ring over one disagrees at every corner. Default is `0`.
 
+**Composition listing is not render verification.** `npm run check` can pass while a
+device-specific capture path fails later in the cut. Render a settled full-cut frame in
+every scene after changing capture mappings or form-factor branches.
+
+**The tablet rail consumes real app width.** Current `_setup_main.xml` gives it 200dp;
+`frame_setup` starts after the rail. A 1280dp-wide setup surface cannot simply be placed
+beside it. Derive the remaining content plane before exporting regions.
+
+**Landscape callouts can still cover the subject.** A right-side card is outside the
+camera, but it occupies the viewer's frame. Compose the target to its left and verify the
+actual full cut rather than assuming the card margin is empty.
+
 ---
 
 ## Not started
@@ -149,10 +101,8 @@ rounded ring over one disagrees at every corner. Default is `0`.
 - Voiceover variant. The cut is built caption-led; a VO version would need a script and
   retimed scenes sharing the same surfaces.
 - Any composition beyond the first run — feature shorts, per-topic training, thumbnails.
-- `ingest-captures.mjs` still points at the July 29 walkthrough package. The July 30
-  screenshots used by the CTRLbot scene were read directly from `../CTRLbot Mirror` and
-  are **not** in `public/captures`. Fold them in before relying on them.
-- The app has moved ahead of the layouts in the repo: the four-item nav (CTRLbot / Device /
-  Connect / Set) exists in the 07-30 screenshots but `res/layout-port/_setup_main.xml`
-  still describes the older seven-item drawer. `CtrlbotAi` and `PhoneNavMenu` were built
-  from screenshots; re-derive them from `res/` once the app catches up.
+- The current Android setup layouts now include Activities and EUI. `TabletNavRail` is
+  derived from them; `PhoneNavMenu` predates that update and should be re-audited against
+  `res/layout-port/_setup_main.xml` when phone work resumes.
+- The Markdown user manual is a July 29 supporting snapshot and is no longer generated by
+  the app repository. Keep product claims anchored to current resources/builds.

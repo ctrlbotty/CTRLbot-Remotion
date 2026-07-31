@@ -243,7 +243,9 @@ export const appDrawables = [
   "ic_hdmi_icon_sm.svg",
   "ic_display_icon.svg",
   "ic_route5.svg",
+  "nav_right.svg",
   "ic_speaker_on.svg",
+  "ic_speaker_off.svg",
   "ic_vol_left.svg",
   "ic_vol_right.svg",
   "ic_mic_live.svg",
@@ -259,13 +261,18 @@ export const appDrawables = [
   "ic_sort.svg",
   "ic_close.svg",
   "ic_ctrlbot.svg",
+  "ic_arrow_forward_24.svg",
   "ic_connect.svg",
+  "ic_connected.svg",
+  "ic_activities.svg",
+  "ic_eui.svg",
   "disp_m_blue.png",
   "disp_m_grey.png",
   "disp_m_yellow.png",
   "disp_lg_blue.png",
   "disp_lg_grey.png",
-  "bg_eui.png"
+  "bg_eui.png",
+  "bg_leftmenu.png"
 ] as const;
 
 export type AppColorToken = keyof typeof appColors;

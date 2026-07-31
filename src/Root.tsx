@@ -6,6 +6,7 @@ import {ConnectAndTest} from './scenes/ConnectAndTest';
 import {EuiHandoff} from './scenes/EuiHandoff';
 import {CtrlbotIntro} from './scenes/CtrlbotIntro';
 import {DeviceSetup} from './scenes/DeviceSetup';
+import {SCENE_FRAMES} from './scenes/shared';
 import {
   PhoneCaptureProof,
   PhoneCatalogProof,
@@ -31,7 +32,7 @@ export const RemotionRoot = () => (
       <Composition
         id="First-Run-Phone"
         component={FirstRun}
-        defaultProps={{device: 'phone' as const}}
+        defaultProps={{device: 'phone'}}
         durationInFrames={firstRunDuration()}
         fps={30}
         width={1080}
@@ -40,7 +41,7 @@ export const RemotionRoot = () => (
       <Composition
         id="First-Run-Tablet"
         component={FirstRun}
-        defaultProps={{device: 'tablet' as const}}
+        defaultProps={{device: 'tablet'}}
         durationInFrames={firstRunDuration()}
         fps={30}
         width={1920}
@@ -53,14 +54,13 @@ export const RemotionRoot = () => (
         id="Scene-Open"
         component={BrandCard}
         defaultProps={{
-          device: 'phone' as const,
+          device: 'phone',
           eyebrow: 'Quick start',
           headline: 'Program your first room',
-          subhead:
-            'Start to finish, from the device in your hand. No rack, no laptop, no programming.',
+          subhead: 'No software, no laptop; program it with your thumbs.',
           kicker: 'Phone · 2 minutes',
         }}
-        durationInFrames={300}
+        durationInFrames={SCENE_FRAMES.open}
         fps={30}
         width={1080}
         height={1920}
@@ -68,8 +68,8 @@ export const RemotionRoot = () => (
       <Composition
         id="Scene-CTRLbot"
         component={CtrlbotIntro}
-        defaultProps={{device: 'phone' as const}}
-        durationInFrames={440}
+        defaultProps={{device: 'phone'}}
+        durationInFrames={SCENE_FRAMES.ctrlbot}
         fps={30}
         width={1080}
         height={1920}
@@ -77,8 +77,8 @@ export const RemotionRoot = () => (
       <Composition
         id="Scene-Device"
         component={DeviceSetup}
-        defaultProps={{device: 'phone' as const}}
-        durationInFrames={620}
+        defaultProps={{device: 'phone'}}
+        durationInFrames={SCENE_FRAMES.device}
         fps={30}
         width={1080}
         height={1920}
@@ -86,8 +86,8 @@ export const RemotionRoot = () => (
       <Composition
         id="Scene-Connect-And-Test"
         component={ConnectAndTest}
-        defaultProps={{device: 'phone' as const}}
-        durationInFrames={600}
+        defaultProps={{device: 'phone'}}
+        durationInFrames={SCENE_FRAMES.connect}
         fps={30}
         width={1080}
         height={1920}
@@ -95,8 +95,8 @@ export const RemotionRoot = () => (
       <Composition
         id="Scene-Build-Room"
         component={BuildRoom}
-        defaultProps={{device: 'phone' as const}}
-        durationInFrames={540}
+        defaultProps={{device: 'phone'}}
+        durationInFrames={SCENE_FRAMES.buildRoom}
         fps={30}
         width={1080}
         height={1920}
@@ -104,11 +104,104 @@ export const RemotionRoot = () => (
       <Composition
         id="Scene-EUI-Handoff"
         component={EuiHandoff}
-        defaultProps={{device: 'phone' as const}}
-        durationInFrames={780}
+        defaultProps={{device: 'phone'}}
+        durationInFrames={SCENE_FRAMES.euiHandoff}
         fps={30}
         width={1080}
         height={1920}
+      />
+      <Composition
+        id="Scene-Close"
+        component={BrandCard}
+        defaultProps={{
+          device: 'phone',
+          headline: 'Your room is ready',
+          subhead:
+            'Configure and operate a compatible room from one app, with the setup kept out of the way.',
+          kicker: 'ctrlbot.io',
+        }}
+        durationInFrames={SCENE_FRAMES.close}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+    </Folder>
+
+    <Folder name="Scenes-Tablet">
+      <Composition
+        id="Scene-Tablet-Open"
+        component={BrandCard}
+        defaultProps={{
+          device: 'tablet',
+          eyebrow: 'Quick start',
+          headline: 'Program your first room',
+          subhead: 'No software, no laptop; program it with your thumbs.',
+          kicker: 'Tablet · 2 minutes',
+        }}
+        durationInFrames={SCENE_FRAMES.open}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="Scene-Tablet-CTRLbot"
+        component={CtrlbotIntro}
+        defaultProps={{device: 'tablet'}}
+        durationInFrames={SCENE_FRAMES.ctrlbot}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="Scene-Tablet-Device"
+        component={DeviceSetup}
+        defaultProps={{device: 'tablet'}}
+        durationInFrames={SCENE_FRAMES.device}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="Scene-Tablet-Connect-And-Test"
+        component={ConnectAndTest}
+        defaultProps={{device: 'tablet'}}
+        durationInFrames={SCENE_FRAMES.connect}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="Scene-Tablet-Build-Room"
+        component={BuildRoom}
+        defaultProps={{device: 'tablet'}}
+        durationInFrames={SCENE_FRAMES.buildRoom}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="Scene-Tablet-EUI-Handoff"
+        component={EuiHandoff}
+        defaultProps={{device: 'tablet'}}
+        durationInFrames={SCENE_FRAMES.euiHandoff}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="Scene-Tablet-Close"
+        component={BrandCard}
+        defaultProps={{
+          device: 'tablet',
+          headline: 'Your room is ready',
+          subhead:
+            'Configure and operate a compatible room from one app, with the setup kept out of the way.',
+          kicker: 'ctrlbot.io',
+        }}
+        durationInFrames={SCENE_FRAMES.close}
+        fps={30}
+        width={1920}
+        height={1080}
       />
     </Folder>
 

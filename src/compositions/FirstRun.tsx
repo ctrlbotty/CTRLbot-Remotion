@@ -48,7 +48,7 @@ export const FirstRun = ({device}: {device: Device}) => (
           device={device}
           eyebrow="Quick start"
           headline="Program your first room"
-          subhead="Start to finish, from the device in your hand. No rack, no laptop, no programming."
+          subhead="No software, no laptop; program it with your thumbs."
           kicker={device === 'phone' ? 'Phone · 2 minutes' : 'Tablet · 2 minutes'}
         />
       </TransitionSeries.Sequence>

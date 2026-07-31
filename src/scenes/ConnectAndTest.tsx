@@ -13,6 +13,7 @@ import {
   connectionRegions,
   type TerminalLine,
 } from '../app-ui/ConnectionPanel';
+import {PhoneNavMenu, navRegions} from '../app-ui/PhoneNavMenu';
 import {color} from '../design/theme';
 import {closeShotWidth, copySideFor, type Device} from './shared';
 
@@ -32,6 +33,9 @@ const TYPE_START = 52;
 const CONNECT_FRAME = 216;
 const SEND_FRAME = 392;
 const REPLY_FRAME = 432;
+const MENU_OPEN_FRAME = 612;
+const ACTIVITIES_TAP_FRAME = 736;
+const MENU_SHOT_WIDTH = 0.94;
 
 export const ConnectAndTest = ({device}: {device: Device}) => {
   const frame = useCurrentFrame();
@@ -43,6 +47,8 @@ export const ConnectAndTest = ({device}: {device: Device}) => {
   const powerOnRow = r.commandRow(0);
   const sendButton = r.sendButton(0);
   const terminalBox = r.terminal;
+  const activitiesRow = navRegions.row(3, true);
+  const menuExpanded = frame >= MENU_OPEN_FRAME;
 
   const typedHost = HOST.slice(
     0,
@@ -91,6 +97,28 @@ export const ConnectAndTest = ({device}: {device: Device}) => {
             at: 564,
             region: frameWidth({x: viewport.width / 2, y: centerOf(terminalBox).y}, viewport.width * closeShotWidth(device)),
           },
+          // Pull out before the setup menu opens, then hold on all six rows.
+          {at: 600, region: r.full},
+          {
+            at: 656,
+            region:
+              device === 'phone'
+                ? frameWidth(
+                    {x: viewport.width / 2, y: centerOf(navRegions.roomExpanded).y},
+                    viewport.width * MENU_SHOT_WIDTH,
+                  )
+                : r.full,
+          },
+          {
+            at: 760,
+            region:
+              device === 'phone'
+                ? frameWidth(
+                    {x: viewport.width / 2, y: centerOf(navRegions.roomExpanded).y},
+                    viewport.width * MENU_SHOT_WIDTH,
+                  )
+                : r.full,
+          },
         ]}
       >
         <ConnectionPanel
@@ -104,6 +132,14 @@ export const ConnectAndTest = ({device}: {device: Device}) => {
           highlightedCommand={frame >= SEND_FRAME && frame < 500 ? 0 : null}
           hostCaret={frame >= TYPE_START && frame < CONNECT_FRAME}
         />
+
+        {device === 'phone' ? (
+          <PhoneNavMenu
+            expanded={menuExpanded}
+            active={frame < ACTIVITIES_TAP_FRAME ? 'device' : 'activities'}
+            showRoomMenus={menuExpanded}
+          />
+        ) : null}
 
         <Sequence from={88} durationInFrames={108} layout="none" name="Isolate address">
           <Spotlight region={hostField} appearAt={0} radius={5} />
@@ -127,6 +163,35 @@ export const ConnectAndTest = ({device}: {device: Device}) => {
         <Sequence from={488} durationInFrames={112} layout="none" name="Isolate terminal">
           <Spotlight region={terminalBox} appearAt={0} radius={0} />
         </Sequence>
+
+        {device === 'phone' ? (
+          <>
+            <Sequence from={576} durationInFrames={48} layout="none" name="Open setup menu">
+              <TapIndicator
+                x={centerOf(navRegions.collapsedHandle).x}
+                y={centerOf(navRegions.collapsedHandle).y}
+                at={12}
+                name="Menu tap"
+              />
+            </Sequence>
+
+            <Sequence from={624} durationInFrames={156} layout="none" name="Choose Activities">
+              <Spotlight region={activitiesRow} appearAt={0} radius={0} />
+              <FocusRing
+                region={activitiesRow}
+                appearAt={12}
+                radius={0}
+                name="Activities row"
+              />
+              <TapIndicator
+                x={centerOf(activitiesRow).x}
+                y={centerOf(activitiesRow).y}
+                at={ACTIVITIES_TAP_FRAME - 624}
+                name="Activities tap"
+              />
+            </Sequence>
+          </>
+        ) : null}
       </Camera>
 
       <Sequence from={8} durationInFrames={100} layout="none" name="Copy: address">
@@ -158,6 +223,18 @@ export const ConnectAndTest = ({device}: {device: Device}) => {
           side={copySideFor(device)}
         />
       </Sequence>
+
+      {device === 'phone' ? (
+        <Sequence from={620} durationInFrames={160} layout="none" name="Copy: open Activities">
+          <Callout
+            eyebrow="Next"
+            title="Open Activities"
+            body="With your devices connected, you’re ready to set up the room."
+            at={0}
+            side="top"
+          />
+        </Sequence>
+      ) : null}
     </AbsoluteFill>
   );
 };

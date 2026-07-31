@@ -12,6 +12,7 @@
 // by equipment type, which is a real affordance rather than decoration.
 
 import {AppIcon, type AppIconName} from './AppIcon';
+import {TABLET_NAV_WIDTH, TabletNavRail} from './TabletNavRail';
 import {VIEWPORT as CATALOG_VIEWPORT} from './viewports';
 import {appColors, appColorStates} from '../design/tokens.generated';
 
@@ -63,8 +64,6 @@ const DEVICE_TYPE: Record<
   },
 };
 
-const NAV_WIDTH = 180;
-
 // Layout rhythm, shared by the markup and catalogRegions() so a camera target can
 // never drift from the control it points at.
 const EDGE = 12;
@@ -88,7 +87,7 @@ const TITLE_W = 150; // 'Device Drivers' at 18sp needs ~134; the rest is its gap
  */
 export const catalogRegions = (device: 'phone' | 'tablet') => {
   const viewport = CATALOG_VIEWPORT[device];
-  const listX = device === 'tablet' ? NAV_WIDTH : 0;
+  const listX = device === 'tablet' ? TABLET_NAV_WIDTH : 0;
   const listW = device === 'tablet' ? 430 : viewport.width;
   // Phone stacks the filters, so it clears two rows before the list starts.
   const filterRows = device === 'phone' ? 2 : 1;
@@ -125,12 +124,6 @@ export const catalogRegions = (device: 'phone' | 'tablet') => {
     }),
   };
 };
-
-const RAIL_ITEMS = [
-  {icon: 'ic_server' as AppIconName, label: 'Device'},
-  {icon: 'ic_connect' as AppIconName, label: 'Connect'},
-  {icon: 'ic_settings2' as AppIconName, label: 'Set'},
-];
 
 /** One driver row. `selected` takes the card_background selected colour. */
 const DriverCard = ({
@@ -307,55 +300,8 @@ export const DriverCatalog = ({
         backgroundColor: appColors.gray10,
       }}
     >
-      {/* Setup nav rail — tablet only; phone puts these in a bottom icon bar */}
-      {isTablet ? (
-        <div
-          style={{
-            width: NAV_WIDTH,
-            flex: '0 0 auto',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 26,
-            paddingTop: 28,
-            paddingLeft: 24,
-            background: 'linear-gradient(to right, #161616, #2A2A2A)',
-          }}
-        >
-          <div style={{display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14}}>
-            <AppIcon name="ic_settings2" size={22} tint={appColors.gray50} />
-            <span
-              style={{
-                fontFamily: 'Audiowide, sans-serif',
-                fontWeight: 400,
-                fontSize: 16,
-                letterSpacing: 0,
-                color: appColors.gray50,
-              }}
-            >
-              CTRLbot
-            </span>
-          </div>
-          {RAIL_ITEMS.map((item, index) => (
-            <div key={item.label} style={{display: 'flex', alignItems: 'center', gap: 14}}>
-              <AppIcon
-                name={item.icon}
-                size={22}
-                tint={index === 0 ? appColors.white : appColors.gray50}
-              />
-              <span
-                style={{
-                  fontFamily: 'Montserrat, sans-serif',
-                  fontWeight: 400,
-                  fontSize: 16,
-                  color: index === 0 ? appColors.white : appColors.gray50,
-                }}
-              >
-                {item.label}
-              </span>
-            </div>
-          ))}
-        </div>
-      ) : null}
+      {/* Setup nav rail — tablet only; phone puts these in a bottom sheet. */}
+      {isTablet ? <TabletNavRail active="device" /> : null}
 
       {/* List column */}
       <div

@@ -15,9 +15,13 @@ import {color, font, type} from '../design/theme';
 import {copySideFor, viewportFor, type Device} from './shared';
 
 const PANELS = [
-  {tab: 'Presets', capture: 'presets.png'},
-  {tab: 'Switching', capture: 'switching.png'},
-  {tab: 'Audio', capture: 'audio.png'},
+  {tab: 'Presets', phoneCapture: 'presets.png', tabletCapture: 'presets.png'},
+  {
+    tab: 'Switching',
+    phoneCapture: 'switching.png',
+    tabletCapture: 'switching-preview.png',
+  },
+  {tab: 'Audio', phoneCapture: 'audio.png', tabletCapture: 'audio.png'},
 ] as const;
 
 const PANEL_FRAMES = 180;
@@ -59,7 +63,10 @@ export const BuildRoom = ({device}: {device: Device}) => {
           durationInFrames={PANEL_FRAMES}
           name={panel.tab}
         >
-          <Panel device={device} capture={panel.capture} />
+          <Panel
+            device={device}
+            capture={device === 'phone' ? panel.phoneCapture : panel.tabletCapture}
+          />
         </Sequence>
       ))}
 
@@ -71,7 +78,7 @@ export const BuildRoom = ({device}: {device: Device}) => {
         <Callout
           eyebrow="Activities"
           title="Build the room"
-          body="Power presets, source switching, and room audio — generated from the devices you configured."
+          body="Presets, source switching, and room audio — auto-generated from connected devices, then tweaked by you."
           at={0}
           side={copySideFor(device)}
         />
