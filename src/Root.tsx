@@ -1,5 +1,6 @@
 import {Composition, Folder, Still} from 'remotion';
 import {FirstRun, firstRunDuration} from './compositions/FirstRun';
+import {MasterControlPromo} from './compositions/MasterControlPromo';
 import {BrandCard, BrandBackground} from './scenes/BrandCard';
 import {BuildRoom} from './scenes/BuildRoom';
 import {ConnectAndTest} from './scenes/ConnectAndTest';
@@ -30,6 +31,17 @@ import {
 
 export const RemotionRoot = () => (
   <>
+    <Folder name="Marketing">
+      <Composition
+        id="Master-Control-Promo"
+        component={MasterControlPromo}
+        durationInFrames={900}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+    </Folder>
+
     <Folder name="First-Run">
       <Composition
         id="First-Run-Phone"
