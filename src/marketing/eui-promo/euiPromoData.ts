@@ -7,6 +7,7 @@ import {BeatRoute} from './BeatRoute';
 import {BeatMatrix} from './BeatMatrix';
 import {BeatAudio} from './BeatAudio';
 import {BeatBoth} from './BeatBoth';
+import {BeatClose} from './BeatClose';
 
 export type EuiPromoBeat = {
   id: string;
@@ -52,6 +53,12 @@ export const EUI_PROMO_BEATS: EuiPromoBeat[] = [
     masterFrames: 270,
     playFrames: 135,
     component: BeatBoth,
+  },
+  {
+    id: 'close',
+    masterFrames: 180,
+    playFrames: 90,
+    component: BeatClose,
   },
 ];
 

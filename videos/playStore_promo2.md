@@ -412,7 +412,7 @@ deliverable; if a line reads at 60 and races at 30, it is too long.
   not resolve, raise `DUAL_STAGE.phoneHeight` before anything else — an illegible phone
   is this beat failing, not a detail.
 
-- [ ] T11: Build the close beat — power down, then the card — files: src/marketing/eui-promo/BeatClose.tsx, src/marketing/eui-promo/euiPromoData.ts
+- [x] T11: Build the close beat — power down, then the card — files: src/marketing/eui-promo/BeatClose.tsx, src/marketing/eui-promo/euiPromoData.ts
 
   Three states in 6s (3s at 30): `EuiPowerCapture state="powering-off"` with the red
   ring closing to t=0.34, `state="off"` on Welcome to t=0.52, then `MasterControlCard`
