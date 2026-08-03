@@ -17,23 +17,28 @@ import {AbsoluteFill, Easing, Interactive, interpolate, useCurrentFrame, useVide
 import {Camera, type Shot} from '../camera/Camera';
 import {background, color, font, radius, space, type} from '../design/theme';
 
+/** Frame pixels of device edge around each screen. See `Stage`'s `bezel`. */
+const BEZEL = 18;
+
 export const DUAL_STAGE = {
-  /** Frame pixels. The phone is taller than the tablet on purpose — see above. */
+  /** Frame pixels of *screen*; the bezel is drawn outside it. Phone is taller — see above. */
   tabletHeight: 470,
-  phoneHeight: 750,
+  phoneHeight: 690,
   gap: 72,
   titleTop: 56,
   /**
-   * Where the panels may start. The copy block above is eyebrow + a line of Audiowide
+   * Where the panels may live. The copy block above is eyebrow + a line of Audiowide
    * + a line of body, and the first version centred the panels in the whole frame — so
    * the 880px phone reached up to y=148 and printed straight through the headline.
    * Reserving the band outright is what keeps a taller phone from ever doing that
    * again; the pair centres in what is left.
+   *
+   * The bottom is a hard edge, not a suggestion. `phoneHeight` plus its bezel has to
+   * fit inside this band or the phone runs off the frame — which is exactly what
+   * happened at 750 once the bezel added 36px it had never had to account for.
    */
   panelZoneTop: 250,
-  panelZoneBottom: 1020,
-  /** Frame pixels the pair rises over the beat when `drift` is driven. */
-  driftRise: 64,
+  panelZoneBottom: 1030,
 } as const;
 
 type Panel = {
@@ -42,9 +47,6 @@ type Panel = {
   height: number;
   children: ReactNode;
 };
-
-/** Frame pixels of device edge around each screen. See `Stage`'s `bezel`. */
-const BEZEL = 18;
 
 const Panel = ({panel, left, top}: {panel: Panel; left: number; top: number}) => {
   const width = (panel.contentSize.width / panel.contentSize.height) * panel.height;
@@ -88,7 +90,6 @@ export const DualStage = ({
   phone,
   copy,
   background: stageBackground = background.stage,
-  drift = 0,
 }: {
   eyebrow?: string;
   title?: string;
@@ -102,15 +103,6 @@ export const DualStage = ({
   copy?: ReactNode;
   /** Background under the whole stage. Defaults to the house marketing gradient. */
   background?: string;
-  /**
-   * 0..1. How far through the pair's slow rise the beat is.
-   *
-   * This beat has no camera and one state change, which measured 89% inert — the most
-   * dead of the seven. Rather than push into panels whose whole point is that they are
-   * shown whole, the pair drifts upward across the beat: continuous, subtle, and it
-   * leaves both aspect ratios untouched.
-   */
-  drift?: number;
 }) => {
   const frame = useCurrentFrame();
   const {width: frameWidth, height: frameHeight} = useVideoConfig();
@@ -123,7 +115,9 @@ export const DualStage = ({
     (phone.contentSize.width / phone.contentSize.height) * DUAL_STAGE.phoneHeight;
 
   // Centred as a pair, so the composition does not drift when either panel is retuned.
-  const pairWidth = tabletWidth + DUAL_STAGE.gap + phoneWidth;
+  // Widths include the bezel: it is part of the device, and leaving it out of the
+  // centring is what put the pair off-centre and the phone through the frame edge.
+  const pairWidth = tabletWidth + DUAL_STAGE.gap + phoneWidth + BEZEL * 4;
   const pairLeft = (frameWidth - pairWidth) / 2;
   // Centred in the band below the copy, never in the whole frame.
   const centreY = (DUAL_STAGE.panelZoneTop + Math.min(DUAL_STAGE.panelZoneBottom, frameHeight)) / 2;
@@ -232,15 +226,17 @@ export const DualStage = ({
       </Interactive.Div>
       )}
 
+      {/* Both static. The devices are the subject here, and a device that drifts while
+          the viewer is being asked to compare it with another one is just noise. */}
       <Panel
         panel={tabletPanel}
         left={pairLeft}
-        top={centreY - DUAL_STAGE.tabletHeight / 2 + DUAL_STAGE.driftRise * (1 - drift)}
+        top={centreY - (DUAL_STAGE.tabletHeight + BEZEL * 2) / 2}
       />
       <Panel
         panel={phonePanel}
-        left={pairLeft + tabletWidth + DUAL_STAGE.gap}
-        top={centreY - DUAL_STAGE.phoneHeight / 2 + DUAL_STAGE.driftRise * (1 - drift)}
+        left={pairLeft + tabletWidth + BEZEL * 2 + DUAL_STAGE.gap}
+        top={centreY - (DUAL_STAGE.phoneHeight + BEZEL * 2) / 2}
       />
     </AbsoluteFill>
   );

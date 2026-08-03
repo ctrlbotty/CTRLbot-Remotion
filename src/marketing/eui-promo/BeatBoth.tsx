@@ -39,7 +39,6 @@ export const BeatBoth: React.FC<{frames: number}> = ({frames}) => {
   return (
     <DualStage
       background={promoBg(t)}
-      drift={t}
       until={frames}
       copy={
         <PromoCopy
