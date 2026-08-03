@@ -26,6 +26,7 @@ import {
   matrixOutputs,
   matrixSelection,
   stageWide,
+  type BeatProps,
 } from './euiPromoData';
 
 const INPUTS = [
@@ -35,7 +36,7 @@ const INPUTS = [
   {label: 'Input 4'},
 ];
 
-export const BeatMatrix: React.FC<{frames: number}> = ({frames}) => {
+export const BeatMatrix: React.FC<BeatProps> = ({frames, cut}) => {
   const frame = useCurrentFrame();
   const t = frame / frames;
 
@@ -46,7 +47,12 @@ export const BeatMatrix: React.FC<{frames: number}> = ({frames}) => {
 
   // Copy block boundaries, tracking the surface: one source picked, a second picked
   // while the first route stays live, then All.
-  const blockTwo = Math.round(frames * 0.36);
+  //
+  // The middle block is the one the 30 drops. "Every output holds its own source" is
+  // the subtlest of the three claims and the one the grid demonstrates least loudly,
+  // so it is the block whose absence costs least — and dropping it lets the other two
+  // keep the length they need rather than thinning all three.
+  const blockTwo = Math.round(frames * (cut === 'play' ? 0.5 : 0.36));
   const blockThree = Math.round(frames * 0.64);
 
   const tapFrom = Math.round(frames * 0.68);
@@ -90,25 +96,31 @@ export const BeatMatrix: React.FC<{frames: number}> = ({frames}) => {
               until={blockTwo}
             />
           </Sequence>
+          {cut === 'play' ? null : (
+            <Sequence
+              from={blockTwo}
+              durationInFrames={blockThree - blockTwo}
+              layout="none"
+              name="Copy: multiple"
+            >
+              <PromoCopy
+                eyebrow="Many-to-Many"
+                title="Or multiple displays"
+                body="Every output holds *its own source* until you change it."
+                until={blockThree - blockTwo}
+              />
+            </Sequence>
+          )}
           <Sequence
-            from={blockTwo}
-            durationInFrames={blockThree - blockTwo}
+            from={cut === 'play' ? blockTwo : blockThree}
             layout="none"
-            name="Copy: multiple"
+            name="Copy: all"
           >
-            <PromoCopy
-              eyebrow="Many-to-Many"
-              title="Or multiple displays"
-              body="Every output holds *its own source* until you change it."
-              until={blockThree - blockTwo}
-            />
-          </Sequence>
-          <Sequence from={blockThree} layout="none" name="Copy: all">
             <PromoCopy
               eyebrow="Many-to-Many"
               title="Or all of them at once"
               body="Send to every display by pressing the *All* button."
-              until={frames - blockThree}
+              until={frames - (cut === 'play' ? blockTwo : blockThree)}
             />
           </Sequence>
         </>

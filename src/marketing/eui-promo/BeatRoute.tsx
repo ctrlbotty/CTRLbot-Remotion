@@ -24,6 +24,7 @@ import {
   euiBand,
   routeSelection,
   stageWide,
+  type BeatProps,
 } from './euiPromoData';
 
 const INPUTS = [
@@ -33,7 +34,7 @@ const INPUTS = [
   {label: 'Input 4'},
 ];
 
-export const BeatRoute: React.FC<{frames: number}> = ({frames}) => {
+export const BeatRoute: React.FC<BeatProps> = ({frames, cut}) => {
   const frame = useCurrentFrame();
   const t = frame / frames;
 
@@ -71,24 +72,35 @@ export const BeatRoute: React.FC<{frames: number}> = ({frames}) => {
         {at: frames, region: euiBand(TABLET_VIEWPORT, true, true)},
       ]}
       copy={
-        <>
-          <Sequence durationInFrames={secondBlock} layout="none" name="Copy: choose">
-            <PromoCopy
-              eyebrow="Many-to-One"
-              title="Choose a source"
-              body="Intuitive. Simple routing of content to a display."
-              until={secondBlock}
-            />
-          </Sequence>
-          <Sequence from={secondBlock} layout="none" name="Copy: routed">
-            <PromoCopy
-              eyebrow="Many-to-One"
-              title="One tap, and it is there"
-              body="The source lights up and the display takes it *in the same moment.*"
-              until={frames - secondBlock}
-            />
-          </Sequence>
-        </>
+        cut === 'play' ? (
+          // One statement at 30 seconds. The second block said the same thing the
+          // surface says on its own, and six seconds is not room for both.
+          <PromoCopy
+            eyebrow="Many-to-One"
+            title="Choose a source"
+            body="Intuitive. Simple routing of content to a display."
+            until={frames}
+          />
+        ) : (
+          <>
+            <Sequence durationInFrames={secondBlock} layout="none" name="Copy: choose">
+              <PromoCopy
+                eyebrow="Many-to-One"
+                title="Choose a source"
+                body="Intuitive. Simple routing of content to a display."
+                until={secondBlock}
+              />
+            </Sequence>
+            <Sequence from={secondBlock} layout="none" name="Copy: routed">
+              <PromoCopy
+                eyebrow="Many-to-One"
+                title="One tap, and it is there"
+                body="The source lights up and the display takes it *in the same moment.*"
+                until={frames - secondBlock}
+              />
+            </Sequence>
+          </>
+        )
       }
     >
       <TabletEuiManyToOne

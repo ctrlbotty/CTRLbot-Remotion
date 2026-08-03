@@ -1,7 +1,8 @@
 import React from 'react';
 import {MasterControlCard} from './MasterControlCard';
+import type {BeatProps} from './euiPromoData';
 
-export const BeatPromise: React.FC<{frames: number}> = ({frames}) => (
+export const BeatPromise: React.FC<BeatProps> = ({frames}) => (
   <MasterControlCard
     frames={frames}
     eyebrow="End User Interface"

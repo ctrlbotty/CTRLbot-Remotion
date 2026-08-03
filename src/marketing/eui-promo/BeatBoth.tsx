@@ -15,7 +15,13 @@ import {PhoneEuiManyToOne, PHONE_VIEWPORT} from '../../app-ui/PhoneEui';
 import {TABLET_VIEWPORT, TabletEui} from '../../app-ui/TabletEui';
 import {DualStage} from '../DualStage';
 import {PromoCopy} from './PromoCopy';
-import {promoBg, RESTING_VOLUME, bothOutputs, bothSelection} from './euiPromoData';
+import {
+  promoBg,
+  RESTING_VOLUME,
+  bothOutputs,
+  bothSelection,
+  type BeatProps,
+} from './euiPromoData';
 
 const INPUTS = [
   {label: 'Input 1'},
@@ -24,7 +30,7 @@ const INPUTS = [
   {label: 'Input 4'},
 ];
 
-export const BeatBoth: React.FC<{frames: number}> = ({frames}) => {
+export const BeatBoth: React.FC<BeatProps> = ({frames}) => {
   const frame = useCurrentFrame();
   const t = frame / frames;
 

@@ -12,9 +12,16 @@ import {EuiPowerCapture} from '../../app-ui/EuiPower';
 import {TABLET_VIEWPORT} from '../../app-ui/viewports';
 import {Stage} from '../Stage';
 import {PromoCopy} from './PromoCopy';
-import {promoBg, PROMO_PANEL, euiCentre, powerPhase, stageWide} from './euiPromoData';
+import {
+  promoBg,
+  PROMO_PANEL,
+  euiCentre,
+  powerPhase,
+  stageWide,
+  type BeatProps,
+} from './euiPromoData';
 
-export const BeatWake: React.FC<{frames: number}> = ({frames}) => {
+export const BeatWake: React.FC<BeatProps> = ({frames}) => {
   const frame = useCurrentFrame();
   const t = frame / frames;
 

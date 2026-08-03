@@ -22,19 +22,23 @@ import {
   euiCentre,
   powerPhase,
   stageWide,
+  type BeatProps,
 } from './euiPromoData';
 
 /** Frame pixels. Larger than the copy-column beats, because nothing shares the frame. */
 const CLOSE_PANEL_HEIGHT = 760;
 
-export const BeatClose: React.FC<{frames: number}> = ({frames}) => {
+export const BeatClose: React.FC<BeatProps> = ({frames, cut}) => {
   const frame = useCurrentFrame();
   const t = frame / frames;
 
   const phase = powerPhase(t, 'close');
   const poweringOffFrames = Math.round(frames * CLOSE_POWERING_OFF);
 
-  const cardFrom = Math.round(frames * CLOSE_CARD_AT);
+  // The 30 skips the Welcome hold. At four seconds it is a third of a second on
+  // screen — long enough to register as a flicker and not long enough to read as the
+  // room returning to rest, which is the only thing it was there to say.
+  const cardFrom = Math.round(frames * (cut === 'play' ? CLOSE_POWERING_OFF : CLOSE_CARD_AT));
   const cardOpacity = interpolate(frame, [cardFrom, cardFrom + 12], [0, 1], {
     easing: Easing.linear,
     extrapolateLeft: 'clamp',
@@ -52,7 +56,7 @@ export const BeatClose: React.FC<{frames: number}> = ({frames}) => {
         shots={[
           {at: 0, region: euiCentre(TABLET_VIEWPORT)},
           {at: Math.round(frames * 0.12), region: euiCentre(TABLET_VIEWPORT)},
-          {at: Math.round(frames * CLOSE_CARD_AT), region: stageWide(TABLET_VIEWPORT)},
+          {at: cardFrom, region: stageWide(TABLET_VIEWPORT)},
           {at: frames, region: stageWide(TABLET_VIEWPORT)},
         ]}
       >

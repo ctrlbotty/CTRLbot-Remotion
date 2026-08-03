@@ -26,6 +26,7 @@ import {
   promoMuted,
   promoVolume,
   stageWide,
+  type BeatProps,
 } from './euiPromoData';
 
 const INPUTS = [
@@ -40,7 +41,7 @@ const OUTPUTS = [0, 1, 2, 3].map((index) => ({
   source: 'Input 3',
 }));
 
-export const BeatAudio: React.FC<{frames: number}> = ({frames}) => {
+export const BeatAudio: React.FC<BeatProps> = ({frames}) => {
   const frame = useCurrentFrame();
   const t = frame / frames;
 

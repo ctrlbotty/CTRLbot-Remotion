@@ -44,66 +44,82 @@ export const promoBg = (t: number) =>
     }),
   );
 
+export type EuiPromoCut = 'master' | 'play';
+
+/**
+ * What every beat receives.
+ *
+ * `cut` exists because the 30 is a different edit. Most beats ignore it; the ones that
+ * do not use it to drop a copy block or a held state that there is no room for at half
+ * the length. Branching on it is honest — the alternative is a single edit that reads
+ * correctly at neither duration.
+ */
+export type BeatProps = {frames: number; cut: EuiPromoCut};
+
 export type EuiPromoBeat = {
   id: string;
   masterFrames: number;
-  playFrames: number;
-  component: React.ComponentType<{frames: number}>;
+  /** `null` means the beat is not in the 30-second cut at all. */
+  playFrames: number | null;
+  component: React.ComponentType<{frames: number; cut: EuiPromoCut}>;
 };
 
 /**
  * The cut, in both lengths. 1800 frames and 900 frames — 60s and 30s at 30fps.
  *
- * `playFrames` is not `masterFrames / 2`, and the first version's mistake was assuming
- * it should be. Copy does not compress linearly: a beat carrying a streamed line, two
- * URLs and three surface states has a floor set by how fast a person reads, not by a
- * ratio. Halving `close` gave it three seconds to power the room down, return to
- * Welcome, stream nine words and show two URLs — and the URLs simply never arrived.
+ * **The 30 is a different edit, not the same edit compressed.** Two attempts at the
+ * latter failed for the same reason: copy does not compress linearly. Halving `close`
+ * gave it three seconds to power the room down, return to Welcome, stream nine words
+ * and show two URLs, and the URLs simply never arrived — reading speed has a floor and
+ * a ratio does not know about it.
  *
- * So the 30 takes its seconds from where they cost least. `route` and `matrix` lose
- * hold time they had spare; `close` gains what it needs to finish its own sentence.
+ * So the 30 drops beats rather than thinning all of them. `wake` goes because a
+ * progress ring proves nothing about whether the room is easy to use, and `audio`
+ * goes because at 30 seconds something had to. What is left is the promise, the two
+ * routing surfaces, the phone, and the close — which is the argument the video is
+ * making, with nothing else standing in front of it.
  */
 export const EUI_PROMO_BEATS: EuiPromoBeat[] = [
   {
     id: 'promise',
     masterFrames: 180,
-    playFrames: 90,
+    playFrames: 120,
     component: BeatPromise,
   },
   {
     id: 'wake',
     masterFrames: 270,
-    playFrames: 90,
+    playFrames: null,
     component: BeatWake,
   },
   {
     id: 'route',
     masterFrames: 300,
-    playFrames: 140,
+    playFrames: 180,
     component: BeatRoute,
   },
   {
     id: 'matrix',
     masterFrames: 420,
-    playFrames: 200,
+    playFrames: 330,
     component: BeatMatrix,
   },
   {
     id: 'audio',
     masterFrames: 240,
-    playFrames: 110,
+    playFrames: null,
     component: BeatAudio,
   },
   {
     id: 'both',
     masterFrames: 210,
-    playFrames: 130,
+    playFrames: 150,
     component: BeatBoth,
   },
   {
     id: 'close',
     masterFrames: 180,
-    playFrames: 140,
+    playFrames: 120,
     component: BeatClose,
   },
 ];
