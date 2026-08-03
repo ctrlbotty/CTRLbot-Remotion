@@ -229,7 +229,7 @@ deliverable; if a line reads at 60 and races at 30, it is too long.
 
   Gate: `npm run check`, and the SVG resolves under `staticFile('brand/…')`.
 
-- [ ] T3: Port the EUI state machine out of EuiHandoff as functions of normalized beat progress — files: src/marketing/eui-promo/euiPromoData.ts
+- [x] T3: Port the EUI state machine out of EuiHandoff as functions of normalized beat progress — files: src/marketing/eui-promo/euiPromoData.ts
 
   The spine. `src/scenes/EuiHandoff.tsx` already has all of this working and reviewed;
   what it does not have is independence from its own 1020-frame timeline. Lift each
