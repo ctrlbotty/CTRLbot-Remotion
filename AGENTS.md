@@ -9,6 +9,7 @@ npm install
 npm run sync:tokens    # pull design tokens, fonts and icons from the app repo
 npm run dev            # Remotion Studio
 npm run check          # tsc --noEmit + composition list
+npm run video:lint     # the anti-slop gate — run this before reporting done
 ```
 
 Render a scene or a still:
@@ -33,6 +34,20 @@ and the Studio-interactivity rules this project follows:
 | `remotion-best-practices` | when unsure which applies |
 
 Update them with `npx skills add remotion-dev/skills`.
+
+## Making a new video
+
+Do not start a composition from a prompt. **[docs/VIDEO_WORKFLOW.md](docs/VIDEO_WORKFLOW.md)
+is the contract**: a brief from `videos/_TEMPLATE.md`, decomposed into atomic tasks by
+`/video-prep`, run one at a time with a gate between each.
+
+`npm run video:lint` and `npm run video:frames` enforce mechanically what
+`docs/AUTHORING.md` describes in prose. Their thresholds are measured against the
+approved First-Run cuts and the rejected Master Control promo — never tune one to make
+a particular video pass.
+
+`src/compositions/MasterControlPromo.tsx` is kept, unregistered, as the worked failure.
+Read it before writing a marketing scene.
 
 ## The app is the source of truth
 
@@ -70,13 +85,22 @@ Point at a different checkout with `npm run sync:tokens -- ../path/to/CTRLbot-Io
 
 ```text
 src/
+  destinations.ts frame, duration window, safe area and banned phrases per destination
   design/       tokens.generated.ts (from the app) + theme.ts (curated)
   app-ui/       live React rebuilds of app surfaces, laid out in dp
                 — viewports.ts is the one definition of how big a surface is
   camera/       Camera rig, Spotlight, FocusRing, TapIndicator, Callout
   scenes/       one file per scene + shared.ts for scene lengths
+  marketing/    Stage and DualStage — the landscape promo layouts
   compositions/ FirstRun.tsx — the cut
+videos/         one markdown brief per video; _TEMPLATE.md to start
+scripts/        video-lint and video-frames — the gates
 ```
+
+Training cuts are full-bleed and `Callout` overlays them. Marketing cuts use `<Stage>`:
+the surface in a panel down one side, copy in a column beside it. Because that panel is
+aspect-matched to the surface, the camera cannot push past about 0.94 without clipping
+the corner controls — `<Spotlight>` carries emphasis instead.
 
 The split that matters: `app-ui/` renders a surface at its natural dp size and knows
 nothing about video; `camera/` decides what the frame looks at. That is what makes a

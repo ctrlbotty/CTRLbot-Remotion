@@ -45,6 +45,21 @@ export type CameraProps = {
    * Either way the result exactly fills the frame — there are never black bars.
    */
   fit?: 'expand' | 'crop';
+  /**
+   * The box this camera fills, in pixels. Defaults to the composition frame,
+   * which is what a full-bleed training cut wants.
+   *
+   * Marketing layouts do not give the camera the whole frame: `<Stage>` puts the
+   * surface in a panel down one side and the copy in a column beside it, so the
+   * camera fills the panel. Without this the aspect reconciliation, the zoom and
+   * both offsets are all computed against 1920x1080 while the camera is actually
+   * rendering into 960x600 — the shot lands somewhere else entirely and the
+   * failure looks like a layout bug rather than a maths one.
+   *
+   * It must match the size of the element this camera renders into. Nothing can
+   * check that, so pass the same constant both places.
+   */
+  viewport?: {width: number; height: number};
   children: ReactNode;
 };
 
@@ -139,10 +154,16 @@ const clampToContent = (region: Region, contentSize: {width: number; height: num
   height: region.height,
 });
 
-export const Camera = ({contentSize, shots, fit = 'expand', children}: CameraProps) => {
+export const Camera = ({
+  contentSize,
+  shots,
+  fit = 'expand',
+  viewport: viewportProp,
+  children,
+}: CameraProps) => {
   const frame = useCurrentFrame();
-  const {width: viewportWidth, height: viewportHeight} = useVideoConfig();
-  const viewport = {width: viewportWidth, height: viewportHeight};
+  const {width: frameWidthPx, height: frameHeightPx} = useVideoConfig();
+  const viewport = viewportProp ?? {width: frameWidthPx, height: frameHeightPx};
 
   if (shots.length === 0) {
     throw new Error('<Camera> requires at least one shot.');

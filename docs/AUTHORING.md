@@ -4,6 +4,16 @@ The workflow is: decide what the viewer must see, write the shot list, then let 
 copy follow the camera. `src/scenes/EuiHandoff.tsx` is the worked example — read it
 before adding anything.
 
+> **This file is the grammar; [VIDEO_WORKFLOW.md](VIDEO_WORKFLOW.md) is the process.**
+> Scene craft — shot lists, holds, easing, type, copy standards — lives here and applies
+> to everything. *When* a scene gets written, what it has to prove, and what has to pass
+> before it ships is the workflow's job. Start a new video there, not here.
+>
+> Marketing cuts add one rule this file does not cover: they lay out with `<Stage>`,
+> whose panel is aspect-matched to the surface. A full shot fits exactly, so the camera
+> cannot be pushed past about 0.94 without clipping the corner controls — emphasis comes
+> from `<Spotlight>` instead. `npm run video:lint` enforces the rest.
+
 ## 1. Pick the surface
 
 If the scene explains a control the viewer will operate, use a live rebuild from

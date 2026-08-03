@@ -20,39 +20,86 @@ npm run dev
 `sync:tokens` reads `../CTRLbot-IoT/app/src/main/res`. Point at a different checkout with
 `npm run sync:tokens -- ../path/to/CTRLbot-IoT`.
 
+## Making a new video
+
+**[docs/VIDEO_WORKFLOW.md](docs/VIDEO_WORKFLOW.md) is the contract.** Do not start a
+composition from a prompt. Copy `videos/_TEMPLATE.md`, fill in the audience, the promise
+and the beats, then `/video-prep <slug>` decomposes it into atomic tasks and `/video-run`
+works through them with a gate between each.
+
+```bash
+npm run video:lint                              # source: structure and copy
+npm run video:frames -- <slug> validate         # brief arithmetic, no render
+npm run video:frames -- <slug> contact          # a still per beat + contact.html
+npm run video:frames -- <slug> check out/<slug>.mp4
+```
+
+The gates are calibrated against the cuts in `out/` — two approved, one rejected — and
+their thresholds are measurements, not preferences. `npm run video:lint:selftest` proves
+they still tell those cuts apart.
+
 ## Compositions
 
 | Composition | Format | Status |
 |---|---:|---|
 | `First-Run-Phone` | 1080×1920, 120s | Complete; Review 13 is the current cut |
 | `First-Run-Tablet` | 1920×1200, 120s | Complete; Review 08 is the current cut |
+| `V1-Play-Store-Promo` | 1920×1080, 26s | First cut through the assembly line; archived reference |
 
-Both form factors have one `Scene-*` composition per scene for retiming and keyframing
-in isolation, plus `Proof-*` stills for checking live surfaces against the app.
+Both first-run form factors have one `Scene-*` composition per scene for retiming and
+keyframing in isolation, plus `Proof-*` stills for checking live surfaces against the app.
 
 The first run is seven scenes: open, CTRLbot AI, Device, Connect and test, Build the
 room, EUI handoff, close. It is silent and caption-led — understandable with the sound
 off, because that is how it plays embedded in docs and on social.
 
-## Render
+Marketing cuts use `<Stage>` — the surface in a panel down one side, copy in a column
+beside it, on the `background.stage` gradient. `<DualStage>` carries two surfaces at once.
+
+## Render & Output Directory
+
+All rendered video outputs (`.mp4`) and still frames (`.png`) are saved in the **`out/`** directory at the root of this project (`./out/`).
+
+### Render commands
+
+Render a video composition:
 
 ```bash
 npm run render -- First-Run-Phone out/ctrlbot-first-run-phone.mp4 --codec=h264 --crf=20 --muted
 ```
 
+Render a single still frame:
+
 ```bash
 npm run still -- Scene-Device out/frame.png --frame=520
 ```
 
-Outputs go to `out/`, which is not tracked.
+### Output location (`out/`)
+
+* **Video Exports:** All rendered video files (e.g., `out/first-run-phone-review-13.mp4`, `out/master-control-promo.mp4`) are placed here.
+* **Stills & Proofs:** Image exports, scene previews, and frame proofs (e.g., `out/marketing-contact/`, `out/promo-proof/`) are organized within `out/`.
+* **Git Status:** The `out/` directory and raw video assets are ignored by Git (`.gitignore`).
 
 ## How it fits together
 
 ```text
+videos/
+  _TEMPLATE.md            the brief form — audience, promise, beats
+  <slug>.md               one file per video: brief, tasks, review notes
+  archive/                briefs that have been run
+scripts/
+  video-lint.mjs          structural and copy gates over the source
+  video-frames.mjs        brief validation, contact sheet, rendered-frame gates
+  lib/                    tsx-scan (TS compiler API), brief parser, PNG decoder
 src/
+  destinations.ts         frame, duration window, safe area and banned phrases per destination
   design/
     tokens.generated.ts   colors, color state lists, dimens, type scale, shapes — from the app
     theme.ts              curated, video-facing decisions built on those tokens
+  marketing/
+    Stage.tsx             the landscape marketing layout: panel right, copy column left
+    DualStage.tsx         two surfaces side by side, phone sized for legibility first
+    play-store-promo-v1/  the first cut through the line, kept as a reference
   app-ui/
     viewports.ts          the one definition of how big a surface is
     PhoneEui / TabletEui  the End User Interface, portrait and landscape

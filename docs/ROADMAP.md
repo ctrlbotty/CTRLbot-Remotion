@@ -136,11 +136,37 @@ actual full cut rather than assuming the card margin is empty.
 
 ---
 
+## Phase 3 — the video assembly line
+
+Built 2026-08-02. **[VIDEO_WORKFLOW.md](VIDEO_WORKFLOW.md) is now the contract for any
+new video**, and it supersedes "start a composition and see how it looks". A brief from
+`videos/_TEMPLATE.md`, decomposed into atomic tasks, run with a gate between each.
+
+`npm run video:lint` and `npm run video:frames` make mechanical what
+[AUTHORING.md](AUTHORING.md) describes in prose. Their thresholds were measured against
+the two approved First-Run cuts and the rejected Master Control promo — see the rules
+section of VIDEO_WORKFLOW.md for what each measurement changed.
+
+`V1-Play-Store-Promo` is the first cut produced through it: 26s, 1920×1080, EUI only.
+Kept as a reference under `src/marketing/play-store-promo-v1/`; its brief is in
+`videos/archive/`.
+
+**The calibration references live in `out/`** — `first-run-phone-review-13.mp4`,
+`first-run-tablet-review-08.mp4` and `master-control-promo.mp4`. `out/` is gitignored
+and otherwise reproducible, but those three are not: the first two are approved review
+files and the third is a composition that is no longer registered. Losing them means
+losing the ability to re-verify a threshold. Keep a copy outside the repo.
+
+---
+
 ## Not started
 
 - Voiceover variant. The cut is built caption-led; a VO version would need a script and
   retimed scenes sharing the same surfaces.
-- Any composition beyond the first run — feature shorts, per-topic training, thumbnails.
+- Reference capture: turning a narrated screen recording into a starter brief with
+  timings, via the ffmpeg already in `node_modules` plus local whisper.cpp.
+- Destination profiles beyond `play-store-preview` — the website, social, in-app help.
+  The profile system is built; each new one is a few lines in `src/destinations.ts`.
 - The current Android setup layouts now include Activities and EUI. `TabletNavRail` is
   derived from them; `PhoneNavMenu` predates that update and should be re-audited against
   `res/layout-port/_setup_main.xml` when phone work resumes.

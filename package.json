@@ -10,7 +10,10 @@
     "sync:tokens": "node scripts/sync-app-tokens.mjs",
     "render": "remotion render src/index.ts",
     "still": "remotion still src/index.ts",
-    "ingest:captures": "node scripts/ingest-captures.mjs"
+    "ingest:captures": "node scripts/ingest-captures.mjs",
+    "video:lint": "node scripts/video-lint.mjs",
+    "video:lint:selftest": "node scripts/video-lint.mjs --selftest",
+    "video:frames": "node scripts/video-frames.mjs"
   },
   "dependencies": {
     "@remotion/cli": "4.0.500",
