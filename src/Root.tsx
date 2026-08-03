@@ -22,6 +22,7 @@ import {
   TabletEuiProof,
 } from './scenes/SurfaceProofs';
 import {MasterControlCard} from './marketing/eui-promo/MasterControlCard';
+import {EuiPromo, euiPromoDuration} from './marketing/eui-promo/EuiPromo';
 
 // Three layers, deliberately:
 //
@@ -48,6 +49,27 @@ export const RemotionRoot = () => (
         id="V1-Play-Store-Promo"
         component={PlayStorePromo}
         durationInFrames={promoDuration()}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+    </Folder>
+
+    <Folder name="Marketing">
+      <Composition
+        id="Play-Store-EUI-Promo"
+        component={EuiPromo}
+        defaultProps={{cut: 'master'}}
+        durationInFrames={euiPromoDuration('master')}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="Play-Store-EUI-Promo-30"
+        component={EuiPromo}
+        defaultProps={{cut: 'play'}}
+        durationInFrames={euiPromoDuration('play')}
         fps={30}
         width={1920}
         height={1080}

@@ -1,8 +1,7 @@
-// State machine derivations for playStore_promo2 as pure functions of t (0..1).
-
 import React from 'react';
 import {Easing, interpolate} from 'remotion';
 import {centerOf, frameWidth} from '../../camera/Camera';
+import {BeatPromise} from './BeatPromise';
 
 export type EuiPromoBeat = {
   id: string;
@@ -12,7 +11,14 @@ export type EuiPromoBeat = {
 };
 
 /** Beat definitions array, populated per beat task. */
-export const EUI_PROMO_BEATS: EuiPromoBeat[] = [];
+export const EUI_PROMO_BEATS: EuiPromoBeat[] = [
+  {
+    id: 'promise',
+    masterFrames: 180,
+    playFrames: 90,
+    component: BeatPromise,
+  },
+];
 
 /**
  * Measured camera push ceiling for an aspect-matched panel on landscape.

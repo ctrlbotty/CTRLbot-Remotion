@@ -279,7 +279,7 @@ deliverable; if a line reads at 60 and races at 30, it is too long.
 
   Gate: `npm run still -- Proof-Master-Control out/proof-mc.png`, then open it.
 
-- [ ] T5: Build the promise beat and register both cuts — files: src/marketing/eui-promo/BeatPromise.tsx, src/marketing/eui-promo/EuiPromo.tsx, src/Root.tsx
+- [x] T5: Build the promise beat and register both cuts — files: src/marketing/eui-promo/BeatPromise.tsx, src/marketing/eui-promo/EuiPromo.tsx, src/Root.tsx
 
   `EuiPromo` takes `cut: 'master' | 'play'`, maps `EUI_PROMO_BEATS` to hard `<Sequence>`
   cuts — never `TransitionSeries`, which makes the composition shorter than the sum of
