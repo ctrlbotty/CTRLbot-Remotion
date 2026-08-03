@@ -83,6 +83,38 @@ export const type = {
   label: 16,
 } as const;
 
+/**
+ * An app color at an opacity the app itself does not define.
+ *
+ * The app ships its own alpha tokens — `white75`, `black50` — which cover every
+ * surface a phone UI needs. Video needs the brand blue at alphas nothing on a phone
+ * ever asks for: a stage glow is 6% to 22% blue, and no such token exists or should.
+ * Deriving it here keeps the rule intact. The hue is still the app's; only the
+ * opacity is a video decision, which is exactly what this file is for.
+ */
+const alpha = (hex: string, amount: number) => {
+  const value = parseInt(hex.slice(1), 16);
+  return `rgba(${(value >> 16) & 255}, ${(value >> 8) & 255}, ${value & 255}, ${amount})`;
+};
+
+/**
+ * Backgrounds a scene may stand on. One entry per treatment, deliberately.
+ *
+ * The alternative is every scene writing its own gradient, and the promo this
+ * replaced is what that looks like: six scenes, six hand-typed
+ * `radial-gradient(circle at 50% 54%, …)` strings, drifting.
+ *
+ * `stage` is the landscape marketing background — CTRLbot blue bloomed behind the
+ * panel and falling to the app's black by the frame edge. The glow is centred on the
+ * panel rather than the frame, so the surface reads as lit instead of pasted on, and
+ * a frame is never flat black in the corner opposite the copy.
+ */
+export const background = {
+  stage: `radial-gradient(120% 90% at 71% 50%, ${alpha(appColors.blue, 0.22)} 0%, ${alpha(appColors.blue, 0.06)} 38%, ${appColors.black} 72%)`,
+  promo: (x = 68, y = 32) =>
+    `radial-gradient(100% 100% at ${x}% ${y}%, ${alpha(appColors.blue, 0.45)} 0%, ${alpha(appColors.blue, 0)} 90%)`,
+} as const;
+
 /** Geometry, anchored to the app's 8dp corner radius. */
 export const radius = {
   sm: appDimens.cornerRadiusDim / 2, // 4

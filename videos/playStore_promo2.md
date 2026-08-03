@@ -211,7 +211,7 @@ deliverable; if a line reads at 60 and races at 30, it is too long.
 
   Gate: `npm run video:frames -- playStore_promo2 validate` reports 0 problems.
 
-- [ ] T2: Add the promo background to the theme and put the tricon on disk — files: src/design/theme.ts, public/brand/ctrlbot_tricon_white.svg
+- [x] T2: Add the promo background to the theme and put the tricon on disk — files: src/design/theme.ts, public/brand/ctrlbot_tricon_white.svg
 
   Copy `videos/play store promo/tricon/ctrlbot_tricon_white.svg` to `public/brand/`
   unchanged. Add a `promo` entry beside `background.stage`:
