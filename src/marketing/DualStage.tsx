@@ -67,7 +67,19 @@ const Panel = ({panel, left, top}: {panel: Panel; left: number; top: number}) =>
         boxShadow: `0 40px 120px ${color.scrim}`,
       }}
     >
-      <div style={{width, height: panel.height, overflow: 'hidden', borderRadius: radius.sm}}>
+      {/* `position: relative` is load-bearing. <Camera> renders an <AbsoluteFill>, which
+          anchors to its nearest *positioned* ancestor — without this that is the panel
+          itself, so the screen ignores the padding, sits hard against the left edge, and
+          the entire bezel piles up on the right. It reads as the device being cut off. */}
+      <div
+        style={{
+          position: 'relative',
+          width,
+          height: panel.height,
+          overflow: 'hidden',
+          borderRadius: radius.sm,
+        }}
+      >
         <Camera
           contentSize={panel.contentSize}
           shots={panel.shots}
