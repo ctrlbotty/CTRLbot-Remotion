@@ -455,6 +455,39 @@ deliverable; if a line reads at 60 and races at 30, it is too long.
 
 > Appended on PASS WITH NOTES. Not blockers; check these during the contact sheet review.
 
+### Second pass — Nathan's review, applied
+
+The first run through the line rendered and passed its gates but was wrong on screen.
+What changed, and why:
+
+- **The stage gradient was invisible.** `background.stage` is a 22% bloom centred at
+  71% — directly behind an opaque panel — so every beat rendered as a black frame with
+  a smudge beside the copy. Now the app's own setup gradient at 45%, off the panel's
+  shoulder, drifting across each beat.
+- **The panel is the device's native 16:10 with a real bezel**, not a 16:9 window with
+  the surface floating in it. The bezel is an inset that can dissolve on its own.
+- **No camera pushes on `route`, `matrix` or `both`.** The chrome dissolves and the
+  panel collapses onto the switching band instead. `wake` keeps its push — it is the
+  one beat whose subject is a centred screen with nothing at its edges.
+- **`audio` reassembles the tablet first**, then dissolves everything except the audio
+  strip, because the control it is about lives in one of the bars the other beats
+  remove.
+- **`both` routes both surfaces on the same frame**, on Input 1 — Input 3 sits half off
+  the phone's source strip, which takes no scroll offset.
+- **`close` pulls out** to the whole tablet on Welcome, centred, with no copy column.
+- **Copy is animated, not switched on.** Every line streams a word at a time with the
+  accent run in CTRLbot blue; `matrix` carries three blocks across its fourteen
+  seconds rather than one caption.
+
+### Open
+
+- **The 30-second cut is untuned.** `Play-Store-EUI-Promo-30` renders and its beat
+  budget is already rebalanced away from a mechanical halving, but it has not been
+  reviewed frame by frame. Cut it down from the approved master rather than treating
+  the current registration as finished.
+- **`ctrlbot.ai` joins `ctrlbot.io`** on the closing card, as asked. Both are set as
+  Space Mono kickers in accent blue, arriving after the closing line finishes.
+
 ## Contact sheet
 
 > `npm run video:frames -- <slug> contact` renders one still per beat and tiles them.
