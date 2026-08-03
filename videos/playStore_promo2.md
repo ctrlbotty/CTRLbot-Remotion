@@ -365,7 +365,7 @@ deliverable; if a line reads at 60 and races at 30, it is too long.
 
   Gate: `contact --beat=matrix` shows all four outputs blue on Input 3.
 
-- [ ] T9: Build the audio beat — volume and mute on the same screen — files: src/marketing/eui-promo/BeatAudio.tsx, src/marketing/eui-promo/euiPromoData.ts
+- [x] T9: Build the audio beat — volume and mute on the same screen — files: src/marketing/eui-promo/BeatAudio.tsx, src/marketing/eui-promo/euiPromoData.ts
 
   `<Stage>` holding `TabletEui` with the routing left exactly where `matrix` ended —
   all four outputs on Input 3, Input 3 still selected — and `volume={promoVolume(t)}`,
