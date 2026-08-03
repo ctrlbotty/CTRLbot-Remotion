@@ -1,12 +1,13 @@
 import {Composition, Folder, Still} from 'remotion';
 import {FirstRun, firstRunDuration} from './compositions/FirstRun';
-import {MasterControlPromo} from './compositions/MasterControlPromo';
 import {BrandCard, BrandBackground} from './scenes/BrandCard';
 import {BuildRoom} from './scenes/BuildRoom';
 import {ConnectAndTest} from './scenes/ConnectAndTest';
 import {EuiHandoff} from './scenes/EuiHandoff';
 import {CtrlbotIntro} from './scenes/CtrlbotIntro';
 import {DeviceSetup} from './scenes/DeviceSetup';
+import {StageProof} from './marketing/StageProof';
+import {PlayStorePromo, promoDuration} from './marketing/play-store-promo-v1/PlayStorePromo';
 import {SCENE_FRAMES} from './scenes/shared';
 import {
   PhoneCaptureProof,
@@ -20,6 +21,7 @@ import {
   TabletCtrlbotProof,
   TabletEuiProof,
 } from './scenes/SurfaceProofs';
+import {MasterControlCard} from './marketing/eui-promo/MasterControlCard';
 
 // Three layers, deliberately:
 //
@@ -29,13 +31,23 @@ import {
 //   Surface-Proofs   an app surface at natural dp size with nothing on top, for checking
 //                    fidelity against a screenshot before any of it is animated
 
+// `Master-Control-Promo` is deliberately not registered. The composition is kept as the
+// worked failure cited in docs/VIDEO_WORKFLOW.md — read it before writing a marketing
+// scene — but it must not be renderable by accident, and the anti-slop linter fails it
+// on three separate rules. A marketing composition returns here when one is built
+// through the video assembly line.
+
 export const RemotionRoot = () => (
   <>
-    <Folder name="Marketing">
+    {/* The first cut through the video assembly line, kept renderable as a reference.
+        Its per-beat compositions are gone — those exist so a beat can be looked at
+        while it is being built, and this one is finished. A fresh run registers its
+        own under `Marketing`. See videos/archive/2026-08-02-play-store-promo.md. */}
+    <Folder name="Marketing-v1">
       <Composition
-        id="Master-Control-Promo"
-        component={MasterControlPromo}
-        durationInFrames={900}
+        id="V1-Play-Store-Promo"
+        component={PlayStorePromo}
+        durationInFrames={promoDuration()}
         fps={30}
         width={1920}
         height={1080}
@@ -230,6 +242,18 @@ export const RemotionRoot = () => (
       <Still id="Proof-Tablet-CTRLbot" component={TabletCtrlbotProof} width={1280} height={800} />
       <Still id="Brand-Background-Phone" component={BrandBackground} width={1080} height={1920} />
       <Still id="Brand-Background-Landscape" component={BrandBackground} width={1920} height={1080} />
+      <Still id="Proof-Stage" component={StageProof} width={1920} height={1080} />
+      <Still
+        id="Proof-Master-Control"
+        component={() => (
+          <MasterControlCard
+            eyebrow="END USER INTERFACE"
+            line="Anyone can walk up and run the room."
+          />
+        )}
+        width={1920}
+        height={1080}
+      />
     </Folder>
   </>
 );

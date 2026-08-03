@@ -257,7 +257,7 @@ deliverable; if a line reads at 60 and races at 30, it is too long.
 
   Gate: `npm run check`. Not renderable on its own — the only task in the list that is not.
 
-- [ ] T4: Build the Master Control card from the tricon and the promo gradient — files: src/marketing/eui-promo/MasterControlCard.tsx, src/Root.tsx
+- [x] T4: Build the Master Control card from the tricon and the promo gradient — files: src/marketing/eui-promo/MasterControlCard.tsx, src/Root.tsx
 
   Rebuilt, not the `mc_banner_mblue_169.png` mockup. Tricon left at about 34% of frame
   height, `MASTER CONTROL` right in Audiowide `type.display`, on `background.promo()`.
