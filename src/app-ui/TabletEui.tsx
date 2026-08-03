@@ -160,6 +160,26 @@ export const TABLET_EUI_MANY_TO_ONE_REGIONS = {
   },
 } as const;
 
+/**
+ * Independent opacity for the EUI's two chrome bars.
+ *
+ * The marketing cut dissolves the 90dp bar and the 100dp audio strip to leave the
+ * switching area alone on the stage. A camera cannot do that: the content band is
+ * 1280x610, wider than 2:1, so no landscape frame can hold it without either cropping
+ * the source rows or dragging half of each bar back into shot.
+ *
+ * `backplate` turns off the root fill. The bars and the content each paint their own
+ * background, so the root black is invisible while everything is opaque — but it is
+ * what a faded bar fades *to*, and leaving it on makes the dissolve end in a black
+ * band rather than in the stage behind it. Off only where a caller asks, so the
+ * training cuts are untouched.
+ */
+export type EuiChrome = {top?: number; audio?: number; backplate?: boolean};
+
+const CHROME_DEFAULT: Required<EuiChrome> = {top: 1, audio: 1, backplate: true};
+
+const resolveChrome = (chrome?: EuiChrome) => ({...CHROME_DEFAULT, ...chrome});
+
 /** One 320x240 output cell: a 180dp panel over a black label bar. */
 const OutputCell = ({
   output,
@@ -283,6 +303,7 @@ export const TabletEui = ({
   selectedInput,
   volume,
   speakerMuted = false,
+  chrome,
 }: {
   outputs: EuiOutput[];
   inputs: EuiInput[];
@@ -291,7 +312,11 @@ export const TabletEui = ({
   /** 0..1 */
   volume: number;
   speakerMuted?: boolean;
-}) => (
+  chrome?: EuiChrome;
+}) => {
+  const {top: topOpacity, audio: audioOpacity, backplate} = resolveChrome(chrome);
+
+  return (
   <div
     style={{
       display: 'flex',
@@ -299,7 +324,7 @@ export const TabletEui = ({
       width: TABLET_VIEWPORT.width,
       height: TABLET_VIEWPORT.height,
       overflow: 'hidden',
-      backgroundColor: appColors.black,
+      backgroundColor: backplate ? appColors.black : 'transparent',
     }}
   >
     {/* Top bar — exit control left, system power right */}
@@ -310,6 +335,7 @@ export const TabletEui = ({
         justifyContent: 'space-between',
         height: BAR_HEIGHT,
         flex: '0 0 auto',
+        opacity: topOpacity,
         paddingLeft: appDimens.euiBarIconPadding,
         paddingRight: appDimens.euiBarIconPadding,
         backgroundColor: appColors.black,
@@ -406,6 +432,7 @@ export const TabletEui = ({
         display: 'flex',
         alignItems: 'center',
         gap: AUDIO_GAP,
+        opacity: audioOpacity,
         paddingLeft: AUDIO_PADDING,
         paddingRight: AUDIO_PADDING,
         backgroundColor: appColors.black,
@@ -442,7 +469,8 @@ export const TabletEui = ({
       <AppIcon name="ic_vol_right" size={VOLUME_ICON_SIZE} tint={appColors.white} />
     </div>
   </div>
-);
+  );
+};
 
 const Nx1SourceRow = ({input, selected}: {input: EuiInput; selected: boolean}) => (
   <div
@@ -483,6 +511,7 @@ export const TabletEuiManyToOne = ({
   volume,
   speakerMuted = false,
   outputLabel = 'Display 1',
+  chrome,
 }: {
   inputs: EuiInput[];
   /** Index into `inputs`, or null for the cold state — nothing routed yet. */
@@ -491,9 +520,11 @@ export const TabletEuiManyToOne = ({
   volume: number;
   speakerMuted?: boolean;
   outputLabel?: string;
+  chrome?: EuiChrome;
 }) => {
   const selectedSource = selectedInput === null ? undefined : inputs[selectedInput];
   const routed = selectedSource !== undefined;
+  const {top: topOpacity, audio: audioOpacity, backplate} = resolveChrome(chrome);
 
   return (
     <div
@@ -503,7 +534,7 @@ export const TabletEuiManyToOne = ({
         width: TABLET_VIEWPORT.width,
         height: TABLET_VIEWPORT.height,
         overflow: 'hidden',
-        backgroundColor: appColors.black,
+        backgroundColor: backplate ? appColors.black : 'transparent',
       }}
     >
       <div
@@ -513,6 +544,7 @@ export const TabletEuiManyToOne = ({
           justifyContent: 'space-between',
           height: BAR_HEIGHT,
           flex: '0 0 auto',
+          opacity: topOpacity,
           paddingLeft: appDimens.euiBarIconPadding,
           paddingRight: appDimens.euiBarIconPadding,
           backgroundColor: appColors.black,
@@ -659,6 +691,7 @@ export const TabletEuiManyToOne = ({
           display: 'flex',
           alignItems: 'center',
           gap: AUDIO_GAP,
+          opacity: audioOpacity,
           paddingLeft: AUDIO_PADDING,
           paddingRight: AUDIO_PADDING,
           backgroundColor: appColors.black,

@@ -269,8 +269,9 @@ export const RemotionRoot = () => (
         id="Proof-Master-Control"
         component={() => (
           <MasterControlCard
-            eyebrow="END USER INTERFACE"
-            line="Anyone can walk up and run the room."
+            eyebrow="End User Interface"
+            line="Anyone can walk up and *run the room.*"
+            kickers={['ctrlbot.io', 'ctrlbot.ai']}
           />
         )}
         width={1920}
