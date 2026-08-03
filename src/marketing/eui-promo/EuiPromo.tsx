@@ -11,6 +11,7 @@ import React from 'react';
 import {AbsoluteFill, Sequence} from 'remotion';
 import {color} from '../../design/theme';
 import {EUI_PROMO_BEATS, type EuiPromoCut} from './euiPromoData';
+import {PromoPreload} from './PromoPreload';
 
 export type EuiPromoProps = {
   cut?: EuiPromoCut;
@@ -31,6 +32,9 @@ export const EuiPromo: React.FC<EuiPromoProps> = ({cut = 'master'}) => {
 
   return (
     <AbsoluteFill style={{backgroundColor: color.void}}>
+      {/* First, and for the whole composition. See PromoPreload. */}
+      <PromoPreload />
+
       {beatsFor(cut).map((beat) => {
         const start = from;
         from += beat.frames;
