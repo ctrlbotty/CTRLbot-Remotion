@@ -431,7 +431,7 @@ deliverable; if a line reads at 60 and races at 30, it is too long.
 
   Gate: `contact --beat=close` shows the card, not a power screen.
 
-- [ ] T12: Run the full gate set and render both cuts — files: videos/playStore_promo2.md
+- [x] T12: Run the full gate set and render both cuts — files: videos/playStore_promo2.md
 
   ```bash
   npm run video:lint -- --destination=play-store-preview-master
