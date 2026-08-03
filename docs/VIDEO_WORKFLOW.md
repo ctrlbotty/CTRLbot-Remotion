@@ -246,6 +246,30 @@ audio beat's copy says the routing does not move while you change the volume; th
 spotlight greyed out all four routed outputs to say so. The ring alone points without
 arguing.
 
+**Remotion waits for `<Img>`, not for CSS.** `<Img>` calls `delayRender` on mount and
+`continueRender` on load, so a frame containing one is never photographed early. An
+image referenced from `backgroundImage` or `maskImage` has no element to hang that
+handle on, and the frame is captured whether or not the browser has fetched it. The
+EUI surfaces are almost entirely CSS images — `bg_eui`, the `disp_*` panels, and every
+`AppIcon`, which is drawn as a mask so one SVG can be tinted the way `app:tint` recolors
+a drawable. The first beat to mount one of them strobed for six frames while they
+arrived. `src/marketing/eui-promo/PromoPreload.tsx` is the fix: the same files mounted
+as hidden `<Img>` for the whole composition, so frame 0 waits and every CSS reference
+after that is served from cache. **Any new marketing composition using `app-ui/`
+surfaces needs this**, and it only ever shows up on the *first* such beat — by the
+second the browser has cached everything, which is what makes it look like a glitch in
+one specific place rather than a systematic problem.
+
+**Diff consecutive frames to tell a glitch from a cut.** A beat boundary and a strobe
+both look like "something flashed". They are trivially separable once measured: a cut
+is one large change that stays, a strobe is a large change followed by a large change
+straight back. Render a window with
+`npx remotion render src/index.ts <Comp> out/_seq --sequence --frames=112-150
+--image-format=png` and diff neighbours with `gridDifference` from
+`scripts/lib/png.mjs`. Note that the bundled ffmpeg is built `--disable-filters` with a
+short allowlist — `select` and `fps` are not in it, so extracting a frame range from
+the rendered mp4 does not work and the still sequence is the route.
+
 ### Adding a rule
 
 A new rule must fail `src/compositions/MasterControlPromo.tsx` or pass
