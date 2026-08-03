@@ -4,6 +4,7 @@ import {centerOf, frameWidth} from '../../camera/Camera';
 import {BeatPromise} from './BeatPromise';
 import {BeatWake} from './BeatWake';
 import {BeatRoute} from './BeatRoute';
+import {BeatMatrix} from './BeatMatrix';
 
 export type EuiPromoBeat = {
   id: string;
@@ -31,6 +32,12 @@ export const EUI_PROMO_BEATS: EuiPromoBeat[] = [
     masterFrames: 300,
     playFrames: 150,
     component: BeatRoute,
+  },
+  {
+    id: 'matrix',
+    masterFrames: 420,
+    playFrames: 210,
+    component: BeatMatrix,
   },
 ];
 

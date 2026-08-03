@@ -341,7 +341,7 @@ deliverable; if a line reads at 60 and races at 30, it is too long.
 
   Gate: `contact --beat=route` shows Input 1 blue and Display 1 carrying INPUT 1.
 
-- [ ] T8: Build the matrix beat — every source to every display — files: src/marketing/eui-promo/BeatMatrix.tsx, src/marketing/eui-promo/euiPromoData.ts
+- [x] T8: Build the matrix beat — every source to every display — files: src/marketing/eui-promo/BeatMatrix.tsx, src/marketing/eui-promo/euiPromoData.ts
 
   `<Stage>` holding `TabletEui` driven by `matrixSelection(t)` and `matrixOutputs(t)`.
   The longest beat in the cut and the one carrying the promise.
