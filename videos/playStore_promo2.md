@@ -320,7 +320,7 @@ deliverable; if a line reads at 60 and races at 30, it is too long.
 
   Gate: `contact --beat=wake` shows the powering-on state with the ring part-closed.
 
-- [ ] T7: Build the route beat — one tap moves a display — files: src/marketing/eui-promo/BeatRoute.tsx, src/marketing/eui-promo/euiPromoData.ts
+- [x] T7: Build the route beat — one tap moves a display — files: src/marketing/eui-promo/BeatRoute.tsx, src/marketing/eui-promo/euiPromoData.ts
 
   `<Stage>` holding `TabletEuiManyToOne`, `selectedInput={routeSelection(t)}`,
   `volume={promoVolume(t)}`. Inputs are `Input 1`–`Input 4`.
