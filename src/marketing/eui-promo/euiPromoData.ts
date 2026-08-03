@@ -2,6 +2,7 @@ import React from 'react';
 import {Easing, interpolate} from 'remotion';
 import {centerOf, frameWidth} from '../../camera/Camera';
 import {BeatPromise} from './BeatPromise';
+import {BeatWake} from './BeatWake';
 
 export type EuiPromoBeat = {
   id: string;
@@ -17,6 +18,12 @@ export const EUI_PROMO_BEATS: EuiPromoBeat[] = [
     masterFrames: 180,
     playFrames: 90,
     component: BeatPromise,
+  },
+  {
+    id: 'wake',
+    masterFrames: 210,
+    playFrames: 105,
+    component: BeatWake,
   },
 ];
 

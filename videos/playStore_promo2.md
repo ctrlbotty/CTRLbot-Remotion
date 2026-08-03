@@ -297,7 +297,7 @@ deliverable; if a line reads at 60 and races at 30, it is too long.
   Gate: `npm run video:frames -- playStore_promo2 contact --beat=promise`, and the
   still is the settled card, not a fragment of one.
 
-- [ ] T6: Build the wake beat — the room starting from the panel — files: src/marketing/eui-promo/BeatWake.tsx, src/marketing/eui-promo/euiPromoData.ts
+- [x] T6: Build the wake beat — the room starting from the panel — files: src/marketing/eui-promo/BeatWake.tsx, src/marketing/eui-promo/euiPromoData.ts
 
   `<Stage>` holding `EuiPowerCapture device="tablet"`, `state="off"` until t=0.34 then
   `state="powering-on"` for the rest, its `durationInFrames` being the powering-on span
