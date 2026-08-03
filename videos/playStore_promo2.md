@@ -5,8 +5,9 @@ destination: play-store-preview-master
 
 # CTRLbot IoT — the End User Interface
 
-> The 60-second master. The 30-second Play cut is derived from it — same seven beats,
-> each compressed, not truncated. See *Resources* for how that is enforced.
+> The 60-second master — the website and social cut. The Play Store asset is the
+> 30-second cut, which is its own edit with its own brief:
+> [playStore_promo2_30.md](playStore_promo2_30.md).
 
 ## Watching
 
@@ -41,21 +42,18 @@ is short enough to set in Audiowide without it stopping to read as language.
 ## Beats
 
 > Order is cut order. Machine-parsed by column name — keep the header row exact.
-> `Sec` is the 60-second master. `Sec30` is the derived Play cut and is documentation
-> only; the parser ignores it.
 
-| id | Claim | Surface | Evidence | Sec | Sec30 |
-|----|-------|---------|----------|-----|-------|
-| promise | The whole room, on one screen | `MasterControlCard` | Tricon and MASTER CONTROL already composed at frame 0; the promise line lands beneath them by 2s while the blue bloom drifts across the frame | 6 | 3 |
-| wake | The room starts from the panel on the wall | `EuiPowerCapture` | Welcome / press power to begin, then the green ring closes around Please Wait While System is Powering On | 9 | 3.5 |
-| route | Choosing a source is one tap | `TabletEuiManyToOne` | Display 1 sits grey and empty, then Input 1 turns blue and Display 1 fills with INPUT 1 in the same frame | 10 | 5 |
-| matrix | Every source, every display, one screen | `TabletEui` | Four grey outputs; Input 1 lights and Output 2 takes it; Input 3 lights and Output 2 follows; All is pressed and all four outputs go blue on Input 3 | 14 | 7 |
-| audio | Room volume is on that same screen, not a second remote | `TabletEui` | The yellow fill runs up the volume bar, then the speaker icon flips to muted — with the routing behind it untouched | 8 | 4 |
-| both | The app runs on a phone too, not only a tablet | `TabletEui` + `PhoneEuiManyToOne` | Tablet matrix and portrait phone EUI live side by side, both routed and both legible — the phone is plainly a real interface, not a shrunken tablet | 7 | 4.5 |
-| close | It ends where the user found it | `EuiPowerCapture` then `MasterControlCard` | The red ring closes on powering off, the panel lands back on Welcome, and the frame resolves to MASTER CONTROL | 6 | 3 |
+| id | Claim | Surface | Evidence | Sec |
+|----|-------|---------|----------|-----|
+| promise | The whole room, on one screen | `MasterControlCard` | Tricon and MASTER CONTROL already composed at frame 0; the promise line lands beneath them by 2s while the blue bloom drifts across the frame | 6 |
+| wake | The room starts from the panel on the wall | `EuiPowerCapture` | Welcome / press power to begin, then the green ring closes around Please Wait While System is Powering On | 9 |
+| route | Choosing a source is one tap | `TabletEuiManyToOne` | Display 1 sits grey and empty, then Input 1 turns blue and Display 1 fills with INPUT 1 in the same frame | 10 |
+| matrix | Every source, every display, one screen | `TabletEui` | Four grey outputs; Input 1 lights and Output 2 takes it; Input 3 lights and Output 2 follows; All is pressed and all four outputs go blue on Input 3 | 14 |
+| audio | Room volume is on that same screen, not a second remote | `TabletEui` | The yellow fill runs up the volume bar, then the speaker icon flips to muted — with the routing behind it untouched | 8 |
+| both | The app runs on a phone too, not only a tablet | `TabletEui` + `PhoneEuiManyToOne` | Tablet matrix and portrait phone EUI live side by side, both routed and both legible — the phone is plainly a real interface, not a shrunken tablet | 7 |
+| close | It ends where the user found it | `EuiPowerCapture` then `MasterControlCard` | The red ring closes on powering off, the panel lands back on Welcome, and the frame resolves to MASTER CONTROL | 6 |
 
-Totals: **60.0s** master, **30.0s** cut. The promise starts at 0s in both, inside the
-10-second first-impression window.
+Totals **60.0s**, with the promise at 0s.
 
 ## Resources
 
@@ -84,11 +82,10 @@ on top. Its reason is recorded in `src/app-ui/EuiPower.tsx`.
 
 ### About the bezel
 
-You like seeing the bezel. `Stage` already gives you one: a rounded panel with a
-120px drop shadow standing off the gradient, which reads as a device edge without
-being a drawn mockup — and unlike a bezel PNG, the camera can push inside it. Both
-approved cuts use exactly this. If it does not read as hardware on the contact sheet,
-that is a `Stage` radius change, not a return to screenshots.
+`Stage` draws it: a real inset of device edge around the screen, sized by `bezel`.
+Not a bezel PNG, and not a wide camera framing that leaves margin either — as an inset
+it can dissolve on its own while the interface behind it stays exactly where it is,
+which is the move the routing beats are built on.
 
 ### Layout
 
@@ -120,9 +117,11 @@ it renders a frame. Add a sibling destination `play-store-preview-master` in
 `duration: {min: 45, target: 60, max: 60}` and `firstImpressionSeconds: 10` kept as-is
 so the promise is forced to the front, which is what makes the 30 derivable at all.
 
-The 30 is a **recut, not a truncation**: the same seven beats at the `Sec30` lengths,
-registered as a second composition off one shared beat list. Beat components take
-their length from the composition, never from a literal.
+The 30 turned out to be a **different edit, not a shorter one** — it drops `wake` and
+`audio` rather than thinning all seven beats, because copy does not compress linearly.
+It has its own brief and its own beat budget: [playStore_promo2_30.md](playStore_promo2_30.md).
+Both cuts are registered off one shared beat list in `src/marketing/eui-promo/`, where
+`playFrames: null` is what removes a beat from the short one.
 
 ### Standing constraints this cut has to respect
 
@@ -181,8 +180,10 @@ one beat list render at 60s and at 30s from the same components, and it is the
 difference between a recut and a second build. Copy stagger is the sole exception —
 `StageCopy`'s 0→32-frame entrance stays absolute, because reading speed does not scale.
 
-**Copy is budgeted against `Sec30`, not `Sec`.** The 30-second cut is the real
-deliverable; if a line reads at 60 and races at 30, it is too long.
+**Copy is budgeted against the short cut, not this one.** The 30 is the real
+deliverable; if a line reads at 60 and races at 30, it is too long. `PromoCopy` derives
+its word stagger from the room available so a line always lands, but a line that has to
+be raced to land is still the wrong line.
 
 ### Frame budget
 
@@ -479,14 +480,24 @@ What changed, and why:
   accent run in CTRLbot blue; `matrix` carries three blocks across its fourteen
   seconds rather than one caption.
 
-### Open
+### Third pass
 
-- **The 30-second cut is untuned.** `Play-Store-EUI-Promo-30` renders and its beat
-  budget is already rebalanced away from a mechanical halving, but it has not been
-  reviewed frame by frame. Cut it down from the approved master rather than treating
-  the current registration as finished.
-- **`ctrlbot.ai` joins `ctrlbot.io`** on the closing card, as asked. Both are set as
-  Space Mono kickers in accent blue, arriving after the closing line finishes.
+- **The 30-second cut is built** and is its own edit — `wake` and `audio` dropped
+  rather than every beat thinned. Its brief is [playStore_promo2_30.md](playStore_promo2_30.md).
+- **`both` is static and native.** The pair no longer drifts, and the bezel is counted
+  in the pair's width and the band's height, which is what was pushing the phone off
+  the bottom of the frame.
+- **A strobe at the head of `route` was a renderer problem, not a design one.** The EUI
+  surfaces load their backdrops, display panels and icons through CSS rather than
+  `<Img>`, and Remotion only waits for `<Img>`. `PromoPreload` puts them back under
+  `delayRender`. See VIDEO_WORKFLOW.md — any new composition on `app-ui/` needs it.
+
+### Known and accepted
+
+- **The phone's third source card is clipped** in `both`. That is the app: a
+  horizontal strip holding two and a half cards with four inputs in it, exactly as
+  `phone-many-to-one-cold.png` shows. `PhoneEuiManyToOne` takes no scroll offset;
+  First-Run scrolls the strip if this ever needs to stop reading as a defect.
 
 ## Contact sheet
 

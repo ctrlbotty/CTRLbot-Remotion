@@ -128,7 +128,7 @@ export const BeatMatrix: React.FC<BeatProps> = ({frames, cut}) => {
     >
       <TabletEui
         inputs={INPUTS}
-        outputs={matrixOutputs(t, false)}
+        outputs={matrixOutputs(t)}
         selectedInput={matrixSelection(t)}
         volume={RESTING_VOLUME}
         chrome={{top: chrome, audio: chrome, backplate: false}}

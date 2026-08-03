@@ -1,6 +1,5 @@
 import React from 'react';
 import {Easing, interpolate} from 'remotion';
-import {centerOf, frameWidth, padRegion} from '../../camera/Camera';
 import {appDimens} from '../../design/tokens.generated';
 import {background} from '../../design/theme';
 import {BeatPromise} from './BeatPromise';
@@ -124,19 +123,6 @@ export const EUI_PROMO_BEATS: EuiPromoBeat[] = [
   },
 ];
 
-/**
- * Measured camera push ceiling for an aspect-matched panel on landscape.
- *
- * Only `wake` still pushes — it is the one beat whose subject is a centred screen with
- * nothing at its edges, so a crop costs nothing. Everywhere else the chrome dissolve
- * below does the work a camera cannot.
- */
-export const promoDrift = (viewport: {width: number; height: number}) =>
-  frameWidth(
-    centerOf({x: 0, y: 0, width: viewport.width, height: viewport.height}),
-    viewport.width * 0.94,
-  );
-
 // ---------------------------------------------------------------------------
 // Stage geometry
 //
@@ -250,7 +236,6 @@ export const euiCentre = (viewport: {width: number; height: number}) => ({
   height: viewport.height - BAR_HEIGHT - SEEKBAR_HEIGHT,
 });
 
-
 /** Route selection (Many-to-One): null until t=0.42, then Input 1 (0). */
 export const routeSelection = (t: number): number | null => (t < 0.42 ? null : 0);
 
@@ -259,22 +244,15 @@ export const matrixSelection = (t: number): number | null =>
   t < 0.26 ? null : t < 0.55 ? 0 : 2;
 
 /**
- * Matrix output routing map.
- * Output 2 (index 1 on tablet, 0 on phone) takes Input 1 at t=0.40.
- * All four outputs take Input 3 at t=0.78.
+ * Matrix output routing map. Output 2 takes Input 1 at t=0.40; all four take Input 3
+ * at t=0.78, leaving the two-grey state in between — a live route that is not the one
+ * being worked on, which is the whole reason the matrix view has two greys.
  */
-export const matrixOutputs = (t: number, isPhone = false) => {
-  const routedOutput = isPhone ? 0 : 1;
-  return [0, 1, 2, 3].map((index) => ({
+export const matrixOutputs = (t: number) =>
+  [0, 1, 2, 3].map((index) => ({
     label: `Output ${index + 1}`,
-    source:
-      t >= 0.78
-        ? 'Input 3'
-        : index === routedOutput && t >= 0.40
-          ? 'Input 1'
-          : null,
+    source: t >= 0.78 ? 'Input 3' : index === 1 && t >= 0.4 ? 'Input 1' : null,
   }));
-};
 
 /**
  * The `both` beat's routing — one selection, both surfaces, one frame.
@@ -289,7 +267,7 @@ export const matrixOutputs = (t: number, isPhone = false) => {
  * its own screen. First-Run scrolls the strip for this; here the simpler fix is to route
  * the source that is already in view on both form factors.
  */
-export const BOTH_ROUTE_AT = 0.34;
+const BOTH_ROUTE_AT = 0.34;
 
 export const bothSelection = (t: number): number | null =>
   t < BOTH_ROUTE_AT ? null : 0;
