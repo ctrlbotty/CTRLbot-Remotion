@@ -388,7 +388,7 @@ deliverable; if a line reads at 60 and races at 30, it is too long.
 
   Gate: `contact --beat=audio` shows the speaker muted with four outputs still on Input 3.
 
-- [ ] T10: Build the both beat — the phone is a real interface too — files: src/marketing/eui-promo/BeatBoth.tsx, src/marketing/eui-promo/euiPromoData.ts
+- [x] T10: Build the both beat — the phone is a real interface too — files: src/marketing/eui-promo/BeatBoth.tsx, src/marketing/eui-promo/euiPromoData.ts
 
   `<DualStage>`, the one beat that is not `<Stage>`: two panels are the message, so the
   copy goes above them and the pair centres underneath. `TabletEui` on the left in its
