@@ -16,6 +16,7 @@ import type {ReactNode} from 'react';
 import {AbsoluteFill, Easing, Interactive, interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Camera, type Shot} from '../camera/Camera';
 import {background, color, font, radius, space, type} from '../design/theme';
+import {DitherOverlay} from './DitherOverlay';
 
 /** Frame pixels of device edge around each screen. See `Stage`'s `bezel`. */
 const BEZEL = 18;
@@ -136,6 +137,7 @@ export const DualStage = ({
 
   return (
     <AbsoluteFill style={{background: stageBackground, overflow: 'hidden'}}>
+      <DitherOverlay />
       {copy ? (
         <div
           style={{

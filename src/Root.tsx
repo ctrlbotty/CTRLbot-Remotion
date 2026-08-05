@@ -23,6 +23,7 @@ import {
 } from './scenes/SurfaceProofs';
 import {MasterControlCard} from './marketing/eui-promo/MasterControlCard';
 import {EuiPromo, euiPromoDuration} from './marketing/eui-promo/EuiPromo';
+import {EuiPromo as EuiPromoV3, euiPromoDuration as euiPromoV3Duration} from './marketing/eui-promo-v3/EuiPromo';
 
 // Three layers, deliberately:
 //
@@ -70,6 +71,27 @@ export const RemotionRoot = () => (
         component={EuiPromo}
         defaultProps={{cut: 'play'}}
         durationInFrames={euiPromoDuration('play')}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+    </Folder>
+
+    <Folder name="Marketing-v3">
+      <Composition
+        id="Play-Store-EUI-Promo-V3"
+        component={EuiPromoV3}
+        defaultProps={{cut: 'master'}}
+        durationInFrames={euiPromoV3Duration('master')}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="Play-Store-EUI-Promo-V3-30"
+        component={EuiPromoV3}
+        defaultProps={{cut: 'play'}}
+        durationInFrames={euiPromoV3Duration('play')}
         fps={30}
         width={1920}
         height={1080}

@@ -109,10 +109,30 @@ const alpha = (hex: string, amount: number) => {
  * panel rather than the frame, so the surface reads as lit instead of pasted on, and
  * a frame is never flat black in the corner opposite the copy.
  */
+/**
+ * Generates smoothly distributed color stops using a cosine falloff curve
+ * to prevent 8-bit quantization and visual color banding in CSS radial gradients.
+ */
+const promoColorStops = (maxAlpha = 0.45, maxRadius = 90) => {
+  const steps = 14;
+  const stops: string[] = [];
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    // Cosine ease-out falloff from maxAlpha down to 0
+    const falloff = 0.5 * (1 + Math.cos(Math.PI * t));
+    const a = Math.round(maxAlpha * falloff * 10000) / 10000;
+    const pos = Math.round(t * maxRadius * 10) / 10;
+    stops.push(`${alpha(appColors.blue, a)} ${pos}%`);
+  }
+  return stops.join(', ');
+};
+
+const PROMO_STOPS = promoColorStops(0.45, 90);
+
 export const background = {
   stage: `radial-gradient(120% 90% at 71% 50%, ${alpha(appColors.blue, 0.22)} 0%, ${alpha(appColors.blue, 0.06)} 38%, ${appColors.black} 72%)`,
   promo: (x = 68, y = 32) =>
-    `radial-gradient(100% 100% at ${x}% ${y}%, ${alpha(appColors.blue, 0.45)} 0%, ${alpha(appColors.blue, 0)} 90%)`,
+    `radial-gradient(100% 100% at ${x}% ${y}%, ${PROMO_STOPS})`,
 } as const;
 
 /** Geometry, anchored to the app's 8dp corner radius. */

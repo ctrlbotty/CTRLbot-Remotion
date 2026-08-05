@@ -19,6 +19,7 @@ import type {ReactNode} from 'react';
 import {AbsoluteFill, Easing, Interactive, interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Camera, type Shot} from '../camera/Camera';
 import {background, color, font, radius, space, type} from '../design/theme';
+import {DitherOverlay} from './DitherOverlay';
 
 /**
  * Stage geometry, in frame pixels.
@@ -236,6 +237,7 @@ export const Stage = ({
 
   return (
     <AbsoluteFill style={{background: stageBackground, overflow: 'hidden'}}>
+      <DitherOverlay />
       {copy ? (
         <div
           style={{

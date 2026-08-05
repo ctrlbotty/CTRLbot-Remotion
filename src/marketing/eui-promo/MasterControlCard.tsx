@@ -21,6 +21,7 @@
 
 import {AbsoluteFill, Easing, Img, Interactive, interpolate, staticFile, useCurrentFrame} from 'remotion';
 import {background, color, font, space, type} from '../../design/theme';
+import {DitherOverlay} from '../DitherOverlay';
 import {PromoCopy, streamEnd} from './PromoCopy';
 
 /**
@@ -87,6 +88,7 @@ export const MasterControlCard = ({
         gap: 88,
       }}
     >
+      <DitherOverlay />
       <Interactive.Div
         name="Tricon"
         style={{
