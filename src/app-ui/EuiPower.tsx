@@ -10,6 +10,8 @@
 
 import {Easing, interpolate, useCurrentFrame} from 'remotion';
 import {CapturedScreen} from './CapturedScreen';
+import {TabletVolumeBar} from './TabletEui';
+import {PhoneVolumeBar} from './PhoneEui';
 import {appColors, appDimens} from '../design/tokens.generated';
 import {PHONE_VIEWPORT, TABLET_VIEWPORT} from './viewports';
 
@@ -145,18 +147,21 @@ export const EUI_POWER_REGIONS = {
 
 export type EuiPowerState = 'powering-off' | 'off' | 'powering-on';
 
-type EuiPowerCaptureProps = {device: 'phone' | 'tablet'} &
-  (
-    | {state: 'off'}
-    | {
-        state: 'powering-off' | 'powering-on';
-        /** Length of the powering state; the ring closes before its final hold. */
-        durationInFrames: number;
-      }
-  );
+type EuiPowerCaptureProps = {
+  device: 'phone' | 'tablet';
+  volume?: number;
+  speakerMuted?: boolean;
+} & (
+  | {state: 'off'}
+  | {
+      state: 'powering-off' | 'powering-on';
+      /** Length of the powering state; the ring closes before its final hold. */
+      durationInFrames: number;
+    }
+);
 
 export const EuiPowerCapture = (props: EuiPowerCaptureProps) => {
-  const {device, state} = props;
+  const {device, state, volume = 0.58, speakerMuted = false} = props;
 
   return (
     <div
@@ -184,6 +189,20 @@ export const EuiPowerCapture = (props: EuiPowerCaptureProps) => {
           durationInFrames={props.durationInFrames}
         />
       )}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+        }}
+      >
+        {device === 'tablet' ? (
+          <TabletVolumeBar volume={volume} speakerMuted={speakerMuted} />
+        ) : (
+          <PhoneVolumeBar volume={volume} speakerMuted={speakerMuted} />
+        )}
+      </div>
     </div>
   );
 };

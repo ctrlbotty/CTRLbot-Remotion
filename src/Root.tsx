@@ -24,6 +24,10 @@ import {
 import {MasterControlCard} from './marketing/eui-promo/MasterControlCard';
 import {EuiPromo, euiPromoDuration} from './marketing/eui-promo/EuiPromo';
 import {EuiPromo as EuiPromoV3, euiPromoDuration as euiPromoV3Duration} from './marketing/eui-promo-v3/EuiPromo';
+import {LoopRoute} from './marketing/web-loops/LoopRoute';
+import {LoopMatrix} from './marketing/web-loops/LoopMatrix';
+import {LoopAudio} from './marketing/web-loops/LoopAudio';
+import {WEB_LOOP} from './marketing/web-loops/webLoopData';
 
 // Three layers, deliberately:
 //
@@ -95,6 +99,37 @@ export const RemotionRoot = () => (
         fps={30}
         width={1920}
         height={1080}
+      />
+    </Folder>
+
+    {/* Panel loops for ctrlbot.io. Not cuts — media cells. Each one ends on the state
+        it opened with, because a <video loop> wraps with no dissolve and the site plays
+        them silently and forever beside a paragraph. See destinations.ts,
+        `website-panel-loop`, for the frame and the crop budget the cell imposes. */}
+    <Folder name="Web-Loops">
+      <Composition
+        id="Web-Loop-Route"
+        component={LoopRoute}
+        durationInFrames={WEB_LOOP.frames}
+        fps={30}
+        width={WEB_LOOP.width}
+        height={WEB_LOOP.height}
+      />
+      <Composition
+        id="Web-Loop-Matrix"
+        component={LoopMatrix}
+        durationInFrames={WEB_LOOP.frames}
+        fps={30}
+        width={WEB_LOOP.width}
+        height={WEB_LOOP.height}
+      />
+      <Composition
+        id="Web-Loop-Audio"
+        component={LoopAudio}
+        durationInFrames={WEB_LOOP.frames}
+        fps={30}
+        width={WEB_LOOP.width}
+        height={WEB_LOOP.height}
       />
     </Folder>
 

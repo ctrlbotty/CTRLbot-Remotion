@@ -128,15 +128,47 @@ export const bothOutputs = (t: number) =>
   }));
 
 export const RESTING_VOLUME = 0.58;
+export const AUDIO_MUTE_AT = 0.58;
+export const AUDIO_UNMUTE_AT = 0.80;
 
-export const promoVolume = (t: number): number =>
-  interpolate(t, [0, 0.1, 0.34, 0.62], [0.55, 0.24, 0.76, 0.58], {
-    easing: Easing.bezier(0.16, 1, 0.3, 1),
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+export const promoMuted = (t: number): boolean => t >= AUDIO_MUTE_AT && t < AUDIO_UNMUTE_AT;
 
-export const promoMuted = (t: number): boolean => t >= 0.72;
+export const promoVolume = (t: number): number => {
+  if (t < AUDIO_MUTE_AT) {
+    return interpolate(
+      t,
+      [0, 0.12, 0.32, 0.48],
+      [0.55, 0.20, 0.95, RESTING_VOLUME],
+      {
+        easing: Easing.bezier(0.16, 1, 0.3, 1),
+        extrapolateLeft: 'clamp',
+        extrapolateRight: 'clamp',
+      },
+    );
+  }
+  if (t < AUDIO_UNMUTE_AT) {
+    return interpolate(
+      t,
+      [AUDIO_MUTE_AT, AUDIO_MUTE_AT + 0.05],
+      [RESTING_VOLUME, 0],
+      {
+        easing: Easing.bezier(0.16, 1, 0.3, 1),
+        extrapolateLeft: 'clamp',
+        extrapolateRight: 'clamp',
+      },
+    );
+  }
+  return interpolate(
+    t,
+    [AUDIO_UNMUTE_AT, AUDIO_UNMUTE_AT + 0.07, 1],
+    [0, RESTING_VOLUME, RESTING_VOLUME],
+    {
+      easing: Easing.bezier(0.16, 1, 0.3, 1),
+      extrapolateLeft: 'clamp',
+      extrapolateRight: 'clamp',
+    },
+  );
+};
 
 export const powerPhase = (t: number, beat: 'wake' | 'close') => {
   if (beat === 'wake') {

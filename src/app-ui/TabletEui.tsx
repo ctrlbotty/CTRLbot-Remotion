@@ -140,9 +140,23 @@ export const TABLET_EUI_MANY_TO_ONE_REGIONS = {
     width: NX1_SOURCE_WIDTH,
     height: appDimens.euiNx1ColumnHeight,
   },
+  /**
+   * `+ 10`, not `+ 20`, between rows — the pitch is 112dp and not 122dp.
+   *
+   * `Nx1SourceRow` sets `margin: 10` and stacks in a plain block container, so each
+   * row's 10dp bottom margin **collapses** with the next row's 10dp top margin into a
+   * single 10dp gap. Only the first row's top margin survives on its own, because the
+   * container's `overflow: hidden` establishes a block formatting context and stops it
+   * collapsing through the parent.
+   *
+   * This was wrong from the start and could not show it: the only caller was the promo's
+   * route beat, which rings `sourceRow(0)`, where both formulas agree. The web loop rings
+   * rows 1 and 2 as well, and there the ring sat 10dp and 20dp below the row it was
+   * supposed to be around.
+   */
   sourceRow: (index: number) => ({
     x: NX1_SOURCE_X + 10,
-    y: NX1_COLUMN_TOP + 10 + index * (SOURCE_HEIGHT + 20),
+    y: NX1_COLUMN_TOP + 10 + index * (SOURCE_HEIGHT + 10),
     width: NX1_SOURCE_WIDTH - 20,
     height: SOURCE_HEIGHT,
   }),
@@ -297,6 +311,89 @@ const SourceRow = ({input, selected}: {input: EuiInput; selected: boolean}) => (
   </div>
 );
 
+export const TabletVolumeBar = ({
+  volume = 0.58,
+  speakerMuted = false,
+  opacity = 1,
+}: {
+  volume?: number;
+  speakerMuted?: boolean;
+  opacity?: number;
+}) => (
+  <div
+    style={{
+      height: SEEKBAR_HEIGHT,
+      flex: '0 0 auto',
+      display: 'flex',
+      alignItems: 'center',
+      gap: AUDIO_GAP,
+      opacity,
+      paddingLeft: AUDIO_PADDING,
+      paddingRight: AUDIO_PADDING,
+      backgroundColor: appColors.black,
+      width: '100%',
+      boxSizing: 'border-box',
+    }}
+  >
+    <AppIcon
+      name={speakerMuted ? 'ic_speaker_off' : 'ic_speaker_on'}
+      size={SPEAKER_SIZE}
+      tint={speakerMuted ? appColors.priRed : appColors.white}
+    />
+    <AppIcon name="ic_vol_left" size={VOLUME_ICON_SIZE} tint={appColors.white} />
+    {/* Track 14 against a 38 thumb — a ratio of 2.7, which is the app's own.
+        `custom_thumb.xml` is 45dp tall and the SeekBar's maxHeight of 20dp less the
+        drawable's 2dp top and bottom insets leaves a 16dp track, so the app runs at
+        45:16 = 2.8. That proportion is what makes the gauge read as a fine bar with a
+        substantial handle rather than a chunky slider; matching it matters more than
+        matching either number on its own, because both scale with the panel. */}
+    <div
+      style={{
+        position: 'relative',
+        flex: 1,
+        height: 14,
+        backgroundColor: appColors.gray25,
+        border: '1px solid #000000',
+        borderRadius: 3,
+        boxSizing: 'border-box',
+      }}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          bottom: 0,
+          right: 0,
+          borderRadius: 2,
+          background: 'linear-gradient(to right, #FFFFFF 0%, #FFFF48 50%, #FF0B00 100%)',
+          clipPath: `inset(0 ${(1 - Math.min(1, Math.max(0, volume))) * 100}% 0 0)`,
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          left: `${Math.min(1, Math.max(0, volume)) * 100}%`,
+          top: '50%',
+          translate: '-50% -50%',
+          width: 14,
+          height: 38,
+          backgroundColor: appColors.white,
+          border: '2.5px solid #000000',
+          borderRadius: 1,
+          boxSizing: 'border-box',
+        }}
+      />
+    </div>
+    <AppIcon name="ic_vol_right" size={VOLUME_ICON_SIZE} tint={appColors.white} />
+  </div>
+);
+
+/**
+ * Landscape Matrix EUI, from res/layout/av_switch_nxo.xml.
+ *
+ * 30% source buttons, 10% route-all column, 60% 2x2 output grid.
+ */
 export const TabletEui = ({
   outputs,
   inputs,
@@ -317,158 +414,120 @@ export const TabletEui = ({
   const {top: topOpacity, audio: audioOpacity, backplate} = resolveChrome(chrome);
 
   return (
-  <div
-    style={{
-      display: 'flex',
-      flexDirection: 'column',
-      width: TABLET_VIEWPORT.width,
-      height: TABLET_VIEWPORT.height,
-      overflow: 'hidden',
-      backgroundColor: backplate ? appColors.black : 'transparent',
-    }}
-  >
-    {/* Top bar — exit control left, system power right */}
     <div
       style={{
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        height: BAR_HEIGHT,
-        flex: '0 0 auto',
-        opacity: topOpacity,
-        paddingLeft: appDimens.euiBarIconPadding,
-        paddingRight: appDimens.euiBarIconPadding,
-        backgroundColor: appColors.black,
+        flexDirection: 'column',
+        width: TABLET_VIEWPORT.width,
+        height: TABLET_VIEWPORT.height,
+        overflow: 'hidden',
+        backgroundColor: backplate ? appColors.black : 'transparent',
       }}
     >
-      <AppIcon name="ic_settings2" size={52} tint={appColors.white} />
-      <AppIcon name="ic_power" size={54} />
-    </div>
-
-    {/* Content — the app backs this with the bg_eui radial, not a flat fill */}
-    <div
-      style={{
-        flex: 1,
-        display: 'flex',
-        backgroundImage: `url(${staticFile('app-assets/bg_eui.png')})`,
-        backgroundSize: '100% 100%',
-        backgroundRepeat: 'no-repeat',
-      }}
-    >
-      {/* Sources — weight 30 */}
+      {/* Top bar — exit control left, system power right */}
       <div
         style={{
-          width: SOURCE_COL,
-          paddingLeft: COLUMN_START,
-          paddingRight: 10,
-          paddingTop: SOURCE_TOP,
           display: 'flex',
-          flexDirection: 'column',
           alignItems: 'center',
-          overflow: 'hidden',
+          justifyContent: 'space-between',
+          height: BAR_HEIGHT,
+          flex: '0 0 auto',
+          opacity: topOpacity,
+          paddingLeft: appDimens.euiBarIconPadding,
+          paddingRight: appDimens.euiBarIconPadding,
+          backgroundColor: appColors.black,
         }}
       >
-        {inputs.map((input, index) => (
-          <SourceRow key={input.label} input={input} selected={index === selectedInput} />
-        ))}
+        <AppIcon name="ic_settings2" size={52} tint={appColors.white} />
+        <AppIcon name="ic_power" size={54} />
       </div>
 
-      {/* Route-all — weight 10. Not rotated in landscape; portrait turns it 270deg. */}
+      {/* Content — the app backs this with the bg_eui radial, not a flat fill */}
       <div
         style={{
-          width: ARROW_COL,
+          flex: 1,
           display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
+          backgroundImage: `url(${staticFile('app-assets/bg_eui.png')})`,
+          backgroundSize: '100% 100%',
+          backgroundRepeat: 'no-repeat',
         }}
       >
-        <span
+        {/* Sources — weight 30 */}
+        <div
           style={{
-            marginBottom: 10,
-            fontFamily: 'Montserrat, sans-serif',
-            fontWeight: 400,
-            fontSize: 30,
-            color: appColors.white,
+            width: SOURCE_COL,
+            paddingLeft: COLUMN_START,
+            paddingRight: 10,
+            paddingTop: SOURCE_TOP,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            overflow: 'hidden',
           }}
         >
-          All
-        </span>
-        <AppIcon
-          name="ic_route5"
-          size={appDimens.euiMatrixArrowSize}
-          tint={appColors.white}
-        />
-      </div>
+          {inputs.map((input, index) => (
+            <SourceRow key={input.label} input={input} selected={index === selectedInput} />
+          ))}
+        </div>
 
-      {/* Outputs — weight 60 */}
-      <div
-        style={{
-          width: OUTPUT_COL,
-          paddingTop: GRID_TOP,
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignContent: 'flex-start',
-          overflow: 'hidden',
-        }}
-      >
-        {outputs.map((output) => (
-          <OutputCell
-            key={output.label}
-            output={output}
-            selectedSource={
-              selectedInput === null ? null : (inputs[selectedInput]?.label ?? null)
-            }
+        {/* Route-all — weight 10. Not rotated in landscape; portrait turns it 270deg. */}
+        <div
+          style={{
+            width: ARROW_COL,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <span
+            style={{
+              marginBottom: 10,
+              fontFamily: 'Montserrat, sans-serif',
+              fontWeight: 400,
+              fontSize: 30,
+              color: appColors.white,
+            }}
+          >
+            All
+          </span>
+          <AppIcon
+            name="ic_route5"
+            size={appDimens.euiMatrixArrowSize}
+            tint={appColors.white}
           />
-        ))}
-      </div>
-    </div>
+        </div>
 
-    {/* Volume bar */}
-    <div
-      style={{
-        height: SEEKBAR_HEIGHT,
-        flex: '0 0 auto',
-        display: 'flex',
-        alignItems: 'center',
-        gap: AUDIO_GAP,
-        opacity: audioOpacity,
-        paddingLeft: AUDIO_PADDING,
-        paddingRight: AUDIO_PADDING,
-        backgroundColor: appColors.black,
-      }}
-    >
-      <AppIcon
-        name={speakerMuted ? 'ic_speaker_off' : 'ic_speaker_on'}
-        size={SPEAKER_SIZE}
-        tint={appColors.white}
-      />
-      <AppIcon name="ic_vol_left" size={VOLUME_ICON_SIZE} tint={appColors.white} />
-      <div style={{position: 'relative', flex: 1, height: 14, backgroundColor: appColors.gray25}}>
+        {/* Outputs — weight 60 */}
         <div
           style={{
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            bottom: 0,
-            width: `${volume * 100}%`,
-            backgroundColor: appColors.priYellow,
+            width: OUTPUT_COL,
+            paddingTop: GRID_TOP,
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignContent: 'flex-start',
+            overflow: 'hidden',
           }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            left: `${volume * 100}%`,
-            top: -10,
-            width: 12,
-            height: 34,
-            backgroundColor: appColors.white,
-          }}
-        />
+        >
+          {outputs.map((output) => (
+            <OutputCell
+              key={output.label}
+              output={output}
+              selectedSource={
+                selectedInput === null ? null : (inputs[selectedInput]?.label ?? null)
+              }
+            />
+          ))}
+        </div>
       </div>
-      <AppIcon name="ic_vol_right" size={VOLUME_ICON_SIZE} tint={appColors.white} />
+
+      {/* Volume bar */}
+      <TabletVolumeBar
+        volume={volume}
+        speakerMuted={speakerMuted}
+        opacity={audioOpacity}
+      />
     </div>
-  </div>
   );
 };
 
@@ -684,51 +743,12 @@ export const TabletEuiManyToOne = ({
         </div>
       </div>
 
-      <div
-        style={{
-          height: SEEKBAR_HEIGHT,
-          flex: '0 0 auto',
-          display: 'flex',
-          alignItems: 'center',
-          gap: AUDIO_GAP,
-          opacity: audioOpacity,
-          paddingLeft: AUDIO_PADDING,
-          paddingRight: AUDIO_PADDING,
-          backgroundColor: appColors.black,
-        }}
-      >
-        <AppIcon
-          name={speakerMuted ? 'ic_speaker_off' : 'ic_speaker_on'}
-          size={SPEAKER_SIZE}
-          tint={appColors.white}
-        />
-        <AppIcon name="ic_vol_left" size={VOLUME_ICON_SIZE} tint={appColors.white} />
-        <div
-          style={{position: 'relative', flex: 1, height: 14, backgroundColor: appColors.gray25}}
-        >
-          <div
-            style={{
-              position: 'absolute',
-              left: 0,
-              top: 0,
-              bottom: 0,
-              width: `${volume * 100}%`,
-              backgroundColor: appColors.priYellow,
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              left: `${volume * 100}%`,
-              top: -10,
-              width: 12,
-              height: 34,
-              backgroundColor: appColors.white,
-            }}
-          />
-        </div>
-        <AppIcon name="ic_vol_right" size={VOLUME_ICON_SIZE} tint={appColors.white} />
-      </div>
+      {/* Volume bar */}
+      <TabletVolumeBar
+        volume={volume}
+        speakerMuted={speakerMuted}
+        opacity={audioOpacity}
+      />
     </div>
   );
 };

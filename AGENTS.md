@@ -10,6 +10,7 @@ npm run sync:tokens    # pull design tokens, fonts and icons from the app repo
 npm run dev            # Remotion Studio
 npm run check          # tsc --noEmit + composition list
 npm run video:lint     # the anti-slop gate — run this before reporting done
+npm run loop:seam -- out/web/eui-loop-route-v1.mp4    # web loops only — see below
 ```
 
 Render a scene or a still:
@@ -92,10 +93,25 @@ src/
   camera/       Camera rig, Spotlight, FocusRing, TapIndicator, Callout
   scenes/       one file per scene + shared.ts for scene lengths
   marketing/    Stage and DualStage — the landscape promo layouts
+                web-loops/ — the ctrlbot.io panel loops, which are not cuts
   compositions/ FirstRun.tsx — the cut
 videos/         one markdown brief per video; _TEMPLATE.md to start
-scripts/        video-lint and video-frames — the gates
+scripts/        video-lint, video-frames and loop-seam — the gates
 ```
+
+## Web loops are not cuts
+
+`src/marketing/web-loops/` renders media cells for ctrlbot.io, not video anyone watches
+end to end. They are registered under `Web-Loops`, they carry **no copy** — the site's
+layout grammar puts a text panel beside the cell, so the words are HTML — and they obey
+one rule nothing else here does: **frame 0 and the frame after the last one must be the
+same picture.** A `<video loop>` wraps with no dissolve, so a beat that ends somewhere
+new is a jump cut every ten seconds. `npm run loop:seam` is the gate; it is calibrated to
+pass those loops and fail `playStore_promo3_30s.mp4`, which is a cut and not a loop.
+
+Read the header of `src/marketing/web-loops/webLoopData.ts` before adding one. The
+destination is `website-panel-loop` in `destinations.ts`, and it records why the site cell
+sizes itself from the video rather than cropping it.
 
 Training cuts are full-bleed and `Callout` overlays them. Marketing cuts use `<Stage>`:
 the surface in a panel down one side, copy in a column beside it. Because that panel is

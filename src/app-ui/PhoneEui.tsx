@@ -330,6 +330,79 @@ export const phoneInputScrollFor = (index: number, inputCount: number) => {
   );
 };
 
+export const PhoneVolumeBar = ({
+  volume = 0.58,
+  speakerMuted = false,
+}: {
+  volume?: number;
+  speakerMuted?: boolean;
+}) => (
+  <div
+    style={{
+      height: VOLUME_HEIGHT,
+      flex: '0 0 auto',
+      display: 'flex',
+      alignItems: 'center',
+      gap: AUDIO_GAP,
+      paddingLeft: AUDIO_PADDING,
+      paddingRight: AUDIO_PADDING,
+      backgroundColor: appColors.black,
+      width: '100%',
+      boxSizing: 'border-box',
+    }}
+  >
+    <AppIcon
+      name={speakerMuted ? 'ic_speaker_off' : 'ic_speaker_on'}
+      size={SPEAKER_SIZE}
+      tint={speakerMuted ? appColors.priRed : appColors.white}
+    />
+    <AppIcon name="ic_vol_left" size={VOLUME_ICON_SIZE} tint={appColors.white} />
+    {/* Track 10 against a 28 thumb — the same 2.8 ratio the tablet strip and the app
+        itself run at. The phone's absolute numbers are smaller because its audio strip
+        is, but the proportion is what has to match across the two surfaces or the same
+        control reads as a different one. See the note on the tablet track. */}
+    <div
+      style={{
+        position: 'relative',
+        flex: 1,
+        height: 10,
+        backgroundColor: appColors.gray25,
+        border: '1px solid #000000',
+        borderRadius: 2,
+        boxSizing: 'border-box',
+      }}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          bottom: 0,
+          right: 0,
+          borderRadius: 1.5,
+          background: 'linear-gradient(to right, #FFFFFF 0%, #FFFF48 50%, #FF0B00 100%)',
+          clipPath: `inset(0 ${(1 - Math.min(1, Math.max(0, volume))) * 100}% 0 0)`,
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          left: `${Math.min(1, Math.max(0, volume)) * 100}%`,
+          top: '50%',
+          translate: '-50% -50%',
+          width: 10,
+          height: 28,
+          backgroundColor: appColors.white,
+          border: '2px solid #000000',
+          borderRadius: 1,
+          boxSizing: 'border-box',
+        }}
+      />
+    </div>
+    <AppIcon name="ic_vol_right" size={VOLUME_ICON_SIZE} tint={appColors.white} />
+  </div>
+);
+
 export const PhoneEui = ({
   outputs,
   inputs,
@@ -459,55 +532,7 @@ export const PhoneEui = ({
     </div>
 
     {/* Volume bar */}
-    <div
-      style={{
-        height: VOLUME_HEIGHT,
-        flex: '0 0 auto',
-        display: 'flex',
-        alignItems: 'center',
-        gap: AUDIO_GAP,
-        paddingLeft: AUDIO_PADDING,
-        paddingRight: AUDIO_PADDING,
-        backgroundColor: appColors.black,
-      }}
-    >
-      <AppIcon
-        name={speakerMuted ? 'ic_speaker_off' : 'ic_speaker_on'}
-        size={SPEAKER_SIZE}
-        tint={appColors.white}
-      />
-      <AppIcon name="ic_vol_left" size={VOLUME_ICON_SIZE} tint={appColors.white} />
-      <div
-        style={{
-          position: 'relative',
-          flex: 1,
-          height: 12,
-          backgroundColor: appColors.gray25,
-        }}
-      >
-        <div
-          style={{
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            bottom: 0,
-            width: `${volume * 100}%`,
-            backgroundColor: appColors.priYellow,
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            left: `${volume * 100}%`,
-            top: -8,
-            width: 10,
-            height: 28,
-            backgroundColor: appColors.white,
-          }}
-        />
-      </div>
-      <AppIcon name="ic_vol_right" size={VOLUME_ICON_SIZE} tint={appColors.white} />
-    </div>
+    <PhoneVolumeBar volume={volume} speakerMuted={speakerMuted} />
   </div>
 );
 
@@ -686,55 +711,7 @@ export const PhoneEuiManyToOne = ({
       </div>
 
       {/* _end_ui.xml audio controls */}
-      <div
-        style={{
-          height: VOLUME_HEIGHT,
-          flex: '0 0 auto',
-          display: 'flex',
-          alignItems: 'center',
-          gap: AUDIO_GAP,
-          paddingLeft: AUDIO_PADDING,
-          paddingRight: AUDIO_PADDING,
-          backgroundColor: appColors.black,
-        }}
-      >
-        <AppIcon
-          name={speakerMuted ? 'ic_speaker_off' : 'ic_speaker_on'}
-          size={SPEAKER_SIZE}
-          tint={appColors.white}
-        />
-        <AppIcon name="ic_vol_left" size={VOLUME_ICON_SIZE} tint={appColors.white} />
-        <div
-          style={{
-            position: 'relative',
-            flex: 1,
-            height: 12,
-            backgroundColor: appColors.gray25,
-          }}
-        >
-          <div
-            style={{
-              position: 'absolute',
-              left: 0,
-              top: 0,
-              bottom: 0,
-              width: `${volume * 100}%`,
-              backgroundColor: appColors.priYellow,
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              left: `${volume * 100}%`,
-              top: -8,
-              width: 10,
-              height: 28,
-              backgroundColor: appColors.white,
-            }}
-          />
-        </div>
-        <AppIcon name="ic_vol_right" size={VOLUME_ICON_SIZE} tint={appColors.white} />
-      </div>
+      <PhoneVolumeBar volume={volume} speakerMuted={speakerMuted} />
     </div>
   );
 };
