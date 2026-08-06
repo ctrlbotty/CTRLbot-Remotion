@@ -4,7 +4,7 @@ import {useCurrentFrame} from 'remotion';
 import type {Region} from '../../camera/Camera';
 import {Stage} from '../Stage';
 import {PromoPreload} from '../eui-promo/PromoPreload';
-import {loopBg, loopPanelHeight, WEB_LOOP} from './webLoopData';
+import {loopBg, loopPanelHeight, WEB_LOOP, type LoopVariant} from './webLoopData';
 
 /**
  * The stage every web loop stands on: centred panel, drifting glow, the push, and the
@@ -27,12 +27,15 @@ import {loopBg, loopPanelHeight, WEB_LOOP} from './webLoopData';
 export const LoopStage = ({
   contentSize,
   region,
+  variant = 'wide',
   children,
 }: {
   /** Natural size of the surface, in its own dp plane. */
   contentSize: {width: number; height: number};
   /** The wide shot, in the same coordinates. Usually the surface's `full` region. */
   region: Region;
+  /** Frame shape. `square` is the 1:1 tile — see WEB_LOOP_SQUARE. */
+  variant?: LoopVariant;
   children: ReactNode;
 }) => {
   const t = useCurrentFrame() / WEB_LOOP.frames;
@@ -43,7 +46,7 @@ export const LoopStage = ({
       <Stage
         centered
         background={loopBg(t)}
-        panelHeight={loopPanelHeight(t)}
+        panelHeight={loopPanelHeight(t, variant)}
         bezel={WEB_LOOP.bezel}
         bezelOpacity={1}
         contentSize={contentSize}

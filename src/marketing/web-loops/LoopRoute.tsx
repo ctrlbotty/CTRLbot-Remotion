@@ -15,6 +15,7 @@ import {
   ROUTE_TAPS,
   routeSelection,
   WEB_LOOP,
+  type LoopVariant,
 } from './webLoopData';
 
 /**
@@ -24,11 +25,14 @@ import {
  * opened with. The display panel is the evidence — it takes the new source in the same
  * frame the source row lights, which is the claim this surface exists to make.
  */
-export const LoopRoute: React.FC<{frames?: number}> = ({frames = WEB_LOOP.frames}) => {
+export const LoopRoute: React.FC<{frames?: number; variant?: LoopVariant}> = ({
+  frames = WEB_LOOP.frames,
+  variant = 'wide',
+}) => {
   const t = useCurrentFrame() / frames;
 
   return (
-    <LoopStage contentSize={TABLET_VIEWPORT} region={TABLET_EUI_MANY_TO_ONE_REGIONS.full}>
+    <LoopStage contentSize={TABLET_VIEWPORT} region={TABLET_EUI_MANY_TO_ONE_REGIONS.full} variant={variant}>
       <TabletEuiManyToOne
         inputs={EUI_INPUTS}
         selectedInput={routeSelection(t)}

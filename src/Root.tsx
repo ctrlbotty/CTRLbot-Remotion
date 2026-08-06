@@ -27,7 +27,7 @@ import {EuiPromo as EuiPromoV3, euiPromoDuration as euiPromoV3Duration} from './
 import {LoopRoute} from './marketing/web-loops/LoopRoute';
 import {LoopMatrix} from './marketing/web-loops/LoopMatrix';
 import {LoopAudio} from './marketing/web-loops/LoopAudio';
-import {WEB_LOOP} from './marketing/web-loops/webLoopData';
+import {WEB_LOOP, WEB_LOOP_SQUARE} from './marketing/web-loops/webLoopData';
 
 // Three layers, deliberately:
 //
@@ -130,6 +130,20 @@ export const RemotionRoot = () => (
         fps={30}
         width={WEB_LOOP.width}
         height={WEB_LOOP.height}
+      />
+
+      {/* The 1:1 tile. The site alternates a 16:10 cell with a square one down the
+          wall, so whichever loop lands on a square row is rendered for that shape
+          rather than cropped into it — a 16:10 frame cut to 1:1 loses a third of its
+          width, and the first thing to go is the source column. */}
+      <Composition
+        id="Web-Loop-Matrix-Square"
+        component={LoopMatrix}
+        defaultProps={{variant: 'square' as const}}
+        durationInFrames={WEB_LOOP.frames}
+        fps={30}
+        width={WEB_LOOP_SQUARE.width}
+        height={WEB_LOOP_SQUARE.height}
       />
     </Folder>
 

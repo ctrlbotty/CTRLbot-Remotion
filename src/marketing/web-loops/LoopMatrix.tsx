@@ -12,6 +12,7 @@ import {
   matrixSelection,
   RESTING_VOLUME,
   WEB_LOOP,
+  type LoopVariant,
 } from './webLoopData';
 
 /**
@@ -38,11 +39,14 @@ const LABEL_FOR = {
   all: 'All',
 } as const;
 
-export const LoopMatrix: React.FC<{frames?: number}> = ({frames = WEB_LOOP.frames}) => {
+export const LoopMatrix: React.FC<{frames?: number; variant?: LoopVariant}> = ({
+  frames = WEB_LOOP.frames,
+  variant = 'wide',
+}) => {
   const t = useCurrentFrame() / frames;
 
   return (
-    <LoopStage contentSize={TABLET_VIEWPORT} region={TABLET_EUI_REGIONS.full}>
+    <LoopStage contentSize={TABLET_VIEWPORT} region={TABLET_EUI_REGIONS.full} variant={variant}>
       <TabletEui
         inputs={EUI_INPUTS}
         outputs={matrixOutputs(t)}

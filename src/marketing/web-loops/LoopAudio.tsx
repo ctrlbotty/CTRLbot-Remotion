@@ -15,6 +15,7 @@ import {
   loopBg,
   loopPanelHeight,
   WEB_LOOP,
+  type LoopVariant,
 } from './webLoopData';
 
 /**
@@ -28,11 +29,14 @@ import {
  * The volume slider carries a standing ring rather than a tap, because the gesture it
  * describes is a drag. A ripple would claim the bar was pressed at one point.
  */
-export const LoopAudio: React.FC<{frames?: number}> = ({frames = WEB_LOOP.frames}) => {
+export const LoopAudio: React.FC<{frames?: number; variant?: LoopVariant}> = ({
+  frames = WEB_LOOP.frames,
+  variant = 'wide',
+}) => {
   const t = useCurrentFrame() / frames;
 
   return (
-    <LoopStage contentSize={TABLET_VIEWPORT} region={TABLET_EUI_REGIONS.full}>
+    <LoopStage contentSize={TABLET_VIEWPORT} region={TABLET_EUI_REGIONS.full} variant={variant}>
       <TabletEui
         inputs={EUI_INPUTS}
         outputs={AUDIO_OUTPUTS}

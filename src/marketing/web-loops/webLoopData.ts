@@ -44,14 +44,42 @@ import {background} from '../../design/theme';
 export const WEB_LOOP = {
   /** 10s at 30fps. `WEBSITE_PANEL_LOOP.duration.target`. */
   frames: 300,
+  bezel: 22,
   /** 16:10, matching the surface. See above. */
   width: 1920,
   height: 1200,
   /** Panel screen height at the two ends of the push. */
   panelWide: 860,
   panelClose: 1080,
-  bezel: 22,
 } as const;
+
+/**
+ * The square cut, for the narrow half of an alternating wall.
+ *
+ * The site lays these out the way GitHub Universe does: a 16:10 tile beside a 1:1 tile,
+ * swapping sides each row, so the media is wide on one line and square on the next. A
+ * square tile cannot be a crop of the wide render — the panel is 16:10 and cropping a
+ * 16:10 frame to 1:1 takes a third of the width off, straight through the source column.
+ * So it is its own composition, framed for the shape.
+ *
+ * **The panel is sized to survive a 16:10 crop, not just to fit 1:1.** On a phone the
+ * wall stacks and every tile shows 16:10, this one included, by cropping the top and
+ * bottom off the square — 225 frame pixels each. At the closest point of the push the
+ * panel is 684 tall inside 1200, so it spans y 258 to 942 against a visible band of 225
+ * to 975. That clearance is the constraint these two numbers are set by; raise them and
+ * the phone crop starts cutting the bezel.
+ */
+export const WEB_LOOP_SQUARE = {
+  width: 1200,
+  height: 1200,
+  panelWide: 550,
+  panelClose: 640,
+} as const;
+
+export type LoopVariant = 'wide' | 'square';
+
+export const loopFrame = (variant: LoopVariant) =>
+  variant === 'square' ? WEB_LOOP_SQUARE : WEB_LOOP;
 
 /**
  * The push, as panel height in frame pixels.
@@ -76,8 +104,8 @@ export const WEB_LOOP = {
  * single change in the quiet part of the loop. Holding still for the last nine frames
  * costs nothing and makes the wrap exact.
  */
-export const loopPanelHeight = (t: number): number =>
-  interpolate(t, [0, 0.72, 0.86, 0.97], [WEB_LOOP.panelWide, WEB_LOOP.panelClose, WEB_LOOP.panelClose, WEB_LOOP.panelWide], {
+export const loopPanelHeight = (t: number, variant: LoopVariant = 'wide'): number =>
+  interpolate(t, [0, 0.72, 0.86, 0.97], [loopFrame(variant).panelWide, loopFrame(variant).panelClose, loopFrame(variant).panelClose, loopFrame(variant).panelWide], {
     // Ease in AND out — not the house `bezier(0.16, 1, 0.3, 1)`, which every other
     // easing in this repo uses. That one is an ease-*out*: it leaves at full speed and
     // settles slowly, which is right for a thing entering a shot and wrong for the
