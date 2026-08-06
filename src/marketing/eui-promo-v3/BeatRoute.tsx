@@ -12,6 +12,7 @@ import {PromoCopy} from '../eui-promo/PromoCopy';
 import {
   promoBg,
   PROMO_PANEL,
+  promoPanelScale,
   RESTING_VOLUME,
   routeSelection,
   stageWide,
@@ -42,6 +43,7 @@ export const BeatRoute: React.FC<BeatProps> = ({frames, cut}) => {
       panelHeight={PROMO_PANEL.height}
       bezel={PROMO_PANEL.bezel}
       bezelOpacity={1}
+      panelScale={promoPanelScale(frame, frames)}
       contentSize={TABLET_VIEWPORT}
       shots={[{at: 0, region: stageWide(TABLET_VIEWPORT)}]}
       copy={

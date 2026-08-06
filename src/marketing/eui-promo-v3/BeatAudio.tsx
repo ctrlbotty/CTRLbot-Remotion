@@ -11,6 +11,7 @@ import {
   promoBg,
   PROMO_PANEL,
   promoMuted,
+  promoPanelScale,
   promoVolume,
   stageWide,
   type BeatProps,
@@ -49,6 +50,7 @@ export const BeatAudio: React.FC<BeatProps> = ({frames}) => {
       panelHeight={PROMO_PANEL.height}
       bezel={PROMO_PANEL.bezel}
       bezelOpacity={1}
+      panelScale={promoPanelScale(frame, frames)}
       contentSize={TABLET_VIEWPORT}
       shots={[{at: 0, region: stageWide(TABLET_VIEWPORT)}]}
       copy={

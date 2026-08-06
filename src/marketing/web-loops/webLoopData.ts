@@ -14,14 +14,25 @@
 //
 // Two consequences worth stating, because both look like mistakes:
 //
-//   - **These loops open warm.** The promo's route beat starts with nothing selected,
-//     because a cold panel makes the first tap land. Here that cold state would have to
-//     be returned to at t=1, and "the user un-selects everything and walks away" is not
-//     a thing that happens in a room. So the loops open already routed and change what
-//     is routed, which is both cyclical and the truer picture of a panel in use.
+//   - **The two switching loops open cold, and close cold.** They used to open already
+//     routed, on the reasoning that a cold panel could not be returned to at t=1 without
+//     inventing an interaction — "the user un-selects everything and walks away" is not a
+//     thing that happens in a room. True, but opening warm buries the thing the loop is
+//     there to show: the first state change became one routed source turning into
+//     another, when what the block beside it claims is that picking a source puts it on
+//     the screen. So they now open with nothing routed and **close on the power control**,
+//     which is not an invention either — that button runs the Power Off preset, and a
+//     room being released at the end of a session is the most ordinary thing that happens
+//     to one. The cycle is honest again: cold, used, released, cold. The audio loop is
+//     untouched; its subject is a level moving, which has no cold state to return to.
 //   - **Every ramp ends flat.** Value matching alone is not enough at the seam: if the
 //     volume bar is still climbing at t=1 and static at t=0, the picture matches and the
 //     motion does not. Easings on the closing segment of each cycle settle to zero.
+//
+// The cold hold at each end is what makes the seam free rather than merely survivable:
+// both sides of the wrap are the same idle panel, so the measured step is the background
+// gradient and nothing else. Keep the closing ring clear of t=1 — `LoopTap` trails 0.09
+// past its tap, so a power tap later than about 0.88 leaves an annotation on the seam.
 
 import {Easing, interpolate} from 'remotion';
 import {background} from '../../design/theme';
@@ -104,8 +115,24 @@ export const loopFrame = (variant: LoopVariant) =>
  * single change in the quiet part of the loop. Holding still for the last nine frames
  * costs nothing and makes the wrap exact.
  */
+/**
+ * Rounded to a whole pixel, and rendered supersampled.
+ *
+ * Everything in the panel is drawn relative to this one number, so a fractional value
+ * puts every edge in the interface on a fractional boundary and the whole surface
+ * resamples on every frame — which reads as the text and the cell borders crawling
+ * rather than the panel moving. Rounding costs nothing: the push covers ~220px over
+ * ~216 frames, so it is already about a pixel a frame and the quantisation is invisible.
+ *
+ * Rounding alone does not fix it, because the surface inside is still scaled by a
+ * fractional factor — 1280dp into whatever the panel is wide. That is what the 2x
+ * render and lanczos downscale in `npm run loop:render` are for. Measured on the square
+ * matrix loop, which shows it worst because it downscales the surface furthest: mean
+ * frame-to-frame change through the push fell from 2.47 to 1.71, and the file got
+ * *smaller*, because most of what was being encoded was shimmer.
+ */
 export const loopPanelHeight = (t: number, variant: LoopVariant = 'wide'): number =>
-  interpolate(t, [0, 0.72, 0.86, 0.97], [loopFrame(variant).panelWide, loopFrame(variant).panelClose, loopFrame(variant).panelClose, loopFrame(variant).panelWide], {
+  Math.round(interpolate(t, [0, 0.72, 0.86, 0.97], [loopFrame(variant).panelWide, loopFrame(variant).panelClose, loopFrame(variant).panelClose, loopFrame(variant).panelWide], {
     // Ease in AND out — not the house `bezier(0.16, 1, 0.3, 1)`, which every other
     // easing in this repo uses. That one is an ease-*out*: it leaves at full speed and
     // settles slowly, which is right for a thing entering a shot and wrong for the
@@ -117,7 +144,7 @@ export const loopPanelHeight = (t: number, variant: LoopVariant = 'wide'): numbe
     easing: Easing.bezier(0.4, 0, 0.2, 1),
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
-  });
+  }));
 
 /**
  * A 0 → 1 → 0 traverse over one cycle, flat at both ends.
@@ -136,7 +163,8 @@ export const wave = (t: number) => 0.5 - 0.5 * Math.cos(2 * Math.PI * t);
  * the only thing moving for seconds at a time — and it is why the loops do not need a
  * camera move they cannot afford. An aspect-matched panel cannot be pushed into.
  */
-export const loopBg = (t: number) => background.promo(72 - 12 * wave(t), 26 + 14 * wave(t));
+export const loopBg = (t: number) =>
+  background.promo(50 - 4 * wave(t), 48 + 4 * wave(t), 140, 130);
 
 /**
  * The copy beside each loop — which is not rendered into the video.
@@ -152,60 +180,98 @@ export const loopBg = (t: number) => background.promo(72 - 12 * wave(t), 26 + 14
  * is import-free and shared with the linter.
  *
  * `at` is a fraction of the loop, on the same 0..1 clock as every state function above.
- * Words in *asterisks* are set in CTRLbot blue, exactly as `PromoCopy` does it — that
- * marker is the shared convention between the promo and the site, not a per-file idea.
+ *
+ * **The three fields are the site's block format, not a shape chosen here.** Every square
+ * text block on ctrlbot.io is a 1-3 word Audiowide title, one bold thought, then at least
+ * two sentences of body — and these panels sit in that same wall, so they hold the same
+ * three levels. The word counts below are the format's, and a beat that breaks them will
+ * look like a different kind of block sitting in the middle of the checkerboard.
+ *
+ * These carry **no accent run**, which is the one place they part company with
+ * `PromoCopy`. The promo sets words in CTRLbot blue between *asterisks*; the site blocks
+ * are black and white, so a marker here would only produce a colour the wall does not
+ * use. Do not reintroduce it without changing the wall.
  */
 export type LoopBeat = {
   /** 0..1 within the loop. The fraction the block starts arriving on. */
   at: number;
-  eyebrow: string;
-  /** Audiowide. A headline, not a sentence. */
+  /** Audiowide, 1-3 words. A title, not a sentence. */
   title: string;
-  /** Words in *asterisks* are CTRLbot blue. */
+  /** One thought, 5-9 words. Bold Archivo. */
+  thought: string;
+  /** Two sentences or more. Streamed a word at a time; no accent markers. */
   body: string;
 };
 
 export const LOOP_COPY: Record<string, LoopBeat[]> = {
+  app: [
+    {
+      at: 0,
+      title: 'THE APP',
+      thought: 'IT BEGINS WITH ONE BUTTON',
+      body:
+        'A simple power press starts the room and powers on all the connected ' +
+        'devices. The system prepares the hardware automatically.',
+    },
+    {
+      at: 0.70,
+      title: 'ROOM SHUTDOWN',
+      thought: 'ONE PRESS POWERS OFF THE ROOM',
+      body:
+        'Tap power to shut down the entire system safely. The room returns to standby ' +
+        'until the next session.',
+    },
+  ],
+  // One beat, deliberately. A second one existed and was about the interface — no menus,
+  // no modes — which is not what this loop shows. The loop shows many-to-one switching,
+  // so the block says that once and holds for the whole cycle.
   route: [
     {
       at: 0,
-      eyebrow: 'Many-to-One',
-      title: 'Choose a source',
-      body: 'Pick a source and the display takes it *in the same moment.*',
-    },
-    {
-      at: 0.5,
-      eyebrow: 'Many-to-One',
-      title: 'One tap, every time',
-      body: 'No menu, and no mode to be in first. The label is the one *set during configuration.*',
+      title: 'MANY TO ONE',
+      thought: 'THINK MATRIX THE BLUE PILL',
+      body:
+        'Simply select a source and the switcher routes it to the display or projector ' +
+        'in the room. Many sources feed one destination.',
     },
   ],
+  // Beat two moved 0.58 -> 0.52 when the loop opened cold: Input 1 is selected at 0.60
+  // and All lands at 0.74, so the words have to be up before that sequence starts.
   matrix: [
     {
       at: 0,
-      eyebrow: 'Many-to-Many',
-      title: 'Select, then send',
-      body: 'Choosing a source does not move it. Pick the source, *then the screens that get it.*',
+      title: 'MANY TO MANY',
+      thought: 'MATRIX MODE THE RED PILL',
+      body:
+        'Pick the source on the left, then a display or displays on the right. ' +
+        'Route a source to one or more destinations.',
     },
     {
-      at: 0.58,
-      eyebrow: 'Many-to-Many',
-      title: 'Or all of them',
-      body: 'Every output holds its own source until you change it — or All sends one *everywhere at once.*',
+      at: 0.52,
+      title: 'SEND TO ALL',
+      thought: 'Each screen keeps only what you gave it',
+      body:
+        'Two displays can take one source while the others stay dark, because every ' +
+        'output holds its own routing. One press of All puts a single source on every ' +
+        'screen at once.',
     },
   ],
   audio: [
     {
       at: 0,
-      eyebrow: 'Room audio',
-      title: 'Control the speakers in the room',
-      body: 'Easily adjust the volume by *sliding the bar.*',
+      title: 'VOLUME CONTROL',
+      thought: 'ADJUST THE SLIDER AND THE ROOM',
+      body:
+        'Easily change the speaker volume with the slider or the arrows. ' +
+        'Slide the bar and the room level follows.',
     },
     {
       at: 0.6,
-      eyebrow: 'Room audio',
-      title: 'And mute',
-      body: 'One press toggles the room on and off, with the routing behind it *completely untouched.*',
+      title: 'TOGGLE MUTE',
+      thought: 'ONE PRESS FOR A SILENT ROOM',
+      body:
+        'Mute the speaker audio and then easily unmute to return to the previous ' +
+        'level. The original volume is restored instantly.',
     },
   ],
 };
@@ -221,50 +287,84 @@ export const EUI_INPUTS = [
 /** Volume the routing loops sit at, so the audio strip is never at an odd value. */
 export const RESTING_VOLUME = 0.58;
 
+// ── app: Off -> Power On -> Many-to-One -> Power Off -> Off ───────────────────────
+//
+// The complete room cycle in 10s: standby welcome screen, tap power, green progress ring,
+// live Many-to-One interface with Input 1 routed to Display 1, tap power off, red progress ring,
+// and clean return to standby.
+
+export const APP_WELCOME_TAP_AT = 0.10;
+export const APP_POWERING_ON_START = 0.16;
+export const APP_SWITCHER_START = 0.40;
+export const APP_ROUTE_INPUT_AT = 0.46;
+export const APP_POWER_OFF_TAP_AT = 0.68;
+export const APP_POWERING_OFF_START = 0.72;
+export const APP_STANDBY_START = 0.92;
+
+export const appSelection = (t: number): number | null =>
+  t >= APP_ROUTE_INPUT_AT && t < APP_POWERING_OFF_START ? 0 : null;
+
 // ── route: Many-to-One ───────────────────────────────────────────────────────────────
 //
-// Input 1 → 2 → 3 → back to 1. Three taps, evenly spaced, and the third one is what
-// closes the cycle: it lands on the source the loop opened with, so the last third of
-// the loop and the first third are the same picture.
+// Nothing → Input 1 → 2 → 3 → power off → nothing. The first tap is the one the loop
+// exists for: an empty display panel filling, which is the claim the copy beside it
+// makes. The last one releases the room and returns the panel to the state it opened on,
+// so the cycle closes without either end being a routed screen.
+
+/** The room is released here, and the panel is cold from this point to t=1. */
+export const ROUTE_POWER_AT = 0.86;
 
 export const ROUTE_TAPS = [
-  {at: 0.22, input: 1},
-  {at: 0.55, input: 2},
-  {at: 0.88, input: 0},
+  {at: 0.16, input: 0},
+  {at: 0.4, input: 1},
+  {at: 0.64, input: 2},
 ] as const;
 
-/** Index into `EUI_INPUTS`. Never null — see the note on opening warm. */
-export const routeSelection = (t: number): number =>
-  t >= 0.88 ? 0 : t >= 0.55 ? 2 : t >= 0.22 ? 1 : 0;
+/** Index into `EUI_INPUTS`, or null for the cold state at both ends of the cycle. */
+export const routeSelection = (t: number): number | null =>
+  t >= ROUTE_POWER_AT ? null : t >= 0.64 ? 2 : t >= 0.4 ? 1 : t >= 0.16 ? 0 : null;
 
 // ── matrix: Many-to-Many ─────────────────────────────────────────────────────────────
 //
 // The one thing about this surface that is not obvious from a screenshot: selecting a
-// source does not route it. You select, then you choose which outputs take it. So the
-// loop selects Input 3, gives it to two of the four outputs one at a time — which is
-// what shows the other two holding Input 1 on their own — then selects Input 1 and
-// presses All, which puts every output back where the loop opened.
+// source does not route it. You select, then you choose which outputs take it. From cold
+// that reads properly for the first time — the loop selects Input 3 and nothing moves,
+// then gives it to two of the four outputs one at a time while the other two stay dark,
+// which is the independence claim made in the open rather than asserted. Then Input 1 and
+// All fills every screen at once, and the power tap returns all four to nothing.
+//
+// Two outputs stay empty for most of the cycle, and that is the point rather than an
+// unfinished state: it is the only way a four-cell grid can show that a screen holds what
+// it was given and nothing else. It also makes All worth watching, because it now fills
+// four cells instead of changing two.
+
+/** The room is released here, and every output is dark from this point to t=1. */
+export const MATRIX_POWER_AT = 0.86;
 
 export const MATRIX_TAPS = [
-  {at: 0.14, target: 'input-3'},
-  {at: 0.3, target: 'output-2'},
-  {at: 0.46, target: 'output-4'},
-  {at: 0.66, target: 'input-1'},
-  {at: 0.8, target: 'all'},
+  {at: 0.12, target: 'input-3'},
+  {at: 0.28, target: 'output-2'},
+  {at: 0.44, target: 'output-4'},
+  {at: 0.6, target: 'input-1'},
+  {at: 0.74, target: 'all'},
 ] as const;
 
-/** Input 3 (index 2) while the outputs are being assigned; Input 1 (0) either side. */
-export const matrixSelection = (t: number): number => (t >= 0.14 && t < 0.66 ? 2 : 0);
+/** Input 3 (index 2) while the outputs are assigned, Input 1 (0) for All, else cold. */
+export const matrixSelection = (t: number): number | null =>
+  t >= MATRIX_POWER_AT ? null : t >= 0.6 ? 0 : t >= 0.12 ? 2 : null;
 
-/** Output 2 takes Input 3 at 0.30 and Output 4 at 0.46; All returns every one at 0.80. */
+/**
+ * Output 2 takes Input 3 at 0.28 and Output 4 at 0.44; All gives every one Input 1 at
+ * 0.74; the power tap at 0.86 takes them all back to nothing.
+ */
 export const matrixOutputs = (t: number) =>
-  [0, 1, 2, 3].map((index) => ({
-    label: `Output ${index + 1}`,
-    source:
-      t < 0.8 && ((index === 1 && t >= 0.3) || (index === 3 && t >= 0.46))
-        ? 'Input 3'
-        : 'Input 1',
-  }));
+  [0, 1, 2, 3].map((index) => {
+    const label = `Output ${index + 1}`;
+    if (t < 0.28 || t >= MATRIX_POWER_AT) return {label, source: null};
+    if (t >= 0.74) return {label, source: 'Input 1'};
+    const takesInput3 = (index === 1 && t >= 0.28) || (index === 3 && t >= 0.44);
+    return {label, source: takesInput3 ? 'Input 3' : null};
+  });
 
 // ── audio ────────────────────────────────────────────────────────────────────────────
 //

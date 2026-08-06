@@ -16,6 +16,7 @@ import {DualStage} from '../DualStage';
 import {PromoCopy} from '../eui-promo/PromoCopy';
 import {
   promoBg,
+  promoPanelScale,
   RESTING_VOLUME,
   bothOutputs,
   bothSelection,
@@ -58,6 +59,7 @@ export const BeatBoth: React.FC<BeatProps> = ({frames}) => {
     <DualStage
       background={promoBg(t)}
       until={frames}
+      panelScale={promoPanelScale(frame, frames)}
       copy={
         <PromoCopy
           align="center"

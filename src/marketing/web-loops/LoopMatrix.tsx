@@ -7,6 +7,7 @@ import {
   EUI_INPUTS,
   loopBg,
   loopPanelHeight,
+  MATRIX_POWER_AT,
   MATRIX_TAPS,
   matrixOutputs,
   matrixSelection,
@@ -63,6 +64,14 @@ export const LoopMatrix: React.FC<{frames?: number; variant?: LoopVariant}> = ({
           name={LABEL_FOR[tap.target]}
         />
       ))}
+
+      {/* Closes the cycle. See the note on opening cold in webLoopData. */}
+      <LoopTap
+        region={TABLET_EUI_REGIONS.powerControl}
+        at={MATRIX_POWER_AT}
+        frames={frames}
+        name="Power off"
+      />
     </LoopStage>
   );
 };

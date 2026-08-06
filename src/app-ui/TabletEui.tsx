@@ -134,6 +134,9 @@ export const TABLET_EUI_REGIONS = {
 export const TABLET_EUI_MANY_TO_ONE_REGIONS = {
   full: {x: 0, y: 0, width: TABLET_VIEWPORT.width, height: TABLET_VIEWPORT.height},
   exitControl: {x: 10, y: 10, width: 70, height: 70},
+  /** Same coordinates as `TABLET_EUI_REGIONS.powerControl` — both surfaces render the
+   *  identical 90dp bar, settings left and power right, from the same two icons. */
+  powerControl: {x: TABLET_VIEWPORT.width - 100, y: 10, width: 70, height: 70},
   sourceColumn: {
     x: NX1_SOURCE_X,
     y: NX1_COLUMN_TOP,

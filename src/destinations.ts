@@ -98,21 +98,23 @@ export const PLAY_STORE_PREVIEW_MASTER: Destination = {
  * in that repo's README and the approved-claims documents it cites, and they govern the
  * paragraph beside the cell, not this file.
  *
- * **The cell is sized by this render, not the other way round.** That is worth stating
- * because the site's other media cells work the opposite way: they are `object-fit:
- * cover`, so the cell's shape wins and the image is cropped to fit it. Measured on the
- * live wall, a cover cell ranges from 1.60:1 on a 375px phone to 3.07:1 on a 2560px
- * desktop — the wall is full-bleed, so cell width tracks viewport width while the text
- * beside it stays about as tall. No single render survives a 2:1 spread of aspect: at
- * 3.07:1 a 16:9 source loses 42% of its height, which cuts through the volume strip.
+ * **The cell's shape is fixed by the site, and the render is cut to match it.** That
+ * wall — `.loop-board` in the site's CSS — alternates a 16:10 tile with a 1:1 one and
+ * swaps sides each row, so a loop is rendered at whichever shape its row is: this
+ * destination's frame for the wide rows, `WEB_LOOP_SQUARE` for the narrow ones. A square
+ * tile is not a crop of the wide render; cutting 16:10 to 1:1 loses a third of the width,
+ * and the first thing to go is the source column.
  *
- * So the loop cells opt out. `.media.loop` puts the video in normal flow instead, and
- * the row takes its height from the video's own 16:9 — nothing is cropped at any
- * viewport width, and there are no letterbox bands either. The cost is that the text
- * beside it must stay short enough to fit that height; overrun and the row grows and the
- * video centres inside it with bands. See that repo's site.css.
+ * An earlier version worked the other way round — one 16:9 render in a cell that took its
+ * height from the video. That was a response to a real measurement (a `cover` cell on the
+ * full-bleed wall ranges from 1.60:1 on a 375px phone to 3.07:1 at 2560px, and no single
+ * render survives a 2:1 spread of aspect), but it made the row height a function of the
+ * file, which is backwards for a layout. Declaring both shapes is the fix.
  *
- * `safeArea` is therefore an ordinary composition margin here, not a crop budget.
+ * `safeArea` is an ordinary composition margin here, not a crop budget — with one
+ * exception that lives in `WEB_LOOP_SQUARE`: below 900px the wall stacks and every tile
+ * shows 16:10, so the square render *is* cropped, 225px off the top and bottom. Its panel
+ * heights are set by that, not by how the 1:1 tile looks on its own.
  *
  * The duration window is short because the loop repeats while somebody reads the
  * paragraph next to it. Long enough to show a whole interaction, short enough that the

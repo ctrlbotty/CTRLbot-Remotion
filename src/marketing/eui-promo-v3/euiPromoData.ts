@@ -85,6 +85,25 @@ export const EUI_PROMO_BEATS: EuiPromoBeat[] = [
 /** Frame pixels. `height` sizes the screen; `bezel` is drawn outside it. */
 export const PROMO_PANEL = {height: 640, bezel: 22} as const;
 
+/**
+ * Slow short zoom for static panel entrances: starts slightly smaller (0.88)
+ * and smoothly expands to full resting size (1.0).
+ */
+export const promoPanelScale = (
+  frame: number,
+  totalFrames?: number,
+  startScale: number = 0.88,
+) => {
+  const durationInFrames = totalFrames
+    ? Math.min(75, Math.max(35, Math.round(totalFrames * 0.25)))
+    : 75;
+  return interpolate(frame, [0, durationInFrames], [startScale, 1], {
+    easing: Easing.bezier(0.16, 1, 0.3, 1),
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+};
+
 /** The whole surface, edge to edge in its own screen. */
 export const stageWide = (viewport: {width: number; height: number}) => ({
   x: 0,

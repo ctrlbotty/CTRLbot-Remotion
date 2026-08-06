@@ -27,6 +27,7 @@ import {EuiPromo as EuiPromoV3, euiPromoDuration as euiPromoV3Duration} from './
 import {LoopRoute} from './marketing/web-loops/LoopRoute';
 import {LoopMatrix} from './marketing/web-loops/LoopMatrix';
 import {LoopAudio} from './marketing/web-loops/LoopAudio';
+import {LoopApp} from './marketing/web-loops/LoopApp';
 import {WEB_LOOP, WEB_LOOP_SQUARE} from './marketing/web-loops/webLoopData';
 
 // Three layers, deliberately:
@@ -139,6 +140,15 @@ export const RemotionRoot = () => (
       <Composition
         id="Web-Loop-Matrix-Square"
         component={LoopMatrix}
+        defaultProps={{variant: 'square' as const}}
+        durationInFrames={WEB_LOOP.frames}
+        fps={30}
+        width={WEB_LOOP_SQUARE.width}
+        height={WEB_LOOP_SQUARE.height}
+      />
+      <Composition
+        id="Web-Loop-App-Square"
+        component={LoopApp}
         defaultProps={{variant: 'square' as const}}
         durationInFrames={WEB_LOOP.frames}
         fps={30}

@@ -10,7 +10,9 @@ npm run sync:tokens    # pull design tokens, fonts and icons from the app repo
 npm run dev            # Remotion Studio
 npm run check          # tsc --noEmit + composition list
 npm run video:lint     # the anti-slop gate — run this before reporting done
-npm run loop:seam -- out/web/eui-loop-route-v1.mp4    # web loops only — see below
+npm run loop:render    # the web loops — 2x supersampled, see below. NOT `npm run render`
+npm run loop:seam -- out/web/eui-loop-route-v2.mp4    # the loop gate
+npm run loop:copy -- <path.json>                      # hand the copy timings to the site
 ```
 
 Render a scene or a still:
@@ -96,10 +98,15 @@ src/
                 web-loops/ — the ctrlbot.io panel loops, which are not cuts
   compositions/ FirstRun.tsx — the cut
 videos/         one markdown brief per video; _TEMPLATE.md to start
-scripts/        video-lint, video-frames and loop-seam — the gates
+scripts/        video-lint, video-frames, loop-seam — the gates; loop-render, loop-copy
 ```
 
 ## Web loops are not cuts
+
+> **Full runbook — every command, in order, for both the videos and the copy beside them:**
+> `C:\0-Repo\2 - CTRLbot.io\ctrlbot-io-site\docs\MOTION-PIPELINE.md`. It lives in the site
+> repo because that is where the result is verified, but the source of truth for both is
+> `webLoopData.ts` in this one. Read it before changing a loop.
 
 `src/marketing/web-loops/` renders media cells for ctrlbot.io, not video anyone watches
 end to end. They are registered under `Web-Loops`, they carry **no copy** — the site's
@@ -109,9 +116,32 @@ same picture.** A `<video loop>` wraps with no dissolve, so a beat that ends som
 new is a jump cut every ten seconds. `npm run loop:seam` is the gate; it is calibrated to
 pass those loops and fail `playStore_promo3_30s.mp4`, which is a cut and not a loop.
 
-Read the header of `src/marketing/web-loops/webLoopData.ts` before adding one. The
-destination is `website-panel-loop` in `destinations.ts`, and it records why the site cell
-sizes itself from the video rather than cropping it.
+**Route and Matrix open cold and close on the power control.** Nothing routed at t=0, the
+demonstration in between, then the power tap releases the room and returns the panel to
+the state it opened on — which is how a cold open and a closed cycle coexist. Do not
+"fix" the empty grid at either end, and do not move the closing tap past about 0.88:
+`LoopTap` trails 0.09 past its tap, so a later one leaves a focus ring sitting on the
+seam. Audio is unchanged and opens warm; a level has no cold state to return to.
+
+Two frames, because the site's wall alternates shapes: `WEB_LOOP` is 1920x1200 and
+`WEB_LOOP_SQUARE` is 1200x1200, and the square tile is its own composition rather than a
+crop — a 16:10 frame cut to 1:1 loses a third of its width through the source column. Its
+panel is sized by a constraint that is not visible in the square: on a phone the wall
+stacks and *every* tile shows 16:10, so the square one gets cropped 225px top and bottom.
+
+**Render them with `npm run loop:render`, never `npm run render`.** The push scales the
+panel, so the surface is resampled to a slightly different size every frame; at 1x the
+interface crawls. That script renders at 2x and downsamples with lanczos, which measured a
+31% drop in frame-to-frame change on the square tile — and smaller files, because most of
+what was being encoded was the shimmer.
+
+Read the header of `src/marketing/web-loops/webLoopData.ts` before adding one, and
+`LoopStage.tsx` before writing the composition — it carries `<PromoPreload />`, without
+which frame 0 renders before the app's CSS background images have loaded. In a promo that
+is a glitch mid-cut; in a loop it lands on the frame the viewer sees every ten seconds and
+the frame the seam is measured against.
+
+The destination is `website-panel-loop` in `destinations.ts`.
 
 Training cuts are full-bleed and `Callout` overlays them. Marketing cuts use `<Stage>`:
 the surface in a panel down one side, copy in a column beside it. Because that panel is

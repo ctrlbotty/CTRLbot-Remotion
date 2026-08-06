@@ -12,6 +12,7 @@ import {
   loopBg,
   loopPanelHeight,
   RESTING_VOLUME,
+  ROUTE_POWER_AT,
   ROUTE_TAPS,
   routeSelection,
   WEB_LOOP,
@@ -21,9 +22,10 @@ import {
 /**
  * Many-to-One: switching what one display is showing.
  *
- * Three taps down the source column, the third landing back on the source the loop
- * opened with. The display panel is the evidence — it takes the new source in the same
- * frame the source row lights, which is the claim this surface exists to make.
+ * Opens cold. Three taps down the source column, then the power control releases the room
+ * and returns the panel to nothing routed. The display panel is the evidence — it takes
+ * the new source in the same frame the source row lights, which is the claim this surface
+ * exists to make, and from a cold open the first tap makes it in full.
  */
 export const LoopRoute: React.FC<{frames?: number; variant?: LoopVariant}> = ({
   frames = WEB_LOOP.frames,
@@ -48,6 +50,14 @@ export const LoopRoute: React.FC<{frames?: number; variant?: LoopVariant}> = ({
           name={EUI_INPUTS[tap.input].label}
         />
       ))}
+
+      {/* Closes the cycle. See the note on opening cold in webLoopData. */}
+      <LoopTap
+        region={TABLET_EUI_MANY_TO_ONE_REGIONS.powerControl}
+        at={ROUTE_POWER_AT}
+        frames={frames}
+        name="Power off"
+      />
     </LoopStage>
   );
 };

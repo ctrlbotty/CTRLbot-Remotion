@@ -198,6 +198,7 @@ export type StageProps = {
   background?: string;
   /** Passed through to `<Camera>`. See its own docs. */
   fit?: 'expand' | 'crop';
+  panelScale?: number;
   /** The surface itself — a live component from `app-ui/`. */
   children: ReactNode;
 };
@@ -213,6 +214,7 @@ export const Stage = ({
   centered = false,
   background: stageBackground = background.stage,
   fit,
+  panelScale,
   children,
 }: StageProps) => {
   const {width: frameWidth, height: frameHeight} = useVideoConfig();
@@ -262,45 +264,57 @@ export const Stage = ({
           The fill matters once `panelAspect` is wider than the surface: whatever the
           camera does not cover shows this, and that margin is what reads as the
           device bezel. Black, because that is what the hardware is. */}
-      {/* The bezel. Its own element so it can dissolve while the screen inside stays
-          exactly where it is — a device that fades away and leaves the interface. */}
-      {bezel > 0 ? (
-        <div
-          style={{
-            position: 'absolute',
-            left: panelLeft,
-            top: panelTop,
-            width: panelWidth,
-            height: outerHeight,
-            borderRadius: radius.xl,
-            backgroundColor: color.void,
-            border: `1px solid ${color.lineSoft}`,
-            boxShadow: `0 40px 120px ${color.scrim}`,
-            opacity: bezelOpacity,
-          }}
-        />
-      ) : null}
-
       <div
         style={{
           position: 'absolute',
-          left: panelLeft + bezel,
-          top: panelTop + bezel,
-          width: screenWidth,
-          height: panelHeight,
-          overflow: 'hidden',
-          borderRadius: bezel > 0 ? radius.sm : radius.xl,
-          boxShadow: bezel > 0 ? undefined : `0 40px 120px ${color.scrim}`,
+          left: panelLeft,
+          top: panelTop,
+          width: panelWidth,
+          height: outerHeight,
+          transformOrigin: 'center center',
+          scale: panelScale !== undefined ? String(panelScale) : undefined,
         }}
       >
-        <Camera
-          contentSize={contentSize}
-          shots={shots}
-          fit={fit}
-          viewport={{width: screenWidth, height: panelHeight}}
+        {/* The bezel. Its own element so it can dissolve while the screen inside stays
+            exactly where it is — a device that fades away and leaves the interface. */}
+        {bezel > 0 ? (
+          <div
+            style={{
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              width: panelWidth,
+              height: outerHeight,
+              borderRadius: radius.xl,
+              backgroundColor: color.void,
+              border: `1px solid ${color.lineSoft}`,
+              boxShadow: `0 40px 120px ${color.scrim}`,
+              opacity: bezelOpacity,
+            }}
+          />
+        ) : null}
+
+        <div
+          style={{
+            position: 'absolute',
+            left: bezel,
+            top: bezel,
+            width: screenWidth,
+            height: panelHeight,
+            overflow: 'hidden',
+            borderRadius: bezel > 0 ? radius.sm : radius.xl,
+            boxShadow: bezel > 0 ? undefined : `0 40px 120px ${color.scrim}`,
+          }}
         >
-          {children}
-        </Camera>
+          <Camera
+            contentSize={contentSize}
+            shots={shots}
+            fit={fit}
+            viewport={{width: screenWidth, height: panelHeight}}
+          >
+            {children}
+          </Camera>
+        </div>
       </div>
     </AbsoluteFill>
   );

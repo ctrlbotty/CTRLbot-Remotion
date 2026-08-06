@@ -49,7 +49,17 @@ type Panel = {
   children: ReactNode;
 };
 
-const Panel = ({panel, left, top}: {panel: Panel; left: number; top: number}) => {
+const Panel = ({
+  panel,
+  left,
+  top,
+  scale,
+}: {
+  panel: Panel;
+  left: number;
+  top: number;
+  scale?: number;
+}) => {
   const width = (panel.contentSize.width / panel.contentSize.height) * panel.height;
 
   return (
@@ -66,6 +76,8 @@ const Panel = ({panel, left, top}: {panel: Panel; left: number; top: number}) =>
         backgroundColor: color.void,
         border: `1px solid ${color.lineSoft}`,
         boxShadow: `0 40px 120px ${color.scrim}`,
+        transformOrigin: 'center center',
+        scale: scale !== undefined ? String(scale) : undefined,
       }}
     >
       {/* `position: relative` is load-bearing. <Camera> renders an <AbsoluteFill>, which
@@ -102,6 +114,7 @@ export const DualStage = ({
   tablet,
   phone,
   copy,
+  panelScale,
   background: stageBackground = background.stage,
 }: {
   eyebrow?: string;
@@ -114,6 +127,7 @@ export const DualStage = ({
   phone: Omit<Panel, 'height'>;
   /** Replaces the built-in eyebrow/title/body block outright. */
   copy?: ReactNode;
+  panelScale?: number;
   /** Background under the whole stage. Defaults to the house marketing gradient. */
   background?: string;
 }) => {
@@ -240,17 +254,18 @@ export const DualStage = ({
       </Interactive.Div>
       )}
 
-      {/* Both static. The devices are the subject here, and a device that drifts while
-          the viewer is being asked to compare it with another one is just noise. */}
+      {/* Both panels scale smoothly on entrance then remain resting */}
       <Panel
         panel={tabletPanel}
         left={pairLeft}
         top={centreY - (DUAL_STAGE.tabletHeight + BEZEL * 2) / 2}
+        scale={panelScale}
       />
       <Panel
         panel={phonePanel}
         left={pairLeft + tabletWidth + BEZEL * 2 + DUAL_STAGE.gap}
         top={centreY - (DUAL_STAGE.phoneHeight + BEZEL * 2) / 2}
+        scale={panelScale}
       />
     </AbsoluteFill>
   );

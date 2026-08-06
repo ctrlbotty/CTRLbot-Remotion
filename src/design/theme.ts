@@ -113,8 +113,8 @@ const alpha = (hex: string, amount: number) => {
  * Generates smoothly distributed color stops using a cosine falloff curve
  * to prevent 8-bit quantization and visual color banding in CSS radial gradients.
  */
-const promoColorStops = (maxAlpha = 0.45, maxRadius = 90) => {
-  const steps = 14;
+const promoColorStops = (maxAlpha = 0.50, maxRadius = 100) => {
+  const steps = 16;
   const stops: string[] = [];
   for (let i = 0; i <= steps; i++) {
     const t = i / steps;
@@ -127,12 +127,12 @@ const promoColorStops = (maxAlpha = 0.45, maxRadius = 90) => {
   return stops.join(', ');
 };
 
-const PROMO_STOPS = promoColorStops(0.45, 90);
+const PROMO_STOPS = promoColorStops(0.50, 100);
 
 export const background = {
   stage: `radial-gradient(120% 90% at 71% 50%, ${alpha(appColors.blue, 0.22)} 0%, ${alpha(appColors.blue, 0.06)} 38%, ${appColors.black} 72%)`,
-  promo: (x = 68, y = 32) =>
-    `radial-gradient(100% 100% at ${x}% ${y}%, ${PROMO_STOPS})`,
+  promo: (x = 50, y = 50, w = 140, h = 130) =>
+    `radial-gradient(${w}% ${h}% at ${x}% ${y}%, ${PROMO_STOPS})`,
 } as const;
 
 /** Geometry, anchored to the app's 8dp corner radius. */

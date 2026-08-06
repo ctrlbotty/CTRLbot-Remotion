@@ -15,7 +15,8 @@
     "video:lint:selftest": "node scripts/video-lint.mjs --selftest",
     "video:frames": "node scripts/video-frames.mjs",
     "loop:seam": "node scripts/loop-seam.mjs",
-    "loop:copy": "node scripts/loop-copy.mjs"
+    "loop:copy": "node scripts/loop-copy.mjs",
+    "loop:render": "node scripts/loop-render.mjs"
   },
   "dependencies": {
     "@remotion/cli": "4.0.500",
