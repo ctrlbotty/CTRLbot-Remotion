@@ -87,6 +87,27 @@ export const WEB_LOOP_SQUARE = {
   panelClose: 640,
 } as const;
 
+/**
+ * Matrix runs longer than the other loops. 13s at 30fps.
+ *
+ * It is the only loop carrying two beats of full-length copy, and at 300 frames the
+ * second one — SEND TO ALL, 28 words — had 4.8s on screen against 3.2s of word-stagger
+ * arrival. That is 1.6s to actually read it, which is not enough while also watching
+ * the routing happen. At 390 the same beat holds 6.2s and reads at about 3.0s.
+ *
+ * Loops are allowed to differ. Every timeline here is a 0..1 fraction of the cycle
+ * precisely so the length stays a property of the destination — nothing below needs to
+ * change when this number does, and the beats in LOOP_COPY rescale with it. The rows do
+ * not need to agree: each one is scroll-gated and rewound to 0 on entry.
+ *
+ * Anything reading a cycle position must divide by the composition's own
+ * `durationInFrames`, never by `WEB_LOOP.frames`. See LoopStage.
+ */
+export const MATRIX_LOOP_FRAMES = 390;
+
+/** 43s: app power-on + route + matrix + audio + the app's power-off return. */
+export const FULL_LOOP_FRAMES = 1290;
+
 export type LoopVariant = 'wide' | 'square';
 
 export const loopFrame = (variant: LoopVariant) =>
@@ -195,11 +216,15 @@ export const loopBg = (t: number) =>
 export type LoopBeat = {
   /** 0..1 within the loop. The fraction the block starts arriving on. */
   at: number;
-  /** Audiowide, 1-3 words. A title, not a sentence. */
+  /** Audiowide, 1-3 words, ALL CAPS. A title, not a sentence. */
   title: string;
-  /** One thought, 5-9 words. Bold Archivo. */
+  /** One thought, 5-9 words, ALL CAPS. Bold Archivo. */
   thought: string;
-  /** Two sentences or more. Streamed a word at a time; no accent markers. */
+  /**
+   * Two sentences or more, sentence case. Streamed a word at a time; no accent
+   * markers. The only level of the block that is not upper case — see the block
+   * spec in the site's `docs/DESIGN.md`.
+   */
   body: string;
 };
 
@@ -213,8 +238,11 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
         'A simple power press starts the room and powers on all the connected ' +
         'devices. The system prepares the hardware automatically.',
     },
+    // 0.70 -> 0.62: the power-off tap is APP_POWER_OFF_TAP_AT = 0.68, so at 0.70 the
+    // words arrived after the thing they describe. Words lead the action here, the same
+    // way matrix beat two leads its own sequence.
     {
-      at: 0.70,
+      at: 0.62,
       title: 'ROOM SHUTDOWN',
       thought: 'ONE PRESS POWERS OFF THE ROOM',
       body:
@@ -249,11 +277,10 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
     {
       at: 0.52,
       title: 'SEND TO ALL',
-      thought: 'Each screen keeps only what you gave it',
+      thought: 'TWO PRESSES ROUTE THE SOURCE TO EVERYWHERE',
       body:
-        'Two displays can take one source while the others stay dark, because every ' +
-        'output holds its own routing. One press of All puts a single source on every ' +
-        'screen at once.',
+        'Simply select a source and then the All button and it is routed to all ' +
+        'displays or projectors in the room. One source feeds every destination at once.',
     },
   ],
   audio: [
@@ -265,13 +292,127 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
         'Easily change the speaker volume with the slider or the arrows. ' +
         'Slide the bar and the room level follows.',
     },
+    // 0.60 -> 0.55: AUDIO_MUTE_AT is 0.62, so 0.60 gave the block 0.2s of lead — the
+    // words were still arriving as the speaker cut. 0.55 also buys the beat 0.5s more
+    // hold, which it needs at 20 words.
     {
-      at: 0.6,
+      at: 0.55,
       title: 'TOGGLE MUTE',
       thought: 'ONE PRESS FOR A SILENT ROOM',
       body:
         'Mute the speaker audio and then easily unmute to return to the previous ' +
         'level. The original volume is restored instantly.',
+    },
+  ],
+  // One homepage row now carries the complete app story. The four original keys stay
+  // above because `/app/` still renders and times those compositions independently.
+  // These fractions preserve every source beat's current window inside 1290 frames:
+  // app 0..186, route 186..486, matrix 486..876, audio 876..1176, app 1176..1290.
+  full: [
+    {
+      at: 0,
+      title: 'THE APP',
+      thought: 'IT BEGINS WITH ONE BUTTON',
+      body:
+        'A simple power press starts the room and powers on all the connected ' +
+        'devices. The system prepares the hardware automatically.',
+    },
+    {
+      at: 0.144186,
+      title: 'MANY TO ONE',
+      thought: 'THINK MATRIX THE BLUE PILL',
+      body:
+        'Simply select a source and the switcher routes it to the display or projector ' +
+        'in the room. Many sources feed one destination.',
+    },
+    {
+      at: 0.376744,
+      title: 'MANY TO MANY',
+      thought: 'MATRIX MODE THE RED PILL',
+      body:
+        'Pick the source on the left, then a display or displays on the right. ' +
+        'Route a source to one or more destinations.',
+    },
+    {
+      at: 0.533953,
+      title: 'SEND TO ALL',
+      thought: 'TWO PRESSES ROUTE THE SOURCE TO EVERYWHERE',
+      body:
+        'Simply select a source and then the All button and it is routed to all ' +
+        'displays or projectors in the room. One source feeds every destination at once.',
+    },
+    {
+      at: 0.67907,
+      title: 'VOLUME CONTROL',
+      thought: 'ADJUST THE SLIDER AND THE ROOM',
+      body:
+        'Easily change the speaker volume with the slider or the arrows. ' +
+        'Slide the bar and the room level follows.',
+    },
+    {
+      at: 0.806977,
+      title: 'TOGGLE MUTE',
+      thought: 'ONE PRESS FOR A SILENT ROOM',
+      body:
+        'Mute the speaker audio and then easily unmute to return to the previous ' +
+        'level. The original volume is restored instantly.',
+    },
+    {
+      at: 0.911628,
+      title: 'ROOM SHUTDOWN',
+      thought: 'ONE PRESS POWERS OFF THE ROOM',
+      body:
+        'Tap power to shut down the entire system safely. The room returns to standby ' +
+        'until the next session.',
+    },
+  ],
+  // CTRLbot.AI, not the Android app — the one loop here whose subject is the website.
+  // Its cycle is the product's own: a session opens on a blank page, runs, and the ✕
+  // returns the page to the state it opened on. Nothing had to be invented to close it.
+  //
+  // Claims are checked against the approved list in
+  // `../0 - CTRLbot.ai/ctrlbot.ai/docs/about/About_CTRLbot_AI.md`. "Three real sources",
+  // "no login", and "nothing is saved" are all on it verbatim.
+  ai: [
+    {
+      at: 0,
+      title: 'THE AI',
+      thought: 'SAY WHAT IS BROKEN, IN PLAIN WORDS',
+      body:
+        'Type the problem into one box on an empty page. There is no sign-in, no ' +
+        'sidebar, and nothing else to read first.',
+    },
+    {
+      at: 0.18,
+      title: 'QUICK QUESTIONS',
+      thought: 'IT NARROWS THE FAULT BEFORE ANSWERING',
+      body:
+        'It states what it thinks is wrong, then asks fast YES and NO questions built ' +
+        'from the details you gave. Answering each one costs a single click.',
+    },
+    {
+      at: 0.40,
+      title: 'CLICKABLE ANSWERS',
+      thought: 'EVERY OPTION EXPLAINS WHAT IT MEANS',
+      body:
+        'One sharper question follows, and each button says what choosing it would mean ' +
+        'for the diagnosis. Pass is there for when you genuinely do not know.',
+    },
+    {
+      at: 0.62,
+      title: 'THREE SOURCES',
+      thought: 'ONE DIRECT ANSWER WITH REAL LINKS',
+      body:
+        'The answer arrives with three genuine resource links and none of them are ' +
+        'sponsored. It is written to be useful rather than flattering.',
+    },
+    {
+      at: 0.85,
+      title: 'NOTHING KEPT',
+      thought: 'CLOSE IT AND THE SESSION IS GONE',
+      body:
+        'Press the reset and everything clears back to an empty page. There is no ' +
+        'account, no history, and nothing left to delete.',
     },
   ],
 };
@@ -304,6 +445,30 @@ export const APP_STANDBY_START = 0.92;
 export const appSelection = (t: number): number | null =>
   t >= APP_ROUTE_INPUT_AT && t < APP_POWERING_OFF_START ? 0 : null;
 
+// ── the press ────────────────────────────────────────────────────────────────────────
+//
+// The app turns a control yellow while it is under a finger, then applies the change on
+// release. `res/color/button_background_state.xml` and the `*_selector.xml` drawables are
+// the source: `state_pressed` maps to `shape_button_yellow` (solid `pri_yellow`) for the
+// source rows and to `disp_m_yellow` for the output cells.
+//
+// It matters here because a loop has no cursor. Without the press, a row simply *is* blue
+// on one frame having been black on the last, which reads as the interface animating
+// itself. The yellow is the only thing in the frame that says a person did it.
+//
+// The press ENDS on the frame the state lands, so it leads the change rather than
+// overlapping it — press, release, routed, in that order, the way the hardware does it.
+
+/** How long a control is held, as a cycle fraction. 9 frames at 300. */
+export const PRESS_HOLD = 0.03;
+
+/** Targets use `MATRIX_TAPS`' 1-based vocabulary: `input-1`, `output-2`, `all`. */
+const pressing = (t: number, at: number) => t >= at - PRESS_HOLD && t < at;
+
+/** The control under a finger at `t`, or null. */
+export const appPressed = (t: number): string | null =>
+  pressing(t, APP_ROUTE_INPUT_AT) ? 'input-1' : null;
+
 // ── route: Many-to-One ───────────────────────────────────────────────────────────────
 //
 // Nothing → Input 1 → 2 → 3 → power off → nothing. The first tap is the one the loop
@@ -323,6 +488,12 @@ export const ROUTE_TAPS = [
 /** Index into `EUI_INPUTS`, or null for the cold state at both ends of the cycle. */
 export const routeSelection = (t: number): number | null =>
   t >= ROUTE_POWER_AT ? null : t >= 0.64 ? 2 : t >= 0.4 ? 1 : t >= 0.16 ? 0 : null;
+
+/** The source row under a finger at `t`. `ROUTE_TAPS` is 0-based; targets are not. */
+export const routePressed = (t: number): string | null => {
+  const tap = ROUTE_TAPS.find((x) => pressing(t, x.at));
+  return tap ? `input-${tap.input + 1}` : null;
+};
 
 // ── matrix: Many-to-Many ─────────────────────────────────────────────────────────────
 //
@@ -353,6 +524,10 @@ export const MATRIX_TAPS = [
 export const matrixSelection = (t: number): number | null =>
   t >= MATRIX_POWER_AT ? null : t >= 0.6 ? 0 : t >= 0.12 ? 2 : null;
 
+/** The control under a finger at `t`. `MATRIX_TAPS.target` is already the vocabulary. */
+export const matrixPressed = (t: number): string | null =>
+  MATRIX_TAPS.find((x) => pressing(t, x.at))?.target ?? null;
+
 /**
  * Output 2 takes Input 3 at 0.28 and Output 4 at 0.44; All gives every one Input 1 at
  * 0.74; the power tap at 0.86 takes them all back to nothing.
@@ -374,6 +549,10 @@ export const matrixOutputs = (t: number) =>
 
 export const AUDIO_MUTE_AT = 0.62;
 export const AUDIO_UNMUTE_AT = 0.8;
+
+/** The speaker control is the only thing tapped in this loop, so it is the only press. */
+export const audioPressed = (t: number): string | null =>
+  pressing(t, AUDIO_MUTE_AT) || pressing(t, AUDIO_UNMUTE_AT) ? 'speaker' : null;
 
 /** The level the room was at when it was muted, and the level it comes back to. */
 const AUDIO_BEFORE_MUTE = 0.34;

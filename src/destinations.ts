@@ -145,9 +145,41 @@ export const WEBSITE_PANEL_LOOP: Destination = {
     'filename rather than overwriting one — see that repo\'s README, "Cache busting".',
 };
 
+/**
+ * A product walkthrough posted to YouTube or shared as a social promo.
+ *
+ * The loosest destination here, because the platform imposes almost nothing: no length
+ * ceiling worth encoding, no banned-phrase policy of the kind Play enforces, and the
+ * viewer chose to press play rather than being autoplayed at. What it does *not* relax is
+ * `maxInertFraction`. That number is a house standard measured against the approved
+ * First-Run cut, not a platform rule — a long format is permission to explain more, not
+ * permission to hold a still picture for two minutes.
+ *
+ * `audio: muted-first` is kept for the same reason it is kept everywhere else: social
+ * timelines autoplay muted, and this cut carries no voice track.
+ *
+ * The duration window is wide because this is the shape a walkthrough comes in, and the
+ * 30-second website cut derived from it is a different destination, not a shorter one of
+ * these.
+ */
+export const SOCIAL_WALKTHROUGH: Destination = {
+  id: 'social-walkthrough',
+  frame: {width: 1920, height: 1080, fps: 30},
+  duration: {min: 60, target: 120, max: 180},
+  audio: 'muted-first',
+  safeArea: {top: 72, right: 72, bottom: 96, left: 72},
+  firstImpressionSeconds: 10,
+  maxInertFraction: 0.6,
+  banned: [],
+  hosting:
+    'YouTube, public or unlisted, and re-uploaded natively to each social platform ' +
+    'rather than linked — timelines do not autoplay a link.',
+};
+
 export const DESTINATIONS: Record<string, Destination> = {
   [PLAY_STORE_PREVIEW.id]: PLAY_STORE_PREVIEW,
   [PLAY_STORE_PREVIEW_MASTER.id]: PLAY_STORE_PREVIEW_MASTER,
   [WEBSITE_PANEL_LOOP.id]: WEBSITE_PANEL_LOOP,
+  [SOCIAL_WALKTHROUGH.id]: SOCIAL_WALKTHROUGH,
 };
 

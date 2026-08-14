@@ -24,11 +24,20 @@ import {
 import {MasterControlCard} from './marketing/eui-promo/MasterControlCard';
 import {EuiPromo, euiPromoDuration} from './marketing/eui-promo/EuiPromo';
 import {EuiPromo as EuiPromoV3, euiPromoDuration as euiPromoV3Duration} from './marketing/eui-promo-v3/EuiPromo';
+import {AiWalkthrough, aiWalkthroughDuration} from './marketing/ai-walkthrough/AiWalkthrough';
 import {LoopRoute} from './marketing/web-loops/LoopRoute';
 import {LoopMatrix} from './marketing/web-loops/LoopMatrix';
 import {LoopAudio} from './marketing/web-loops/LoopAudio';
 import {LoopApp} from './marketing/web-loops/LoopApp';
-import {WEB_LOOP, WEB_LOOP_SQUARE} from './marketing/web-loops/webLoopData';
+import {LoopFull} from './marketing/web-loops/LoopFull';
+import {LoopAi, aiLoopDuration} from './marketing/web-loops/LoopAi';
+import {DevicesStill} from './marketing/web-loops/DevicesStill';
+import {
+  FULL_LOOP_FRAMES,
+  MATRIX_LOOP_FRAMES,
+  WEB_LOOP,
+  WEB_LOOP_SQUARE,
+} from './marketing/web-loops/webLoopData';
 
 // Three layers, deliberately:
 //
@@ -103,6 +112,22 @@ export const RemotionRoot = () => (
       />
     </Folder>
 
+    {/* CTRLbot.AI — the web assistant, which is a different product from the Android app
+        every other composition here shows. Its surface is a website, so it is framed in a
+        browser rather than a bezel, and it is the one cut in this project with no camera
+        move in it at all. Built from the walkthrough recording; the script of record is
+        docs/AI-WALKTHROUGH-TRANSCRIPT.md. */}
+    <Folder name="CTRLbot-AI">
+      <Composition
+        id="AI-Walkthrough"
+        component={AiWalkthrough}
+        durationInFrames={aiWalkthroughDuration}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+    </Folder>
+
     {/* Panel loops for ctrlbot.io. Not cuts — media cells. Each one ends on the state
         it opened with, because a <video loop> wraps with no dissolve and the site plays
         them silently and forever beside a paragraph. See destinations.ts,
@@ -119,7 +144,7 @@ export const RemotionRoot = () => (
       <Composition
         id="Web-Loop-Matrix"
         component={LoopMatrix}
-        durationInFrames={WEB_LOOP.frames}
+        durationInFrames={MATRIX_LOOP_FRAMES}
         fps={30}
         width={WEB_LOOP.width}
         height={WEB_LOOP.height}
@@ -141,7 +166,7 @@ export const RemotionRoot = () => (
         id="Web-Loop-Matrix-Square"
         component={LoopMatrix}
         defaultProps={{variant: 'square' as const}}
-        durationInFrames={WEB_LOOP.frames}
+        durationInFrames={MATRIX_LOOP_FRAMES}
         fps={30}
         width={WEB_LOOP_SQUARE.width}
         height={WEB_LOOP_SQUARE.height}
@@ -155,6 +180,26 @@ export const RemotionRoot = () => (
         width={WEB_LOOP_SQUARE.width}
         height={WEB_LOOP_SQUARE.height}
       />
+      <Composition
+        id="Web-Loop-Full"
+        component={LoopFull}
+        durationInFrames={FULL_LOOP_FRAMES}
+        fps={30}
+        width={WEB_LOOP.width}
+        height={WEB_LOOP.height}
+      />
+      {/* CTRLbot.AI, not the app — a website in a media cell, so it fills the frame with
+          no device panel and no stage gradient. Still a cycle: the ✕ returns the page to
+          the state it opened on. */}
+      <Composition
+        id="Web-Loop-Ai"
+        component={LoopAi}
+        durationInFrames={aiLoopDuration}
+        fps={30}
+        width={WEB_LOOP.width}
+        height={WEB_LOOP.height}
+      />
+      <Still id="Web-Devices-Still" component={DevicesStill} width={1200} height={1200} />
     </Folder>
 
     <Folder name="First-Run">

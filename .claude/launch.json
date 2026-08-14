@@ -1,0 +1,29 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "ctrlbot-io-site",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8765",
+        "--directory",
+        "C:/0-Repo/2 - CTRLbot.io/ctrlbot-io-site"
+      ],
+      "port": 8765
+    },
+    {
+      "name": "ctrlbot-ai-public",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8766",
+        "--directory",
+        "C:/0-Repo/0 - CTRLbot.ai/ctrlbot.ai/public"
+      ],
+      "port": 8766
+    }
+  ]
+}

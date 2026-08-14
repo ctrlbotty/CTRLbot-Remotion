@@ -1,5 +1,5 @@
 import React from 'react';
-import {useCurrentFrame} from 'remotion';
+import {useCurrentFrame, useVideoConfig} from 'remotion';
 import {TABLET_EUI_REGIONS, TABLET_VIEWPORT, TabletEui} from '../../app-ui/TabletEui';
 import {LoopStage} from './LoopStage';
 import {LoopTap} from './LoopTap';
@@ -10,9 +10,9 @@ import {
   MATRIX_POWER_AT,
   MATRIX_TAPS,
   matrixOutputs,
+  matrixPressed,
   matrixSelection,
   RESTING_VOLUME,
-  WEB_LOOP,
   type LoopVariant,
 } from './webLoopData';
 
@@ -41,9 +41,13 @@ const LABEL_FOR = {
 } as const;
 
 export const LoopMatrix: React.FC<{frames?: number; variant?: LoopVariant}> = ({
-  frames = WEB_LOOP.frames,
+  frames: framesProp,
   variant = 'wide',
 }) => {
+  // Defaults to the composition's own length, so MATRIX_LOOP_FRAMES governs without
+  // being restated here. See LoopStage for why this is not WEB_LOOP.frames.
+  const {durationInFrames} = useVideoConfig();
+  const frames = framesProp ?? durationInFrames;
   const t = useCurrentFrame() / frames;
 
   return (
@@ -52,6 +56,7 @@ export const LoopMatrix: React.FC<{frames?: number; variant?: LoopVariant}> = ({
         inputs={EUI_INPUTS}
         outputs={matrixOutputs(t)}
         selectedInput={matrixSelection(t)}
+        pressed={matrixPressed(t)}
         volume={RESTING_VOLUME}
       />
 
@@ -70,6 +75,7 @@ export const LoopMatrix: React.FC<{frames?: number; variant?: LoopVariant}> = ({
         region={TABLET_EUI_REGIONS.powerControl}
         at={MATRIX_POWER_AT}
         frames={frames}
+        ring={false}
         name="Power off"
       />
     </LoopStage>

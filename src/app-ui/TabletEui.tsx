@@ -201,9 +201,12 @@ const resolveChrome = (chrome?: EuiChrome) => ({...CHROME_DEFAULT, ...chrome});
 const OutputCell = ({
   output,
   selectedSource,
+  pressed = false,
 }: {
   output: EuiOutput;
   selectedSource: string | null;
+  /** Under a finger. `disp_slct_btn_m.xml` maps state_pressed to disp_m_yellow. */
+  pressed?: boolean;
 }) => {
   const routed = output.source !== null;
   const selected = routed && output.source === selectedSource;
@@ -228,7 +231,11 @@ const OutputCell = ({
           justifyContent: 'center',
           gap: appDimens.euiMatrixCellIconGap,
           backgroundImage: `url(${staticFile(
-            selected ? 'app-assets/disp_m_blue.png' : 'app-assets/disp_m_grey.png',
+            pressed
+              ? 'app-assets/disp_m_yellow.png'
+              : selected
+                ? 'app-assets/disp_m_blue.png'
+                : 'app-assets/disp_m_grey.png',
           )})`,
           backgroundSize: '100% 100%',
           backgroundRepeat: 'no-repeat',
@@ -282,7 +289,16 @@ const OutputCell = ({
  * One source row. Landscape rows put the icon at the start and right-align the label,
  * unlike the portrait cards which stack them.
  */
-const SourceRow = ({input, selected}: {input: EuiInput; selected: boolean}) => (
+const SourceRow = ({
+  input,
+  selected,
+  pressed = false,
+}: {
+  input: EuiInput;
+  selected: boolean;
+  /** Under a finger. `source_button_selector.xml` maps state_pressed to solid pri_yellow. */
+  pressed?: boolean;
+}) => (
   <div
     style={{
       width: '100%',
@@ -294,8 +310,12 @@ const SourceRow = ({input, selected}: {input: EuiInput; selected: boolean}) => (
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      borderRadius: selected ? 5 : 6,
-      backgroundColor: selected ? appColors.blue : appColors.black,
+      borderRadius: pressed || selected ? 5 : 6,
+      backgroundColor: pressed
+        ? appColors.priYellow
+        : selected
+          ? appColors.blue
+          : appColors.black,
     }}
   >
     <AppIcon name="ic_hdmi_icon_sm" size={48} tint={appColors.white} />
@@ -317,10 +337,17 @@ const SourceRow = ({input, selected}: {input: EuiInput; selected: boolean}) => (
 export const TabletVolumeBar = ({
   volume = 0.58,
   speakerMuted = false,
+  speakerPressed = false,
   opacity = 1,
 }: {
   volume?: number;
   speakerMuted?: boolean;
+  /**
+   * Under a finger. Borderless like route-all, so the press tints rather than fills.
+   * It wins over the muted red for the moment it lasts — the press is what is happening
+   * now, and the red is the state it is on its way to.
+   */
+  speakerPressed?: boolean;
   opacity?: number;
 }) => (
   <div
@@ -341,7 +368,13 @@ export const TabletVolumeBar = ({
     <AppIcon
       name={speakerMuted ? 'ic_speaker_off' : 'ic_speaker_on'}
       size={SPEAKER_SIZE}
-      tint={speakerMuted ? appColors.priRed : appColors.white}
+      tint={
+        speakerPressed
+          ? appColors.priYellow
+          : speakerMuted
+            ? appColors.priRed
+            : appColors.white
+      }
     />
     <AppIcon name="ic_vol_left" size={VOLUME_ICON_SIZE} tint={appColors.white} />
     {/* Track 14 against a 38 thumb — a ratio of 2.7, which is the app's own.
@@ -403,6 +436,7 @@ export const TabletEui = ({
   selectedInput,
   volume,
   speakerMuted = false,
+  pressed = null,
   chrome,
 }: {
   outputs: EuiOutput[];
@@ -412,6 +446,11 @@ export const TabletEui = ({
   /** 0..1 */
   volume: number;
   speakerMuted?: boolean;
+  /**
+   * The control under a finger, 1-based: `input-1`..`input-4`, `output-1`..`output-4`,
+   * or `all`. Drawn yellow, which is the app's `state_pressed`. Null for no contact.
+   */
+  pressed?: string | null;
   chrome?: EuiChrome;
 }) => {
   const {top: topOpacity, audio: audioOpacity, backplate} = resolveChrome(chrome);
@@ -469,7 +508,12 @@ export const TabletEui = ({
           }}
         >
           {inputs.map((input, index) => (
-            <SourceRow key={input.label} input={input} selected={index === selectedInput} />
+            <SourceRow
+              key={input.label}
+              input={input}
+              selected={index === selectedInput}
+              pressed={pressed === `input-${index + 1}`}
+            />
           ))}
         </div>
 
@@ -483,13 +527,16 @@ export const TabletEui = ({
             justifyContent: 'center',
           }}
         >
+          {/* Route-all is borderless here, so the press tints the label and the arrow
+              rather than filling a box the layout does not have. Same yellow, same
+              moment — it is the one control on this surface with nothing to fill. */}
           <span
             style={{
               marginBottom: 10,
               fontFamily: 'Montserrat, sans-serif',
               fontWeight: 400,
               fontSize: 30,
-              color: appColors.white,
+              color: pressed === 'all' ? appColors.priYellow : appColors.white,
             }}
           >
             All
@@ -497,7 +544,7 @@ export const TabletEui = ({
           <AppIcon
             name="ic_route5"
             size={appDimens.euiMatrixArrowSize}
-            tint={appColors.white}
+            tint={pressed === 'all' ? appColors.priYellow : appColors.white}
           />
         </div>
 
@@ -512,13 +559,14 @@ export const TabletEui = ({
             overflow: 'hidden',
           }}
         >
-          {outputs.map((output) => (
+          {outputs.map((output, index) => (
             <OutputCell
               key={output.label}
               output={output}
               selectedSource={
                 selectedInput === null ? null : (inputs[selectedInput]?.label ?? null)
               }
+              pressed={pressed === `output-${index + 1}`}
             />
           ))}
         </div>
@@ -528,13 +576,23 @@ export const TabletEui = ({
       <TabletVolumeBar
         volume={volume}
         speakerMuted={speakerMuted}
+        speakerPressed={pressed === 'speaker'}
         opacity={audioOpacity}
       />
     </div>
   );
 };
 
-const Nx1SourceRow = ({input, selected}: {input: EuiInput; selected: boolean}) => (
+const Nx1SourceRow = ({
+  input,
+  selected,
+  pressed = false,
+}: {
+  input: EuiInput;
+  selected: boolean;
+  /** Under a finger. See `SourceRow`. */
+  pressed?: boolean;
+}) => (
   <div
     style={{
       width: 'calc(100% - 20px)',
@@ -546,8 +604,12 @@ const Nx1SourceRow = ({input, selected}: {input: EuiInput; selected: boolean}) =
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      borderRadius: selected ? 5 : 6,
-      backgroundColor: selected ? appColors.blue : appColors.black,
+      borderRadius: pressed || selected ? 5 : 6,
+      backgroundColor: pressed
+        ? appColors.priYellow
+        : selected
+          ? appColors.blue
+          : appColors.black,
     }}
   >
     <AppIcon name="ic_hdmi_icon_sm" size={48} tint={appColors.white} />
@@ -573,6 +635,7 @@ export const TabletEuiManyToOne = ({
   volume,
   speakerMuted = false,
   outputLabel = 'Display 1',
+  pressed = null,
   chrome,
 }: {
   inputs: EuiInput[];
@@ -582,6 +645,8 @@ export const TabletEuiManyToOne = ({
   volume: number;
   speakerMuted?: boolean;
   outputLabel?: string;
+  /** The source row under a finger, 1-based: `input-1`..`input-4`. See `TabletEui`. */
+  pressed?: string | null;
   chrome?: EuiChrome;
 }) => {
   const selectedSource = selectedInput === null ? undefined : inputs[selectedInput];
@@ -640,7 +705,12 @@ export const TabletEuiManyToOne = ({
           }}
         >
           {inputs.map((input, index) => (
-            <Nx1SourceRow key={input.label} input={input} selected={index === selectedInput} />
+            <Nx1SourceRow
+              key={input.label}
+              input={input}
+              selected={index === selectedInput}
+              pressed={pressed === `input-${index + 1}`}
+            />
           ))}
         </div>
 
@@ -750,6 +820,7 @@ export const TabletEuiManyToOne = ({
       <TabletVolumeBar
         volume={volume}
         speakerMuted={speakerMuted}
+        speakerPressed={pressed === 'speaker'}
         opacity={audioOpacity}
       />
     </div>

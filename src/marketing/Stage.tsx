@@ -263,7 +263,8 @@ export const Stage = ({
 
           The fill matters once `panelAspect` is wider than the surface: whatever the
           camera does not cover shows this, and that margin is what reads as the
-          device bezel. Black, because that is what the hardware is. */}
+          device bezel. `color.bezel`, a dark grey — see the token for why it is not
+          black. */}
       <div
         style={{
           position: 'absolute',
@@ -286,7 +287,7 @@ export const Stage = ({
               width: panelWidth,
               height: outerHeight,
               borderRadius: radius.xl,
-              backgroundColor: color.void,
+              backgroundColor: color.bezel,
               border: `1px solid ${color.lineSoft}`,
               boxShadow: `0 40px 120px ${color.scrim}`,
               opacity: bezelOpacity,

@@ -12,6 +12,7 @@ import {
   APP_POWER_OFF_TAP_AT,
   APP_ROUTE_INPUT_AT,
   APP_WELCOME_TAP_AT,
+  appPressed,
   appSelection,
   EUI_INPUTS,
   RESTING_VOLUME,
@@ -66,6 +67,7 @@ export const LoopApp: React.FC<{frames?: number; variant?: LoopVariant}> = ({
         <TabletEuiManyToOne
           inputs={EUI_INPUTS}
           selectedInput={appSelection(t)}
+          pressed={appPressed(t)}
           volume={RESTING_VOLUME}
         />
       </Sequence>
@@ -100,6 +102,7 @@ export const LoopApp: React.FC<{frames?: number; variant?: LoopVariant}> = ({
         region={EUI_POWER_REGIONS.tablet.welcomePower}
         at={APP_WELCOME_TAP_AT}
         frames={frames}
+        ring={false}
         name="Power on"
       />
 
@@ -114,6 +117,7 @@ export const LoopApp: React.FC<{frames?: number; variant?: LoopVariant}> = ({
         region={TABLET_EUI_MANY_TO_ONE_REGIONS.powerControl}
         at={APP_POWER_OFF_TAP_AT}
         frames={frames}
+        ring={false}
         name="Power off"
       />
     </LoopStage>

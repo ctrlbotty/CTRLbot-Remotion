@@ -7,10 +7,38 @@
 // So captures are cropped to their screen bounds and scaled to the same dp viewport the
 // live surfaces use. A capture scene and a live scene then share one coordinate space,
 // which means the same <Camera> shot list and the same region constants work across both.
+//
+// ── The six EUI power captures carry a tone lift. Re-capture and you lose it. ──
+//
+// `eui-welcome.png`, `eui-power-on.png` and `eui-power-off.png`, in BOTH `captures/phone/`
+// and `captures/tablet/`, were lifted in place on 2026-08-07. The app draws that content
+// field at #1A1A1A against black bars — a step of 26 luminance. It is legible at full size
+// and gone once the frame is scaled into a 1200px tile and encoded at CRF 23: the screen
+// reads as one flat black rectangle. The lift takes the field to #2E2E2E, a step of 46,
+// which survives the encode. Both device sets are lifted so `CAPTURE_FIELD` is one value.
+//
+// It is a gamma of 0.75 applied per pixel and weighted off by saturation, so pure black
+// stays pure black (the bars do not wash out), white stays white, and anything saturated
+// is returned untouched. That last part is the point: a global filter would drag CTRLbot
+// blue #008FD4 toward cyan. The green power icon and the blue tap ring are unshifted.
+//
+// The transform is not idempotent — running it twice double-lifts. If you re-take these
+// captures from the app, re-apply it before committing, or the app loop goes flat again.
 
 import {Img, staticFile} from 'remotion';
 import {PHONE_VIEWPORT} from './PhoneEui';
 import {TABLET_VIEWPORT} from './TabletEui';
+
+/**
+ * The EUI content field as it stands in the committed captures, after the lift.
+ *
+ * Anything drawn on top of a capture to mask something baked into it must use this, not
+ * `appColors.gray10` — the app's value, which the raw screenshot had. Both device sets
+ * carry `#2E2E2E` uniformly, so one constant covers phone and tablet.
+ *
+ * Change `GAMMA` in `scripts/lift-captures.py` and this moves with it.
+ */
+export const CAPTURE_FIELD = '#2E2E2E';
 
 /**
  * Screen bounds inside the captured frame, in source pixels.

@@ -42,6 +42,38 @@ export const color = {
   // Scrims.
   scrim: appColors.black75,
   scrimSoft: appColors.black50,
+
+  // The device body — the tablet's plastic, drawn around every screen.
+  //
+  // Video-only, so it is the one entry here with no app token in the left column: the
+  // app has no bezel to drift from. #333333 is the darkest web-safe grey, chosen so the
+  // hardware reads as *lighter* than the near-black bars at the top and bottom of the
+  // EUI screen. It was `void` (#000000) until 2026-08-07, which made the bezel and those
+  // bars the same value and left the device with no visible edge against them.
+  bezel: '#333333',
+} as const;
+
+/**
+ * Browser window furniture, for `<BrowserFrame>`.
+ *
+ * Same standing as `bezel` above, and here for the same reason: a browser is hardware the
+ * app does not ship, so there is no token to derive its chrome from — but "no token"
+ * cannot become "invent a colour", so every value is an existing app grey doing a second
+ * job rather than a new one. The stack reads darkest-at-the-top, which is what makes the
+ * active tab and the address bar separate without a border between them.
+ *
+ * The lights are the app's own signal triad, not a vendor's. They exist to say "window
+ * controls" at a glance; matching any particular operating system's exact hues would be
+ * impersonating one, which `BrowserFrame` deliberately does not do.
+ */
+export const chrome = {
+  tabBar: appColors.gray10, //          #1A1A1A  the strip behind the tabs
+  tab: appColors.displayCardBg, //      #2F2F2F  the active tab
+  addressBar: appColors.switcherCardBg, // #2D2D2D
+  urlField: appColors.gray10, //        #1A1A1A  inset, so darker than the bar
+  close: appColors.priRed,
+  minimise: appColors.priYellow,
+  zoom: appColors.green,
 } as const;
 
 /**
@@ -133,6 +165,10 @@ export const background = {
   stage: `radial-gradient(120% 90% at 71% 50%, ${alpha(appColors.blue, 0.22)} 0%, ${alpha(appColors.blue, 0.06)} 38%, ${appColors.black} 72%)`,
   promo: (x = 50, y = 50, w = 140, h = 130) =>
     `radial-gradient(${w}% ${h}% at ${x}% ${y}%, ${PROMO_STOPS})`,
+  devices:
+    `radial-gradient(190% 180% at 50% 50%, ${alpha(appColors.blue, 0.48)} 0%, ` +
+    `${alpha(appColors.blue, 0.24)} 45%, ${alpha(appColors.priBlue, 0.10)} 78%, ` +
+    `${appColors.black} 100%)`,
 } as const;
 
 /** Geometry, anchored to the app's 8dp corner radius. */
@@ -160,4 +196,3 @@ export const canvas = {
   landscape: {width: 1920, height: 1200},
   portrait: {width: 1080, height: 1920},
 } as const;
-

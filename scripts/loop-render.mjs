@@ -1,7 +1,7 @@
 // Render the web loops the way they have to be rendered.
 //
-//   npm run loop:render                 all four
-//   npm run loop:render -- Route        just one
+//   npm run loop:render                 every registered loop
+//   npm run loop:render -- Route        just one (substring match on composition id)
 //
 // Two passes, and the second one is not optional. Remotion renders the composition at
 // **twice** its registered size, then ffmpeg scales it back down with lanczos.
@@ -32,16 +32,22 @@ const OUT = 'out/web';
  *
  * The version is per-loop, not per-batch, because `/assets/*` on ctrlbot.io has no
  * content hash — only site.css and site.js are cache-busted. Replacing a file in place
- * leaves anyone who visited in the last four hours watching the old one. Route and the
- * two matrix cuts went to v3 when they were re-cut to open and close cold; audio did not
- * change and stays at v2, so its cached copies stay valid.
+ * leaves anyone who visited in the last four hours watching the old one. So bump only
+ * what actually changed, and bump it here BEFORE rendering: the sync at the bottom
+ * writes whatever name is in this array.
+ *
+ * `Web-Loop-Matrix` — the 16:10 cut — is rendered but not used by the site, which lays
+ * the matrix row out square. It is kept registered rather than deleted so the wide
+ * composition does not rot, but there is no need to spend a render on it.
  */
 const LOOPS = [
-  {id: 'Web-Loop-Route', name: 'eui-loop-route-v3', width: 1920, height: 1200},
-  {id: 'Web-Loop-Matrix', name: 'eui-loop-matrix-v3', width: 1920, height: 1200},
-  {id: 'Web-Loop-Audio', name: 'eui-loop-audio-v2', width: 1920, height: 1200},
-  {id: 'Web-Loop-Matrix-Square', name: 'eui-loop-matrix-sq-v3', width: 1200, height: 1200},
-  {id: 'Web-Loop-App-Square', name: 'eui-loop-app-sq-v1', width: 1200, height: 1200},
+  {id: 'Web-Loop-Route', name: 'eui-loop-route-v5', width: 1920, height: 1200},
+  {id: 'Web-Loop-Matrix', name: 'eui-loop-matrix-v6', width: 1920, height: 1200},
+  {id: 'Web-Loop-Audio', name: 'eui-loop-audio-v4', width: 1920, height: 1200},
+  {id: 'Web-Loop-Matrix-Square', name: 'eui-loop-matrix-sq-v6', width: 1200, height: 1200},
+  {id: 'Web-Loop-App-Square', name: 'eui-loop-app-sq-v5', width: 1200, height: 1200},
+  {id: 'Web-Loop-Full', name: 'eui-loop-full-v1', width: 1920, height: 1200},
+  {id: 'Web-Loop-Ai', name: 'ai-loop-v1', width: 1920, height: 1200},
 ];
 
 const CRF = 23;

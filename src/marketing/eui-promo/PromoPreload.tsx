@@ -38,6 +38,9 @@ const CSS_ASSETS = [
   'app-assets/bg_eui.png',
   'app-assets/disp_m_grey.png',
   'app-assets/disp_m_blue.png',
+  // The press state. On screen for 9 frames, which is exactly long enough for an
+  // unloaded cell to be the whole of it.
+  'app-assets/disp_m_yellow.png',
   'app-assets/disp_lg_grey.png',
   'app-assets/disp_lg_blue.png',
   // AppIcon draws these as a background or a mask, never as an element.

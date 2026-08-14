@@ -10,6 +10,7 @@ import {
   AUDIO_OUTPUTS,
   AUDIO_UNMUTE_AT,
   audioMuted,
+  audioPressed,
   audioVolume,
   EUI_INPUTS,
   loopBg,
@@ -43,6 +44,7 @@ export const LoopAudio: React.FC<{frames?: number; variant?: LoopVariant}> = ({
         selectedInput={2}
         volume={audioVolume(t)}
         speakerMuted={audioMuted(t)}
+        pressed={audioPressed(t)}
       />
 
       {/* The whole audio block, not the slider inside it.

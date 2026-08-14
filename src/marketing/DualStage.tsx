@@ -54,11 +54,13 @@ const Panel = ({
   left,
   top,
   scale,
+  bezelColor,
 }: {
   panel: Panel;
   left: number;
   top: number;
   scale?: number;
+  bezelColor: string;
 }) => {
   const width = (panel.contentSize.width / panel.contentSize.height) * panel.height;
 
@@ -73,7 +75,7 @@ const Panel = ({
         padding: BEZEL,
         boxSizing: 'border-box',
         borderRadius: radius.xl,
-        backgroundColor: color.void,
+        backgroundColor: bezelColor,
         border: `1px solid ${color.lineSoft}`,
         boxShadow: `0 40px 120px ${color.scrim}`,
         transformOrigin: 'center center',
@@ -115,6 +117,8 @@ export const DualStage = ({
   phone,
   copy,
   panelScale,
+  evenPanelSpacing = false,
+  bezelColor = color.bezel,
   background: stageBackground = background.stage,
 }: {
   eyebrow?: string;
@@ -128,6 +132,10 @@ export const DualStage = ({
   /** Replaces the built-in eyebrow/title/body block outright. */
   copy?: ReactNode;
   panelScale?: number;
+  /** Keep both scaled panels and all three horizontal gaps evenly spaced. */
+  evenPanelSpacing?: boolean;
+  /** Device-body colour. Defaults to the shared video bezel. */
+  bezelColor?: string;
   /** Background under the whole stage. Defaults to the house marketing gradient. */
   background?: string;
 }) => {
@@ -146,6 +154,17 @@ export const DualStage = ({
   // centring is what put the pair off-centre and the phone through the frame edge.
   const pairWidth = tabletWidth + DUAL_STAGE.gap + phoneWidth + BEZEL * 4;
   const pairLeft = (frameWidth - pairWidth) / 2;
+  const scale = panelScale ?? 1;
+  const tabletOuterWidth = tabletWidth + BEZEL * 2;
+  const phoneOuterWidth = phoneWidth + BEZEL * 2;
+  const evenGap =
+    (frameWidth - tabletOuterWidth * scale - phoneOuterWidth * scale) / 3;
+  const tabletLeft = evenPanelSpacing
+    ? evenGap - (tabletOuterWidth * (1 - scale)) / 2
+    : pairLeft;
+  const phoneLeft = evenPanelSpacing
+    ? evenGap * 2 + tabletOuterWidth * scale - (phoneOuterWidth * (1 - scale)) / 2
+    : pairLeft + tabletWidth + BEZEL * 2 + DUAL_STAGE.gap;
   // Centred in the band below the copy, never in the whole frame.
   const centreY = (DUAL_STAGE.panelZoneTop + Math.min(DUAL_STAGE.panelZoneBottom, frameHeight)) / 2;
 
@@ -257,15 +276,17 @@ export const DualStage = ({
       {/* Both panels scale smoothly on entrance then remain resting */}
       <Panel
         panel={tabletPanel}
-        left={pairLeft}
+        left={tabletLeft}
         top={centreY - (DUAL_STAGE.tabletHeight + BEZEL * 2) / 2}
         scale={panelScale}
+        bezelColor={bezelColor}
       />
       <Panel
         panel={phonePanel}
-        left={pairLeft + tabletWidth + BEZEL * 2 + DUAL_STAGE.gap}
+        left={phoneLeft}
         top={centreY - (DUAL_STAGE.phoneHeight + BEZEL * 2) / 2}
         scale={panelScale}
+        bezelColor={bezelColor}
       />
     </AbsoluteFill>
   );

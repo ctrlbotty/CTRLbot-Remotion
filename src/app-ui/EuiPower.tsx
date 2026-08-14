@@ -9,7 +9,7 @@
 //   layout/dialog_power_on.xml        powering-on progress state
 
 import {Easing, interpolate, useCurrentFrame} from 'remotion';
-import {CapturedScreen} from './CapturedScreen';
+import {CAPTURE_FIELD, CapturedScreen} from './CapturedScreen';
 import {TabletVolumeBar} from './TabletEui';
 import {PhoneVolumeBar} from './PhoneEui';
 import {appColors, appDimens} from '../design/tokens.generated';
@@ -83,7 +83,10 @@ const PowerProgressRing = ({
         position: 'absolute',
         left: position.x - 2,
         top: position.y - 2,
-        backgroundColor: appColors.gray10,
+        // Matches the lifted capture underneath, not the app's gray10. This box exists
+        // to mask the ring baked into the capture, so any mismatch reads as a dark
+        // square sitting behind the gauge.
+        backgroundColor: CAPTURE_FIELD,
         pointerEvents: 'none',
       }}
     >

@@ -1,6 +1,6 @@
 import type {ReactNode} from 'react';
 import React from 'react';
-import {useCurrentFrame} from 'remotion';
+import {useCurrentFrame, useVideoConfig} from 'remotion';
 import type {Region} from '../../camera/Camera';
 import {Stage} from '../Stage';
 import {PromoPreload} from '../eui-promo/PromoPreload';
@@ -38,7 +38,11 @@ export const LoopStage = ({
   variant?: LoopVariant;
   children: ReactNode;
 }) => {
-  const t = useCurrentFrame() / WEB_LOOP.frames;
+  // From the composition, not WEB_LOOP.frames — loops are allowed different lengths
+  // (matrix runs longer so its two beats can be read). Dividing by the constant would
+  // send `t` past 1 on any longer loop and break the wrap with no error.
+  const {durationInFrames} = useVideoConfig();
+  const t = useCurrentFrame() / durationInFrames;
 
   return (
     <>

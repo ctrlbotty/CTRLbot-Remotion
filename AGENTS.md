@@ -92,6 +92,7 @@ src/
   design/       tokens.generated.ts (from the app) + theme.ts (curated)
   app-ui/       live React rebuilds of app surfaces, laid out in dp
                 — viewports.ts is the one definition of how big a surface is
+                web/ is the *other product* — ctrlbot.ai, laid out in CSS px
   camera/       Camera rig, Spotlight, FocusRing, TapIndicator, Callout
   scenes/       one file per scene + shared.ts for scene lengths
   marketing/    Stage and DualStage — the landscape promo layouts
@@ -156,6 +157,29 @@ same units as the Android layout.
 `src/scenes/EuiHandoff.tsx` is the reference implementation — read it before adding a
 scene. `docs/ROADMAP.md` has project state and gotchas; `docs/TABLET-HANDOFF.md` is the
 tablet build brief.
+
+## CTRLbot.AI is a second product
+
+`src/app-ui/web/` rebuilds **ctrlbot.ai**, the web assistant — not the Android app. It
+breaks two rules the rest of this repo lives by, deliberately:
+
+- **It lays out in CSS pixels, not dp**, because its source is a stylesheet and not an
+  Android layout. `webViewport.ts` states the viewport it is rendered at; nothing inside
+  is scaled by hand, because `BrowserFrame` scales the whole plane once.
+- **It does not use the app's tokens or Montserrat.** Its colours and its face belong to
+  a different product, and `webTheme.ts` mirrors them out of that repo's
+  `public/index.html` the way `tokens.generated.ts` mirrors the Android resources. The
+  video's own copy column stays on the house faces.
+
+The truth sources are `../0 - CTRLbot.ai/ctrlbot.ai/public/index.html` for the interface
+and `docs/about/About_CTRLbot_AI.md` in that repo for every claim — it carries an approved-
+claims list, and a promo may not go past it. Write the name `CTRLbot.AI` for the assistant,
+`CTRLbot` for the platform, and `ctrlbot.ai` only as the address.
+
+Its surface is a website, so it is framed in `marketing/BrowserFrame.tsx` rather than a
+bezel. That component is generic on purpose and impersonates no vendor; its greys come
+from `theme.ts`'s `chrome` group, which is app greys doing a second job for the same
+reason `bezel` is.
 
 ## Framing on portrait
 

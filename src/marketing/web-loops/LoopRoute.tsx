@@ -14,6 +14,7 @@ import {
   RESTING_VOLUME,
   ROUTE_POWER_AT,
   ROUTE_TAPS,
+  routePressed,
   routeSelection,
   WEB_LOOP,
   type LoopVariant,
@@ -38,6 +39,7 @@ export const LoopRoute: React.FC<{frames?: number; variant?: LoopVariant}> = ({
       <TabletEuiManyToOne
         inputs={EUI_INPUTS}
         selectedInput={routeSelection(t)}
+        pressed={routePressed(t)}
         volume={RESTING_VOLUME}
       />
 
@@ -56,6 +58,7 @@ export const LoopRoute: React.FC<{frames?: number; variant?: LoopVariant}> = ({
         region={TABLET_EUI_MANY_TO_ONE_REGIONS.powerControl}
         at={ROUTE_POWER_AT}
         frames={frames}
+        ring={false}
         name="Power off"
       />
     </LoopStage>
