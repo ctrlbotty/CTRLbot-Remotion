@@ -160,7 +160,7 @@ held for the whole of it.
   **Gate:** `python tools/build.py` regenerates `index.html`; `git diff index.html` shows
   only the Hub block changed.
 
-- [ ] **T9 · site embed** — In the same unit in `tools/build.py`, swap the static
+- [x] **T9 · site embed** — In the same unit in `tools/build.py`, swap the static
   `/assets/device-driver-library.png` figure for a `<video>` matching the existing loop
   cells: `src="/assets/loops/hub-30-v1.mp4"`, its poster, `autoplay muted loop playsinline
   preload="none"`, and an `aria-label` describing what is on screen. T6's `loop:render`
