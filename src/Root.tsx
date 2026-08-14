@@ -29,6 +29,7 @@ import {
   DeviceDatabase,
   deviceDatabaseDuration,
 } from './marketing/device-database/DeviceDatabase';
+import {HubCell, hubCellDuration} from './marketing/hub-cell/HubCell';
 import {LoopRoute} from './marketing/web-loops/LoopRoute';
 import {LoopMatrix} from './marketing/web-loops/LoopMatrix';
 import {LoopAudio} from './marketing/web-loops/LoopAudio';
@@ -145,6 +146,19 @@ export const RemotionRoot = () => (
         fps={30}
         width={1920}
         height={1080}
+      />
+    </Folder>
+
+    {/* THE HUB on ctrlbot.io: a full-bleed device-database media cell. It must loop, so
+        its closing catalog state is the same picture as frame 0. */}
+    <Folder name="Hub">
+      <Composition
+        id="hub-30"
+        component={HubCell}
+        durationInFrames={hubCellDuration}
+        fps={30}
+        width={1920}
+        height={1200}
       />
     </Folder>
 

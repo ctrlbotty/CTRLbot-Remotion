@@ -122,7 +122,7 @@ held for the whole of it.
   **Gate:** `npm run check` lists `hub-30` at 1920x1200, 900 frames; `npm run video:lint`
   is 0 errors.
 
-- [ ] **T4 · register** — Add a `Hub` folder to `src/Root.tsx` with `<Composition
+- [x] **T4 · register** — Add a `Hub` folder to `src/Root.tsx` with `<Composition
   id="hub-30" component={HubCell} durationInFrames={hubCellDuration} fps={30} width={1920}
   height={1200} />`, with a comment saying what it is and that it must loop.
   **Gate:** `npm run check` shows it; no other composition's metadata changed.
