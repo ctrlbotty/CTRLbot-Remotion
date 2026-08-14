@@ -134,7 +134,7 @@ held for the whole of it.
   **Gate:** `npm run video:frames -- hub-30 contact` and read every still — each beat's
   evidence line is visible, and no control, label or log line touches a frame edge.
 
-- [ ] **T6 · the seam** — Two parts. First, make `close` end on `library`'s frame 0
+- [x] **T6 · the seam** — Two parts. First, make `close` end on `library`'s frame 0
   exactly: same `listScroll`, `selectedIndex={null}`, same category, no menu open, and no
   easing still in motion at the last frame. Second, add
   `{id: 'hub-30', name: 'hub-30-v1', width: 1920, height: 1200}` to the `LOOPS` array in

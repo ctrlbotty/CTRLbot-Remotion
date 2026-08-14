@@ -48,6 +48,7 @@ const LOOPS = [
   {id: 'Web-Loop-App-Square', name: 'eui-loop-app-sq-v5', width: 1200, height: 1200},
   {id: 'Web-Loop-Full', name: 'eui-loop-full-v1', width: 1920, height: 1200},
   {id: 'Web-Loop-Ai', name: 'ai-loop-v1', width: 1920, height: 1200},
+  {id: 'hub-30', name: 'hub-30-v1', width: 1920, height: 1200},
 ];
 
 const CRF = 23;
