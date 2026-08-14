@@ -104,7 +104,7 @@ held for the whole of it.
   **Gate:** `npm run video:frames -- hub-30 validate` reports the brief's 30s inside the
   window and names no unknown destination.
 
-- [ ] **T2 · data** — Create `src/marketing/hub-cell/hubCellData.ts`. Beat table only:
+- [x] **T2 · data** — Create `src/marketing/hub-cell/hubCellData.ts`. Beat table only:
   `BEATS` (library 0/180, types 180/150, manual 330/180, connection 510/150, api 660/150,
   close 810/90), `HUB_FRAMES = 900`. Re-export nothing that already exists — import
   `IP_DRIVERS`, `EPSON_INDEX`, `EPSON_DESCRIPTION`, `EPSON_SETUP`, `EPSON_COMMANDS`,
