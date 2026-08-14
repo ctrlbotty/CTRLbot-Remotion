@@ -146,7 +146,7 @@ held for the whole of it.
   out/web/hub-30-v1.mp4` passes. Do **not** use `npm run render` — at 1x the interface
   crawls, which is the whole reason `loop:render` exists.
 
-- [ ] **T7 · render gates** — Full gate pass on the rendered file.
+- [x] **T7 · render gates** — Full gate pass on the rendered file.
   **Gate:** `npm run video:lint` 0 errors · `npm run video:frames -- hub-30 check
   out/web/hub-30-v1.mp4` under the 60% inert ceiling with median content area 100% ·
   duration exactly 30.000s · 1920x1200.
