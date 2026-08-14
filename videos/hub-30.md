@@ -127,7 +127,7 @@ held for the whole of it.
   height={1200} />`, with a comment saying what it is and that it must loop.
   **Gate:** `npm run check` shows it; no other composition's metadata changed.
 
-- [ ] **T5 · framing and margin** — Set `FRAMING` per beat. `library` and `close` at
+- [x] **T5 · framing and margin** — Set `FRAMING` per beat. `library` and `close` at
   width 1372 centred on the plane (black band all round). `types` from x=200 (the rail /
   list boundary, so the list column's 12dp is the margin). `manual`, `connection` and
   `api` on the detail pane, 630→1280, taking their margin from `DriverDetail`'s padding.

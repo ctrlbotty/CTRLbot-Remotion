@@ -33,14 +33,21 @@ import {BEATS, HUB_FRAMES, type BeatName} from './hubCellData';
 
 export const hubCellDuration = HUB_FRAMES;
 
-/** Provisional full-surface framing; the framing task supplies the final per-beat path. */
+/**
+ * Per-beat framing in the tablet surface's own dp.
+ *
+ * The whole-library shots carry their margin as a black band outside the 1280dp plane.
+ * Types starts at the rail/list boundary so the list's 12dp inset becomes the margin.
+ * The three evidence close-ups use the detail pane from x=630 to x=1280, where its own
+ * 30dp padding keeps every label and control off the frame edge.
+ */
 const FRAMING: Record<BeatName, {x: number; y: number; width: number}> = {
-  library: {x: 640, y: 400, width: 1280},
-  types: {x: 640, y: 400, width: 1280},
-  manual: {x: 640, y: 400, width: 1280},
-  connection: {x: 640, y: 400, width: 1280},
-  api: {x: 640, y: 400, width: 1280},
-  close: {x: 640, y: 400, width: 1280},
+  library: {x: 640, y: 400, width: 1372},
+  types: {x: 600, y: 250, width: 800},
+  manual: {x: 955, y: 280, width: 650},
+  connection: {x: 955, y: 280, width: 650},
+  api: {x: 955, y: 280, width: 650},
+  close: {x: 640, y: 400, width: 1372},
 };
 
 const BEAT_NAMES = Object.keys(BEATS) as BeatName[];
@@ -106,7 +113,7 @@ const LibraryBeat = ({frame}: {frame: number}) => (
     device="tablet"
     drivers={IP_DRIVERS}
     background={SETUP_BACKGROUND}
-    listScroll={scroll(frame - BEATS.library.from, 160, 0, 156)}
+    listScroll={scroll(frame - BEATS.library.from - 115, 55, 0, 134)}
   />
 );
 
@@ -118,7 +125,7 @@ const TypesBeat = ({frame}: {frame: number}) => {
       drivers={IP_DRIVERS}
       background={SETUP_BACKGROUND}
       emphasizeTypes
-      listScroll={156}
+      listScroll={134}
       openMenu={local >= 18 ? {control: 'sort', items: SORT_OPTIONS} : undefined}
     />
   );
@@ -211,7 +218,7 @@ const CloseBeat = ({frame}: {frame: number}) => (
     device="tablet"
     drivers={IP_DRIVERS}
     background={SETUP_BACKGROUND}
-    listScroll={scroll(frame - BEATS.close.from, 72, 156, 0)}
+    listScroll={scroll(frame - BEATS.close.from, 40, 134, 0)}
   />
 );
 
