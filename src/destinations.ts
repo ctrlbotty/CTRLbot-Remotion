@@ -146,6 +146,27 @@ export const WEBSITE_PANEL_LOOP: Destination = {
 };
 
 /**
+ * The 30-second device-database loop in ctrlbot.io's full-bleed Hub media cell.
+ *
+ * This is longer than the small interaction loops above because it has to show the
+ * breadth of the shelf and the manual, connection, and API carried by one driver. The
+ * same seam rule still applies: the frame after the last must be the opening frame.
+ */
+export const WEBSITE_HUB_CELL: Destination = {
+  id: 'website-hub-cell',
+  frame: {width: 1920, height: 1200, fps: 30},
+  duration: {min: 25, target: 30, max: 35},
+  audio: 'muted-first',
+  safeArea: {top: 72, right: 72, bottom: 72, left: 72},
+  firstImpressionSeconds: 10,
+  maxInertFraction: 0.6,
+  banned: [],
+  hosting:
+    'Committed to ctrlbot-io-site under assets/loops/ and served from a fixed URL with ' +
+    'a four-hour cache and no content hash, so every revision needs a new filename.',
+};
+
+/**
  * A product walkthrough posted to YouTube or shared as a social promo.
  *
  * The loosest destination here, because the platform imposes almost nothing: no length
@@ -180,6 +201,7 @@ export const DESTINATIONS: Record<string, Destination> = {
   [PLAY_STORE_PREVIEW.id]: PLAY_STORE_PREVIEW,
   [PLAY_STORE_PREVIEW_MASTER.id]: PLAY_STORE_PREVIEW_MASTER,
   [WEBSITE_PANEL_LOOP.id]: WEBSITE_PANEL_LOOP,
+  [WEBSITE_HUB_CELL.id]: WEBSITE_HUB_CELL,
   [SOCIAL_WALKTHROUGH.id]: SOCIAL_WALKTHROUGH,
 };
 

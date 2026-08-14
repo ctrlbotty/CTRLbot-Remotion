@@ -95,7 +95,7 @@ held for the whole of it.
 > One task, one gate, one commit. Do not start the next until the current one is `- [x]`.
 > The orchestration contract is `docs/HUB-30-ORCHESTRATION.md`.
 
-- [ ] **T1 · destination** — Add `WEBSITE_HUB_CELL` to `src/destinations.ts`: id
+- [x] **T1 · destination** — Add `WEBSITE_HUB_CELL` to `src/destinations.ts`: id
   `website-hub-cell`, frame 1920x1200 @30, duration `{min: 25, target: 30, max: 35}`,
   `audio: 'muted-first'`, safeArea 72 all round, `firstImpressionSeconds: 10`,
   `maxInertFraction: 0.6`, `banned: []`, and a `hosting` line naming the site's
