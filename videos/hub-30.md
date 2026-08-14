@@ -113,7 +113,7 @@ held for the whole of it.
   **Gate:** `npm run check` passes and nothing in the file duplicates a value that already
   exists in `deviceDatabaseData.ts`.
 
-- [ ] **T3 · composition** — Create `src/marketing/hub-cell/HubCell.tsx`. `<AbsoluteFill
+- [x] **T3 · composition** — Create `src/marketing/hub-cell/HubCell.tsx`. `<AbsoluteFill
   style={{backgroundColor: color.void}}>` wrapping `<Camera contentSize={TABLET_VIEWPORT}
   shots={SHOTS} viewport={{width: 1920, height: 1200}}>`. Reuse the two-shots-per-beat
   path from `DeviceDatabase.tsx` (arrive at `from + 22`, hold to `from + duration`), the
