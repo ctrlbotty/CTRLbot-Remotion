@@ -151,7 +151,7 @@ held for the whole of it.
   out/web/hub-30-v1.mp4` under the 60% inert ceiling with median content area 100% ·
   duration exactly 30.000s · 1920x1200.
 
-- [ ] **T8 · site copy** — In `C:\0-Repo\2 - CTRLbot.io\ctrlbot-io-site\tools\build.py`,
+- [x] **T8 · site copy** — In `C:\0-Repo\2 - CTRLbot.io\ctrlbot-io-site\tools\build.py`,
   rewrite the `home_block("THE HUB", …)` call: keep the title, replace the thought line
   and the paragraph so both describe the database as it is today — manufacturers, device
   types, and a driver that is manual, connection and API. Remove "is being built",
