@@ -11,12 +11,35 @@
 // projector icon, a switcher is #2D2D2D with the route icon. The list is colour-coded
 // by equipment type, which is a real affordance rather than decoration.
 
+import type {ReactNode} from 'react';
 import {AppIcon, type AppIconName} from './AppIcon';
 import {TABLET_NAV_WIDTH, TabletNavRail} from './TabletNavRail';
 import {VIEWPORT as CATALOG_VIEWPORT} from './viewports';
 import {appColors, appColorStates} from '../design/tokens.generated';
 
 export {VIEWPORT as CATALOG_VIEWPORT} from './viewports';
+
+/**
+ * The setup screens' own background — `res/drawable/bg_setup_gradient.xml`.
+ *
+ * Black base with a blue radial wash centred at 68%/32%, radius 100%, falling to
+ * transparent at 90%. The drawable names `@color/ctrlbot_blue_subtle` (#73008FD4), which
+ * is `appColors.blue` at 45% — expressed that way here rather than as a hex literal so
+ * a change to the app's blue reaches this too, and so no colour is invented.
+ *
+ * Opt-in via `background`, not the default. `gray_10` is what this surface has rendered
+ * since it was built and it is baked into the approved First-Run cuts; switching every
+ * caller at once would restyle those without anybody asking for it. See
+ * docs/ROADMAP.md — the drift is real and belongs in its own change.
+ */
+const blueAt = (amount: number) => {
+  const value = parseInt(appColors.blue.slice(1), 16);
+  return `rgba(${(value >> 16) & 255}, ${(value >> 8) & 255}, ${value & 255}, ${amount})`;
+};
+
+export const SETUP_BACKGROUND =
+  `radial-gradient(circle at 68% 32%, ${blueAt(0.45)} 0%, ${blueAt(0)} 90%), ` +
+  appColors.black;
 
 export type DeviceType = 'display' | 'projector' | 'switcher' | 'endPoint';
 
@@ -197,19 +220,64 @@ const DriverCard = ({
   );
 };
 
+/**
+ * The list a split control drops, drawn under its own button.
+ *
+ * Absolutely positioned so opening it never reflows the row it hangs from — which is
+ * what the app does, and what keeps a beat about opening a menu from also being a beat
+ * where every card below jumps 200dp down the screen.
+ */
+const DropMenu = ({items, scale}: {items: readonly string[]; scale: number}) => (
+  <div
+    style={{
+      position: 'absolute',
+      zIndex: 3,
+      left: 0,
+      top: FILTER_H * scale,
+      minWidth: 150 * scale,
+      paddingTop: 6 * scale,
+      paddingBottom: 6 * scale,
+      backgroundColor: appColors.black,
+      boxShadow: `0 ${8 * scale}px ${24 * scale}px ${appColors.black75}`,
+    }}
+  >
+    {items.map((item) => (
+      <div
+        key={item}
+        style={{
+          paddingLeft: 14 * scale,
+          paddingRight: 22 * scale,
+          paddingTop: 7 * scale,
+          paddingBottom: 7 * scale,
+          fontFamily: 'Montserrat, sans-serif',
+          fontWeight: 400,
+          fontSize: 14 * scale,
+          whiteSpace: 'nowrap',
+          color: appColors.white,
+        }}
+      >
+        {item}
+      </div>
+    ))}
+  </div>
+);
+
 /** A split control: label segment plus a dropdown segment, per ShapeAppearance.SplitButton. */
 const SplitControl = ({
   label,
   icon,
   scale,
   flex,
+  menu,
 }: {
   label: string;
   icon?: AppIconName;
   scale: number;
   flex?: number;
+  /** Items to show hanging open beneath it, or undefined for a closed control. */
+  menu?: readonly string[];
 }) => (
-  <div style={{display: 'flex', flex, flexShrink: 0, height: FILTER_H * scale}}>
+  <div style={{position: 'relative', display: 'flex', flex, flexShrink: 0, height: FILTER_H * scale}}>
     <div
       style={{
         flex: 1,
@@ -260,6 +328,7 @@ const SplitControl = ({
         }}
       />
     </div>
+    {menu ? <DropMenu items={menu} scale={scale} /> : null}
   </div>
 );
 
@@ -271,6 +340,10 @@ export const DriverCatalog = ({
   category = 'IP_RS232',
   sort = 'Manufacturer',
   emphasizeTypes = false,
+  listScroll = 0,
+  openMenu,
+  detail,
+  background,
 }: {
   device: 'phone' | 'tablet';
   drivers: DriverEntry[];
@@ -282,6 +355,14 @@ export const DriverCatalog = ({
   sort?: string;
   /** Widen the gaps between the device-type card colours. Video only. */
   emphasizeTypes?: boolean;
+  /** dp the driver list is scrolled by. The header and filters do not move. */
+  listScroll?: number;
+  /** Which split control is showing its list, and what is in it. */
+  openMenu?: {control: 'category' | 'sort'; items: readonly string[]};
+  /** Tablet only. Fills the detail pane; without it the pane is the empty outline. */
+  detail?: ReactNode;
+  /** Defaults to `gray_10`. Pass `SETUP_BACKGROUND` for the app's real setup wash. */
+  background?: string;
 }) => {
   const isTablet = device === 'tablet';
   // No scale factor. The app runs the same sp type scale on both form factors — the
@@ -297,7 +378,7 @@ export const DriverCatalog = ({
         width: viewport.width,
         height: viewport.height,
         overflow: 'hidden',
-        backgroundColor: appColors.gray10,
+        background: background ?? appColors.gray10,
       }}
     >
       {/* Setup nav rail — tablet only; phone puts these in a bottom sheet. */}
@@ -355,42 +436,62 @@ export const DriverCatalog = ({
 
         {/* Category and sort. The phone stacks them full-width; only the tablet has
             the width to sit them side by side. */}
+        {/* `zIndex` is load-bearing: the list below scrolls inside a translated box,
+            and a translated box is a stacking context — so without this the open menu
+            paints *behind* the cards it is supposed to be covering. */}
         <div
           style={{
+            position: 'relative',
+            zIndex: 2,
             display: 'flex',
             flexDirection: isTablet ? 'row' : 'column',
             gap: FILTER_ROW_GAP * scale,
             marginTop: FILTER_GAP * scale,
           }}
         >
-          <SplitControl label={category} scale={scale} flex={isTablet ? 1 : undefined} />
-          <SplitControl label={sort} icon="ic_sort" scale={scale} flex={isTablet ? 1 : undefined} />
+          <SplitControl
+            label={category}
+            scale={scale}
+            flex={isTablet ? 1 : undefined}
+            menu={openMenu?.control === 'category' ? openMenu.items : undefined}
+          />
+          <SplitControl
+            label={sort}
+            icon="ic_sort"
+            scale={scale}
+            flex={isTablet ? 1 : undefined}
+            menu={openMenu?.control === 'sort' ? openMenu.items : undefined}
+          />
         </div>
 
-        {/* Driver list */}
+        {/* Driver list. Clipped by this box; `listScroll` moves the rows inside it, so
+            the title, search field and filters stay where they are — which is what a
+            RecyclerView under a fixed header does. */}
         <div style={{marginTop: LIST_GAP * scale, overflow: 'hidden'}}>
-          {drivers.map((driver, index) => (
-            <DriverCard
-              key={`${driver.manufacturer}-${driver.model}`}
-              driver={driver}
-              selected={index === selectedIndex}
-              scale={scale}
-              emphasizeTypes={emphasizeTypes}
-            />
-          ))}
+          <div style={{translate: `0px ${-listScroll * scale}px`}}>
+            {drivers.map((driver, index) => (
+              <DriverCard
+                key={`${driver.manufacturer}-${driver.model}`}
+                driver={driver}
+                selected={index === selectedIndex}
+                scale={scale}
+                emphasizeTypes={emphasizeTypes}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Detail pane — tablet only. Empty until a driver is selected. */}
+      {/* Detail pane — tablet only.
+
+          Empty is *empty*: `driver_detail_container` in driver_database.xml is a bare
+          FrameLayout with no background, so before a driver is picked the page shows
+          through, and the walkthrough recording confirms it — the right of that screen
+          is the setup wash, not a panel. This used to draw a bordered black box, which
+          was invented; at the sizes the First-Run cut frames it that read as a dark
+          area, but in a shot of the whole screen it is a void down 45% of the frame. */}
       {isTablet ? (
-        <div
-          style={{
-            flex: 1,
-            margin: 14,
-            border: `1px solid ${appColors.gray25}`,
-            backgroundColor: appColors.black,
-          }}
-        />
+        <div style={{flex: 1, marginLeft: 30, overflow: 'hidden'}}>{detail}</div>
       ) : null}
     </div>
   );

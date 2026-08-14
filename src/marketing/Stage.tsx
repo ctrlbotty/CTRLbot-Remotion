@@ -192,6 +192,27 @@ export type StageProps = {
   bezel?: number;
   /** 0..1. Fades the bezel, its edge and its shadow, leaving the screen behind. */
   bezelOpacity?: number;
+  /**
+   * Corner radius of the screen, in frame pixels. Defaults to the device treatment —
+   * `radius.xl` bare, `radius.sm` inside a bezel.
+   *
+   * Pass `0` when the camera lives inside the surface rather than framing the whole of
+   * it. A rounded rectangle is a claim about hardware: it says the thing you are looking
+   * at is a tablet, with a corner. Once the shot is a crop of the screen, that corner is
+   * not in view and rounding the panel rounds off a piece of interface instead — which
+   * reads as a mask laid over the picture, because it is one.
+   */
+  panelRadius?: number;
+  /**
+   * Fill behind the surface, inside the panel.
+   *
+   * Only visible when a shot frames wider than the content plane — which is the one way
+   * to put a margin around a surface that has none of its own. A tablet's nav rail fills
+   * to the screen edge, correctly, so a whole-screen shot has nothing to breathe into;
+   * framing a little wider than 1280x800 and filling behind it does. Black is usually
+   * right, because it is what the rail already is.
+   */
+  panelBackground?: string;
   /** Centre the panel instead of pinning it right. For beats with no copy column. */
   centered?: boolean;
   /** Background under the whole stage. Defaults to the house marketing gradient. */
@@ -211,6 +232,8 @@ export const Stage = ({
   panelAspect,
   bezel = 0,
   bezelOpacity = 1,
+  panelRadius,
+  panelBackground,
   centered = false,
   background: stageBackground = background.stage,
   fit,
@@ -303,7 +326,8 @@ export const Stage = ({
             width: screenWidth,
             height: panelHeight,
             overflow: 'hidden',
-            borderRadius: bezel > 0 ? radius.sm : radius.xl,
+            borderRadius: panelRadius ?? (bezel > 0 ? radius.sm : radius.xl),
+            backgroundColor: panelBackground,
             boxShadow: bezel > 0 ? undefined : `0 40px 120px ${color.scrim}`,
           }}
         >

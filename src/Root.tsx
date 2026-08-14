@@ -25,6 +25,10 @@ import {MasterControlCard} from './marketing/eui-promo/MasterControlCard';
 import {EuiPromo, euiPromoDuration} from './marketing/eui-promo/EuiPromo';
 import {EuiPromo as EuiPromoV3, euiPromoDuration as euiPromoV3Duration} from './marketing/eui-promo-v3/EuiPromo';
 import {AiWalkthrough, aiWalkthroughDuration} from './marketing/ai-walkthrough/AiWalkthrough';
+import {
+  DeviceDatabase,
+  deviceDatabaseDuration,
+} from './marketing/device-database/DeviceDatabase';
 import {LoopRoute} from './marketing/web-loops/LoopRoute';
 import {LoopMatrix} from './marketing/web-loops/LoopMatrix';
 import {LoopAudio} from './marketing/web-loops/LoopAudio';
@@ -122,6 +126,22 @@ export const RemotionRoot = () => (
         id="AI-Walkthrough"
         component={AiWalkthrough}
         durationInFrames={aiWalkthroughDuration}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+    </Folder>
+
+    {/* The device database — the tablet setup surface, not the EUI. Built from the
+        walkthrough recording; the script of record is docs/DEVICE-DATABASE-TRANSCRIPT.md
+        and the brief is videos/device-database.md. This is the one marketing cut that
+        moves the camera between beats: the things it is about are 13sp, and a 1280dp
+        surface in a 1024px panel is 0.8x. */}
+    <Folder name="Device-Database">
+      <Composition
+        id="device-database"
+        component={DeviceDatabase}
+        durationInFrames={deviceDatabaseDuration}
         fps={30}
         width={1920}
         height={1080}

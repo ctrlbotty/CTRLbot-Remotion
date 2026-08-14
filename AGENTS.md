@@ -79,7 +79,14 @@ Point at a different checkout with `npm run sync:tokens -- ../path/to/CTRLbot-Io
   wordmark only; **Montserrat** (the app's face) for all readable copy;
   **Space Mono** for small uppercase eyebrows and technical labels. Audiowide is a
   texture — in motion graphics the text delivers the message, not the font, so it
-  never carries body copy or a label. Write the name as `CTRLbot`, always.
+  never carries body copy or a label.
+- **The name is `CTRLbot`, always — and a video signs off with a product, not a URL.**
+  There are three: **CTRLbot IoT** (the Android app), **CTRLbot.AI** (the web
+  assistant) and **CTRLbot.IO** (the website). `CTRLbot` alone is correct at the top
+  level; name the specific one when the cut is about it, so an app video closes on
+  `CTRLbot IoT`. Lowercase `ctrlbot.ai` and `ctrlbot.io` are **addresses** and nothing
+  else — a lowercase domain in the corner of a cut about the app names a different
+  product, which is exactly the mistake it looks like.
 - Keep composition metadata (`width`, `height`, `fps`, `defaultProps`) inline on
   `<Composition>`, with no type assertions.
 - Run `npm run check` after changes, and render a still when layout moves.
