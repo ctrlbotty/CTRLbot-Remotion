@@ -11,12 +11,13 @@ import type {NarrationClip} from './NarrationTrack';
 
 const capitalise = (text: string) => text.replace(/^(\s*)(\S)/, (_, space: string, first: string) => space + first.toUpperCase());
 
-const correctWord = (text: string, corrections?: Record<string, string>) => {
+const correctWord = (text: string, corrections?: Record<string, string>): string | null => {
   if (!corrections) return text;
   const match = text.match(/^(\s*)(.*?)(\W*)$/);
   if (!match) return text;
   const [, lead, core, trail] = match;
   if (Object.prototype.hasOwnProperty.call(corrections, core)) {
+    if (corrections[core] === '') return null;
     return lead + corrections[core] + trail;
   }
   return text;
@@ -43,19 +44,24 @@ export const captionsFromClips = (
       const place = (sourceMs: number) => (clip.at + (sourceMs / 1000 - clip.sourceStart) / rate) * 1000;
       const clipStartMs = clip.at * 1000;
       const clipEndMs = place(clip.sourceEnd * 1000);
-      return words
-        .filter((word) => {
-          const middle = (word.startMs + word.endMs) / 2000;
-          return middle >= clip.sourceStart && middle <= clip.sourceEnd;
-        })
-        .map((word, index) => ({
-          first: index === 0,
-          text: correctWord(word.text, corrections),
+      const clipWords = words.filter((word) => {
+        const middle = (word.startMs + word.endMs) / 2000;
+        return middle >= clip.sourceStart && middle <= clip.sourceEnd;
+      });
+      const kept: Array<CaptionWord & {first: boolean}> = [];
+      for (const word of clipWords) {
+        const text = correctWord(word.text, corrections);
+        if (text === null) continue;
+        kept.push({
+          first: kept.length === 0,
+          text,
           startMs: Math.max(clipStartMs, place(word.startMs)),
           endMs: Math.min(clipEndMs, place(word.endMs)),
           timestampMs: word.timestampMs === null ? null : place(word.timestampMs),
           confidence: word.confidence,
-        }));
+        });
+      }
+      return kept;
     })
     .map(({first, ...word}, index, all) =>
       first && (index === 0 || ENDS_SENTENCE.test(all[index - 1].text.trim()))

@@ -230,7 +230,7 @@ branch, no worktree.
 - [x] T2: Raise `social-walkthrough`'s ceiling to 360s, and let `PortraitStage` fit a surface too tall for the width — files: src/destinations.ts, src/marketing/PortraitStage.tsx
   - In `SOCIAL_WALKTHROUGH` set `duration.max` to 360 and say why in its comment: a long tutorial is kept whole, and trimmed cuts for X and Shorts come from the same beats.
   - In `portraitLayout`: when the width-bound panel would leave the copy less than 360px, the panel takes the height that leaves exactly 360px and its width follows the aspect, centred. W01 and W02 must not move: their surfaces are wide, so the new branch never runs for them — confirm `mirror-walkthrough-portrait` and `terminator-walkthrough-portrait` stills at frame 300 look as before.
-- [ ] T3: Let a caption correction with an empty replacement drop the word — files: src/audio/narrationCaptions.ts
+- [x] T3: Let a caption correction with an empty replacement drop the word — files: src/audio/narrationCaptions.ts
   - `{RS: 'RS-232', '-232': ''}` then reads "RS-232". Verify W01 and W02 unchanged: regenerate both .srt files to `out/_w01.srt` and `out/_w02.srt` and `git diff --no-index` each against the one in `out/` shows nothing.
 
 ### New phone surfaces — in `src/app-ui/`, for reuse
