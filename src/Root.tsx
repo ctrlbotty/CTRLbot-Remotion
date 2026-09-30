@@ -33,6 +33,10 @@ import {
   DeviceDatabase,
   deviceDatabaseDuration,
 } from './marketing/device-database/DeviceDatabase';
+import {
+  MirrorWalkthrough,
+  mirrorWalkthroughDuration,
+} from './marketing/mirror-walkthrough/MirrorWalkthrough';
 import {HubCell, hubCellDuration} from './marketing/hub-cell/HubCell';
 import {Short, assertShortReady} from './shorts/Short';
 import {MirrorAppsProof, MirrorDevicesProof, MirrorFilesProof, MirrorSetupProof, MirrorStudioProof} from './app-ui/mirror/MirrorProofs';
@@ -183,6 +187,17 @@ export const RemotionRoot = () => (
         id="AI-Walkthrough-Narrated"
         component={AiWalkthroughNarrated}
         durationInFrames={aiWalkthroughDuration}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+    </Folder>
+
+    <Folder name="CTRLbot-Mirror">
+      <Composition
+        id="mirror-walkthrough"
+        component={MirrorWalkthrough}
+        durationInFrames={mirrorWalkthroughDuration}
         fps={30}
         width={1920}
         height={1080}
