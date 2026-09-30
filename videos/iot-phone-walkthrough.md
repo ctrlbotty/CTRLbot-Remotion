@@ -239,7 +239,7 @@ branch, no worktree.
   - Reference frames: `f_0003.jpg`–`f_0007.jpg`.
 - [x] T5: Build `ConnectTest` from `layout/menu_connections.xml`, `driver_connection.xml`, `layout-port/remotes_test.xml` and `layout-port/av_sw_remote_nx1.xml`: the Device Driver Connections / Test Device Drivers tabs, the Buttons, Switcher, Terminal and Web page tab bar, and the Buttons and single-output Switcher tabs — files: src/app-ui/ConnectTest.tsx, src/Root.tsx
   - Terminal tab reuses `ConnectionPanel`'s terminal colours and `TerminalLine`; Web page tab shows the app's web view chrome over an empty page. Reference frames: `f_0021.jpg`–`f_0024.jpg`, `f_0041.jpg`.
-- [ ] T6: Add the multi-output Switcher tab to `ConnectTest` from `layout-port/av_sw_remote_nxo.xml`, with the system and single-device selection shown for Matrox — files: src/app-ui/ConnectTest.tsx
+- [x] T6: Add the multi-output Switcher tab to `ConnectTest` from `layout-port/av_sw_remote_nxo.xml`, with the system and single-device selection shown for Matrox — files: src/app-ui/ConnectTest.tsx
   - Outputs and inputs are props (`CONVERTIP RX 1–4` over `CONVERTIP TX 1–4`); a selected output is yellow as in the recording. Reference frames: `f_0042.jpg`–`f_0044.jpg`.
 - [ ] T7: Build `ProductWebView` from `layout/fragment_product_web_view.xml` — back, title, address, reload and open — over an empty, loading page — files: src/app-ui/ProductWebView.tsx, src/Root.tsx
   - Reference frames: `f_0013.jpg`, `f_0014.jpg`. Draw no website content.

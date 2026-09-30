@@ -43,12 +43,50 @@ export const DEFAULT_CONNECT_COMMANDS = [
   {name: 'POWER TOGGLE', code: 'KEY 01\\r'},
 ];
 
+export type SwitcherOutput = {
+  name: string;
+  ip?: string;
+  routed?: string | null;
+};
+
+export type SwitcherInput = {
+  name: string;
+  id: number;
+};
+
+export const DEFAULT_MATROX_OUTPUTS: SwitcherOutput[] = [
+  {name: 'CONVERTIP RX 1', ip: '239.100.45.1'},
+  {name: 'CONVERTIP RX 2', ip: '239.100.46.1'},
+  {name: 'CONVERTIP RX 3', ip: '239.100.47.1'},
+  {name: 'CONVERTIP RX 4', ip: '239.100.48.1'},
+];
+
+export const DEFAULT_MATROX_INPUTS: SwitcherInput[] = [
+  {name: 'CONVERTIP TX 1', id: 1},
+  {name: 'CONVERTIP TX 2', id: 2},
+  {name: 'CONVERTIP TX 3', id: 3},
+  {name: 'CONVERTIP TX 4', id: 4},
+];
+
+export const DEFAULT_MATROX_DEVICE_LIST = [
+  {name: 'MATROX ConvertIP (8)', isParent: true},
+  {name: 'ConvertIP RX 1', checked: true},
+  {name: 'ConvertIP RX 2', checked: true},
+  {name: 'ConvertIP RX 3', checked: true},
+  {name: 'ConvertIP RX 4', checked: true},
+  {name: 'ConvertIP TX 1', checked: true},
+  {name: 'ConvertIP TX 2', checked: true},
+  {name: 'ConvertIP TX 3', checked: true},
+  {name: 'ConvertIP TX 4', checked: true},
+];
+
 export type ConnectTestProps = {
   device?: 'phone';
   topTab?: ConnectTestTopTab;
   testTab?: ConnectTestSubTab;
   deviceName?: string;
   connected?: boolean;
+  statusColor?: 'green' | 'red';
   selectedOutput?: number;
   selectedInput?: number;
   terminalLines?: TerminalEntry[];
@@ -58,6 +96,11 @@ export type ConnectTestProps = {
   foundDevicesCount?: number;
   showNavMenu?: boolean;
   multiOutput?: boolean;
+  outputs?: SwitcherOutput[];
+  inputs?: SwitcherInput[];
+  deviceSelectorOpen?: boolean;
+  deviceList?: Array<{name: string; isParent?: boolean; checked?: boolean}>;
+  subTabs?: Array<{id: ConnectTestSubTab; label: string}>;
   activeOutputs?: number[];
   activeInputs?: number[];
   matrixSelection?: {output: number; input: number};
@@ -69,6 +112,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
   testTab = 'buttons',
   deviceName = 'EPSON PowerLite - New',
   connected = true,
+  statusColor,
   selectedOutput = 1,
   selectedInput = 1,
   terminalLines = DEFAULT_CONNECT_TERMINAL,
@@ -78,11 +122,21 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
   foundDevicesCount = 16,
   showNavMenu = true,
   multiOutput = false,
+  outputs = DEFAULT_MATROX_OUTPUTS,
+  inputs = DEFAULT_MATROX_INPUTS,
+  deviceSelectorOpen = false,
+  deviceList = DEFAULT_MATROX_DEVICE_LIST,
+  subTabs,
   activeOutputs = [1, 2, 3, 4],
   activeInputs = [1, 2, 3, 4],
   matrixSelection = {output: 1, input: 1},
 }) => {
   const isTest = topTab === 'test';
+
+  const isRedStatus =
+    statusColor === 'red' ||
+    deviceName.includes('MATROX') ||
+    deviceName.includes('ConvertIP');
 
   return (
     <div
@@ -133,7 +187,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
             width: 16,
             height: 16,
             borderRadius: '50%',
-            backgroundColor: connected ? appColors.green : appColors.priRed,
+            backgroundColor: isRedStatus ? appColors.priRed : connected ? appColors.green : appColors.priRed,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -483,93 +537,273 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
             </div>
           </div>
         ) : testTab === 'switcher' ? (
-          /* Switcher Tab (Reference f_0022.jpg, av_sw_remote_nx1.xml) */
-          <div
-            style={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              paddingBottom: 58,
-            }}
-          >
-            {/* Display Preview */}
+          multiOutput ? (
+            /* Multi-Output Switcher Tab (Reference f_0044.jpg, av_sw_remote_nxo.xml) */
             <div
               style={{
-                width: '100%',
-                maxWidth: 320,
-                height: 172,
-                background:
-                  'radial-gradient(circle at 50% 50%, #707070 0%, #303030 100%)',
-                borderRadius: 4,
-                border: '1px solid rgba(255,255,255,0.12)',
+                flex: 1,
                 display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: 4,
-              }}
-            />
-            {/* OUT 1 Bar */}
-            <div
-              style={{
-                width: '100%',
-                maxWidth: 320,
-                height: 30,
-                backgroundColor: appColors.gray20,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: appColors.white,
-                fontSize: 12,
-                fontWeight: 700,
-                letterSpacing: '0.04em',
-                marginTop: 6,
-                borderRadius: 2,
+                flexDirection: 'column',
+                paddingBottom: 58,
               }}
             >
-              OUT 1
-            </div>
+              {/* Output displays: 2-column grid */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(2, 1fr)',
+                  gap: 8,
+                  marginTop: 2,
+                }}
+              >
+                {outputs.map((out, idx) => {
+                  const outIndex = idx + 1;
+                  const isSelected = selectedOutput === outIndex;
+                  return (
+                    <div
+                      key={out.name}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                      }}
+                    >
+                      {/* 16:9 Display Box */}
+                      <div
+                        style={{
+                          width: '100%',
+                          height: 78,
+                          borderRadius: 4,
+                          background: isSelected
+                            ? 'radial-gradient(circle at 50% 50%, #FFF875 0%, #FFE600 65%, #E5CE00 100%)'
+                            : 'radial-gradient(circle at 50% 50%, #686868 0%, #444444 100%)',
+                          border: isSelected
+                            ? `1px solid ${appColors.priYellow}`
+                            : '1px solid rgba(255,255,255,0.12)',
+                          boxShadow: isSelected ? '0 0 14px rgba(255, 230, 0, 0.45)' : undefined,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 700,
+                            letterSpacing: '0.04em',
+                            color: isSelected ? 'rgba(130, 110, 0, 0.75)' : '#888888',
+                          }}
+                        >
+                          {out.routed ? out.routed : 'NOT ROUTED'}
+                        </span>
+                      </div>
+                      {/* Display Label Bar */}
+                      <div
+                        style={{
+                          backgroundColor: appColors.gray20,
+                          borderRadius: 2,
+                          padding: '3px 4px',
+                          marginTop: 3,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: 10.5,
+                            fontWeight: 700,
+                            color: appColors.white,
+                            lineHeight: 1.2,
+                          }}
+                        >
+                          {out.name}
+                        </span>
+                        {out.ip ? (
+                          <span
+                            style={{
+                              fontSize: 9,
+                              color: appColors.gray75,
+                              fontFamily: font.mono,
+                              lineHeight: 1.2,
+                            }}
+                          >
+                            {out.ip}
+                          </span>
+                        ) : null}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
 
-            {/* Arrow pointing up */}
-            <div style={{margin: '10px 0'}}>
-              <svg width={24} height={24} viewBox="0 0 24 24" fill={appColors.white}>
-                <path d="M12 4L4 14H9V20H15V14H20L12 4Z" />
-              </svg>
-            </div>
-
-            {/* Input Cards Row */}
-            <div style={{display: 'flex', gap: 10, width: '100%', paddingLeft: 4}}>
-              {[1, 2, 3].map((inp) => (
-                <div
-                  key={inp}
+              {/* Center: ALL label + route icon */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '8px 0 6px',
+                }}
+              >
+                <span
                   style={{
-                    width: 96,
-                    height: 96,
-                    backgroundColor: inp === selectedInput ? '#3A3A3A' : appColors.gray15,
-                    border:
-                      inp === selectedInput
-                        ? `1.5px solid ${appColors.blue}`
-                        : '1px solid rgba(255,255,255,0.06)',
-                    borderRadius: 6,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 8,
-                    flexShrink: 0,
+                    fontSize: 14,
+                    fontWeight: 700,
+                    color: appColors.white,
+                    marginRight: 10,
                   }}
                 >
-                  {/* HDMI Icon */}
-                  <svg width={36} height={36} viewBox="0 0 24 24" fill={appColors.white}>
-                    <path d="M8 3H16V6H19V14L16 19H8L5 14V6H8V3ZM10 8V11H11V8H10ZM13 8V11H14V8H13Z" />
-                  </svg>
-                  <span style={{fontSize: 11, fontWeight: 600, color: appColors.white}}>
-                    INPUT {inp}
-                  </span>
-                </div>
-              ))}
+                  All
+                </span>
+                <AppIcon
+                  name="ic_route5"
+                  size={24}
+                  tint={appColors.white}
+                  style={{transform: 'rotate(270deg)'}}
+                />
+              </div>
+
+              {/* Horizontal Scroll of Input Cards */}
+              <div
+                style={{
+                  display: 'flex',
+                  gap: 8,
+                  overflowX: 'hidden',
+                  padding: '2px 0',
+                }}
+              >
+                {inputs.map((inp) => {
+                  const isSelected = selectedInput === inp.id;
+                  return (
+                    <div
+                      key={inp.id}
+                      style={{
+                        width: 100,
+                        height: 94,
+                        flexShrink: 0,
+                        backgroundColor: isSelected ? appColors.blue : appColors.gray20,
+                        border: isSelected
+                          ? '1.5px solid #33A8FF'
+                          : '1px solid rgba(255,255,255,0.06)',
+                        borderRadius: 6,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 8,
+                        padding: '4px 6px',
+                      }}
+                    >
+                      <AppIcon name="ic_hdmi_icon" size={34} tint={appColors.white} />
+                      <span
+                        style={{
+                          fontSize: 10.5,
+                          fontWeight: 700,
+                          color: appColors.white,
+                          textAlign: 'center',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          maxWidth: '100%',
+                        }}
+                      >
+                        {inp.name}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          ) : (
+            /* Switcher Tab (Reference f_0022.jpg, av_sw_remote_nx1.xml) */
+            <div
+              style={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                paddingBottom: 58,
+              }}
+            >
+              {/* Display Preview */}
+              <div
+                style={{
+                  width: '100%',
+                  maxWidth: 320,
+                  height: 172,
+                  background:
+                    'radial-gradient(circle at 50% 50%, #707070 0%, #303030 100%)',
+                  borderRadius: 4,
+                  border: '1px solid rgba(255,255,255,0.12)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginTop: 4,
+                }}
+              />
+              {/* OUT 1 Bar */}
+              <div
+                style={{
+                  width: '100%',
+                  maxWidth: 320,
+                  height: 30,
+                  backgroundColor: appColors.gray20,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: appColors.white,
+                  fontSize: 12,
+                  fontWeight: 700,
+                  letterSpacing: '0.04em',
+                  marginTop: 6,
+                  borderRadius: 2,
+                }}
+              >
+                OUT 1
+              </div>
+
+              {/* Arrow pointing up */}
+              <div style={{margin: '10px 0'}}>
+                <svg width={24} height={24} viewBox="0 0 24 24" fill={appColors.white}>
+                  <path d="M12 4L4 14H9V20H15V14H20L12 4Z" />
+                </svg>
+              </div>
+
+              {/* Input Cards Row */}
+              <div style={{display: 'flex', gap: 10, width: '100%', paddingLeft: 4}}>
+                {[1, 2, 3].map((inp) => (
+                  <div
+                    key={inp}
+                    style={{
+                      width: 96,
+                      height: 96,
+                      backgroundColor: inp === selectedInput ? '#3A3A3A' : appColors.gray15,
+                      border:
+                        inp === selectedInput
+                          ? `1.5px solid ${appColors.blue}`
+                          : '1px solid rgba(255,255,255,0.06)',
+                      borderRadius: 6,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 8,
+                      flexShrink: 0,
+                    }}
+                  >
+                    {/* HDMI Icon */}
+                    <svg width={36} height={36} viewBox="0 0 24 24" fill={appColors.white}>
+                      <path d="M8 3H16V6H19V14L16 19H8L5 14V6H8V3ZM10 8V11H11V8H10ZM13 8V11H14V8H13Z" />
+                    </svg>
+                    <span style={{fontSize: 11, fontWeight: 600, color: appColors.white}}>
+                      INPUT {inp}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
         ) : testTab === 'terminal' ? (
           /* Terminal Tab (Reference f_0023.jpg) */
           <div
@@ -771,6 +1005,102 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
         )}
       </div>
 
+      {/* Device Selector Dropdown Overlay (Reference f_0042.jpg) */}
+      {deviceSelectorOpen ? (
+        <div
+          style={{
+            position: 'absolute',
+            top: 32,
+            left: 10,
+            right: 10,
+            bottom: showNavMenu ? 154 : 60,
+            backgroundColor: '#202020',
+            border: '1px solid rgba(255,255,255,0.12)',
+            borderRadius: 6,
+            zIndex: 25,
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.7)',
+          }}
+        >
+          <div
+            style={{
+              flex: 1,
+              overflowY: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            {deviceList.map((item, idx) => (
+              <div
+                key={idx}
+                style={{
+                  height: 46,
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '0 12px',
+                  borderBottom: '1px solid rgba(255,255,255,0.06)',
+                  backgroundColor: item.isParent ? '#2A2A2A' : 'transparent',
+                }}
+              >
+                <AppIcon name="ic_display_icon" size={22} tint={appColors.white} />
+                <span
+                  style={{
+                    flex: 1,
+                    marginLeft: 10,
+                    fontSize: item.isParent ? 12.5 : 12,
+                    fontWeight: item.isParent ? 700 : 500,
+                    color: appColors.white,
+                  }}
+                >
+                  {item.name} {item.isParent ? '▾' : ''}
+                </span>
+                {item.checked ? (
+                  <svg
+                    width={15}
+                    height={15}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    style={{marginRight: 10}}
+                  >
+                    <path
+                      d="M5 13L9 17L19 7"
+                      stroke={appColors.white}
+                      strokeWidth={2.5}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                ) : null}
+                {/* Pencil Edit Icon */}
+                <svg width={15} height={15} viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M16.5 3.5C17.3 2.7 18.7 2.7 19.5 3.5C20.3 4.3 20.3 5.7 19.5 6.5L7 19L3 20L4 16L16.5 3.5Z"
+                    stroke={appColors.white}
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+            ))}
+          </div>
+          {/* Scrollbar rail */}
+          <div
+            style={{
+              position: 'absolute',
+              top: 4,
+              right: 2,
+              bottom: 4,
+              width: 3,
+              backgroundColor: 'rgba(255,255,255,0.18)',
+              borderRadius: 2,
+            }}
+          />
+        </div>
+      ) : null}
+
       {/* Sub-Tab Selector Row (Buttons | Switcher | Terminal | Web page) */}
       {isTest ? (
         <div
@@ -785,12 +1115,19 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
             gap: 5,
           }}
         >
-          {[
-            {id: 'buttons', label: 'Buttons'},
-            {id: 'switcher', label: 'Switcher'},
-            {id: 'terminal', label: 'Terminal'},
-            {id: 'web', label: 'Web page'},
-          ].map((tab) => {
+          {(
+            subTabs ??
+            (multiOutput
+              ? [{id: 'switcher' as const, label: 'Switcher'}]
+              : deviceName === 'ConvertIP TX 1'
+                ? [{id: 'terminal' as const, label: 'Terminal'}]
+                : [
+                    {id: 'buttons' as const, label: 'Buttons'},
+                    {id: 'switcher' as const, label: 'Switcher'},
+                    {id: 'terminal' as const, label: 'Terminal'},
+                    {id: 'web' as const, label: 'Web page'},
+                  ])
+          ).map((tab) => {
             const active = testTab === tab.id;
             return (
               <div
