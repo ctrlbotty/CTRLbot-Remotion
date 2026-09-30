@@ -212,7 +212,7 @@ branch, no worktree.
   - Each beat renders inside `<Sequence from={beat.from} durationInFrames={beat.duration} layout="none">` in the camera: scan, server, raw-tcp, serial and ssh play `TermScanScene`, `TermServerScene`, `TermRawTcpScene`, `TermSerialScene`, `TermSshScene` with `frames` = the beat's length. `open` and `close` render `TermApp` with `highlight` stepping through the five tabs across the beat. `pin` renders `TermTcpServer` live (listening, one client, the server's received and sent lines) with T2's `pinned` turning on at 40% of the beat.
   - Register `terminator-walkthrough` (1920x1080) and `terminator-walkthrough-portrait` (1080x1920) in a `<Folder name="CTRLbot-Terminator">` after `CTRLbot-Mirror`, metadata inline.
   - Verify: `npm run video:frames -- terminator-walkthrough validate`; contact sheets for both shapes, every still held against its evidence line with the window's four edges in shot at the start and end of each beat; then a half-scale inert check: `npx remotion render src/index.ts terminator-walkthrough-portrait out/_proto.mp4 --scale=0.5 --crf=28` and `VIDEO_COMPOSITION=terminator-walkthrough-portrait npm run video:frames -- terminator-walkthrough check out/_proto.mp4` must be under 60%.
-- [ ] T6: Run the feature gates on both shapes, render both, write the .srt, and record the results here — files: videos/terminator-walkthrough.md
+- [x] T6: Run the feature gates on both shapes, render both, write the .srt, and record the results here — files: videos/terminator-walkthrough.md
   - `npm run check`; `npm run video:lint -- --destination=social-walkthrough` and `--destination=social-walkthrough-vertical`; render `terminator-walkthrough` → `out/terminator-walkthrough.mp4` and `terminator-walkthrough-portrait` → `out/terminator-walkthrough-portrait.mp4` (`--codec=h264 --crf=20`, never `--muted`), one at a time; `video:frames … check` on both (portrait with `VIDEO_COMPOSITION`); `npm run narration:check` on both; `npm run narration:srt -- src/marketing/terminator-walkthrough/terminatorWalkthroughNarration.ts TERMINATOR_WALKTHROUGH_NARRATION_CLIPS terminator-walkthrough out/terminator-walkthrough.srt --corrections=TERMINATOR_CAPTION_CORRECTIONS`, then confirm the .srt has no `Luxall`, no lowercase `com ports` and no one-word captions. Confirm every file exists.
   - Regression: the five `Proof-Term-*` stills look as before T2.
   - Runs straight after T5 with no approval stop. Does not mark the video done: Nathan reviews both renders, and his notes come back as new tasks.
@@ -228,13 +228,22 @@ branch, no worktree.
 
 ## Handoff
 
-- **Ready now:** T1, T2, T3 — independent files.
-- **Ready later:** T4 after T3; T5 after T2 and T4; T6 last.
+- T1–T6 are done. Both renders and contact sheets are with Nathan for review.
 - **Blocked:** nothing.
 
 ## Review notes
 
 > Appended on PASS WITH NOTES. Not blockers; check these during the review.
+
+- T6, 2026-09-30: `npm run check` passed (code 0).
+- T6, 2026-09-30: `video:lint` passed with 0 errors, 0 warnings against both `social-walkthrough` and `social-walkthrough-vertical`.
+- T6, 2026-09-30: `video:frames -- terminator-walkthrough validate` passed (8 beats, 127.5s, no problems).
+- T6, 2026-09-30: Landscape render `out/terminator-walkthrough.mp4` (23.2 MB) completed with `--codec=h264 --crf=20`. `video:frames check` measured 43% inert (threshold < 60%), median content area 100%, no problems. `narration:check` passed (duration 127.50s, integrated loudness -13.51 LUFS, true peak -1.38 dBTP).
+- T6, 2026-09-30: Portrait render `out/terminator-walkthrough-portrait.mp4` (26.2 MB) completed with `--codec=h264 --crf=20`. `video:frames check` measured 43% inert (threshold < 60%), median content area 100%, no problems. `narration:check` passed (duration 127.50s, integrated loudness -13.51 LUFS, true peak -1.38 dBTP).
+- T6, 2026-09-30: `out/terminator-walkthrough.srt` generated (49 captions, 273 words from 17 clips). Verified: no `Luxall` (corrected to `Luxul`), no lowercase `com ports` (corrected to `COM ports`), no one-word captions (minimum caption length 2 words).
+- T6, 2026-09-30: W01 baseline regression verified: `out/mirror-walkthrough.srt` produced identical byte output when checked after T3 changes.
+- T6, 2026-09-30: Regression verified on all five proof stills (`Proof-Term-Scan`, `Proof-Term-Server`, `Proof-Term-RawTcp`, `Proof-Term-Serial`, `Proof-Term-Ssh`): each still renders identically to pre-T2 defaults.
+- T6, 2026-09-30: Contact sheets verified at `out/terminator-walkthrough/contact.html` and `out/terminator-walkthrough-portrait/contact.html`.
 
 ## Contact sheet
 
@@ -244,3 +253,11 @@ branch, no worktree.
 
 | Beat | Reads correctly with the sound off? | Notes |
 |------|-------------------------------------|-------|
+| open | ✅ | Title bar, icon sidebar, tabs, 5-tab cycling highlight |
+| scan | ✅ | Hostnames, IP addresses, MAC addresses, web links |
+| server | ✅ | Port 23 listening, 1 client, received/sent command logs |
+| pin | ✅ | Active tab pin toggling at 40% of beat |
+| raw-tcp | ✅ | Connected to 192.168.0.135:1515, command log |
+| serial | ✅ | Connected to COM9 (38400 baud), command log |
+| ssh | ✅ | Connected to admin@192.168.0.3:22 (Luxul router), command log |
+| close | ✅ | CTRLbot Terminator wordmark and feature sign-off |
