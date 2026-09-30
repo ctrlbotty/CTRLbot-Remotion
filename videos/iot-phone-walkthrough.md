@@ -243,7 +243,7 @@ branch, no worktree.
   - Outputs and inputs are props (`CONVERTIP RX 1–4` over `CONVERTIP TX 1–4`); a selected output is yellow as in the recording. Reference frames: `f_0042.jpg`–`f_0044.jpg`.
 - [x] T7: Build `ProductWebView` from `layout/fragment_product_web_view.xml` — back, title, address, reload and open — over an empty, loading page — files: src/app-ui/ProductWebView.tsx, src/Root.tsx
   - Reference frames: `f_0013.jpg`, `f_0014.jpg`. Draw no website content.
-- [ ] T8: Build `ActivitiesPresets` from `layout/menu_activity.xml`, `preset_list.xml`, `preset_card.xml`, `preset_edit.xml` and `layout-port/preset_command_card.xml`: the Presets / Switch / Audio tabs, the preset list, and a preset opened with its commands — files: src/app-ui/ActivitiesPresets.tsx, src/Root.tsx
+- [x] T8: Build `ActivitiesPresets` from `layout/menu_activity.xml`, `preset_list.xml`, `preset_card.xml`, `preset_edit.xml` and `layout-port/preset_command_card.xml`: the Presets / Switch / Audio tabs, the preset list, and a preset opened with its commands — files: src/app-ui/ActivitiesPresets.tsx, src/Root.tsx
   - Reference frames: `f_0025.jpg`–`f_0027.jpg`, `f_0033.jpg`.
 - [ ] T9: Build `ActivitiesSwitch` from `layout/switching_type.xml`, `switching_many_to_one.xml`, `layout-port/switching_end_point.xml`, `item_switching_ep_encoder.xml` and `item_switching_ep_decoder.xml`: the switch-type picker, many-to-one on one device, and AVoIP encoders and decoders — files: src/app-ui/ActivitiesSwitch.tsx, src/Root.tsx
   - Reference frames: `f_0046.jpg`–`f_0049.jpg`.
