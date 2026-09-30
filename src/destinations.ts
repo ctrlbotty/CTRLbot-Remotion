@@ -194,12 +194,13 @@ export const WEBSITE_HUB_CELL: Destination = {
  * The duration window is wide because this is the shape a walkthrough comes in, and the
  * 30-second website cut derived from it is a different destination, not a shorter one of
  * these. A long video also posted in portrait is held to the vertical ceiling, because
- * the two share their beats.
+ * the two share their beats. A long tutorial is kept whole (max 360s), and trimmed cuts
+ * for X and Shorts come from the same beats.
  */
 export const SOCIAL_WALKTHROUGH: Destination = {
   id: 'social-walkthrough',
   frame: {width: 1920, height: 1080, fps: 30},
-  duration: {min: 60, target: 120, max: 180},
+  duration: {min: 60, target: 120, max: 360},
   audio: 'muted-first',
   safeArea: {top: 72, right: 72, bottom: 96, left: 72},
   firstImpressionSeconds: 10,

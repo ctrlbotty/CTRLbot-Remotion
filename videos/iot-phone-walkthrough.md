@@ -227,7 +227,7 @@ branch, no worktree.
 
 - [x] T1: Correct `ingest/iot-phone-walkthrough/transcript.md` against `ingest/iot-phone-walkthrough/contact.html` and mark it `Status: corrected 2026-09-30` — files: ingest/iot-phone-walkthrough/transcript.md
   - Product names and terms only: "ControlBot AI" → CTRLbot AI, "RS -232" → RS-232, "Matrox", "IPMX", "Epson PowerLite", and anything else the stills contradict. Keep filler and false starts; change no timestamp; never edit the JSON files.
-- [ ] T2: Raise `social-walkthrough`'s ceiling to 360s, and let `PortraitStage` fit a surface too tall for the width — files: src/destinations.ts, src/marketing/PortraitStage.tsx
+- [x] T2: Raise `social-walkthrough`'s ceiling to 360s, and let `PortraitStage` fit a surface too tall for the width — files: src/destinations.ts, src/marketing/PortraitStage.tsx
   - In `SOCIAL_WALKTHROUGH` set `duration.max` to 360 and say why in its comment: a long tutorial is kept whole, and trimmed cuts for X and Shorts come from the same beats.
   - In `portraitLayout`: when the width-bound panel would leave the copy less than 360px, the panel takes the height that leaves exactly 360px and its width follows the aspect, centred. W01 and W02 must not move: their surfaces are wide, so the new branch never runs for them — confirm `mirror-walkthrough-portrait` and `terminator-walkthrough-portrait` stills at frame 300 look as before.
 - [ ] T3: Let a caption correction with an empty replacement drop the word — files: src/audio/narrationCaptions.ts

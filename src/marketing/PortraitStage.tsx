@@ -31,12 +31,26 @@ export const PORTRAIT = {
 
 /** Where everything lands for a surface of this size. */
 export const portraitLayout = (contentSize: {width: number; height: number}) => {
-  const panelHeight = Math.round((PORTRAIT.panelWidth * contentSize.height) / contentSize.width);
   const captionsTop = PORTRAIT.captions.bottom - PORTRAIT.captions.height;
-  const panelTop = captionsTop - PORTRAIT.gap - panelHeight;
+  let panelHeight = Math.round((PORTRAIT.panelWidth * contentSize.height) / contentSize.width);
+  let panelWidth: number = PORTRAIT.panelWidth;
+  let panelLeft: number = PORTRAIT.panelLeft;
+  let panelTop = captionsTop - PORTRAIT.gap - panelHeight;
+  let textHeight = panelTop - PORTRAIT.gap - PORTRAIT.textTop;
+
+  // When the width-bound panel would leave the copy less than 360px, the panel takes
+  // the height that leaves exactly 360px and its width follows the aspect, centred.
+  if (textHeight < 360) {
+    textHeight = 360;
+    panelTop = PORTRAIT.textTop + textHeight + PORTRAIT.gap;
+    panelHeight = captionsTop - PORTRAIT.gap - panelTop;
+    panelWidth = Math.round((panelHeight * contentSize.width) / contentSize.height);
+    panelLeft = Math.round((1080 - panelWidth) / 2);
+  }
+
   return {
-    text: {left: PORTRAIT.textLeft, top: PORTRAIT.textTop, width: PORTRAIT.textWidth, height: panelTop - PORTRAIT.gap - PORTRAIT.textTop},
-    panel: {left: PORTRAIT.panelLeft, top: panelTop, width: PORTRAIT.panelWidth, height: panelHeight},
+    text: {left: PORTRAIT.textLeft, top: PORTRAIT.textTop, width: PORTRAIT.textWidth, height: textHeight},
+    panel: {left: panelLeft, top: panelTop, width: panelWidth, height: panelHeight},
     captions: {left: PORTRAIT.captions.left, top: captionsTop, width: PORTRAIT.captions.width, height: PORTRAIT.captions.height},
   };
 };
