@@ -38,6 +38,11 @@ import {
   MirrorWalkthroughPortrait,
   mirrorWalkthroughDuration,
 } from './marketing/mirror-walkthrough/MirrorWalkthrough';
+import {
+  TerminatorWalkthrough,
+  TerminatorWalkthroughPortrait,
+  terminatorWalkthroughDuration,
+} from './marketing/terminator-walkthrough/TerminatorWalkthrough';
 import {HubCell, hubCellDuration} from './marketing/hub-cell/HubCell';
 import {Short, assertShortReady} from './shorts/Short';
 import {MirrorAppsProof, MirrorDevicesProof, MirrorFilesProof, MirrorSetupProof, MirrorStudioProof} from './app-ui/mirror/MirrorProofs';
@@ -207,6 +212,25 @@ export const RemotionRoot = () => (
         id="mirror-walkthrough-portrait"
         component={MirrorWalkthroughPortrait}
         durationInFrames={mirrorWalkthroughDuration}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+    </Folder>
+
+    <Folder name="CTRLbot-Terminator">
+      <Composition
+        id="terminator-walkthrough"
+        component={TerminatorWalkthrough}
+        durationInFrames={terminatorWalkthroughDuration}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="terminator-walkthrough-portrait"
+        component={TerminatorWalkthroughPortrait}
+        durationInFrames={terminatorWalkthroughDuration}
         fps={30}
         width={1080}
         height={1920}
