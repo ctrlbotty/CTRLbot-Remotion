@@ -11,6 +11,17 @@ import type {NarrationClip} from './NarrationTrack';
 
 const capitalise = (text: string) => text.replace(/^(\s*)(\S)/, (_, space: string, first: string) => space + first.toUpperCase());
 
+const correctWord = (text: string, corrections?: Record<string, string>) => {
+  if (!corrections) return text;
+  const match = text.match(/^(\s*)(.*?)(\W*)$/);
+  if (!match) return text;
+  const [, lead, core, trail] = match;
+  if (Object.prototype.hasOwnProperty.call(corrections, core)) {
+    return lead + corrections[core] + trail;
+  }
+  return text;
+};
+
 /**
  * Every word whose midpoint falls inside a clip's source range, shifted to where that clip
  * plays. `words` is an ingest's `captions.json`. Whisper's word times run slightly early,
@@ -23,6 +34,7 @@ const capitalise = (text: string) => text.replace(/^(\s*)(\S)/, (_, space: strin
 export const captionsFromClips = (
   clips: readonly NarrationClip[],
   words: readonly CaptionWord[],
+  corrections?: Record<string, string>,
 ): CaptionWord[] =>
   [...clips]
     .sort((a, b) => a.at - b.at)
@@ -38,7 +50,7 @@ export const captionsFromClips = (
         })
         .map((word, index) => ({
           first: index === 0,
-          text: word.text,
+          text: correctWord(word.text, corrections),
           startMs: Math.max(clipStartMs, place(word.startMs)),
           endMs: Math.min(clipEndMs, place(word.endMs)),
           timestampMs: word.timestampMs === null ? null : place(word.timestampMs),

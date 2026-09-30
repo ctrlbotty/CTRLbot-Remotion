@@ -17,9 +17,14 @@ import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import {dirname} from 'node:path';
 import ts from 'typescript';
 
-const [modulePath, exportName, slug, outPath] = process.argv.slice(2);
+const args = process.argv.slice(2);
+const positional = args.filter((a) => !a.startsWith('--'));
+const correctionsArg = args.find((a) => a.startsWith('--corrections='));
+const correctionsExport = correctionsArg ? correctionsArg.slice('--corrections='.length) : undefined;
+
+const [modulePath, exportName, slug, outPath] = positional;
 if (!modulePath || !exportName || !slug || !outPath) {
-  console.error('usage: narration:srt -- <narration.ts> <export> <ingest slug> <out.srt>');
+  console.error('usage: narration:srt -- <narration.ts> <export> <ingest slug> <out.srt> [--corrections=<export>]');
   process.exit(2);
 }
 
@@ -36,14 +41,22 @@ if (!existsSync(wordsPath)) {
   process.exit(1);
 }
 
-const clips = (await load(modulePath))[exportName];
+const mod = await load(modulePath);
+const clips = mod[exportName];
 if (!Array.isArray(clips) || clips.length === 0) {
   console.error(`  ${modulePath} exports no clips named ${exportName}`);
   process.exit(1);
 }
+
+const corrections = correctionsExport ? mod[correctionsExport] : undefined;
+if (correctionsExport && (!corrections || typeof corrections !== 'object')) {
+  console.error(`  ${modulePath} exports no corrections named ${correctionsExport}`);
+  process.exit(1);
+}
+
 const {captionsFromClips, captionPages} = await load('src/audio/narrationCaptions.ts');
 
-const captions = captionsFromClips(clips, JSON.parse(readFileSync(wordsPath, 'utf8')));
+const captions = captionsFromClips(clips, JSON.parse(readFileSync(wordsPath, 'utf8')), corrections);
 const lines = captionPages(captions, 8).map((page) => page.words);
 
 mkdirSync(dirname(outPath), {recursive: true});
