@@ -56,9 +56,14 @@ When the input is Nathan's narrated app demonstration, read
 `docs/NARRATED-WALKTHROUGH.md` too. The recording in `video input/` is ingested once with
 `npm run ingest:recording`, which writes `ingest/<slug>/`: a word-timed transcript, captions
 and a contact sheet of every screen change. The recording supplies the spoken performance
-and beat order; the motion graphic uses a non-destructive edit of that narration, with
-separate silent and narrated compositions. A `Status: DRAFT` transcript is corrected against
-the contact sheet before any beat is cut from it.
+and beat order; the motion graphic uses a non-destructive edit of that narration. A long
+video is narrated only — there is no silent cut — and is made in two shapes from one set of
+beats: landscape 1920x1080 for YouTube (`social-walkthrough`, captions as an .srt) and
+portrait 1080x1920 for TikTok, YouTube Shorts, LinkedIn and X
+(`social-walkthrough-vertical`, captions burned in, 2:20 at most). Shorts are portrait only.
+`videos/mirror-walkthrough.md` and `src/marketing/mirror-walkthrough/` are the worked
+example. A `Status: DRAFT` transcript is corrected against the contact sheet before any beat
+is cut from it.
 
 `npm run video:lint` and `npm run video:frames` enforce mechanically what
 `docs/AUTHORING.md` describes in prose. Their thresholds are measured against the
@@ -274,10 +279,10 @@ contract for the assembly line.
 
 - **Plan home:** `videos/<slug>.md`, one brief per cut, from `videos/_TEMPLATE.md`. A narrated cut names its recording's folder in `ingest/`
 - **Task granularity:** one sentence naming its files, 1 to 3 files, independently renderable. Syntax: `- [ ]` pending, `- [x]` verified and committed, `- [!]` blocked
-- **Direction gate:** no. Nathan's gate is the contact sheet at `out/<slug>/contact.html` once every task is `[x]`, then the render
+- **Direction gate:** no. The line runs every task, then renders, without stopping for approval. Nathan reviews once, at the end: the renders in `out/` and the contact sheet at `out/<slug>/contact.html`. His notes come back as new tasks and the line runs again
 - **Verifier:** an independent `beat-verifier` per task (`.claude/agents/beat-verifier.md`), tuned lenient, that runs the gates and looks at the rendered still. Two repair rounds, then `[!]` and stop
 - **Per-task check:** `npm run check`, `npm run video:lint`, and `npm run video:frames -- <slug> contact --beat=<beat>`, then the still held against that beat's evidence line
-- **Feature check:** `npm run video:lint -- --destination=<destination>`, `npm run video:frames -- <slug> contact`, the render, and `npm run video:frames -- <slug> check out/<slug>.mp4`. A narrated cut adds `npm run narration:check -- out/<slug>-narrated.mp4`
+- **Feature check:** `npm run video:lint -- --destination=<destination>`, `npm run video:frames -- <slug> contact`, the render, and `npm run video:frames -- <slug> check out/<slug>.mp4`. A long video does each for both shapes (`VIDEO_COMPOSITION=<slug>-portrait` for the portrait one) and adds `npm run narration:check` on both renders and `npm run narration:srt` for the landscape captions
 - **Local run:** `npm run dev` for Remotion Studio, and the contact sheet in a browser
 - **Deploy path:** none from a run. The deliverable is the render in `out/`. Publishing to YouTube, the social feeds, the Play Store listing or ctrlbot.io is a separate step, and ctrlbot.io loops follow that repository's `docs/MOTION-PIPELINE.md`
 - **Close out:** archive the brief as `videos/archive/<date>-<slug>.md` with a row in that README, add the cut to `RELEASE-NOTES.md`, and remove it from `Roadmap.md`. Move a recording to `video input/archive/` once every cut planned from it is delivered

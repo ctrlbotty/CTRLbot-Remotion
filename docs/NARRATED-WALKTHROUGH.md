@@ -128,28 +128,29 @@ the way the shorts do. There, `npm run shorts -- build` hands each clip to
 repeats and false starts `heard.json` found between them, shortens long pauses, and renders
 one sample-accurate track. The clip's range only has to land inside its first and last word.
 
-## 6. Keep silent and narrated versions separate
+## 6. Narrated, in two shapes
 
-The base composition remains the silent/caption-led version. Give the narrated wrapper a
-separate composition ID and output filename:
+There is no silent cut. One component renders the beats in two layouts, both narrated —
+`src/marketing/mirror-walkthrough/MirrorWalkthrough.tsx` is the worked example:
 
-```tsx
-export const Walkthrough = ({narration = false}: {narration?: boolean}) => (
-  <AbsoluteFill>
-    {/* motion graphic */}
-    {narration ? <NarrationTrack src={SOURCE} clips={CLIPS} /> : null}
-  </AbsoluteFill>
-);
+- **`<slug>`, 1920x1080** — `<Stage>`, copy left, surface right. YouTube. Its captions ship
+  as an .srt, so the frame stays free for the step text.
+- **`<slug>-portrait`, 1080x1920** — `<PortraitStage>`, copy on top, surface in the middle,
+  captions burned in under it (`<NarrationCaptions>`). TikTok, YouTube Shorts, LinkedIn, X.
 
-export const WalkthroughNarrated = () => <Walkthrough narration />;
-```
-
-Do not add `--muted` when rendering the narrated composition, and never reuse the silent
-output path:
+Copy is `<WalkthroughCopy>`: Audiowide for the product's name at the open and close only,
+Montserrat for step titles and descriptions, Space Mono for the eyebrow. Both caption
+forms come from `captionsFromClips` in `src/audio/narrationCaptions.ts`, so they cannot
+disagree. The cut stays under 2:20, X's limit without Premium; the brief's destination is
+`social-walkthrough-vertical`, which enforces it.
 
 ```powershell
-npm run render -- <Composition-Narrated> out/<slug>-narrated.mp4 --codec=h264 --crf=20
+npm run render -- <slug> out/<slug>.mp4 --codec=h264 --crf=20
+npm run render -- <slug>-portrait out/<slug>-portrait.mp4 --codec=h264 --crf=20
+npm run narration:srt -- <narration.ts> <CLIPS export> <ingest slug> out/<slug>.srt
 ```
+
+Never pass `--muted`: both renders carry the narration.
 
 ## 7. Verify both picture and sound
 
@@ -158,8 +159,10 @@ Run the normal visual gates, then inspect the rendered audio:
 ```powershell
 npm run check
 npm run video:lint
-npm run video:frames -- <slug> check out/<slug>-narrated.mp4
-npm run narration:check -- out/<slug>-narrated.mp4
+npm run video:frames -- <slug> check out/<slug>.mp4
+VIDEO_COMPOSITION=<slug>-portrait npm run video:frames -- <slug> check out/<slug>-portrait.mp4
+npm run narration:check -- out/<slug>.mp4
+npm run narration:check -- out/<slug>-portrait.mp4
 ```
 
 `narration:check` fails on missing or silent audio, unusable loudness, or a true peak too
@@ -172,7 +175,7 @@ Finally, watch the complete narrated render with headphones and speakers. Confir
 - the spoken claim matches the visible beat;
 - pauses feel deliberate rather than broken;
 - captions do not contradict the recorded phrasing;
-- the silent composition and original recording still exist;
+- the original recording still exists;
 - no private data from the source recording appears in the rebuilt surface.
 
 ## For the next walkthrough

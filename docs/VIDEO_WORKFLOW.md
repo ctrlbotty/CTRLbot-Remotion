@@ -12,8 +12,8 @@ When the starting point is Nathan's narrated app demonstration, use the source r
 to fill the same brief instead of inventing the beat order or rewriting his voice. The
 complete branch is in [NARRATED-WALKTHROUGH.md](NARRATED-WALKTHROUGH.md): prepare the
 recording's audio, index it with a timestamped transcript, build the motion graphic and
-voice edit together, and keep separate silent and narrated render targets. The same
-visual and product-accuracy gates below still apply.
+voice edit together, and render it narrated in both shapes, landscape and portrait. The
+same visual and product-accuracy gates below still apply.
 
 ```
   videos/_TEMPLATE.md
@@ -28,10 +28,11 @@ visual and product-accuracy gates below still apply.
   implement → verify → commit → next                 up to 2 repair rounds
         │
         ▼
-  out/<slug>/contact.html                            one sheet, Nathan looks at it
-        │  a ❌ becomes a new task → the loop reruns
+  render + out/<slug>/contact.html                   no stop before this
+        │
         ▼
-  render
+  Nathan watches the render                          the one human gate
+        │  a ❌ becomes a new task → the loop reruns
 ```
 
 ---
@@ -380,7 +381,8 @@ When every task is [x], run the full gate set and render:
   npm run video:frames -- <SLUG> check out/<SLUG>.mp4
 
 Report: commits, gate results, Review notes, and the path to out/<SLUG>/contact.html.
-Do not mark the video done — the contact sheet review is Nathan's.
+Do not stop for approval between tasks or before the render. Do not mark the video
+done — reviewing the render and the contact sheet is Nathan's.
 ```
 
 ---
