@@ -284,6 +284,67 @@ export const PasteBeat: React.FC<{frame: number; frames: number}> = ({
   );
 };
 
+/**
+ * Capture beat (16s = 480 frames):
+ * The toolbar camera is pressed and a *Screenshot saved* toast lands;
+ * then record is pressed and a red recording clock counts up while the
+ * mirrored catalog scrolls.
+ */
+export const CaptureBeat: React.FC<{frame: number; frames: number}> = ({
+  frame,
+}) => {
+  // 30..210: Screenshot saved toast lands and displays
+  const toast =
+    frame >= 30 && frame < 210
+      ? {
+          opacity: interpolate(frame, [30, 45, 195, 210], [0, 1, 1, 0], {
+            extrapolateLeft: 'clamp',
+            extrapolateRight: 'clamp',
+          }),
+          translateY: interpolate(frame, [30, 45], [16, 0], {
+            extrapolateLeft: 'clamp',
+            extrapolateRight: 'clamp',
+          }),
+        }
+      : undefined;
+
+  // 180..480: Record is pressed, red recording clock counts up
+  const isRecording = frame >= 180;
+  const elapsedSeconds = isRecording ? Math.floor((frame - 180) / 30) : 0;
+  const recording = isRecording
+    ? `${String(Math.floor(elapsedSeconds / 60)).padStart(2, '0')}:${String(elapsedSeconds % 60).padStart(2, '0')}`
+    : undefined;
+
+  const catalogScroll = interpolate(frame, [0, 480], [0, 180], {
+    easing: Easing.bezier(0.4, 0, 0.6, 1),
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+
+  const mirrored: Mirrored = {
+    width: CATALOG_VIEWPORT.tablet.width,
+    height: CATALOG_VIEWPORT.tablet.height,
+    screen: (
+      <DriverCatalog
+        device="tablet"
+        drivers={MIRROR_CATALOG}
+        listScroll={catalogScroll}
+      />
+    ),
+  };
+
+  return (
+    <MirrorApp
+      panel="devices"
+      status={`Mirroring ${MIRROR_DEVICE.name}`}
+      hasDevice
+      side={<DevicesPanel selected details live />}
+      stage={<MirrorStage mirrored={mirrored} recording={recording} />}
+      toast={toast}
+    />
+  );
+};
+
 export const BEAT_RENDERERS: Partial<
   Record<BeatName, React.FC<{frame: number; frames: number}>>
 > = {
@@ -293,4 +354,5 @@ export const BEAT_RENDERERS: Partial<
   connect: ConnectBeat,
   frame: FrameBeat,
   paste: PasteBeat,
+  capture: CaptureBeat,
 };
