@@ -61,7 +61,7 @@ video is narrated only — there is no silent cut — and is made in two shapes 
 beats: landscape 1920x1080 for YouTube (`social-walkthrough`, captions as an .srt) and
 portrait 1080x1920 for TikTok, YouTube Shorts, LinkedIn and X
 (`social-walkthrough-vertical`, captions burned in, 2:20 at most). Shorts are portrait only.
-`videos/mirror-walkthrough.md` and `src/marketing/mirror-walkthrough/` are the worked
+`videos/archive/2026-09-30-mirror-walkthrough.md` and `src/marketing/mirror-walkthrough/` are the worked
 example. A `Status: DRAFT` transcript is corrected against the contact sheet before any beat
 is cut from it.
 

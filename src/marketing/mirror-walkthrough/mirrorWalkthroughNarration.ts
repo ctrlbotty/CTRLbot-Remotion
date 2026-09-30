@@ -16,7 +16,7 @@ export const MIRROR_WALKTHROUGH_NARRATION_SOURCE =
  * 16–30.5, debugging 30.5–38.5, connect 38.5–52.5, frame 52.5–67, paste 67–81, capture
  * 81–94.5, apps 94.5–108, files 108–116.5, tools 116.5–124, close 124–133).
  *
- * Left out on purpose (videos/mirror-walkthrough.md): pairing over Wi-Fi, removing
+ * Left out on purpose (videos/archive/2026-09-30-mirror-walkthrough.md): pairing over Wi-Fi, removing
  * preinstalled apps and "garbageware", virtual devices, and "just email me".
  *
  * KEEP THIS FILE free of runtime imports: scripts/narration-srt.mjs transpiles it.

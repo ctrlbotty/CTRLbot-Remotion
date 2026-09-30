@@ -18,7 +18,8 @@ is finished. Copy `../_TEMPLATE.md` instead.
 | `2026-08-06-playStore_promo3_30.md` | `Play-Store-EUI-Promo-V3-30` | 30s, `out/playStore_promo3_30s.mp4`, the file `loop:seam` is calibrated to fail. |
 | `2026-08-14-device-database.md` | `device-database`, `src/marketing/device-database/` | 2 minutes from a narrated recording, `out/device-database-2min.mp4`. Transcript: `ingest/device-database/transcript.md`. |
 | `2026-08-14-hub-30.md` | `hub-30`, `hub-30-square`, `src/marketing/hub-cell/` | THE HUB cell for ctrlbot.io, T1 to T9 committed. Its run documents are in `docs/archive/`. |
-| `2026-09-03-ai-walkthrough.md` | `AI-Walkthrough`, `AI-Walkthrough-Narrated`, `src/marketing/ai-walkthrough/` | The worked example of a narrated walkthrough. Transcript: `ingest/ai-walkthrough/transcript.md`. |
+| `2026-09-03-ai-walkthrough.md` | `AI-Walkthrough`, `AI-Walkthrough-Narrated`, `src/marketing/ai-walkthrough/` | The first narrated walkthrough, silent and narrated. Transcript: `ingest/ai-walkthrough/transcript.md`. |
+| `2026-09-30-mirror-walkthrough.md` | `mirror-walkthrough`, `mirror-walkthrough-portrait`, `src/marketing/mirror-walkthrough/` | W01 CTRLbot Mirror, 2:13, narrated in both shapes: `out/mirror-walkthrough.mp4` + `.srt` and `out/mirror-walkthrough-portrait.mp4`. The worked example of a long video. Transcript: `ingest/mirror-walkthrough/transcript.md`. |
 
 Paths inside an archived brief are left as they were when it ran. Where a file has moved
 since, this table says where to.

@@ -1,6 +1,6 @@
 // Beat timings, copy and data for the CTRLbot Mirror walkthrough.
 //
-// Source: `videos/mirror-walkthrough.md`, built from Nathan's recording
+// Source: `videos/archive/2026-09-30-mirror-walkthrough.md`, built from Nathan's recording
 // `video input/CTRLbot Mirror Tutorial.mp4` (8:29). One set of beats drives both shapes,
 // landscape and portrait, so both cuts say the same thing at the same moment.
 //

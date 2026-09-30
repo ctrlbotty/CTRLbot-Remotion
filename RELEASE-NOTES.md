@@ -5,6 +5,25 @@
 A cut is delivered when its render is in `out/` and its brief is archived in
 `videos/archive/`. Publishing is a separate step and is not tracked here.
 
+## 2026-09-30: W01 CTRLbot Mirror, and long videos in two shapes
+
+- **W01 CTRLbot Mirror**, 2:13, narrated: `out/mirror-walkthrough.mp4` (1920x1080, YouTube,
+  captions in `out/mirror-walkthrough.srt`) and `out/mirror-walkthrough-portrait.mp4`
+  (1080x1920, captions burned in, for TikTok, YouTube Shorts, LinkedIn and X). Install,
+  Setup's five steps over USB, framing, clipboard control, capture, apps, files, shell and
+  logcat, every claim checked against Mirror's source and README. 28% and 25% inert against
+  a 60% ceiling; narration -13.4 LUFS on both.
+- **Long videos are narrated only, in both shapes, and under 2:20** (X's limit without
+  Premium). The shared pieces: `WalkthroughCopy` (Audiowide for the product's name only,
+  Montserrat step titles and descriptions, a numbered checklist), `PortraitStage`,
+  `NarrationCaptions`, `captionsFromClips` and `npm run narration:srt`, and the
+  `social-walkthrough-vertical` destination. `video:frames` takes `VIDEO_COMPOSITION` for the
+  second shape. `AGENTS.md` and `docs/NARRATED-WALKTHROUGH.md` describe the format.
+- **A push on every beat.** One slow camera drift across a long cut measured 89% inert; each
+  beat now opens wide, pushes in on its subject and returns, and every cut lands wide.
+- **The review comes after the render.** The line runs every task and both renders with no
+  approval stop; Nathan's notes come back as new tasks.
+
 ## 2026-09-29: cleaner narration
 
 - **No more clipped words.** Narration used to be cut on Whisper's word times, which end early

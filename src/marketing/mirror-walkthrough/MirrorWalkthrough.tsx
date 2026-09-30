@@ -1,7 +1,7 @@
 // CTRLbot Mirror walkthrough — narrated, in two shapes from one set of beats.
 //
 // Built from Nathan's recording (video input/CTRLbot Mirror Tutorial.mp4,
-// ingest/mirror-walkthrough/transcript.md). The brief is videos/mirror-walkthrough.md.
+// ingest/mirror-walkthrough/transcript.md). The brief is videos/archive/2026-09-30-mirror-walkthrough.md.
 //
 //   mirror-walkthrough           1920x1080, copy left, Mirror in a Stage panel right.
 //                                YouTube. Captions ship as an .srt (npm run narration:srt).

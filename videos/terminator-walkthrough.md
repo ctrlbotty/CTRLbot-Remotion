@@ -44,7 +44,7 @@ Scan the network, run a test server, and talk to devices over TCP, serial and SS
 
 ## Anything unusual
 
-- **Built exactly like W01.** `videos/mirror-walkthrough.md` and
+- **Built exactly like W01.** `videos/archive/2026-09-30-mirror-walkthrough.md` and
   `src/marketing/mirror-walkthrough/` are the worked example: two shapes from one set of
   beats, `WalkthroughCopy`, `PortraitStage`, `NarrationCaptions`, `captionsFromClips`,
   `beatShots`, `narration:srt`. Copy their structure; do not import from another video's
@@ -139,6 +139,40 @@ in the 127.5-second cut; every clip ends inside its beat.
 | | ssh-help | 104.1 | 483.7–491.1 | Let's just see, I'll type in help. Oh yes, we are connected to Luxul … just great. |
 | close (112–127.5) | recap | 112.25 | 498.58–511.0 | we went over how to scan, how to create a TCP server … the serial COM ports. |
 | | thank-you | 124.9 | 511.75–512.35 | Thank you. |
+
+## Executor instructions
+
+**Paste this to the executor:** *Run `videos/terminator-walkthrough.md` in this checkout,
+following its "Executor instructions" section.*
+
+**Executor: Gemini 3.8 Flash, High reasoning.** Work in the current checkout on `main`; no
+branch, no worktree.
+
+1. **Read first:** `AGENTS.md`, `docs/VIDEO_WORKFLOW.md`, `docs/NARRATED-WALKTHROUGH.md`,
+   `.claude/commands/video-run.md`, and this whole brief. Then the worked example, W01:
+   `videos/archive/2026-09-30-mirror-walkthrough.md` and
+   `src/marketing/mirror-walkthrough/` (`walkthroughData.ts`,
+   `mirrorWalkthroughNarration.ts`, `MirrorWalkthrough.tsx`). Copy its structure; never
+   import from its folder.
+2. **Run T1 to T6 in order.** For each: resume any uncommitted work first; implement exactly
+   the task in its named files, with this brief's copy, clips and corrections verbatim;
+   run the per-task check and look at every still; on PASS mark `[x]`, stage only the
+   task's files plus this brief, and commit `Tn: <summary>` with the repository's
+   Co-Authored-By line before reading the next task. FAIL only for a lint error, a broken
+   check, or a still that plainly is not its evidence line; anything else is a Review note.
+3. **No approval stops** between tasks or before the renders.
+4. **Acceptance:** T1–T6 `[x]`, one commit each; `out/terminator-walkthrough.mp4` and
+   `out/terminator-walkthrough-portrait.mp4` pass `video:frames … check` under 60% and
+   `narration:check`; `out/terminator-walkthrough.srt` has no `Luxall`, no lowercase
+   `com ports` and no one-word captions; `video:lint` 0 errors for both destinations;
+   W01's .srt unchanged after T3; the `Proof-Term-*` stills look as before. Then stop
+   testing.
+5. **Limits:** two repair rounds per task, then `[!]` with the evidence under
+   `## Blocked notes` and stop. No nested subagents. Never paste a full build log or diff —
+   the failing lines only. Any retry or poll at most twice. A still over two minutes is
+   blocked. Renders run one at a time. Stop if you are about to repeat an earlier turn.
+6. **Report:** commits, gate results, Review notes, and the paths to both renders, the
+   .srt and both contact sheets. Do not mark the video done and do not publish.
 
 ## Tasks
 
