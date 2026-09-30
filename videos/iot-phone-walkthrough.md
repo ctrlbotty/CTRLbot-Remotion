@@ -258,7 +258,7 @@ branch, no worktree.
 
 ### W03
 
-- [ ] T14: Create the beat table, copy, camera and narration — files: src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughData.ts, src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughNarration.ts
+- [x] T14: Create the beat table, copy, camera and narration — files: src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughData.ts, src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughNarration.ts
   - `BEATS` in frames from the Beats table's seconds × 30, in order (total 9990 frames, 333s); `COPY` from the Copy table; `SUBJECT` per beat (`top`, `middle` or `bottom` third of the phone, whichever holds the beat's evidence); `beatShots()` from wide (1.04) to a 0.62 push on the subject by mid-beat and back.
   - Narration: `IOT_PHONE_NARRATION_SOURCE`, `IOT_PHONE_NARRATION_CLIPS` from the Narration clips table, with every end refined against `words.json` word ends and each `at` from the placement rule, and `IOT_PHONE_CAPTION_CORRECTIONS` = `{ControlBot: 'CTRLbot', RS: 'RS-232', '-232': ''}`. Only `import type`.
 - [ ] T15: Build beats `open` to `terminal` in `IotPhoneBeats.tsx`, each a component of `{frame, frames}` in a `BEAT_RENDERERS` map — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
