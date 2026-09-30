@@ -16,6 +16,7 @@ import {
 import {MIRROR_VIEWPORT} from '../../app-ui/mirror/mirrorData';
 import {round} from '../../app-ui/mirror/mirrorTheme';
 import {background} from '../../design/theme';
+import {NarrationTrack} from '../../audio/NarrationTrack';
 import {PromoPreload} from '../eui-promo/PromoPreload';
 import {STAGE, Stage, StageCopy} from '../Stage';
 import {
@@ -26,6 +27,10 @@ import {
   MIRROR_WALKTHROUGH_FRAMES,
   type BeatName,
 } from './walkthroughData';
+import {
+  MIRROR_WALKTHROUGH_NARRATION_CLIPS,
+  MIRROR_WALKTHROUGH_NARRATION_SOURCE,
+} from './mirrorWalkthroughNarration';
 
 export const mirrorWalkthroughDuration = MIRROR_WALKTHROUGH_FRAMES;
 
@@ -105,7 +110,7 @@ const SurfaceTrack = () => {
   );
 };
 
-export const MirrorWalkthrough = () => {
+export const MirrorWalkthrough = ({narration = false}: {narration?: boolean}) => {
   const frame = useCurrentFrame();
 
   return (
@@ -122,6 +127,15 @@ export const MirrorWalkthrough = () => {
       >
         <SurfaceTrack />
       </Stage>
+      {narration ? (
+        <NarrationTrack
+          src={MIRROR_WALKTHROUGH_NARRATION_SOURCE}
+          clips={MIRROR_WALKTHROUGH_NARRATION_CLIPS}
+        />
+      ) : null}
     </AbsoluteFill>
   );
 };
+
+/** A separate render target; `mirror-walkthrough` stays silent by default. */
+export const MirrorWalkthroughNarrated = () => <MirrorWalkthrough narration />;

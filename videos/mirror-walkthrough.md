@@ -193,7 +193,7 @@ a check failing only in them is a Review note, not a repair. Full renders run on
   - Command `getprop ro.product.model`, output from `MIRROR_DEVICE`. No other device data.
 - [x] T14: Build the `close` beat in `MirrorBeats.tsx` and its CTRLbot Mirror wordmark in the copy column of `MirrorWalkthrough.tsx` — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx, src/marketing/mirror-walkthrough/MirrorWalkthrough.tsx
   - Audiowide wordmark `CTRLbot Mirror`, then the line from the Copy table. No URL, no email.
-- [ ] T15: Write the narration edit list from the Narration clips table and register the `mirror-walkthrough-narrated` composition — files: src/marketing/mirror-walkthrough/mirrorWalkthroughNarration.ts, src/marketing/mirror-walkthrough/MirrorWalkthrough.tsx, src/Root.tsx
+- [x] T15: Write the narration edit list from the Narration clips table and register the `mirror-walkthrough-narrated` composition — files: src/marketing/mirror-walkthrough/mirrorWalkthroughNarration.ts, src/marketing/mirror-walkthrough/MirrorWalkthrough.tsx, src/Root.tsx
   - Needs T1. `NarrationTrack` with `playbackRate` 1; each `at` inside its beat; each boundary checked against corrected word times and the waveform. The silent composition stays silent.
   - Verify: `npm run check`; render `out/mirror-walkthrough-narrated.mp4` without `--muted`; `npm run narration:check -- out/mirror-walkthrough-narrated.mp4`.
 - [ ] T16: Run the feature gates and both renders, and record results in this brief — files: videos/mirror-walkthrough.md
@@ -232,6 +232,10 @@ a check failing only in them is a Review note, not a repair. Full renders run on
 - Framing fix (after T14): `drift()` now pulls back from 1.0 to 1.05 instead of pushing
   to 0.94. The push had cropped Mirror's title bar, icon sidebar and toolbar by the close;
   every beat still now shows the whole window.
+- T15: 18 clips. A Whisper pass over the rendered narration reads every phrase complete,
+  from "Welcome to CTRLbot" to "Thank you for your time"; `narration:check` -13.4 LUFS,
+  -1.4 dBTP. Two joins to listen for: "…record it as video. But it's also going to record
+  your voice" and "…you pair over wireless" (both as spoken).
 - T13/T14 were built and committed together: both live in `MirrorBeats.tsx`.
 - T14: the close's wordmark is `StageCopy`'s Audiowide title, and the brief's line is its
   Montserrat body.
