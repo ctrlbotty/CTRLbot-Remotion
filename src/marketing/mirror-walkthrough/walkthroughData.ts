@@ -1,94 +1,130 @@
 // Beat timings, copy and data for the CTRLbot Mirror walkthrough.
 //
-// Source: `videos/mirror-walkthrough.md`, transcribed from Nathan's recording
-// `video input/CTRLbot Mirror Tutorial.mp4` (8:29).
+// Source: `videos/mirror-walkthrough.md`, built from Nathan's recording
+// `video input/CTRLbot Mirror Tutorial.mp4` (8:29). One set of beats drives both shapes,
+// landscape and portrait, so both cuts say the same thing at the same moment.
+//
+// Every line of copy is checked against Mirror itself: the Setup steps are its own panel's
+// titles and hints (`CTRLbot-Mirror/src/renderer/src/components/panels/SetupPanel.tsx`),
+// and the rest follows its README.
 
 import type {Shot} from '../../camera/Camera';
 import {MIRROR_VIEWPORT} from '../../app-ui/mirror/mirrorData';
+import type {Step} from '../WalkthroughCopy';
 
 /**
- * 30fps. Beat boundaries in frames. Total duration: 148s = 4440 frames.
+ * 30fps. Beat boundaries in frames. Total: 133s = 3990 frames, inside X's 2:20.
  *
- * Each beat is sized to the narration it carries.
+ * Each beat is sized to the narration it carries (mirrorWalkthroughNarration.ts), plus
+ * room to read its copy.
  */
 export const BEATS = {
   open: {from: 0, duration: 480},
-  setup: {from: 480, duration: 420},
-  debugging: {from: 900, duration: 390},
-  connect: {from: 1290, duration: 420},
-  frame: {from: 1710, duration: 420},
-  paste: {from: 2130, duration: 420},
-  capture: {from: 2550, duration: 480},
-  apps: {from: 3030, duration: 450},
-  files: {from: 3480, duration: 330},
-  tools: {from: 3810, duration: 270},
-  close: {from: 4080, duration: 360},
+  setup: {from: 480, duration: 435},
+  debugging: {from: 915, duration: 240},
+  connect: {from: 1155, duration: 420},
+  frame: {from: 1575, duration: 435},
+  paste: {from: 2010, duration: 420},
+  capture: {from: 2430, duration: 405},
+  apps: {from: 2835, duration: 405},
+  files: {from: 3240, duration: 255},
+  tools: {from: 3495, duration: 225},
+  close: {from: 3720, duration: 270},
 } as const;
 
 export type BeatName = keyof typeof BEATS;
 
 export const BEAT_NAMES = Object.keys(BEATS) as BeatName[];
 
-export const MIRROR_WALKTHROUGH_FRAMES = 4440;
+export const MIRROR_WALKTHROUGH_FRAMES = 3990;
+
+/** Mirror's five Setup steps, titled as its Setup panel titles them. */
+export const SETUP_STEPS: readonly Step[] = [
+  {
+    title: 'Install Android platform-tools',
+    body: "Open Setup and select Install now. Mirror downloads Google's adb into its own folder.",
+  },
+  {
+    title: 'Start the ADB server',
+    body: 'Mirror starts the background process adb uses to talk to devices. Devices then appear on their own.',
+  },
+  {
+    title: 'Turn on USB debugging',
+    body: 'On the phone: Settings → About phone → tap Build number seven times. Then Developer options → USB debugging. Plug in with a data cable, not a charge-only one.',
+  },
+  {
+    title: 'Authorise this computer',
+    body: 'Unlock the phone. Tick Always allow from this computer, then tap Allow.',
+  },
+  {
+    title: 'Start mirroring',
+    body: 'Pick the device in Devices and press Start mirroring.',
+  },
+];
+
+/** The beats the Setup checklist stays up across, in order. */
+export const SETUP_BEATS = ['setup', 'debugging', 'connect'] as const;
 
 /**
- * The copy column: one eyebrow and one line per beat, exactly matching the brief.
+ * Composition frames where the active Setup step changes. The copy's checklist and the
+ * Setup panel on the stage both read this, so they tick at the same frame. Step 6 means
+ * every step is done.
  */
-export const COPY: Record<BeatName, {eyebrow: string; title: string; line: string}> = {
+const SETUP_CHANGES = [
+  {from: BEATS.setup.from, step: 1},
+  {from: BEATS.setup.from + 240, step: 2},
+  {from: BEATS.debugging.from, step: 3},
+  {from: BEATS.connect.from, step: 4},
+  {from: BEATS.connect.from + 170, step: 5},
+  {from: BEATS.connect.from + 365, step: 6},
+] as const;
+
+/** The active Setup step at a composition frame, and the frame it became active. */
+export const setupStepAt = (frame: number) => {
+  let current: (typeof SETUP_CHANGES)[number] = SETUP_CHANGES[0];
+  for (const change of SETUP_CHANGES) if (frame >= change.from) current = change;
+  return {step: current.step, since: current.from};
+};
+
+/** Copy for every beat but the three the Setup checklist covers. */
+export const COPY: Record<Exclude<BeatName, (typeof SETUP_BEATS)[number]>, {eyebrow?: string; headline?: string; title?: string; body: string}> = {
   open: {
-    eyebrow: 'CTRLBOT MIRROR',
-    title: 'Your Android screen, on your PC.',
-    line: 'Your Android screen, on your PC.',
-  },
-  setup: {
-    eyebrow: 'SETUP',
-    title: "It installs Android's tools for you.",
-    line: "It installs Android's tools for you.",
-  },
-  debugging: {
-    eyebrow: 'USB OR WI-FI',
-    title: 'Turn on USB debugging, or pair with a code.',
-    line: 'Turn on USB debugging, or pair with a code.',
-  },
-  connect: {
-    eyebrow: 'CONNECT',
-    title: "Allow it once. Then it's ready.",
-    line: "Allow it once. Then it's ready.",
+    headline: 'CTRLbot Mirror',
+    body: 'Control your Android phone or tablet from your Windows PC, with your mouse, keyboard and clipboard.',
   },
   frame: {
-    eyebrow: 'STUDIO',
-    title: 'Pick a frame that fits the device.',
-    line: 'Pick a frame that fits the device.',
+    eyebrow: 'Studio',
+    title: 'Frame it for the camera',
+    body: 'Pick a device frame, then set the backdrop, padding and shadow. Screenshots and recordings keep the framing.',
   },
   paste: {
-    eyebrow: 'CONTROL',
-    title: 'Paste from your PC into the app.',
-    line: 'Paste from your PC into the app.',
+    eyebrow: 'Control',
+    title: 'Click, type and paste',
+    body: 'Your mouse taps and scrolls, your keyboard types, and Ctrl+V pastes from Windows. Here, a projector address goes straight into CTRLbot IoT.',
   },
   capture: {
-    eyebrow: 'CAPTURE',
-    title: 'Screenshots, and video with your voice.',
-    line: 'Screenshots, and video with your voice.',
+    eyebrow: 'Capture',
+    title: 'Screenshots and recordings',
+    body: "Screenshots save at 1×, 2× or 3×. Recordings include your PC microphone, never the phone's audio. Both go to Pictures\\CTRLbot Mirror.",
   },
   apps: {
-    eyebrow: 'APPS',
-    title: "See every app. Uninstall what you don't need.",
-    line: "See every app. Uninstall what you don't need.",
+    eyebrow: 'Apps',
+    title: 'Manage the apps',
+    body: "See every app on the device, install an APK, or uninstall the ones you don't need.",
   },
   files: {
-    eyebrow: 'FILES',
-    title: 'Drop files onto the device.',
-    line: 'Drop files onto the device.',
+    eyebrow: 'Files',
+    title: 'Move files',
+    body: "Browse the device's storage. Drag files from Windows onto the drop area to copy them over, or use Save to PC to bring one back.",
   },
   tools: {
-    eyebrow: 'TOOLS',
-    title: 'A shell and the device log, built in.',
-    line: 'A shell and the device log, built in.',
+    eyebrow: 'Tools',
+    title: 'Shell and logcat',
+    body: 'Run a shell command on the device, or stream its log and filter it by priority.',
   },
   close: {
-    eyebrow: '',
-    title: 'Back to Setup whenever you need it.',
-    line: 'Back to Setup whenever you need it.',
+    headline: 'CTRLbot Mirror',
+    body: "Setup is one click away whenever a device won't connect.",
   },
 };
 
@@ -115,7 +151,8 @@ const SUBJECT: Record<BeatName, 'panel' | 'stage' | 'toolbar'> = {
  * beat between 80% and 95%, because Mirror's state changes are small in a 1021px panel.
  * What reads as change is frame-wide motion, so each beat carries its own push. The
  * push crops the window's far edges while it is in; the wide shots at both ends of
- * every beat show the whole window.
+ * every beat show the whole window. The portrait panel is the same shape, so both
+ * formats use the same shots.
  */
 export const beatShots = (push = 0.88, viewport = MIRROR_VIEWPORT): Shot[] => {
   const wide = 1.04;

@@ -1,6 +1,6 @@
 ---
 id: mirror-walkthrough
-destination: social-walkthrough
+destination: social-walkthrough-vertical
 ---
 
 # CTRLbot Mirror — narrated walkthrough (Roadmap W01)
@@ -14,39 +14,55 @@ makes setting up and demonstrating CTRLbot IoT faster than doing it on the glass
 
 ## Promise
 
-Control an Android phone or tablet from your Windows PC, over USB or Wi-Fi.
+Control an Android phone or tablet from your Windows PC, over USB.
 
 ## Narration
 
-- Mode: `source-edit`
+- Mode: `source-edit`. Narrated only: there is no silent cut.
 - Source recording: `video input/CTRLbot Mirror Tutorial.mp4` (8:29)
-- Ingest: `ingest/mirror-walkthrough/` — `transcript.md` is `Status: DRAFT` until T1
+- Ingest: `ingest/mirror-walkthrough/` — transcript corrected 2026-09-30 (T1)
 - Prepared audio: `public/narration/mirror-walkthrough/source-normalized.m4a`
 - Edit list: `src/marketing/mirror-walkthrough/mirrorWalkthroughNarration.ts`
-- Narrated composition: `mirror-walkthrough-narrated`
-- Narrated output: `out/mirror-walkthrough-narrated.mp4`
+- Landscape: `mirror-walkthrough`, 1920x1080 → `out/mirror-walkthrough.mp4`, captions as
+  `out/mirror-walkthrough.srt` — YouTube
+- Portrait: `mirror-walkthrough-portrait`, 1080x1920, captions burned in →
+  `out/mirror-walkthrough-portrait.mp4` — TikTok, YouTube Shorts, LinkedIn, X
 
 ## Beats
 
 | id | Claim | Surface | Evidence | Sec |
 |----|-------|---------|----------|-----|
-| open | Your Android screen, on your PC, under your mouse | `MirrorApp` | Mirror window with the tablet live on the stage: CTRLbot IoT's driver catalog scrolls inside the drawn tablet frame, Devices panel shows the tablet mirroring | 16 |
-| setup | Mirror installs Android's own tools for you | `MirrorApp` | Setup panel: the platform-tools bar fills, step 1 ticks to *Android platform-tools installed*, then step 2 ticks to *ADB server running* | 14 |
-| debugging | USB debugging, or pair over Wi-Fi with a code | `MirrorApp` | Setup step 3 *Turn on USB debugging* is active with its Build number instructions, then the Devices panel's pairing address and pairing code fields fill and Pair is pressed | 13 |
-| connect | Allow it once, and it is ready | `MirrorApp` | Step 4 *Authorise this computer* ticks, the Devices card shows *Ready*, Start mirroring is pressed and the stage changes from the idle message to the live tablet | 14 |
-| frame | Pick a frame that fits the device | `MirrorApp` | Studio panel's Device frame picker: the selection moves to another frame and the frame drawn around the mirrored tablet changes shape, then the padding value rises and the backdrop margin grows | 14 |
-| paste | Paste from your PC straight into the app | `MirrorApp` + `ConnectionPanel` | The mirrored tablet shows CTRLbot IoT's connection panel; its host field goes from empty to `192.168.1.169` in one frame, caret after it | 14 |
-| capture | Screenshots, and video with your voice | `MirrorApp` | The toolbar camera is pressed and a *Screenshot saved* toast lands; then record is pressed and a red recording clock counts up while the mirrored catalog scrolls | 16 |
-| apps | See every app on the device and uninstall what you do not need | `MirrorApp` | Apps panel lists the tablet's packages; the highlight walks down the list and stops on `Kindle`, whose row shows its Uninstall action | 15 |
-| files | Drop files onto the device | `MirrorApp` | Files panel at `/sdcard`; a file is dragged onto the drop area, the area lights, and the file appears in the list | 11 |
-| tools | A shell and the device log, built in | `MirrorApp` | Shell panel runs one command and its output prints; the sidebar moves to Logcat and log lines stream in | 9 |
-| close | The name, once, at the end | `MirrorApp` | Setup panel with every step ticked beside the live tablet; the copy column shows the CTRLbot Mirror wordmark | 12 |
+| open | Your Android phone or tablet, controlled from your PC | `MirrorApp` | Mirror window with the tablet live on the stage: CTRLbot IoT's driver catalog scrolls inside the drawn tablet frame, Devices panel shows the tablet mirroring; the copy shows the CTRLbot Mirror headline and what it does | 16 |
+| setup | Mirror installs Android's own tools for you | `MirrorApp` | Setup panel: the platform-tools bar fills and step 1 ticks to *Android platform-tools installed*, then step 2 is up; the copy's checklist is on the same step, with its description | 14.5 |
+| debugging | Turn on USB debugging on the phone | `MirrorApp` | Setup step 3 *Turn on USB debugging* is active with its Build number and Developer options instructions; the checklist's step 3 says the same, plus the data-cable tip | 8 |
+| connect | Allow it once, and it is ready | `MirrorApp` | Step 4 *Authorise this computer* ticks, the Devices card shows *Ready*, Start mirroring is pressed and the stage changes from the idle message to the live tablet; the checklist ticks steps 4 and 5 | 14 |
+| frame | Pick a frame that fits the device | `MirrorApp` | Studio panel's Device frame picker: the selection moves to another frame and the frame drawn around the mirrored tablet changes shape, then the padding value rises and the backdrop margin grows | 14.5 |
+| paste | Click, type and paste from your PC | `MirrorApp` + `ConnectionPanel` | The mirrored tablet shows CTRLbot IoT's connection panel; its host field goes from empty to `192.168.1.169` in one frame, caret after it | 14 |
+| capture | Screenshots, and video with your voice | `MirrorApp` | The toolbar camera is pressed and a *Screenshot saved* toast lands; then record is pressed and a red recording clock counts up while the mirrored catalog scrolls | 13.5 |
+| apps | See every app on the device and uninstall what you do not need | `MirrorApp` | Apps panel lists the tablet's packages; the highlight walks down the list and stops on `Kindle`, whose row shows its Uninstall action | 13.5 |
+| files | Move files between the PC and the device | `MirrorApp` | Files panel at `/sdcard`; a file is dragged onto the drop area, the area lights, and the file appears in the list | 8.5 |
+| tools | A shell and the device log, built in | `MirrorApp` | Shell panel runs one command and its output prints; the sidebar moves to Logcat and log lines stream in | 7.5 |
+| close | The name, once, at the end | `MirrorApp` | Setup panel with every step ticked beside the live tablet; the copy shows the CTRLbot Mirror headline | 9 |
 
 ## Anything unusual
 
-- **The cut runs about 148 seconds, not 120.** Each beat is sized to the narration it
-  carries (the clip table under Tasks); the recorded phrases do not fit two minutes without
-  dropping a Roadmap claim. `social-walkthrough` allows 60 to 180.
+- **Two shapes, narrated, no silent cut.** Landscape for YouTube, portrait for TikTok,
+  YouTube Shorts, LinkedIn and X, both from one set of beats, copy and narration. The
+  portrait cut burns its captions in; the landscape cut keeps its frame for the step text
+  and ships `out/mirror-walkthrough.srt` for YouTube. Both captions come from
+  `src/audio/narrationCaptions.ts`, so they cannot disagree.
+- **133 seconds, under 2:20.** X refuses anything longer without Premium, and the portrait
+  cut is the one X gets. `social-walkthrough-vertical`, this brief's destination, caps the
+  cut at 140; the landscape cut is checked against `social-walkthrough` as well.
+- **Audiowide is the product's name only**, at the open and the close. Step titles are
+  Montserrat SemiBold, descriptions Montserrat, eyebrows Space Mono (`WalkthroughCopy`).
+  Portrait body text is 40px and landscape 30px, about 15pt once scaled to a screen.
+- **Setup is a numbered checklist, Mirror's own five steps**, titled as its Setup panel
+  titles them and described from that panel's hints. It stays up across `setup`,
+  `debugging` and `connect` and ticks with the panel on the stage (`setupStepAt`).
+- **No Wi-Fi.** Pairing over Wi-Fi is cut from the narration and the copy; the promise is
+  USB only. Mirror's Devices panel still shows its own Wi-Fi section, because that is the
+  real app, but nothing points at it.
 - **Every surface is the live Mirror rebuild in `src/app-ui/mirror/`**, a class-by-class
   copy of `C:\0-Repo\Utilities\CTRLbot-Mirror\src\renderer\src` in CSS pixels at
   `MIRROR_VIEWPORT` (1600x940). What the stage mirrors is the IoT app's own `app-ui/`
@@ -68,9 +84,9 @@ Control an Android phone or tablet from your Windows PC, over USB or Wi-Fi.
   rebuilt Virtual panel; the `tools` clip ends before that phrase. Deferred.
 - **The only IP on screen is private** (`192.168.1.169`, the "169" spoken at 4:28). No
   serial beyond what `mirrorData.ts` already carries, no account or network names.
-- **Camera: `<Stage>` with the house `drift()`, never past 0.94.** The panel is
-  aspect-matched to 1600x940, so emphasis comes from `<Spotlight>`/`<FocusRing>`, and the
-  continuous drift is what keeps `inert-fraction` under 0.6 across long narrated holds.
+- **Camera: a push on every beat, wide at every cut** (`beatShots()`): each beat opens on
+  the whole window, pushes to 0.88 on its subject by mid-beat and returns. One slow drift
+  measured 89% inert; this measured 30%. Both shapes use the same shots.
 - **`<PromoPreload />` is required.** The mirrored IoT surfaces draw their images from CSS;
   without it the first beat to mount one strobes.
 
@@ -79,65 +95,71 @@ Control an Android phone or tablet from your Windows PC, over USB or Wi-Fi.
 
 ## Scope lock
 
-- **User outcome:** two renders — the silent, caption-led `mirror-walkthrough` and the
-  narrated `mirror-walkthrough-narrated` — that show a viewer how to install, connect and
-  use CTRLbot Mirror to control an Android device from a Windows PC, and why that makes
-  setting up and demonstrating CTRLbot IoT easier.
-- **In scope:** the transcript correction; the three Mirror surface states the beats need
-  and the rebuild lacks (device-frame picker, screenshot toast, Logcat panel); the eleven
-  beats; the narration edit; both renders through every gate.
-- **Out of scope:** S01 (its own short, its own brief), promoting these beats into
-  `src/shorts/surfaces.tsx`, a Virtual devices panel, Android Settings screens, CTRLbot IoT's
-  Find Devices scan surface, burned-in captions on the walkthrough, publishing, the
-  publishing kit, and archiving the recording (S01 is still cut from it).
-- **Must preserve:** every existing `mirror/*` shorts surface and the five
-  `Proof-Mirror-*` stills render unchanged with default props; `MirrorScenes.tsx` is not
-  edited; `AI-Walkthrough` and every other registered composition are untouched;
-  `video input/` and `ingest/mirror-walkthrough/words.json` are never modified; no gate
-  threshold is changed to make this cut pass.
+Revised 2026-09-30 (Revision 1, below). T1–T16 built the first version: silent and
+narrated landscape cuts.
+
+- **User outcome:** two narrated renders of one walkthrough — landscape
+  `mirror-walkthrough` for YouTube and portrait `mirror-walkthrough-portrait` for the feeds
+  — that show a viewer how to install, connect and use CTRLbot Mirror to control an Android
+  device from a Windows PC over USB, with step text that reads on a phone.
+- **In scope:** the copy and checklist, the portrait layout and burned-in captions, the
+  landscape .srt, the retime to 133s, cutting Wi-Fi pairing, both renders through every gate.
+- **Out of scope:** a silent cut, S01, W02 (on hold until this format is approved),
+  publishing, the rest of the publishing kit (poster, titles, tags), the roadmap (Nathan is
+  editing it), and the docs that still describe a silent cut.
+- **Must preserve:** every `mirror/*` shorts surface and `Proof-Mirror-*` still;
+  `MirrorScenes.tsx`, `Stage`/`StageCopy` and every other composition untouched;
+  `video input/` and the ingest's JSON never modified; no gate threshold changed.
 
 ## Copy
 
-The silent cut's copy column, one eyebrow and one line per beat. House faces: Space Mono
-eyebrow, Montserrat line, Audiowide only for the closing wordmark. Executors place these
-verbatim.
+Executors place these verbatim. Eyebrows render uppercase. Audiowide only where marked.
 
-| beat | eyebrow | line |
-|------|---------|------|
-| open | CTRLBOT MIRROR | Your Android screen, on your PC. |
-| setup | SETUP | It installs Android's tools for you. |
-| debugging | USB OR WI-FI | Turn on USB debugging, or pair with a code. |
-| connect | CONNECT | Allow it once. Then it's ready. |
-| frame | STUDIO | Pick a frame that fits the device. |
-| paste | CONTROL | Paste from your PC into the app. |
-| capture | CAPTURE | Screenshots, and video with your voice. |
-| apps | APPS | See every app. Uninstall what you don't need. |
-| files | FILES | Drop files onto the device. |
-| tools | TOOLS | A shell and the device log, built in. |
-| close | — | `CTRLbot Mirror` wordmark, then *Back to Setup whenever you need it.* |
+| beat | eyebrow | title | body |
+|------|---------|-------|------|
+| open | — | **CTRLbot Mirror** (Audiowide) | Control your Android phone or tablet from your Windows PC, with your mouse, keyboard and clipboard. |
+| setup, debugging, connect | Setup · step *n* of 5 | the checklist below | the active step's description |
+| frame | Studio | Frame it for the camera | Pick a device frame, then set the backdrop, padding and shadow. Screenshots and recordings keep the framing. |
+| paste | Control | Click, type and paste | Your mouse taps and scrolls, your keyboard types, and Ctrl+V pastes from Windows. Here, a projector address goes straight into CTRLbot IoT. |
+| capture | Capture | Screenshots and recordings | Screenshots save at 1×, 2× or 3×. Recordings include your PC microphone, never the phone's audio. Both go to Pictures\CTRLbot Mirror. |
+| apps | Apps | Manage the apps | See every app on the device, install an APK, or uninstall the ones you don't need. |
+| files | Files | Move files | Browse the device's storage. Drag files from Windows onto the drop area to copy them over, or use Save to PC to bring one back. |
+| tools | Tools | Shell and logcat | Run a shell command on the device, or stream its log and filter it by priority. |
+| close | — | **CTRLbot Mirror** (Audiowide) | Setup is one click away whenever a device won't connect. |
+
+The Setup checklist — Mirror's own step titles (`SetupPanel.tsx`), descriptions from its
+hints and README:
+
+| step | title | description | active |
+|------|-------|-------------|--------|
+| 1 | Install Android platform-tools | Open Setup and select Install now. Mirror downloads Google's adb into its own folder. | setup 0–8s |
+| 2 | Start the ADB server | Mirror starts the background process adb uses to talk to devices. Devices then appear on their own. | setup 8s–end |
+| 3 | Turn on USB debugging | On the phone: Settings → About phone → tap Build number seven times. Then Developer options → USB debugging. Plug in with a data cable, not a charge-only one. | debugging |
+| 4 | Authorise this computer | Unlock the phone. Tick Always allow from this computer, then tap Allow. | connect 0–5.7s |
+| 5 | Start mirroring | Pick the device in Devices and press Start mirroring. | connect 5.7–12.2s, then all ticked |
 
 ## Narration clips
 
-Source ranges in seconds on the prepared track, from `words.json` segment times. T15
-refines each boundary against the corrected word times and the waveform (Whisper's ends run
-early); every clip must still start and end on a complete word and sit inside its beat.
+Seconds on the prepared track, refined against the corrected word times. `at` is where the
+clip plays in the 133-second cut. Every clip starts and ends on a complete word.
 
-| beat | source range | what is said |
-|------|--------------|--------------|
-| open | 0.4–8.8, 9.7–16.6 | Welcome … CTRLbot Mirror … mirror what is on your Android phone or tablet |
-| setup | 30.5–44.0 | we have to install ADB … connect to your device … manage applications on it |
-| debugging | 190.5–196.5, 202.7–209.1 | make sure USB debugging mode is on … pair over wirelessly … through a code … same network |
-| connect | 93.1–98.8, 99.3–106.9 | asked to authorize that connection … green and ready … start mirroring |
-| frame | 118.5–126.9, 130.3–135.1 | pick one of these other ones … a better fit … padding and shadow and such |
-| paste | 224.6–237.6 | copying and pasting … cumbersome to do straight from the panel |
-| capture | 311.4–318.1, 330.5–344.0 | hit the screenshot button … record it as video … record your voice |
-| apps | 388.8–402.7 | access to all the apps … delete, remove stuff in here (cut before "that sometimes") |
-| files | 456.5–466.7 | copy stuff over right here … dragging, dropping into this area |
-| tools | 472.0–479.6 | we have also a shell … look at the logs for the device |
-| close | 494.0–502.1 | come back to this setup if you're ever having problems. Thank you for your time |
+| beat | clips (at: source) | what is said |
+|------|--------------------|--------------|
+| open | 0.35: 0.33–9.0, 9.25: 10.65–16.85 | Welcome to CTRLbot … called CTRLbot Mirror, a way to mirror what is on your Android phone or tablet |
+| setup | 16.25: 30.4–44.0 | we have to install ADB … connect to your device … manage applications on it |
+| debugging | 30.75: 190.45–196.45 | make sure that USB debugging mode is on |
+| connect | 38.75: 93.15–99.05, 44.85: 99.3–106.75 | asked to authorize that connection … green and ready … start mirroring |
+| frame | 52.7: 118.5–127.05, 61.45: 130.2–135.3 | pick one of these other ones … a better fit … padding and shadow and such |
+| paste | 67.25: 224.5–237.8 | copying and pasting … cumbersome to do straight from the panel |
+| capture | 81.2: 311.35–316.8, 86.85: 330.25–335.35, 92.2: 342.8–344.8 | hit the screenshot button … record it as video … record your voice |
+| apps | 94.75: 388.7–401.67 | access to all the apps … delete, remove stuff in here |
+| files | 108.3: 459.85–466.9 | add packages and files … dragging, dropping into this area |
+| tools | 116.7: 473.0–479.6 | we have also a shell … look at the logs for the device |
+| close | 124.25: 494.25–497.65, 128.1: 500.85–503.1 | come back to this setup if you're ever having problems. Thank you for your time |
 
 ## Concurrency with W02
 
+W02 is on hold until this format is approved; when it resumes, this still applies.
 W02 (`videos/terminator-walkthrough.md`) may run in this checkout at the same time. The
 only shared file is `src/Root.tsx` (T5, T15 here; one task there): before editing it,
 `git diff --quiet src/Root.tsx` must succeed, else wait for the other commit (two checks
@@ -201,6 +223,18 @@ a check failing only in them is a Review note, not a repair. Full renders run on
   - Regression: `npm run still` of `Proof-Mirror-Setup`, `-Devices`, `-Studio`, `-Apps`, `-Files` match their pre-T2 renders.
   - Runs straight after T15 with no approval stop. Does not mark the video done: Nathan reviews both renders and `out/mirror-walkthrough/contact.html`, and his notes come back as new tasks.
 
+### Revision 1 · 2026-09-30 — narrated only, both shapes, readable copy
+
+Nathan's review of the T16 renders: drop the silent cut, keep Audiowide to headlines, more
+description on every step (especially Setup), make a portrait cut for the feeds as well as
+the landscape one, and drop Wi-Fi pairing. The shared pieces are built for W02–W05 too.
+
+- [x] R1: Add the shared walkthrough pieces — the step copy and checklist, the portrait layout, burned-in captions and the clip-to-caption mapping — files: src/marketing/WalkthroughCopy.tsx, src/marketing/PortraitStage.tsx, src/marketing/NarrationCaptions.tsx, src/audio/narrationCaptions.ts
+- [x] R2: Add the `social-walkthrough-vertical` destination, `narration:srt`, and `video:frames` output per composition — files: src/destinations.ts, scripts/narration-srt.mjs, scripts/video-frames.mjs, package.json
+- [x] R3: Rebuild W01 on them: retime to 133s, the Copy and checklist above, USB only, both compositions registered and the silent one gone — files: src/marketing/mirror-walkthrough/walkthroughData.ts, mirrorWalkthroughNarration.ts, MirrorBeats.tsx, MirrorWalkthrough.tsx, src/Root.tsx
+- [ ] R4: Run the gates on both shapes, render both, write the .srt, and record the results here — files: videos/mirror-walkthrough.md
+  - `npm run check`; `npm run video:lint -- --destination=social-walkthrough` and `--destination=social-walkthrough-vertical`; `npm run video:frames -- mirror-walkthrough validate`; `contact` for landscape and, with `VIDEO_COMPOSITION=mirror-walkthrough-portrait`, for portrait; render both; `video:frames … check` and `narration:check` on both; `npm run narration:srt -- src/marketing/mirror-walkthrough/mirrorWalkthroughNarration.ts MIRROR_WALKTHROUGH_NARRATION_CLIPS mirror-walkthrough out/mirror-walkthrough.srt`.
+
 ## Deferred
 
 - Promote the walkthrough's new beats into `src/shorts/surfaces.tsx` for S01 — S01's brief
@@ -208,16 +242,16 @@ a check failing only in them is a Review note, not a repair. Full renders run on
 - A rebuilt Virtual devices panel, and the Android Settings path, if a later cut needs them.
 - CTRLbot IoT's Find Devices scan surface — W03 and S13 need it; this cut shows the paste
   without it.
-- Close-out (archive the brief, `RELEASE-NOTES.md`, `Roadmap.md`) after Nathan's contact
-  sheet and render review. The recording stays in `video input/` until S01 ships.
+- Close-out (archive the brief, `RELEASE-NOTES.md`, `Roadmap.md`) after Nathan's review of
+  both renders. The recording stays in `video input/` until S01 ships.
+- The docs still describe a silent cut beside the narrated one (`AGENTS.md` "Making a new
+  video", `docs/NARRATED-WALKTHROUGH.md` §6), and W02's brief is written for it. Update
+  them once this format is approved.
+- The rest of a publishing kit for long videos: poster, title, description, tags.
 
 ## Handoff
 
-- **Ready now:** T1, T2, T5 (no dependencies). T2 → T3 → T4 run in that order because
-  they share `Mirror.tsx`.
-- **Ready later:** T6 after T4 and T5; T7 after T6; T8 after T2 and T6; T9 after T6; T10
-  after T3 and T6; T11 and T12 after T6; T13 after T4 and T6; T14 after T6; T15 after T1
-  and T14; T16 last.
+- T1–T16 are done. Revision 1 runs R1 to R4 in order, then the renders go to Nathan.
 - **Blocked:** nothing.
 
 ## Review notes

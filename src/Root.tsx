@@ -35,7 +35,7 @@ import {
 } from './marketing/device-database/DeviceDatabase';
 import {
   MirrorWalkthrough,
-  MirrorWalkthroughNarrated,
+  MirrorWalkthroughPortrait,
   mirrorWalkthroughDuration,
 } from './marketing/mirror-walkthrough/MirrorWalkthrough';
 import {HubCell, hubCellDuration} from './marketing/hub-cell/HubCell';
@@ -204,12 +204,12 @@ export const RemotionRoot = () => (
         height={1080}
       />
       <Composition
-        id="mirror-walkthrough-narrated"
-        component={MirrorWalkthroughNarrated}
+        id="mirror-walkthrough-portrait"
+        component={MirrorWalkthroughPortrait}
         durationInFrames={mirrorWalkthroughDuration}
         fps={30}
-        width={1920}
-        height={1080}
+        width={1080}
+        height={1920}
       />
     </Folder>
 

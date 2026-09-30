@@ -19,7 +19,7 @@ import {
   CONNECTION_VIEWPORT,
   type DeviceCommand,
 } from '../../app-ui/ConnectionPanel';
-import type {BeatName} from './walkthroughData';
+import {BEATS, setupStepAt, type BeatName} from './walkthroughData';
 
 const catalog = (frame: number, frames: number): Mirrored => ({
   width: CATALOG_VIEWPORT.tablet.width,
@@ -60,126 +60,71 @@ export const OpenBeat: React.FC<{frame: number; frames: number}> = ({
 );
 
 /**
- * Setup beat (14s): Setup panel where the platform-tools bar fills,
- * step 1 ticks to Android platform-tools installed, then step 2 ticks
- * to ADB server running.
+ * Setup beat (14.5s = 435 frames): Setup panel where the platform-tools bar fills and
+ * step 1 ticks to *Android platform-tools installed*, then step 2, the ADB server, is up.
+ * The step comes from `setupStepAt`, which the copy's checklist reads too.
  */
 export const SetupBeat: React.FC<{frame: number; frames: number}> = ({
   frame,
 }) => {
-  // Step 1 downloading: 0..120 (0s..4s)
-  // Step 2 starting ADB: 120..220 (4s..7.33s)
-  // Step 3 active (ADB server running marked done): 220..420 (7.33s..14s)
-  const downloaded = interpolate(frame, [0, 120], [0.15, 1.0], {
+  const downloaded = interpolate(frame, [0, 220], [0.15, 1.0], {
     easing: Easing.bezier(0.45, 0, 0.55, 1),
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-
-  const step = frame < 120 ? 1 : frame < 220 ? 2 : 3;
 
   return (
     <MirrorApp
       panel="setup"
       status="No device connected"
       hasDevice={false}
-      side={<SetupPanel step={step} downloaded={downloaded} />}
+      side={<SetupPanel step={setupStepAt(BEATS.setup.from + frame).step} downloaded={downloaded} />}
       stage={<MirrorStage idle={IDLE_STAGE} />}
     />
   );
 };
 
 /**
- * Debugging beat (13s): Setup step 3 "Turn on USB debugging" is active with its
- * Build number instructions, then the Devices panel's pairing address and pairing
- * code fields fill and Pair is pressed.
+ * Debugging beat (8s = 240 frames): Setup step 3, *Turn on USB debugging*, is active with
+ * its Build number and Developer options instructions. USB only: the walkthrough does not
+ * pair over Wi-Fi.
  */
 export const DebuggingBeat: React.FC<{frame: number; frames: number}> = ({
   frame,
-}) => {
-  // 0..120 (0s..4s): Setup panel step 3 active with build instructions
-  // 120..390 (4s..13s): Devices panel with Wi-Fi pairing fields filling & Pair pressed
-  const isSetup = frame < 120;
-
-  if (isSetup) {
-    return (
-      <MirrorApp
-        panel="setup"
-        status="No device connected"
-        hasDevice={false}
-        side={<SetupPanel step={3} />}
-        stage={<MirrorStage idle={IDLE_STAGE} />}
-      />
-    );
-  }
-
-  const FULL_ADDR = '192.168.1.42:37021';
-  const FULL_CODE = '123456';
-
-  const addrChars = Math.round(
-    interpolate(frame, [150, 185], [0, FULL_ADDR.length], {
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
-    }),
-  );
-  const pairingAddress = frame >= 150 ? FULL_ADDR.slice(0, addrChars) : undefined;
-
-  const codeChars = Math.round(
-    interpolate(frame, [190, 215], [0, FULL_CODE.length], {
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
-    }),
-  );
-  const pairingCode = frame >= 190 ? FULL_CODE.slice(0, codeChars) : undefined;
-
-  const pairPressed = frame >= 225;
-
-  return (
-    <MirrorApp
-      panel="devices"
-      status="No device connected"
-      hasDevice={false}
-      side={
-        <DevicesPanel
-          selected={false}
-          details={false}
-          live={false}
-          pairingAddress={pairingAddress}
-          pairingCode={pairingCode}
-          pairPressed={pairPressed}
-        />
-      }
-      stage={<MirrorStage idle={IDLE_STAGE} />}
-    />
-  );
-};
+}) => (
+  <MirrorApp
+    panel="setup"
+    status="No device connected"
+    hasDevice={false}
+    side={<SetupPanel step={setupStepAt(BEATS.debugging.from + frame).step} />}
+    stage={<MirrorStage idle={IDLE_STAGE} />}
+  />
+);
 
 /**
  * Connect beat (14s = 420 frames):
- * Step 4 "Authorise this computer" ticks, the Devices card shows "Ready",
- * Start mirroring is pressed and the stage changes from the idle message to the live tablet.
+ * Step 4 *Authorise this computer* ticks, the Devices card shows *Ready*, Start mirroring
+ * is pressed and the stage changes from the idle message to the live tablet. Timed to the
+ * narration: "authorize" by 170, "green and ready" as Devices opens at 190, and "start
+ * mirroring" as the press lands at 330–365.
  */
 export const ConnectBeat: React.FC<{frame: number; frames: number}> = ({
   frame,
 }) => {
-  // 0..80 (0s..2.67s): Setup panel where step 4 ticks to authorised
-  // 80..180 (2.67s..6s): Devices panel showing Ready and device details, Start mirroring clicked
-  // 180..420 (6s..14s): Live mirroring begins; stage transitions to live tablet
-  if (frame < 80) {
-    const step = frame < 40 ? 4 : 5;
+  if (frame < 190) {
     return (
       <MirrorApp
         panel="setup"
         status="No device connected"
         hasDevice={false}
-        side={<SetupPanel step={step} />}
+        side={<SetupPanel step={setupStepAt(BEATS.connect.from + frame).step} />}
         stage={<MirrorStage idle={IDLE_STAGE} />}
       />
     );
   }
 
-  const live = frame >= 180;
-  const starting = frame >= 140 && frame < 180;
+  const live = frame >= 365;
+  const starting = frame >= 330 && frame < 365;
 
   return (
     <MirrorApp
@@ -196,7 +141,7 @@ export const ConnectBeat: React.FC<{frame: number; frames: number}> = ({
       }
       stage={
         live ? (
-          <MirrorStage mirrored={catalog(frame - 180, 420 - 180)} />
+          <MirrorStage mirrored={catalog(frame - 365, 420 - 365)} />
         ) : (
           <MirrorStage idle={IDLE_STAGE} />
         )
@@ -206,7 +151,7 @@ export const ConnectBeat: React.FC<{frame: number; frames: number}> = ({
 };
 
 /**
- * Frame beat (14s = 420 frames):
+ * Frame beat (14.5s = 435 frames):
  * Studio panel's Device frame picker: the selection moves to another frame
  * and the frame drawn around the mirrored tablet changes shape, then the
  * padding value rises and the backdrop margin grows.
@@ -215,9 +160,10 @@ export const FrameBeat: React.FC<{frame: number; frames: number}> = ({
   frame,
   frames,
 }) => {
-  const currentFrame = frame < 120 ? 'rounded' : 'tablet1';
+  // "let's pick one of these other ones" lands at ~2.5s; "padding and shadow" at ~9s.
+  const currentFrame = frame < 80 ? 'rounded' : 'tablet1';
   const padding = Math.round(
-    interpolate(frame, [180, 270], [48, 88], {
+    interpolate(frame, [280, 380], [48, 88], {
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
     }),
@@ -255,8 +201,8 @@ const CONNECTION_COMMANDS: DeviceCommand[] = [
 export const PasteBeat: React.FC<{frame: number; frames: number}> = ({
   frame,
 }) => {
-  // Host field empty for first 4 seconds (120 frames), then fills in one frame (paste!)
-  const isPasted = frame >= 120;
+  // Host field empty until "copying and pasting" (~4.7s), then fills in one frame: a paste.
+  const isPasted = frame >= 140;
   const host = isPasted ? '192.168.1.169' : '';
 
   const connectionScreen: Mirrored = {
@@ -289,7 +235,7 @@ export const PasteBeat: React.FC<{frame: number; frames: number}> = ({
 };
 
 /**
- * Capture beat (16s = 480 frames):
+ * Capture beat (13.5s = 405 frames):
  * The toolbar camera is pressed and a *Screenshot saved* toast lands;
  * then record is pressed and a red recording clock counts up while the
  * mirrored catalog scrolls.
@@ -297,29 +243,29 @@ export const PasteBeat: React.FC<{frame: number; frames: number}> = ({
 export const CaptureBeat: React.FC<{frame: number; frames: number}> = ({
   frame,
 }) => {
-  // 30..210: Screenshot saved toast lands and displays
+  // 100..250: "hit the screenshot button" (~3.6s), and the Screenshot saved toast lands.
   const toast =
-    frame >= 30 && frame < 210
+    frame >= 100 && frame < 250
       ? {
-          opacity: interpolate(frame, [30, 45, 195, 210], [0, 1, 1, 0], {
+          opacity: interpolate(frame, [100, 115, 235, 250], [0, 1, 1, 0], {
             extrapolateLeft: 'clamp',
             extrapolateRight: 'clamp',
           }),
-          translateY: interpolate(frame, [30, 45], [16, 0], {
+          translateY: interpolate(frame, [100, 115], [16, 0], {
             extrapolateLeft: 'clamp',
             extrapolateRight: 'clamp',
           }),
         }
       : undefined;
 
-  // 180..480: Record is pressed, red recording clock counts up
-  const isRecording = frame >= 180;
-  const elapsedSeconds = isRecording ? Math.floor((frame - 180) / 30) : 0;
+  // From 260, "record it as video" (~8.8s): record is pressed and the clock counts up.
+  const isRecording = frame >= 260;
+  const elapsedSeconds = isRecording ? Math.floor((frame - 260) / 30) : 0;
   const recording = isRecording
     ? `${String(Math.floor(elapsedSeconds / 60)).padStart(2, '0')}:${String(elapsedSeconds % 60).padStart(2, '0')}`
     : undefined;
 
-  const catalogScroll = interpolate(frame, [0, 480], [0, 180], {
+  const catalogScroll = interpolate(frame, [0, 405], [0, 180], {
     easing: Easing.bezier(0.4, 0, 0.6, 1),
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
@@ -350,7 +296,7 @@ export const CaptureBeat: React.FC<{frame: number; frames: number}> = ({
 };
 
 /**
- * Apps beat (15s = 450 frames):
+ * Apps beat (13.5s = 405 frames):
  * Apps panel lists the tablet's packages; the highlight walks down the list
  * and stops on Kindle, whose row shows its Uninstall action.
  * Never highlights a system package (Calendar: 1, Galaxycontinuity: 4).
@@ -359,9 +305,10 @@ export const AppsBeat: React.FC<{frame: number; frames: number}> = ({
   frame,
   frames,
 }) => {
-  // Steps through user apps: 0 (Acr2), 2 (Chatgpt), 3 (Docs), 5 (Iot), then stops on 6 (Kindle)
+  // Steps through user apps: 0 (Acr2), 2 (Chatgpt), 3 (Docs), 5 (Iot), then stops on
+  // 6 (Kindle) just before "delete, remove stuff" (~10.5s).
   const highlight =
-    frame < 60 ? 0 : frame < 120 ? 2 : frame < 180 ? 3 : frame < 240 ? 5 : 6;
+    frame < 75 ? 0 : frame < 150 ? 2 : frame < 225 ? 3 : frame < 290 ? 5 : 6;
 
   return (
     <MirrorApp
@@ -375,7 +322,7 @@ export const AppsBeat: React.FC<{frame: number; frames: number}> = ({
 };
 
 /**
- * Files beat (11s = 330 frames):
+ * Files beat (8.5s = 255 frames):
  * Files panel at /sdcard; a file is dragged onto the drop area,
  * the area lights, and the file appears in the list.
  */
@@ -383,9 +330,10 @@ export const FilesBeat: React.FC<{frame: number; frames: number}> = ({
   frame,
   frames,
 }) => {
-  const isDragging = frame >= 90 && frame < 180;
+  // "dragging, dropping into this area" runs ~5.3–6.2s.
+  const isDragging = frame >= 120 && frame < 175;
   const extraFile =
-    frame >= 180 ? {name: 'audio-eui-dummy.xml', size: '12 kB'} : undefined;
+    frame >= 175 ? {name: 'audio-eui-dummy.xml', size: '12 kB'} : undefined;
 
   return (
     <MirrorApp
@@ -401,7 +349,7 @@ export const FilesBeat: React.FC<{frame: number; frames: number}> = ({
 const SHELL_COMMAND = 'getprop ro.product.model';
 
 /**
- * Tools beat (9s = 270 frames):
+ * Tools beat (7.5s = 225 frames):
  * Shell panel runs one command and its output prints; the sidebar moves to
  * Logcat and log lines stream in.
  */
@@ -427,7 +375,7 @@ export const ToolsBeat: React.FC<{frame: number; frames: number}> = ({
     ) : (
       <LogcatPanel
         count={Math.round(
-          interpolate(frame, [135, 255], [0, 12], {
+          interpolate(frame, [130, 215], [0, 12], {
             extrapolateLeft: 'clamp',
             extrapolateRight: 'clamp',
           }),
@@ -447,7 +395,7 @@ export const ToolsBeat: React.FC<{frame: number; frames: number}> = ({
 };
 
 /**
- * Close beat (12s = 360 frames):
+ * Close beat (9s = 270 frames):
  * Setup panel with every step ticked beside the live tablet. The copy column
  * carries the CTRLbot Mirror wordmark (MirrorWalkthrough.tsx).
  */
