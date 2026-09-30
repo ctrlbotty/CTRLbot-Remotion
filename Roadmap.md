@@ -17,8 +17,8 @@ Everything that can be made now gets made now. What cannot waits on one thing, n
 | Can be made | Videos | Waiting on |
 | --- | --- | --- |
 | **Done** | S02 CTRLbot Terminator, S03 CTRLbot.AI | Nothing. Rendered, first in the queue |
-| **Done** | W01 CTRLbot Mirror | Nothing. Rendered in both shapes, in the queue |
-| **Now** | W02 CTRLbot Terminator, S01 CTRLbot Mirror | Nothing. Both recordings are in and ingested |
+| **Completed, needs clean up** | W01 CTRLbot Mirror, W02 CTRLbot Terminator | Placeholder. Rendered in both shapes; clean-up to follow |
+| **Now** | S01 CTRLbot Mirror | Nothing. The recording is in and ingested |
 | **Now, if short slogans are recorded** | Any short made from a slogan over a motion graphic or image | One narrated slogan per short, in `video input/` |
 | **This week, once recorded** | W03, W04, W05 and the IoT shorts S05 to S24 | CTRLbot IoT recordings made through CTRLbot Mirror |
 | **Later** | W06 CTRLbot.IO tour, S04 CTRLbot.IO | ctrlbot.io R01 to R03 going live |
@@ -30,7 +30,8 @@ noted.
 
 | ID | Video | What the viewer gets | Done when |
 | --- | --- | --- | --- |
-| W02 | CTRLbot Terminator | Scan the network, run a test server, and talk to devices over TCP, Telnet, serial and SSH from one PC app. | Both cuts pass every gate, and nothing says Terminator can be downloaded until its public release is verified. |
+| W01 | CTRLbot Mirror | Control an Android device from a Windows PC over USB or Wi-Fi, and why that makes setting up and demonstrating CTRLbot IoT easier. | **Completed, needs clean up (placeholder).** Both cuts pass every gate and every claim matches Mirror as it is today. |
+| W02 | CTRLbot Terminator | Scan the network, run a test server, and talk to devices over TCP, Telnet, serial and SSH from one PC app. | **Completed, needs clean up (placeholder).** Both cuts pass every gate, and nothing says Terminator can be downloaded until its public release is verified. |
 | W03 | CTRLbot IoT on the phone | The first-run walkthrough brought up to date with Find Devices, the device Web page and Terminal. Replaces First-Run phone Review 13. | The 1080x1920 cut passes every gate and keeps the approved Review 13 scenes wherever the app has not changed. |
 | W04 | CTRLbot IoT on the tablet | The same update on the tablet. Replaces First-Run tablet Review 08. | The 1920x1200 cut passes every gate and keeps the approved Review 08 scenes wherever the app has not changed. |
 | W05 | CTRLbot IoT: latest features | What shipped in v1.0.9, on the tablet: drag-to-route, the power-off countdown, AV-over-IP from three manufacturers, display power over CEC, line-out level, serial control through a PUSR W630, and Global Caché by exact model. | Every feature shown is in the app's current release notes and on a current build. |

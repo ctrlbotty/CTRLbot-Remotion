@@ -1,0 +1,31 @@
+{
+ "slug": "iot-phone-walkthrough",
+ "source": {
+  "path": "video input/CTRLbot-IoT Phone Walkthrough v1.0.9.mp4",
+  "bytes": 52156213,
+  "modified": "2026-09-30T16:31:22.438Z",
+  "duration": 417.86,
+  "video": "h264 1130x1970 29.92fps",
+  "audio": "aac 48000 Hz mono"
+ },
+ "narration": "public/narration/iot-phone-walkthrough/source-normalized.m4a",
+ "transcript": {
+  "tool": "faster-whisper 1.2.1",
+  "model": "medium.en",
+  "device": "cuda/float16",
+  "seconds": 37.8,
+  "segments": 101
+ },
+ "heard": {
+  "letters": "Xenova/wav2vec2-base-960h (onnxruntime 1.28.0)",
+  "phrases": "medium.en on cuda/float16",
+  "seconds": 171.3,
+  "fillers": 7
+ },
+ "frames": {
+  "count": 59,
+  "rule": "scene > 0.01, at least 3s apart, at least one every 20s",
+  "ffmpeg": "ffmpeg"
+ },
+ "ingested": "2026-09-30T22:19:46.292Z"
+}
