@@ -232,7 +232,7 @@ the landscape one, and drop Wi-Fi pairing. The shared pieces are built for W02�
 - [x] R1: Add the shared walkthrough pieces — the step copy and checklist, the portrait layout, burned-in captions and the clip-to-caption mapping — files: src/marketing/WalkthroughCopy.tsx, src/marketing/PortraitStage.tsx, src/marketing/NarrationCaptions.tsx, src/audio/narrationCaptions.ts
 - [x] R2: Add the `social-walkthrough-vertical` destination, `narration:srt`, and `video:frames` output per composition — files: src/destinations.ts, scripts/narration-srt.mjs, scripts/video-frames.mjs, package.json
 - [x] R3: Rebuild W01 on them: retime to 133s, the Copy and checklist above, USB only, both compositions registered and the silent one gone — files: src/marketing/mirror-walkthrough/walkthroughData.ts, mirrorWalkthroughNarration.ts, MirrorBeats.tsx, MirrorWalkthrough.tsx, src/Root.tsx
-- [ ] R4: Run the gates on both shapes, render both, write the .srt, and record the results here — files: videos/mirror-walkthrough.md
+- [x] R4: Run the gates on both shapes, render both, write the .srt, and record the results here — files: videos/mirror-walkthrough.md
   - `npm run check`; `npm run video:lint -- --destination=social-walkthrough` and `--destination=social-walkthrough-vertical`; `npm run video:frames -- mirror-walkthrough validate`; `contact` for landscape and, with `VIDEO_COMPOSITION=mirror-walkthrough-portrait`, for portrait; render both; `video:frames … check` and `narration:check` on both; `npm run narration:srt -- src/marketing/mirror-walkthrough/mirrorWalkthroughNarration.ts MIRROR_WALKTHROUGH_NARRATION_CLIPS mirror-walkthrough out/mirror-walkthrough.srt`.
 
 ## Deferred
@@ -251,12 +251,32 @@ the landscape one, and drop Wi-Fi pairing. The shared pieces are built for W02�
 
 ## Handoff
 
-- T1–T16 are done. Revision 1 runs R1 to R4 in order, then the renders go to Nathan.
+- T1–T16 and R1–R4 are done. The two renders are with Nathan.
 - **Blocked:** nothing.
 
 ## Review notes
 
 > Appended on PASS WITH NOTES. Not blockers; check these during the contact sheet review.
+
+- R4, 2026-09-30: `npm run check` OK; `video:lint` 0 errors against `social-walkthrough`
+  and `social-walkthrough-vertical`; `validate` 11 beats, 133s, no problems. Landscape
+  `out/mirror-walkthrough.mp4` 28% inert and portrait `out/mirror-walkthrough-portrait.mp4`
+  25% inert, both "no problems"; `narration:check` passed on both, -13.4 LUFS, -1.4 dBTP.
+  `out/mirror-walkthrough.srt`: 48 captions, 295 words from 17 clips. Contact sheets at
+  `out/mirror-walkthrough/contact.html` and `out/mirror-walkthrough-portrait/contact.html`.
+  Both renders are checked against the brief's destination for `inert-fraction`; the
+  ceiling is 0.6 in both destinations.
+- R4, captions: time-based paging (`createTikTokStyleCaptions`, as the shorts use) left
+  single words on screen between the narration's natural pauses — "and" in the capture
+  beat, "Mirror," in the open. `captionPages` in `src/audio/narrationCaptions.ts` now
+  breaks at pauses, commas and full stops, cuts each phrase into near-equal pages (six
+  words burned in, eight in the .srt) and folds a lone word into its neighbour. The
+  portrait render was redone after the change. The shorts are untouched.
+- R4: `out/mirror-walkthrough-narrated.mp4` is deleted — its composition no longer exists,
+  and `out/mirror-walkthrough.mp4` is now the narrated landscape cut.
+- R3, open question for the review: the portrait layout leaves the bottom 380px empty on
+  purpose (the feeds draw their captions, names and buttons there), which reads as a gap
+  when the video is watched outside a feed.
 
 - T4/T13: the Logcat lines are written, not transcribed. The recording never opens Logcat
   (7:53 shows the Shell panel, 8:05 Devices). Tags are real CTRLbot IoT classes

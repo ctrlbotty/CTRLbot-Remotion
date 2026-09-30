@@ -1,15 +1,21 @@
 // Burned-in captions for a narrated walkthrough's portrait render.
 //
-// The same treatment as a short's (src/shorts/Short.tsx): a few words at a time, the word
+// The same look as a short's (src/shorts/Short.tsx): a few words at a time, the word
 // being spoken in the accent. Feeds autoplay muted and platform auto-captions misspell
 // CTRLbot, so the portrait cut carries its own. The landscape cut does not — YouTube takes
 // the .srt from `npm run narration:srt`, and the frame is kept for the step text.
+//
+// Paged by `captionPages`, not by time: a walkthrough's narration keeps its natural pauses,
+// and time-based paging left single words ("and") flashing up between them.
 
-import {createTikTokStyleCaptions} from '@remotion/captions';
 import {useMemo} from 'react';
 import {Interactive, Sequence, useCurrentFrame, useVideoConfig} from 'remotion';
+import {captionPages} from '../audio/narrationCaptions';
 import {color, font} from '../design/theme';
-import {splitAtPauses, type CaptionWord} from '../shorts/shortsData';
+import type {CaptionWord} from '../shorts/shortsData';
+
+/** Two lines at 52px across the 868px safe width. */
+const WORDS_PER_PAGE = 6;
 
 export const NarrationCaptions = ({
   captions,
@@ -23,13 +29,7 @@ export const NarrationCaptions = ({
 }) => {
   const {fps} = useVideoConfig();
   const frame = useCurrentFrame();
-  const pages = useMemo(
-    () =>
-      splitAtPauses(captions).flatMap(
-        (run) => createTikTokStyleCaptions({captions: run, combineTokensWithinMilliseconds: 1200}).pages,
-      ),
-    [captions],
-  );
+  const pages = useMemo(() => captionPages(captions, WORDS_PER_PAGE), [captions]);
   const nowMs = (frame / fps) * 1000;
 
   return (
@@ -37,8 +37,7 @@ export const NarrationCaptions = ({
       {pages.map((page, index) => {
         const from = Math.round((page.startMs / 1000) * fps);
         const nextStart = pages[index + 1]?.startMs ?? Infinity;
-        const lastWord = page.tokens[page.tokens.length - 1]?.toMs ?? page.startMs + page.durationMs;
-        const until = Math.min(nextStart, lastWord + 350);
+        const until = Math.min(nextStart, page.words[page.words.length - 1].endMs + 350);
         const duration = Math.max(1, Math.round((until / 1000) * fps) - from);
         return (
           <Sequence key={index} from={from} durationInFrames={duration} layout="none" name={`Caption ${index + 1}`}>
@@ -63,9 +62,9 @@ export const NarrationCaptions = ({
               }}
             >
               <div>
-                {page.tokens.map((token, i) => (
-                  <span key={i} style={{color: nowMs >= token.fromMs && nowMs < token.toMs ? color.accent : color.text}}>
-                    {token.text}
+                {page.words.map((word, i) => (
+                  <span key={i} style={{color: nowMs >= word.startMs && nowMs < word.endMs ? color.accent : color.text}}>
+                    {i === 0 ? word.text.trimStart() : word.text}
                   </span>
                 ))}
               </div>

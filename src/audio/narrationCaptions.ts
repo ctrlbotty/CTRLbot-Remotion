@@ -9,19 +9,23 @@
 import type {CaptionWord} from '../shorts/shortsData';
 import type {NarrationClip} from './NarrationTrack';
 
-/** A clip often starts mid-sentence in the recording ("but what we also…"). */
 const capitalise = (text: string) => text.replace(/^(\s*)(\S)/, (_, space: string, first: string) => space + first.toUpperCase());
 
 /**
  * Every word whose midpoint falls inside a clip's source range, shifted to where that clip
  * plays. `words` is an ingest's `captions.json`. Whisper's word times run slightly early,
  * which is harmless in a caption and is why these are never used as cut points.
+ *
+ * A clip often starts mid-sentence in the recording ("but what we also…"), so its first
+ * word is capitalised when the edit puts it after a full stop, or first. After a comma the
+ * sentence carries on, as in "…called CTRLbot Mirror, a way to mirror…".
  */
 export const captionsFromClips = (
   clips: readonly NarrationClip[],
   words: readonly CaptionWord[],
 ): CaptionWord[] =>
-  clips
+  [...clips]
+    .sort((a, b) => a.at - b.at)
     .flatMap((clip) => {
       const rate = clip.playbackRate ?? 1;
       const place = (sourceMs: number) => (clip.at + (sourceMs / 1000 - clip.sourceStart) / rate) * 1000;
@@ -33,11 +37,68 @@ export const captionsFromClips = (
           return middle >= clip.sourceStart && middle <= clip.sourceEnd;
         })
         .map((word, index) => ({
-          text: index === 0 ? capitalise(word.text) : word.text,
+          first: index === 0,
+          text: word.text,
           startMs: Math.max(clipStartMs, place(word.startMs)),
           endMs: Math.min(clipEndMs, place(word.endMs)),
           timestampMs: word.timestampMs === null ? null : place(word.timestampMs),
           confidence: word.confidence,
         }));
     })
-    .sort((a, b) => a.startMs - b.startMs);
+    .map(({first, ...word}, index, all) =>
+      first && (index === 0 || ENDS_SENTENCE.test(all[index - 1].text.trim()))
+        ? {...word, text: capitalise(word.text)}
+        : word,
+    );
+
+const ENDS_SENTENCE = /[.?!]["')\]]*$/;
+const ENDS_CLAUSE = /[.?!,;:]["')\]]*$/;
+
+/** One caption on screen: a few words, shown from the first word's start. */
+export type CaptionPage = {startMs: number; words: CaptionWord[]};
+
+/**
+ * Captions as pages of at most `maxWords`, broken where the voice and the sentence break.
+ *
+ * Words are split into phrases at every pause longer than `gapMs` and after every comma or
+ * full stop, and each phrase is cut into near-equal pages — so ten words at six a page
+ * read 5/5, never 6/4 across the comma, and thirteen read 5/5/3, never 6/6/1. A lone word
+ * left between two breaks ("…come in and · record it as video") is not a caption: it
+ * joins the phrase it leads into, or, if it closes a clause, the one it finishes.
+ */
+export const captionPages = (words: readonly CaptionWord[], maxWords: number, gapMs = 350): CaptionPage[] => {
+  const runs: CaptionWord[][] = [];
+  for (const word of words) {
+    const current = runs[runs.length - 1];
+    const last = current?.[current.length - 1];
+    if (last && word.startMs - last.endMs <= gapMs && !ENDS_CLAUSE.test(last.text.trim())) current.push(word);
+    else runs.push([word]);
+  }
+
+  const joined: CaptionWord[][] = [];
+  for (let index = 0; index < runs.length; index += 1) {
+    const run = runs[index];
+    const next = runs[index + 1];
+    const previous = joined[joined.length - 1];
+    if (run.length === 1 && next && !ENDS_CLAUSE.test(run[0].text.trim()) && next[0].startMs - run[0].endMs < 1500) {
+      next.unshift(run[0]);
+      continue;
+    }
+    if (run.length === 1 && previous && run[0].startMs - previous[previous.length - 1].endMs < 1500) {
+      previous.push(run[0]);
+      continue;
+    }
+    joined.push(run);
+  }
+
+  return joined.flatMap((run) => {
+    const count = Math.ceil(run.length / maxWords);
+    const size = Math.ceil(run.length / count);
+    const pages: CaptionPage[] = [];
+    for (let start = 0; start < run.length; start += size) {
+      const pageWords = run.slice(start, start + size);
+      pages.push({startMs: pageWords[0].startMs, words: pageWords});
+    }
+    return pages;
+  });
+};
