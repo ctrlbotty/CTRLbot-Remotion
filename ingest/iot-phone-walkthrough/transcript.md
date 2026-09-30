@@ -1,6 +1,6 @@
 # CTRLbot-IoT Phone Walkthrough v1.0.9: transcript
 
-**Status: DRAFT.** Machine transcript from `faster-whisper 1.2.1` `medium.en`, not yet
+**Status: corrected 2026-09-30.** Machine transcript from `faster-whisper 1.2.1` `medium.en`, not yet
 checked against the recording. Correct it by hand against the frames in
 `ingest/iot-phone-walkthrough/contact.html`, then change this line to `Status: corrected <date>`.
 Once corrected it is the script of record, and a re-run of `npm run ingest:recording`
@@ -62,7 +62,7 @@ a polished read.
 | 2:48.2 | in the final unified user interface. |
 | 2:53.5 | And this builds itself. |
 | 2:55.3 | You can come in and you can see that Power On |
-| 2:58.1 | and already has the Epson power light power on command. |
+| 2:58.1 | and already has the Epson PowerLite power on command. |
 | 3:03.7 | And the same with switcher, right? |
 | 3:05.7 | If you haven't added any other switchers, |
 | 3:07.8 | it'll use that Epson as the switcher |

@@ -225,7 +225,7 @@ branch, no worktree.
 
 ### Shared
 
-- [ ] T1: Correct `ingest/iot-phone-walkthrough/transcript.md` against `ingest/iot-phone-walkthrough/contact.html` and mark it `Status: corrected 2026-09-30` — files: ingest/iot-phone-walkthrough/transcript.md
+- [x] T1: Correct `ingest/iot-phone-walkthrough/transcript.md` against `ingest/iot-phone-walkthrough/contact.html` and mark it `Status: corrected 2026-09-30` — files: ingest/iot-phone-walkthrough/transcript.md
   - Product names and terms only: "ControlBot AI" → CTRLbot AI, "RS -232" → RS-232, "Matrox", "IPMX", "Epson PowerLite", and anything else the stills contradict. Keep filler and false starts; change no timestamp; never edit the JSON files.
 - [ ] T2: Raise `social-walkthrough`'s ceiling to 360s, and let `PortraitStage` fit a surface too tall for the width — files: src/destinations.ts, src/marketing/PortraitStage.tsx
   - In `SOCIAL_WALKTHROUGH` set `duration.max` to 360 and say why in its comment: a long tutorial is kept whole, and trimmed cuts for X and Shorts come from the same beats.
