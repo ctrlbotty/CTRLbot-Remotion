@@ -189,9 +189,9 @@ a check failing only in them is a Review note, not a repair. Full renders run on
   - If `AppsPanel` cannot show a row's Uninstall action, add it from Mirror's `AppsPanel.tsx` behind an optional prop. Never highlight a system package.
 - [x] T12: Build the `files` beat in `MirrorBeats.tsx`, the dropped file joining the `/sdcard` list — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx, src/app-ui/mirror/Mirror.tsx
   - `FilesPanel` gains an optional extra file for after the drop; defaults unchanged.
-- [ ] T13: Build the `tools` beat in `MirrorBeats.tsx`: one shell command and its output, then T4's Logcat panel streaming — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx
+- [x] T13: Build the `tools` beat in `MirrorBeats.tsx`: one shell command and its output, then T4's Logcat panel streaming — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx
   - Command `getprop ro.product.model`, output from `MIRROR_DEVICE`. No other device data.
-- [ ] T14: Build the `close` beat in `MirrorBeats.tsx` and its CTRLbot Mirror wordmark in the copy column of `MirrorWalkthrough.tsx` — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx, src/marketing/mirror-walkthrough/MirrorWalkthrough.tsx
+- [x] T14: Build the `close` beat in `MirrorBeats.tsx` and its CTRLbot Mirror wordmark in the copy column of `MirrorWalkthrough.tsx` — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx, src/marketing/mirror-walkthrough/MirrorWalkthrough.tsx
   - Audiowide wordmark `CTRLbot Mirror`, then the line from the Copy table. No URL, no email.
 - [ ] T15: Write the narration edit list from the Narration clips table and register the `mirror-walkthrough-narrated` composition — files: src/marketing/mirror-walkthrough/mirrorWalkthroughNarration.ts, src/marketing/mirror-walkthrough/MirrorWalkthrough.tsx, src/Root.tsx
   - Needs T1. `NarrationTrack` with `playbackRate` 1; each `at` inside its beat; each boundary checked against corrected word times and the waveform. The silent composition stays silent.
@@ -223,6 +223,15 @@ a check failing only in them is a Review note, not a repair. Full renders run on
 ## Review notes
 
 > Appended on PASS WITH NOTES. Not blockers; check these during the contact sheet review.
+
+- T4/T13: the Logcat lines are written, not transcribed. The recording never opens Logcat
+  (7:53 shows the Shell panel, 8:05 Devices). Tags are real CTRLbot IoT classes
+  (`MainActivity`, `ControlUiViewModel`, `DriverAdapter`, `DeviceRepository`,
+  `DriverDatabase`) and "23 device drivers" matches the recording's "23 devices found"; the
+  messages themselves are plausible, not captured.
+- T13/T14 were built and committed together: both live in `MirrorBeats.tsx`.
+- T14: the close's wordmark is `StageCopy`'s Audiowide title, and the brief's line is its
+  Montserrat body.
 
 ## Contact sheet
 

@@ -69,7 +69,10 @@ const CopyTrack = () => (
         >
           <StageCopy
             eyebrow={copy.eyebrow || undefined}
-            title={copy.title}
+            // The close signs off on the product: the wordmark as the headline, the
+            // brief's line under it in Montserrat. No address.
+            title={name === 'close' ? 'CTRLbot Mirror' : copy.title}
+            body={name === 'close' ? copy.line : undefined}
             at={name === 'open' ? -40 : 4}
             until={beat.duration}
           />

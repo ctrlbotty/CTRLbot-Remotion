@@ -4,9 +4,11 @@ import {
   AppsPanel,
   DevicesPanel,
   FilesPanel,
+  LogcatPanel,
   MirrorApp,
   MirrorStage,
   SetupPanel,
+  ShellPanel,
   StudioPanel,
   type Mirrored,
 } from '../../app-ui/mirror/Mirror';
@@ -396,6 +398,72 @@ export const FilesBeat: React.FC<{frame: number; frames: number}> = ({
   );
 };
 
+const SHELL_COMMAND = 'getprop ro.product.model';
+
+/**
+ * Tools beat (9s = 270 frames):
+ * Shell panel runs one command and its output prints; the sidebar moves to
+ * Logcat and log lines stream in.
+ */
+export const ToolsBeat: React.FC<{frame: number; frames: number}> = ({
+  frame,
+  frames,
+}) => {
+  const typed = SHELL_COMMAND.slice(
+    0,
+    Math.round(
+      interpolate(frame, [12, 54], [0, SHELL_COMMAND.length], {
+        extrapolateLeft: 'clamp',
+        extrapolateRight: 'clamp',
+      }),
+    ),
+  );
+  const side =
+    frame < 125 ? (
+      <ShellPanel
+        command={frame >= 12 ? typed : undefined}
+        output={frame >= 66 ? [MIRROR_DEVICE.model.replace('_', '-')] : []}
+      />
+    ) : (
+      <LogcatPanel
+        count={Math.round(
+          interpolate(frame, [135, 255], [0, 12], {
+            extrapolateLeft: 'clamp',
+            extrapolateRight: 'clamp',
+          }),
+        )}
+      />
+    );
+
+  return (
+    <MirrorApp
+      panel={frame < 125 ? 'shell' : 'logcat'}
+      status={`Mirroring ${MIRROR_DEVICE.name}`}
+      hasDevice
+      side={side}
+      stage={<MirrorStage mirrored={catalog(frame, frames)} />}
+    />
+  );
+};
+
+/**
+ * Close beat (12s = 360 frames):
+ * Setup panel with every step ticked beside the live tablet. The copy column
+ * carries the CTRLbot Mirror wordmark (MirrorWalkthrough.tsx).
+ */
+export const CloseBeat: React.FC<{frame: number; frames: number}> = ({
+  frame,
+  frames,
+}) => (
+  <MirrorApp
+    panel="setup"
+    status={`Mirroring ${MIRROR_DEVICE.name}`}
+    hasDevice
+    side={<SetupPanel step={6} />}
+    stage={<MirrorStage mirrored={catalog(frame, frames)} />}
+  />
+);
+
 export const BEAT_RENDERERS: Partial<
   Record<BeatName, React.FC<{frame: number; frames: number}>>
 > = {
@@ -408,4 +476,6 @@ export const BEAT_RENDERERS: Partial<
   capture: CaptureBeat,
   apps: AppsBeat,
   files: FilesBeat,
+  tools: ToolsBeat,
+  close: CloseBeat,
 };
