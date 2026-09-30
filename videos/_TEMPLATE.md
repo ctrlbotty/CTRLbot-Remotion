@@ -8,8 +8,10 @@ destination: play-store-preview
 > Copy this file to `videos/<slug>.md` and replace the content. The example below is a
 > real, valid brief — leave it in place while you read, then overwrite it.
 >
-> Only three things are yours to write: **who is watching**, **the one promise**, and
-> **the beats**. Voice, reading pace, the truth sources every claim is checked against,
+> For a video that starts from an idea, three things are yours to write: **who is
+> watching**, **the one promise**, and **the beats**. For a video built around a real
+> narrated walkthrough, fill in **Narration** too; the recording supplies the beat order
+> and the words. Voice, reading pace, the truth sources every claim is checked against,
 > and the standing CTRLbot prohibitions are constant across every video and live in
 > `docs/VIDEO_WORKFLOW.md`, not here.
 >
@@ -27,6 +29,20 @@ They do not know that a tablet on its own can be the control system.
 
 Turn a phone or tablet into the whole room control system — no processor, no laptop,
 no programmer.
+
+## Narration
+
+> Use `none` for a silent/caption-led cut. Use `source-edit` when Nathan records the app
+> and speaks first, and the motion graphic is built around selected phrases from that
+> same recording. See `docs/NARRATED-WALKTHROUGH.md`.
+
+- Mode: `none`
+- Source recording: — (a file in `video input/`)
+- Ingest: — (`ingest/<slug>/`, from `npm run ingest:recording`; its transcript must be corrected)
+- Prepared audio: — (`public/narration/<slug>/source-normalized.m4a`)
+- Edit list: — (`src/marketing/<cut>/<cut>Narration.ts`)
+- Narrated composition: —
+- Narrated output: —
 
 ## Beats
 

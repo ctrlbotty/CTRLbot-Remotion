@@ -1,0 +1,31 @@
+{
+ "slug": "terminator-walkthrough",
+ "source": {
+  "path": "video input/CTRLbot Terminatior Tutorial.mp4",
+  "bytes": 145168821,
+  "modified": "2026-09-29T13:01:27.261Z",
+  "duration": 519.45,
+  "video": "h264 1460x1080 10fps",
+  "audio": "aac 44100 Hz mono"
+ },
+ "narration": "public/narration/terminator-walkthrough/source-normalized.m4a",
+ "transcript": {
+  "tool": "faster-whisper 1.2.1",
+  "model": "medium.en",
+  "device": "cuda/float16",
+  "seconds": 32.2,
+  "segments": 109
+ },
+ "heard": {
+  "letters": "Xenova/wav2vec2-base-960h (onnxruntime 1.28.0)",
+  "phrases": "medium.en on cuda/float16",
+  "seconds": 194.2,
+  "fillers": 18
+ },
+ "frames": {
+  "count": 48,
+  "rule": "scene > 0.01, at least 3s apart, at least one every 20s",
+  "ffmpeg": "ffmpeg"
+ },
+ "ingested": "2026-09-29T21:51:23.962Z"
+}

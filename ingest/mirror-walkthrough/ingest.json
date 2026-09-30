@@ -1,0 +1,31 @@
+{
+ "slug": "mirror-walkthrough",
+ "source": {
+  "path": "video input/CTRLbot Mirror Tutorial.mp4",
+  "bytes": 328895810,
+  "modified": "2026-09-28T18:36:56.000Z",
+  "duration": 508.75,
+  "video": "h264 1840x1080 10fps",
+  "audio": "aac 44100 Hz mono"
+ },
+ "narration": "public/narration/mirror-walkthrough/source-normalized.m4a",
+ "transcript": {
+  "tool": "faster-whisper 1.2.1",
+  "model": "medium.en",
+  "device": "cpu/int8",
+  "seconds": 184.4,
+  "segments": 114
+ },
+ "heard": {
+  "letters": "Xenova/wav2vec2-base-960h (onnxruntime 1.28.0)",
+  "phrases": "medium.en on cuda/float16",
+  "seconds": 220.2,
+  "fillers": 19
+ },
+ "frames": {
+  "count": 56,
+  "rule": "scene > 0.01, at least 3s apart, at least one every 20s",
+  "ffmpeg": "ffmpeg"
+ },
+ "ingested": "2026-09-29T21:51:24.717Z"
+}

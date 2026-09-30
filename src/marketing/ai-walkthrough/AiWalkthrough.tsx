@@ -1,6 +1,6 @@
 // CTRLbot.AI — the 2-minute walkthrough. 1920x1080, copy left, browser right.
 //
-// Built from the speaker's own recording (docs/AI-WALKTHROUGH-TRANSCRIPT.md), which is
+// Built from the speaker's own recording (ingest/ai-walkthrough/transcript.md), which is
 // why the order of beats is his and not a marketing arc: prompt, quick questions, the
 // targeted question, the reasoning playback, sources, answer, then the three things he
 // calls out at the end — the empty page, the FAQ, and the themes.
@@ -46,6 +46,11 @@ import {WEB_THEME_ORDER, type WebThemeName} from '../../app-ui/web/webTheme';
 import {background, color, font, type} from '../../design/theme';
 import {BrowserFrame, browserHeight} from '../BrowserFrame';
 import {Stage, StageCopy} from '../Stage';
+import {NarrationTrack} from '../../audio/NarrationTrack';
+import {
+  AI_WALKTHROUGH_NARRATION_CLIPS,
+  AI_WALKTHROUGH_NARRATION_SOURCE,
+} from './aiWalkthroughNarration';
 import {
   ANSWER,
   ASSUMPTION,
@@ -468,7 +473,7 @@ const SurfaceTrack = () => {
   );
 };
 
-export const AiWalkthrough = () => {
+export const AiWalkthrough = ({narration = false}: {narration?: boolean}) => {
   const frame = useCurrentFrame();
 
   return (
@@ -502,6 +507,16 @@ export const AiWalkthrough = () => {
     >
       ctrlbot.ai
     </Interactive.Div>
+
+    {narration ? (
+      <NarrationTrack
+        src={AI_WALKTHROUGH_NARRATION_SOURCE}
+        clips={AI_WALKTHROUGH_NARRATION_CLIPS}
+      />
+    ) : null}
   </AbsoluteFill>
   );
 };
+
+/** A separate render target; `AI-Walkthrough` remains silent and unchanged by default. */
+export const AiWalkthroughNarrated = () => <AiWalkthrough narration />;

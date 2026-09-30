@@ -1,7 +1,10 @@
 # CTRLbot Remotion
 
-Motion graphics and training video for CTRLbot IoT, the native Android app in
-[`../CTRLbot-IoT`](../CTRLbot-IoT).
+Motion graphics and training video for the CTRLbot products: CTRLbot IoT, the native
+Android app in [`../../1 - CTRLbot.av/CTRLbot-IoT`](../../1%20-%20CTRLbot.av/CTRLbot-IoT), plus CTRLbot.AI,
+CTRLbot.IO and the two Windows utilities, CTRLbot Mirror and CTRLbot Terminator.
+
+[Roadmap](Roadmap.md) · [Release notes](RELEASE-NOTES.md) · [Agent context](AGENTS.md)
 
 The app's design tokens, fonts and iconography are pulled straight out of its Android
 resources, and its key screens are rebuilt as live React — so the camera can push into a
@@ -17,7 +20,7 @@ npm run sync:tokens
 npm run dev
 ```
 
-`sync:tokens` reads `../CTRLbot-IoT/app/src/main/res`. Point at a different checkout with
+`sync:tokens` reads `../../1 - CTRLbot.av/CTRLbot-IoT/app/src/main/res`. Point at a different checkout with
 `npm run sync:tokens -- ../path/to/CTRLbot-IoT`.
 
 ## Making a new video
@@ -38,23 +41,74 @@ The gates are calibrated against the cuts in `out/` — two approved, one reject
 their thresholds are measurements, not preferences. `npm run video:lint:selftest` proves
 they still tell those cuts apart.
 
+### Narrated walkthroughs
+
+Most videos now start from Nathan demonstrating a product in his own voice. The recording
+goes in `video input/`, one command turns it into everything the cut is built from, and
+[docs/NARRATED-WALKTHROUGH.md](docs/NARRATED-WALKTHROUGH.md) covers the rest.
+
+```bash
+npm run ingest:recording -- --list
+npm run ingest:recording -- mirror-walkthrough "CTRLbot Mirror Tutorial.mp4"
+```
+
+That writes a polished voice track to `public/narration/<slug>/`, and to `ingest/<slug>/` a
+word-timed transcript, captions, a record of every sound including the ums and repeats
+Whisper leaves out, and a contact sheet with a still at every screen change beside what was
+being said. The recording itself is never touched. The transcript starts as a draft; correct
+it against the contact sheet, then build the brief and the voice edit from it. Silent and
+narrated compositions render to separate files:
+
+```bash
+npm run narration:check -- out/<slug>-narrated.mp4
+```
+
+The two recordings in `video input/` today, CTRLbot Mirror and CTRLbot Terminator, are
+already ingested.
+
+### Shorts
+
+Every 30-second short is one entry in `src/shorts/shortsData.ts`: the product, a one to
+three word title, the one idea, a few beats of footage, a render, a motion graphic or a
+still, and the narration cut from an ingested recording. One command does the rest:
+
+```bash
+npm run shorts -- list
+npm run shorts -- all S02
+```
+
+That cuts the beats into `public/shorts/S02/`, cuts the narration into one cleaned track
+beside them, writes the brief the gates read, renders `out/shorts/S02.mp4` with its narration
+and burned-in captions, and writes a publishing kit (poster, captions file, title,
+description, tags) to `out/shorts/S02/`. Vertical for phone footage and general graphics,
+landscape for tablet footage.
+
+The narration cut (`scripts/lib/voice.mjs`) finds each line's words in the waveform and cuts
+in the silence around them, so no word loses its last syllable; takes out ums, repeated
+words and false starts; shortens long pauses; and times the captions from the result. The
+build log lists everything it removed.
+
 ## Compositions
 
-| Composition | Format | Status |
-|---|---:|---|
-| `First-Run-Phone` | 1080×1920, 120s | Complete; Review 13 is the current cut |
-| `First-Run-Tablet` | 1920×1200, 120s | Complete; Review 08 is the current cut |
-| `V1-Play-Store-Promo` | 1920×1080, 26s | First cut through the assembly line; archived reference |
+| Folder in Studio | Compositions | Format |
+|---|---|---|
+| Shorts | `Short-S02`, `Short-S03`, one per entry in `src/shorts/shortsData.ts` | 1080x1920 or 1920x1080, 30s, narrated with captions |
+| First-Run | `First-Run-Phone` (Review 13), `First-Run-Tablet` (Review 08) | 1080x1920 and 1920x1200, 120s, silent and caption-led |
+| CTRLbot-AI | `AI-Walkthrough`, `AI-Walkthrough-Narrated` | 1920x1080, 120s |
+| Device-Database | `device-database` | 1920x1080, 120s |
+| Hub | `hub-30`, `hub-30-square` | THE HUB cell for ctrlbot.io |
+| Web-Loops | `Web-Loop-*` | ctrlbot.io panel loops; render with `npm run loop:render` |
+| Marketing, Marketing-v3 | `Play-Store-EUI-Promo`, `-30`, `-V3`, `-V3-30` | Play Store previews |
+| Marketing-v1 | `V1-Play-Store-Promo` | The first cut through the assembly line; a reference |
+| Scenes-Phone, Scenes-Tablet | `Scene-*` | One per First-Run scene, for retiming in isolation |
+| Surface-Proofs | `Proof-*` | Stills for checking a live surface against the app |
 
-Both first-run form factors have one `Scene-*` composition per scene for retiming and
-keyframing in isolation, plus `Proof-*` stills for checking live surfaces against the app.
+The first run is seven scenes: open, CTRLbot AI, Device, Connect and test, Build the room,
+EUI handoff, close. It is silent and caption-led, because that is how it plays embedded in
+docs and on social.
 
-The first run is seven scenes: open, CTRLbot AI, Device, Connect and test, Build the
-room, EUI handoff, close. It is silent and caption-led — understandable with the sound
-off, because that is how it plays embedded in docs and on social.
-
-Marketing cuts use `<Stage>` — the surface in a panel down one side, copy in a column
-beside it, on the `background.stage` gradient. `<DualStage>` carries two surfaces at once.
+Marketing cuts use `<Stage>`: the surface in a panel down one side, copy in a column beside
+it, on the `background.stage` gradient. `<DualStage>` carries two surfaces at once.
 
 ## Render & Output Directory
 
@@ -76,21 +130,28 @@ npm run still -- Scene-Device out/frame.png --frame=520
 
 ### Output location (`out/`)
 
-* **Video Exports:** All rendered video files (e.g., `out/first-run-phone-review-13.mp4`, `out/master-control-promo.mp4`) are placed here.
+* **Video Exports:** All rendered video files (e.g., `out/first-run-phone-review-13.mp4`) are placed here.
+* **Scratch:** One-off debugging stills go in `out/_scratch/`, not the root of `out/`.
 * **Stills & Proofs:** Image exports, scene previews, and frame proofs (e.g., `out/marketing-contact/`, `out/promo-proof/`) are organized within `out/`.
 * **Git Status:** The `out/` directory and raw video assets are ignored by Git (`.gitignore`).
 
 ## How it fits together
 
 ```text
+video input/              narrated recordings, never modified; archive/ once delivered
+ingest/<slug>/            per recording: transcript.md, words.json, captions.json, heard.json, stills
 videos/
-  _TEMPLATE.md            the brief form — audience, promise, beats
-  <slug>.md               one file per video: brief, tasks, review notes
+  _TEMPLATE.md            the brief form: audience, promise, beats, narration
+  <slug>.md               one file per cut: brief, tasks, review notes
   archive/                briefs that have been run
 scripts/
   video-lint.mjs          structural and copy gates over the source
   video-frames.mjs        brief validation, contact sheet, rendered-frame gates
-  lib/                    tsx-scan (TS compiler API), brief parser, PNG decoder
+  ingest-recording.mjs    recording to transcript, captions, voice track and stills
+  narration.mjs           voice track preparation and the rendered-audio gate
+  shorts.mjs              the shorts production line
+  lib/                    transcribe.py and heard.py (the two listening passes), voice.mjs
+                          (the narration edit), tsx-scan, brief parser, PNG decoder
 src/
   destinations.ts         frame, duration window, safe area and banned phrases per destination
   design/
@@ -146,16 +207,23 @@ written. Reinstall with `npx skills add remotion-dev/skills` (pinned by `skills-
 
 ## Where to pick up
 
-[docs/ROADMAP.md](docs/ROADMAP.md) tracks project state. The tablet implementation notes
-and full-cut frame map are in [docs/TABLET-HANDOFF.md](docs/TABLET-HANDOFF.md).
+[Roadmap.md](Roadmap.md) has the Q4 plan: thirty videos, two a week, with the release
+calendar. [RELEASE-NOTES.md](RELEASE-NOTES.md) has what is already delivered.
+[docs/GOTCHAS.md](docs/GOTCHAS.md) has what has already cost time, and
+[docs/TABLET-HANDOFF.md](docs/TABLET-HANDOFF.md) has the tablet implementation notes and the
+full-cut frame map.
 
 ## Product accuracy
 
-Check copy against [`../CTRLbot-IoT/AGENTS.md`](../CTRLbot-IoT/AGENTS.md), the Android
+Check copy against [`../../1 - CTRLbot.av/CTRLbot-IoT/AGENTS.md`](../../1%20-%20CTRLbot.av/CTRLbot-IoT/AGENTS.md), the Android
 resources, and a current build before publishing. EndPoint switching is deferred and
 hidden; power presets use discrete Power On and Power Off commands; the EUI exits through
 a two-second press-and-hold in the top-left; no credentials or customer identifiers may
 appear.
+
+CTRLbot Mirror and CTRLbot Terminator are checked against their own repositories in
+`C:\0-Repo\Utilities`. Do not say Terminator can be downloaded until its public release
+is verified.
 
 `docs/About_CTRLbot_IoT.md` is synced from the app repo. The July 29 Markdown user manual
 is a useful supporting snapshot, but the Android resources and a current build remain the

@@ -33,7 +33,7 @@ import {
   walk,
 } from './lib/tsx-scan.mjs';
 
-const SCOPE = ['src/scenes', 'src/compositions', 'src/marketing'];
+const SCOPE = ['src/scenes', 'src/compositions', 'src/marketing', 'src/shorts'];
 
 /**
  * The worked failure, kept and unregistered — see docs/VIDEO_WORKFLOW.md.

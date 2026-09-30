@@ -17,7 +17,7 @@ For each pending `- [ ]` task, in order:
    `## Review notes`, stage only the task's authorized files plus the brief, run
    `git diff --cached --check`, commit with a `Tn: ` message, and require a clean
    worktree before continuing.
-4. **On FAIL** — hand the verifier's fix list to a fresh implementer. Up to three
+4. **On FAIL** — hand the verifier's fix list to a fresh implementer. Up to two
    rounds. Still failing after that: mark `[!]`, record the evidence under
    `## Blocked notes`, and stop — later tasks would inherit a broken baseline.
 

@@ -3,9 +3,9 @@
 // Two separate things live here, and the split is the point.
 //
 // `BEATS` and `COPY` are the video. They are written from
-// `docs/AI-WALKTHROUGH-TRANSCRIPT.md` — the speaker's own walkthrough — and checked
+// `ingest/ai-walkthrough/transcript.md` — the speaker's own walkthrough — and checked
 // against the approved claims in
-// `../0 - CTRLbot.ai/ctrlbot.ai/docs/about/About_CTRLbot_AI.md`. Nothing is claimed here
+// `../../0 - CTRLbot.ai/ctrlbot.ai/docs/about/About_CTRLbot_AI.md`. Nothing is claimed here
 // that is not on that document's "safe, current claims" list.
 //
 // `SESSION` is what is on the screen inside the browser, transcribed from the frames of

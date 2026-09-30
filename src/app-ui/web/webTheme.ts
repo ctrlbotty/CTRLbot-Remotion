@@ -1,6 +1,6 @@
 // The six ctrlbot.ai colour themes, transcribed from the site's own custom properties.
 //
-// Source: `../0 - CTRLbot.ai/ctrlbot.ai/public/index.html`, the `body.*-mode` blocks.
+// Source: `../../0 - CTRLbot.ai/ctrlbot.ai/public/index.html`, the `body.*-mode` blocks.
 // These are the site's values verbatim — this file is a mirror, not a design decision, and
 // the same rule that governs `tokens.generated.ts` applies: if the site changes a theme,
 // change it here, never the other way round.

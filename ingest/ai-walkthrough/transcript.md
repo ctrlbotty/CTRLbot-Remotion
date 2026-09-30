@@ -5,7 +5,7 @@ Transcribed 2026-08-13 with `faster-whisper` `medium.en`, VAD-filtered, then cor
 hand against the frames.
 
 **Corrections applied.** The speaker says "control bot" throughout; per the style guide in
-`../0 - CTRLbot.ai/ctrlbot.ai/docs/about/About_CTRLbot_AI.md` that is written **CTRLbot**
+`../../0 - CTRLbot.ai/ctrlbot.ai/docs/about/About_CTRLbot_AI.md` that is written **CTRLbot**
 (pronounced "Control Bot"). Filler repeats and false starts are kept — this is the script
 of record, not a polished read.
 

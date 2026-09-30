@@ -24,12 +24,21 @@ import {
 import {MasterControlCard} from './marketing/eui-promo/MasterControlCard';
 import {EuiPromo, euiPromoDuration} from './marketing/eui-promo/EuiPromo';
 import {EuiPromo as EuiPromoV3, euiPromoDuration as euiPromoV3Duration} from './marketing/eui-promo-v3/EuiPromo';
-import {AiWalkthrough, aiWalkthroughDuration} from './marketing/ai-walkthrough/AiWalkthrough';
+import {
+  AiWalkthrough,
+  AiWalkthroughNarrated,
+  aiWalkthroughDuration,
+} from './marketing/ai-walkthrough/AiWalkthrough';
 import {
   DeviceDatabase,
   deviceDatabaseDuration,
 } from './marketing/device-database/DeviceDatabase';
 import {HubCell, hubCellDuration} from './marketing/hub-cell/HubCell';
+import {Short, assertShortReady} from './shorts/Short';
+import {MirrorAppsProof, MirrorDevicesProof, MirrorFilesProof, MirrorSetupProof, MirrorStudioProof} from './app-ui/mirror/MirrorProofs';
+import {TermRawTcpProof, TermScanProof, TermSerialProof, TermServerProof, TermSshProof} from './app-ui/term/TermProofs';
+import {SHORTS, compositionId, frameSize, shortSeconds} from './shorts/shortsData';
+import {SHORT_EXAMPLE} from './shorts/example';
 import {LoopRoute} from './marketing/web-loops/LoopRoute';
 import {LoopMatrix} from './marketing/web-loops/LoopMatrix';
 import {LoopAudio} from './marketing/web-loops/LoopAudio';
@@ -37,6 +46,10 @@ import {LoopApp} from './marketing/web-loops/LoopApp';
 import {LoopFull} from './marketing/web-loops/LoopFull';
 import {LoopAi, aiLoopDuration} from './marketing/web-loops/LoopAi';
 import {DevicesStill} from './marketing/web-loops/DevicesStill';
+import {
+  ConnectDiagram,
+  connectDiagramDuration,
+} from './marketing/connect-diagram/ConnectDiagram';
 import {
   FULL_LOOP_FRAMES,
   MATRIX_LOOP_FRAMES,
@@ -121,7 +134,42 @@ export const RemotionRoot = () => (
         every other composition here shows. Its surface is a website, so it is framed in a
         browser rather than a bezel, and it is the one cut in this project with no camera
         move in it at all. Built from the walkthrough recording; the script of record is
-        docs/AI-WALKTHROUGH-TRANSCRIPT.md. */}
+        ingest/ai-walkthrough/transcript.md. */}
+    {/* The 30-second shorts. One component, one data entry each, in src/shorts/shortsData.ts.
+        A short whose media has not been built fails here, with the command that builds it. */}
+    <Folder name="Shorts">
+      {SHORTS.map((short) => (
+        <Composition
+          key={short.id}
+          id={compositionId(short)}
+          component={Short}
+          durationInFrames={Math.round(shortSeconds(short) * 30)}
+          fps={30}
+          width={frameSize(short).width}
+          height={frameSize(short).height}
+          defaultProps={{id: short.id}}
+          calculateMetadata={() => {
+            assertShortReady(short);
+            return {};
+          }}
+        />
+      ))}
+      {/* Not a release: the template on live screens, and the entry to copy for a new short. */}
+      <Composition
+        id="Template-Short-Live"
+        component={Short}
+        durationInFrames={Math.round(shortSeconds(SHORT_EXAMPLE) * 30)}
+        fps={30}
+        width={frameSize(SHORT_EXAMPLE).width}
+        height={frameSize(SHORT_EXAMPLE).height}
+        defaultProps={{id: SHORT_EXAMPLE.id, spec: SHORT_EXAMPLE}}
+        calculateMetadata={() => {
+          assertShortReady(SHORT_EXAMPLE);
+          return {};
+        }}
+      />
+    </Folder>
+
     <Folder name="CTRLbot-AI">
       <Composition
         id="AI-Walkthrough"
@@ -131,11 +179,19 @@ export const RemotionRoot = () => (
         width={1920}
         height={1080}
       />
+      <Composition
+        id="AI-Walkthrough-Narrated"
+        component={AiWalkthroughNarrated}
+        durationInFrames={aiWalkthroughDuration}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
     </Folder>
 
     {/* The device database — the tablet setup surface, not the EUI. Built from the
-        walkthrough recording; the script of record is docs/DEVICE-DATABASE-TRANSCRIPT.md
-        and the brief is videos/device-database.md. This is the one marketing cut that
+        walkthrough recording; the script of record is ingest/device-database/transcript.md
+        and the brief is videos/archive/2026-08-14-device-database.md. This is the one marketing cut that
         moves the camera between beats: the things it is about are 13sp, and a 1280dp
         surface in a 1024px panel is 0.8x. */}
     <Folder name="Device-Database">
@@ -157,7 +213,15 @@ export const RemotionRoot = () => (
         component={HubCell}
         durationInFrames={hubCellDuration}
         fps={30}
-        width={1920}
+        width={1600}
+        height={1200}
+      />
+      <Composition
+        id="hub-30-square"
+        component={HubCell}
+        durationInFrames={hubCellDuration}
+        fps={30}
+        width={1200}
         height={1200}
       />
     </Folder>
@@ -234,6 +298,22 @@ export const RemotionRoot = () => (
         height={WEB_LOOP.height}
       />
       <Still id="Web-Devices-Still" component={DevicesStill} width={1200} height={1200} />
+    </Folder>
+
+    {/* The connection mark for ctrlbot.io — the CTRLbot icon with a room wired back to
+        it, 1:1 and black and white, with no copy in the frame at all. It is the one
+        square website render here that is *not* a loop: it builds from an empty frame to
+        an assembled diagram and holds there, so the site plays it once rather than
+        wrapping it. `npm run loop:seam` does not apply. */}
+    <Folder name="Connect-Diagram">
+      <Composition
+        id="Connect-Diagram"
+        component={ConnectDiagram}
+        durationInFrames={connectDiagramDuration}
+        fps={30}
+        width={1200}
+        height={1200}
+      />
     </Folder>
 
     <Folder name="First-Run">
@@ -422,6 +502,18 @@ export const RemotionRoot = () => (
       <Still id="Proof-Tablet-Capture" component={TabletCaptureProof} width={1280} height={800} />
       <Still id="Proof-Phone-CTRLbot" component={PhoneCtrlbotProof} width={360} height={780} />
       <Still id="Proof-Tablet-CTRLbot" component={TabletCtrlbotProof} width={1280} height={800} />
+      {/* CTRLbot Terminator, the Windows utility: CSS pixels, its own Tailwind palette. */}
+      <Still id="Proof-Term-Scan" component={TermScanProof} width={1280} height={800} />
+      <Still id="Proof-Term-Server" component={TermServerProof} width={1280} height={800} />
+      <Still id="Proof-Term-RawTcp" component={TermRawTcpProof} width={1280} height={800} />
+      <Still id="Proof-Term-Serial" component={TermSerialProof} width={1280} height={800} />
+      <Still id="Proof-Term-Ssh" component={TermSshProof} width={1280} height={800} />
+      {/* CTRLbot Mirror, the Windows utility: CSS pixels, its own Tailwind palette. */}
+      <Still id="Proof-Mirror-Setup" component={MirrorSetupProof} width={1600} height={940} />
+      <Still id="Proof-Mirror-Devices" component={MirrorDevicesProof} width={1600} height={940} />
+      <Still id="Proof-Mirror-Studio" component={MirrorStudioProof} width={1600} height={940} />
+      <Still id="Proof-Mirror-Apps" component={MirrorAppsProof} width={1600} height={940} />
+      <Still id="Proof-Mirror-Files" component={MirrorFilesProof} width={1600} height={940} />
       <Still id="Brand-Background-Phone" component={BrandBackground} width={1080} height={1920} />
       <Still id="Brand-Background-Landscape" component={BrandBackground} width={1920} height={1080} />
       <Still id="Proof-Stage" component={StageProof} width={1920} height={1080} />

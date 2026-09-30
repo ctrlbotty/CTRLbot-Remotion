@@ -91,7 +91,17 @@ Drivers contain the control language and capability information for supported eq
 
 The built-in terminal shows sent data and device responses. Installers can verify a connection and its commands before relying on presets or the end-user interface.
 
-### 5. Local-first privacy
+### 6. The room stays yours after handoff
+
+The person who inherits the room — the local IT admin or AV tech — is not locked out of it. They go
+back into setup themselves, use the device remote pages as tech pages, and swap out or upgrade
+equipment as it fails. **No drama chasing down proprietary programming, and no call back to the
+integrator.** They own the space and they own the control.
+
+This is the independence argument, and it is the difference between owning a room and renting
+access to it.
+
+### 7. Local-first privacy
 
 Room configuration is stored on the Android device, credentials are encrypted locally, and device-control traffic goes directly to the addresses configured by the user. CTRLbot IoT does not add analytics, user tracking, or advertising.
 
@@ -463,6 +473,14 @@ The catalog snapshot generated July 21, 2026 contains 73 manufacturers, 124 driv
 - Write **RS-232**, **AV-over-IP**, **Power On**, and **Power Off**.
 - Prefer **configure** or **set up** over **program** for general audiences. “Program the room” is acceptable in integrator-focused content.
 - Avoid alternating among “CTRLbot,” “ControlBot,” and “CTRL bot.” Use **CTRLbot** consistently.
+
+- **Never use CTRLbot AI's vocabulary.** The app connects, tests, sends, routes, generates,
+  configures and hands over. It does **not** ask, answer, assume, narrow, diagnose or interrogate —
+  those are the assistant's verbs. A device **responds**; the terminal shows **sent and received**
+  data. The app never "finds" or "discovers" equipment; the installer adds it.
+- **Generated is a starting point, never a lock.** Presets, switching, audio and the EUI are built
+  from the configured equipment, and every one of them can be reviewed, reordered and changed. Copy
+  must never read as "it decides for you."
 
 ## Internal technical reference
 

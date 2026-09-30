@@ -6,7 +6,7 @@
 //
 //   node scripts/sync-app-tokens.mjs [pathToAppRepo]
 //
-// Default app repo: ../CTRLbot-IoT (override with CTRLBOT_APP_DIR or the CLI argument).
+// Default app repo: ../../1 - CTRLbot.av/CTRLbot-IoT (override with CTRLBOT_APP_DIR or the CLI argument).
 
 import {existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync, copyFileSync} from 'node:fs';
 import {dirname, join, resolve} from 'node:path';
@@ -17,13 +17,13 @@ const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 const appRoot = resolve(
   projectRoot,
-  process.argv[2] ?? process.env.CTRLBOT_APP_DIR ?? '../CTRLbot-IoT',
+  process.argv[2] ?? process.env.CTRLBOT_APP_DIR ?? '../../1 - CTRLbot.av/CTRLbot-IoT',
 );
 const resDir = join(appRoot, 'app/src/main/res');
 
 if (!existsSync(resDir)) {
   console.error(`Android resources not found at ${resDir}`);
-  console.error('Pass the app repo path: node scripts/sync-app-tokens.mjs ../CTRLbot-IoT');
+  console.error('Pass the app repo path: node scripts/sync-app-tokens.mjs ../../1 - CTRLbot.av/CTRLbot-IoT');
   process.exit(1);
 }
 

@@ -40,28 +40,43 @@ import {background} from '../../design/theme';
 /**
  * Geometry and length, shared by all three.
  *
- * **The frame is 16:10, and that is a legibility decision rather than a taste one.** The
- * app surface is 1280x800, so in a 16:9 frame an aspect-matched panel can only ever be
- * as wide as the frame's *height* allows — the first cut of these loops carried a 1120px
- * screen inside 1920, spending 42% of the frame on gradient either side of it. Matching
- * the frame to the surface lets the same panel be 1376px wide at its widest and 1728px
- * at its closest, which is 23% to 54% more pixels across the interface before a single
- * encoder setting changes. Text in the panel was soft because it was small, not because
- * it was compressed.
+ * **The frame is 4:3, because that is the shape of the cell it plays in.** On ctrlbot.io
+ * the loop sits in `.loop-board .unit > .media`, which is `aspect-ratio: 4/3` carrying an
+ * `object-fit: cover` video — so a render wider than the cell is not letterboxed, it is
+ * cut, and it is cut from the sides. The 16:10 version this replaces was 1920x1200 shown
+ * through a 1600-wide window: 160px off each edge, straight through the source column on
+ * the left and the power control on the right. Rendering the shape of the cell is the
+ * only way the framing decided here is the framing anybody sees.
  *
- * `ROADMAP.md` reaches the same conclusion for the tablet training cut, and for the same
- * reason. 1920x1200 is exactly 1.5x the viewport.
+ * The frame is still a whole multiple of nothing in particular and that is fine — what
+ * matters is that 1200 tall leaves the 800dp surface upscaled at every point of the push.
  */
 export const WEB_LOOP = {
   /** 10s at 30fps. `WEBSITE_PANEL_LOOP.duration.target`. */
   frames: 300,
   bezel: 22,
-  /** 16:10, matching the surface. See above. */
-  width: 1920,
+  /** 4:3 */
+  width: 1600,
   height: 1200,
-  /** Panel screen height at the two ends of the push. */
-  panelWide: 860,
-  panelClose: 1080,
+  /**
+   * Panel screen height at the two ends of the push.
+   *
+   * These are height numbers that are really width numbers. The panel is aspect-matched
+   * to the 1280x800 surface, so a 4:3 frame runs out of width long before it runs out of
+   * height: at `panelClose` the panel is 1468 wide inside 1600 and 934 tall inside 1200 —
+   * 66px of air down each side against 133 above and below. **The side margin at the
+   * close end is what sets both numbers**, and it is the one that goes negative without
+   * announcing itself. 980 here put the panel at 1612 in a 1600 frame, which spent the
+   * end of the matrix beat — the switching, the thing the copy beside it is describing —
+   * with its bezel off the edge on both sides.
+   *
+   * The push is shallower than it was at 16:10 (860 -> 1080, +25.6%) because the close
+   * end is now bounded by the frame rather than by taste. Lowering `panelWide` to buy the
+   * amplitude back is available and was tried at 730: it opens the loop on a panel that
+   * reads as small in the cell, and the push is not what the loop is for.
+   */
+  panelWide: 780,
+  panelClose: 890,
 } as const;
 
 /**
@@ -269,7 +284,7 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
     {
       at: 0,
       title: 'MANY TO MANY',
-      thought: 'MATRIX MODE THE RED PILL',
+      thought: 'FULL MATRIX MODE ROUTING',
       body:
         'Pick the source on the left, then a display or displays on the right. ' +
         'Route a source to one or more destinations.',
@@ -328,7 +343,7 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
     {
       at: 0.376744,
       title: 'MANY TO MANY',
-      thought: 'MATRIX MODE THE RED PILL',
+      thought: 'FULL MATRIX MODE ROUTING',
       body:
         'Pick the source on the left, then a display or displays on the right. ' +
         'Route a source to one or more destinations.',
@@ -371,16 +386,16 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
   // returns the page to the state it opened on. Nothing had to be invented to close it.
   //
   // Claims are checked against the approved list in
-  // `../0 - CTRLbot.ai/ctrlbot.ai/docs/about/About_CTRLbot_AI.md`. "Three real sources",
+  // `../../0 - CTRLbot.ai/ctrlbot.ai/docs/about/About_CTRLbot_AI.md`. "Three real sources",
   // "no login", and "nothing is saved" are all on it verbatim.
   ai: [
     {
       at: 0,
       title: 'THE AI',
-      thought: 'SAY WHAT IS BROKEN, IN PLAIN WORDS',
+      thought: 'BREAK. ASK. FIX. SOLVE IT.',
       body:
-        'Type the problem into one box on an empty page. There is no sign-in, no ' +
-        'sidebar, and nothing else to read first.',
+        'You enter a problem, bug, issue about anything tech, health or home and it ' +
+        'asks before it really answers. Because the best answers come from the right questions.',
     },
     {
       at: 0.18,
@@ -413,6 +428,86 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
       body:
         'Press the reset and everything clears back to an empty page. There is no ' +
         'account, no history, and nothing left to delete.',
+    },
+  ],
+  // One block per beat, including `close`. The `at` values are each beat's `from` over
+  // `HUB_FRAMES` in `../hub-cell/hubCellData.ts` — retime the cut and these have to move
+  // with it.
+  //
+  // **Every block is at or under four words a second of its beat.** That is the whole
+  // reason the cut is 48 seconds rather than 34: the panel is read, and at five words a
+  // second the blocks were turning over before they could be finished. Lengthening a body
+  // here means lengthening its beat there, or it stops being readable again.
+  //
+  // `End Point` is two words, here as everywhere, because that is what the app's own sort
+  // dropdown says. `RS-232` carries its hyphen for the same reason.
+  hub: [
+    {
+      at: 0,
+      title: 'DEVICE DATABASE',
+      thought: 'ALL MAJOR MANUFACTURERS',
+      body:
+        'A huge database of most Pro AV manufacturers and their devices, with links ' +
+        'out to their home and product pages.',
+    },
+    {
+      at: 0.125,
+      title: 'CONTROL DRIVERS',
+      thought: 'PROJECTORS DISPLAYS SWITCHERS END POINTS',
+      body:
+        'Hundreds of devices and thousands of commands make up a database that is ' +
+        'growing exponentially.',
+    },
+    {
+      at: 0.229167,
+      title: 'THE MANUAL',
+      thought: 'EACH DRIVER IS ALSO A CHEAT SHEET',
+      body:
+        'Every driver carries its exact description and setup instructions right ' +
+        'in the interface. You no longer have to hunt for PDFs or remember specific requirements.',
+    },
+    {
+      at: 0.375,
+      title: 'CONNECTION',
+      thought: 'EVERYTHING YOU NEED TO CONNECT',
+      body:
+        'The database carries the specific connection details for every model. It ' +
+        'covers IP, RS-232 and IR, with the ports and parameters already filled in.',
+    },
+    {
+      at: 0.510417,
+      title: 'THE API',
+      thought: 'EVERY COMMAND IT TAKES',
+      body:
+        'Every command the device answers to, with the exact payload that goes down ' +
+        'the wire. Encoding and line endings come set, so nothing is hand-typed.',
+    },
+    {
+      at: 0.65625,
+      // Not "THE CONNECTION": the block four beats earlier is titled CONNECTION and is
+      // about what the driver *states*. This one is about the connection being *made*.
+      title: 'LIVE CONNECTION',
+      thought: 'GIVE IT AN ADDRESS AND CONNECT',
+      body:
+        'Add the device, type the address it sits at, and connect. Protocol, port, ' +
+        'encoding and line ending all come from the driver.',
+    },
+    {
+      at: 0.791667,
+      title: 'THE TERMINAL',
+      thought: 'SEND A COMMAND AND WATCH IT LAND',
+      body:
+        'Send a command from the same screen and the log shows exactly what went out. ' +
+        'A real device sends its feedback straight back.',
+    },
+    {
+      // The loop's return. It gets a block because the picture changes here — the
+      // connection screen closes and the catalog is back — and a panel still describing
+      // the terminal over a picture of the list reads as a bug.
+      at: 0.916667,
+      title: 'THE HUB',
+      thought: 'AND HUNDREDS MORE LIKE IT',
+      body: 'That was one driver. Every one in the list opens the same way.',
     },
   ],
 };

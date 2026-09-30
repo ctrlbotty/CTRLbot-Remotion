@@ -1,6 +1,8 @@
 # CTRLbot Remotion — Contributor Context
 
-Motion graphics and training video for the native Android app in `../CTRLbot-IoT`.
+Motion graphics and training video for the CTRLbot products: the Android app in
+`../../1 - CTRLbot.av/CTRLbot-IoT` first, then CTRLbot.AI, CTRLbot.IO, CTRLbot Mirror and CTRLbot Terminator.
+Open work is in `Roadmap.md`; what is delivered is in `RELEASE-NOTES.md`.
 
 ## Commands
 
@@ -10,6 +12,12 @@ npm run sync:tokens    # pull design tokens, fonts and icons from the app repo
 npm run dev            # Remotion Studio
 npm run check          # tsc --noEmit + composition list
 npm run video:lint     # the anti-slop gate — run this before reporting done
+npm run ingest:recording -- --list                     # recordings in video input/
+npm run ingest:recording -- <slug> "<file name>.mp4"   # transcript, voice, stills
+npm run shorts -- list                                 # every 30-second short
+npm run shorts -- all S05                              # build, brief, render, kit
+npm run narration:prepare -- <slug> "C:\path\to\walkthrough.mp4"
+npm run narration:check -- out/<slug>-narrated.mp4
 npm run loop:render    # the web loops — 2x supersampled, see below. NOT `npm run render`
 npm run loop:seam -- out/web/eui-loop-route-v2.mp4    # the loop gate
 npm run loop:copy -- <path.json>                      # hand the copy timings to the site
@@ -44,6 +52,14 @@ Do not start a composition from a prompt. **[docs/VIDEO_WORKFLOW.md](docs/VIDEO_
 is the contract**: a brief from `videos/_TEMPLATE.md`, decomposed into atomic tasks by
 `/video-prep`, run one at a time with a gate between each.
 
+When the input is Nathan's narrated app demonstration, read
+`docs/NARRATED-WALKTHROUGH.md` too. The recording in `video input/` is ingested once with
+`npm run ingest:recording`, which writes `ingest/<slug>/`: a word-timed transcript, captions
+and a contact sheet of every screen change. The recording supplies the spoken performance
+and beat order; the motion graphic uses a non-destructive edit of that narration, with
+separate silent and narrated compositions. A `Status: DRAFT` transcript is corrected against
+the contact sheet before any beat is cut from it.
+
 `npm run video:lint` and `npm run video:frames` enforce mechanically what
 `docs/AUTHORING.md` describes in prose. Their thresholds are measured against the
 approved First-Run cuts and the rejected Master Control promo — never tune one to make
@@ -54,7 +70,7 @@ Read it before writing a marketing scene.
 
 ## The app is the source of truth
 
-`npm run sync:tokens` reads `../CTRLbot-IoT/app/src/main/res` and writes:
+`npm run sync:tokens` reads `../../1 - CTRLbot.av/CTRLbot-IoT/app/src/main/res` and writes:
 
 - `src/design/tokens.generated.ts` — every color, dimen, text style and shape
 - `public/fonts/` — Montserrat (UI) and Audiowide (wordmark), the app's own files
@@ -86,7 +102,8 @@ Point at a different checkout with `npm run sync:tokens -- ../path/to/CTRLbot-Io
   level; name the specific one when the cut is about it, so an app video closes on
   `CTRLbot IoT`. Lowercase `ctrlbot.ai` and `ctrlbot.io` are **addresses** and nothing
   else — a lowercase domain in the corner of a cut about the app names a different
-  product, which is exactly the mistake it looks like.
+  product, which is exactly the mistake it looks like. The two companion Windows
+  utilities are always named in full: **CTRLbot Mirror** and **CTRLbot Terminator**.
 - Keep composition metadata (`width`, `height`, `fps`, `defaultProps`) inline on
   `<Composition>`, with no type assertions.
 - Run `npm run check` after changes, and render a still when layout moves.
@@ -105,9 +122,38 @@ src/
   marketing/    Stage and DualStage — the landscape promo layouts
                 web-loops/ — the ctrlbot.io panel loops, which are not cuts
   compositions/ FirstRun.tsx — the cut
-videos/         one markdown brief per video; _TEMPLATE.md to start
-scripts/        video-lint, video-frames, loop-seam — the gates; loop-render, loop-copy
+videos/         one markdown brief per cut; _TEMPLATE.md to start; archive/ once delivered
+video input/    narrated recordings, never modified; archive/ once every cut is delivered
+ingest/         one folder per recording: transcript.md, words.json, captions.json, heard.json
+                (every sound, ums and repeats included), stills
+src/shorts/     the 30-second shorts: shortsData.ts (one entry each) and Short.tsx
+scripts/        video-lint, video-frames, loop-seam — the gates; loop-render, loop-copy;
+                ingest-recording and narration — the recording pipeline;
+                lib/voice.mjs — the narration edit the shorts are cut with
 ```
+
+## Shorts are data
+
+Every 30-second short is one entry in `src/shorts/shortsData.ts`, rendered by one
+component, `src/shorts/Short.tsx`: a hook with the one idea settled at frame 0, proof beats
+pushed into by the house camera, burned-in captions, and a sign-off naming the product.
+A beat's source is an ingested recording, a render in `out/`, a motion graphic or a still;
+`npm run shorts -- build` cuts each beat into `public/shorts/<id>/` and writes
+`shorts.generated.ts`. Never edit that file, and never play footage straight from
+`video input/`.
+
+The build also cuts the narration, into one track per short (`scripts/lib/voice.mjs`).
+A clip's range only picks its words; the build cuts in the real silence around them, never
+on Whisper's word times, which run early and clip the last syllable. It takes out the ums,
+repeats and false starts that `ingest/<slug>/heard.json` found (Whisper hides them), and
+shortens pauses to 0.5s after a sentence, 0.3s after a comma, 0.2s mid-phrase and 0.1s
+after "the" or "a". Its log names everything it removed. `verbatim: true` on a clip keeps
+every sound and pause. The captions are timed from the same edit.
+
+A new short is a new entry, then `npm run shorts -- all <id>`, which builds, writes the
+brief the gates read (`videos/short-<id>.md`), renders `out/shorts/<id>.mp4` and writes
+its publishing kit. Vertical (`social-short`) for phone footage and general graphics;
+landscape (`social-short-landscape`) for tablet footage.
 
 ## Web loops are not cuts
 
@@ -162,7 +208,7 @@ push-in onto a single control possible, and it is why regions are expressed in t
 same units as the Android layout.
 
 `src/scenes/EuiHandoff.tsx` is the reference implementation — read it before adding a
-scene. `docs/ROADMAP.md` has project state and gotchas; `docs/TABLET-HANDOFF.md` is the
+scene. `docs/GOTCHAS.md` has what has already cost time; `docs/TABLET-HANDOFF.md` is the
 tablet build brief.
 
 ## CTRLbot.AI is a second product
@@ -178,7 +224,7 @@ breaks two rules the rest of this repo lives by, deliberately:
   `public/index.html` the way `tokens.generated.ts` mirrors the Android resources. The
   video's own copy column stays on the house faces.
 
-The truth sources are `../0 - CTRLbot.ai/ctrlbot.ai/public/index.html` for the interface
+The truth sources are `../../0 - CTRLbot.ai/ctrlbot.ai/public/index.html` for the interface
 and `docs/about/About_CTRLbot_AI.md` in that repo for every claim — it carries an approved-
 claims list, and a promo may not go past it. Write the name `CTRLbot.AI` for the assistant,
 `CTRLbot` for the platform, and `ctrlbot.ai` only as the address.
@@ -198,7 +244,7 @@ can lean much harder on the camera. Use `frameWidth(center, width)` to state a s
 
 ## Product accuracy
 
-Check copy against `../CTRLbot-IoT/AGENTS.md`, the Android resources, and a current
+Check copy against `../../1 - CTRLbot.av/CTRLbot-IoT/AGENTS.md`, the Android resources, and a current
 build before publishing. In particular:
 
 - EndPoint switching is deferred and hidden; do not train users to select it.
@@ -207,9 +253,32 @@ build before publishing. In particular:
 - The EUI exits through a two-second press-and-hold in the top-left.
 - No credentials, customer identifiers, or public addresses in captures or props.
 
+CTRLbot Mirror and CTRLbot Terminator are checked against their own repositories,
+`C:\0-Repo\Utilities\CTRLbot-Mirror` and `C:\0-Repo\Utilities\CTRLbot Term`, and against
+the public-claims rules in the ctrlbot.io README. Mirror has a public release; do not say
+Terminator can be downloaded until its public release is verified.
+
 ## Licensing
 
 Remotion is source-available and free for individuals and for-profit organizations up
 to three people, plus non-profits and evaluation. Larger for-profit organizations need
 a company license. Confirm before commercial production:
 <https://github.com/remotion-dev/remotion/blob/main/LICENSE.md>
+
+## Execution profile
+
+Machine-read by `$architect` / `/architect` and `$executable-handoff` / `/executable-handoff`.
+Field order is fixed. This block is the execution authority for this repository and does not
+apply to any other. It summarizes `docs/VIDEO_WORKFLOW.md`, which remains the detailed
+contract for the assembly line.
+
+- **Plan home:** `videos/<slug>.md`, one brief per cut, from `videos/_TEMPLATE.md`. A narrated cut names its recording's folder in `ingest/`
+- **Task granularity:** one sentence naming its files, 1 to 3 files, independently renderable. Syntax: `- [ ]` pending, `- [x]` verified and committed, `- [!]` blocked
+- **Direction gate:** no. Nathan's gate is the contact sheet at `out/<slug>/contact.html` once every task is `[x]`, then the render
+- **Verifier:** an independent `beat-verifier` per task (`.claude/agents/beat-verifier.md`), tuned lenient, that runs the gates and looks at the rendered still. Two repair rounds, then `[!]` and stop
+- **Per-task check:** `npm run check`, `npm run video:lint`, and `npm run video:frames -- <slug> contact --beat=<beat>`, then the still held against that beat's evidence line
+- **Feature check:** `npm run video:lint -- --destination=<destination>`, `npm run video:frames -- <slug> contact`, the render, and `npm run video:frames -- <slug> check out/<slug>.mp4`. A narrated cut adds `npm run narration:check -- out/<slug>-narrated.mp4`
+- **Local run:** `npm run dev` for Remotion Studio, and the contact sheet in a browser
+- **Deploy path:** none from a run. The deliverable is the render in `out/`. Publishing to YouTube, the social feeds, the Play Store listing or ctrlbot.io is a separate step, and ctrlbot.io loops follow that repository's `docs/MOTION-PIPELINE.md`
+- **Close out:** archive the brief as `videos/archive/<date>-<slug>.md` with a row in that README, add the cut to `RELEASE-NOTES.md`, and remove it from `Roadmap.md`. Move a recording to `video input/archive/` once every cut planned from it is delivered
+- **Executor:** Gemini 3.8 Flash, High reasoning. It has to be able to look at a rendered still, because the verifier's verdict depends on it

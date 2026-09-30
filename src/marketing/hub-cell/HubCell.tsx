@@ -1,8 +1,13 @@
-// THE HUB — the device database as a 30-second, full-bleed ctrlbot.io media cell.
+// THE HUB — the device database as a 34-second, full-bleed ctrlbot.io media cell.
 //
 // This is a loop, not a cut. The site plays it silently beside HTML copy, so it carries
 // no Stage, panel, gradient, product label, or copy column. The final beat returns the
 // catalog to the same unselected, top-of-list state shown at frame 0.
+//
+// The cut runs the database end to end: the library, the types, and then one driver's
+// manual, connection and API — followed by making the connection and sending commands
+// down it. `connect` and `terminal` are the same two screens `DeviceDatabase.tsx` uses at
+// `connect` and `test`, on the same data, compressed to five and four and a half seconds.
 
 import type {ReactNode} from 'react';
 import {AbsoluteFill, Easing, Interactive, interpolate, useCurrentFrame} from 'remotion';
@@ -11,20 +16,28 @@ import {
   Accordion,
   CommandCard,
   CommandsBar,
+  ConnectionLog,
+  ConnectionSummary,
   ControlInfo,
   DeviceInfo,
+  DriverConnection,
   DriverDetail,
+  IpTransportRow,
   ModelRow,
+  SendRow,
 } from '../../app-ui/DriverDatabase';
 import {TABLET_VIEWPORT} from '../../app-ui/viewports';
 import {Camera, frameWidth, type Shot} from '../../camera/Camera';
 import {color} from '../../design/theme';
 import {
   EPSON_COMMANDS,
+  EPSON_CONNECTION,
   EPSON_DESCRIPTION,
   EPSON_INDEX,
+  EPSON_LOG,
   EPSON_PORT,
   EPSON_SETUP,
+  HOST,
   IP_DRIVERS,
   LINE_ENDING_OPTIONS,
   SORT_OPTIONS,
@@ -40,14 +53,21 @@ export const hubCellDuration = HUB_FRAMES;
  * Types starts at the rail/list boundary so the list's 12dp inset becomes the margin.
  * The three evidence close-ups use the detail pane from x=630 to x=1280, where its own
  * 30dp padding keeps every label and control off the frame edge.
+ *
+ * `connect` and `terminal` pull back to 1192 — the whole content area, 88 to 1280 — for
+ * the reason `DeviceDatabase.tsx` gives at the same two beats: Configure Connection's
+ * transport row is genuinely 1160dp from the protocol dropdown to the connect button, and
+ * the connect button is the evidence. Cropping it tighter crops the payoff out.
  */
 const FRAMING: Record<BeatName, {x: number; y: number; width: number}> = {
-  library: {x: 640, y: 400, width: 1372},
-  types: {x: 600, y: 250, width: 800},
+  library: {x: 384, y: 240, width: 768},
+  types: {x: 384, y: 240, width: 768},
   manual: {x: 955, y: 280, width: 650},
   connection: {x: 955, y: 280, width: 650},
   api: {x: 955, y: 280, width: 650},
-  close: {x: 640, y: 400, width: 1372},
+  connect: {x: 684, y: 372, width: 1192},
+  terminal: {x: 684, y: 372, width: 1192},
+  close: {x: 384, y: 240, width: 768},
 };
 
 const BEAT_NAMES = Object.keys(BEATS) as BeatName[];
@@ -90,6 +110,18 @@ const fade = (frame: number, at: number, length = 14) =>
     extrapolateRight: 'clamp',
   });
 
+/** The address, one character at a time — the only thing in the cut that is typed. */
+const typed = (local: number, text: string, at: number, over: number) =>
+  text.slice(
+    0,
+    Math.floor(
+      interpolate(local, [at, at + over], [0, text.length], {
+        extrapolateLeft: 'clamp',
+        extrapolateRight: 'clamp',
+      }),
+    ),
+  );
+
 const Arrive = ({
   name,
   frame,
@@ -113,7 +145,10 @@ const LibraryBeat = ({frame}: {frame: number}) => (
     device="tablet"
     drivers={IP_DRIVERS}
     background={SETUP_BACKGROUND}
-    listScroll={scroll(frame - BEATS.library.from - 115, 55, 0, 134)}
+    // Held, then 100 frames to travel what used to take 55. The manufacturer names are
+    // the evidence of this beat and a list moving faster than they can be read proves
+    // nothing about how much is in it.
+    listScroll={scroll(frame - BEATS.library.from - 60, 100, 0, 134)}
   />
 );
 
@@ -126,7 +161,7 @@ const TypesBeat = ({frame}: {frame: number}) => {
       background={SETUP_BACKGROUND}
       emphasizeTypes
       listScroll={134}
-      openMenu={local >= 18 ? {control: 'sort', items: SORT_OPTIONS} : undefined}
+      openMenu={local >= 24 ? {control: 'sort', items: SORT_OPTIONS} : undefined}
     />
   );
 };
@@ -149,28 +184,31 @@ const DetailBeat = ({scroll: paneScroll, children}: {scroll: number; children: R
 const ManualBeat = ({frame}: {frame: number}) => {
   const local = frame - BEATS.manual.from;
   return (
-    <DetailBeat scroll={scroll(local, 150, -8, 146)}>
+    // 200 frames of travel, and the four Setup paragraphs 22 apart rather than 14. This
+    // beat is nothing but prose — the description and the manufacturer's own setup text —
+    // so it is the one that punishes a fast pane hardest.
+    <DetailBeat scroll={scroll(local, 200, -8, 146)}>
       <ModelRow model="PowerLite" />
       <Arrive name="Epson description" frame={local} at={0} distance={8}>
         <DeviceInfo>{EPSON_DESCRIPTION}</DeviceInfo>
       </Arrive>
-      <Arrive name="Specs heading" frame={local} at={28} distance={8}>
+      <Arrive name="Specs heading" frame={local} at={34} distance={8}>
         <Accordion label="Specs" />
       </Arrive>
-      <Arrive name="Setup documentation" frame={local} at={42} distance={8}>
+      <Arrive name="Setup documentation" frame={local} at={52} distance={8}>
         <Accordion label="Setup" open>
           {EPSON_SETUP.map((paragraph, index) => (
             <Interactive.Div
               key={paragraph}
               name={`Setup paragraph ${index + 1}`}
-              style={rise(local, 48 + index * 14, 8)}
+              style={rise(local, 60 + index * 22, 8)}
             >
               {paragraph}
             </Interactive.Div>
           ))}
         </Accordion>
       </Arrive>
-      <Arrive name="Support heading" frame={local} at={96} distance={8}>
+      <Arrive name="Support heading" frame={local} at={160} distance={8}>
         <Accordion label="Support" />
       </Arrive>
     </DetailBeat>
@@ -180,12 +218,15 @@ const ManualBeat = ({frame}: {frame: number}) => {
 const ConnectionBeat = ({frame}: {frame: number}) => {
   const local = frame - BEATS.connection.from;
   return (
-    <DetailBeat scroll={scroll(local, 120, -8, 30)}>
+    <DetailBeat scroll={scroll(local, 180, -8, 30)}>
+      {/* A row every 22 frames rather than every 14, so all six are in by frame 120 with
+          75 left to read them. Each row is a label and a value and there is no second
+          chance at one that has already been replaced by the next. */}
       <ControlInfo
         controlType="IP"
         ipType="TCP"
         port={EPSON_PORT}
-        show={Math.min(6, Math.max(0, Math.floor((local - 6) / 14) + 1))}
+        show={Math.min(6, Math.max(0, Math.floor((local - 10) / 22) + 1))}
       />
     </DetailBeat>
   );
@@ -194,17 +235,19 @@ const ConnectionBeat = ({frame}: {frame: number}) => {
 const ApiBeat = ({frame}: {frame: number}) => {
   const local = frame - BEATS.api.from;
   return (
-    <DetailBeat scroll={scroll(local, 120, -6, 34)}>
+    <DetailBeat scroll={scroll(local, 195, -6, 34)}>
+      {/* The menu opens at 100 and stays open for the last 110 frames. Four line endings
+          rendered as escape sequences are the slowest thing in the cut to read. */}
       <CommandsBar
         encoding="ASCII"
         lineEnding="CR (\r)"
-        menu={local >= 72 ? LINE_ENDING_OPTIONS : undefined}
+        menu={local >= 100 ? LINE_ENDING_OPTIONS : undefined}
       />
       {EPSON_COMMANDS.slice(0, 3).map((command, index) => (
         <Interactive.Div
           key={command.key}
           name={`Command — ${command.key}`}
-          style={rise(local, 6 + index * 18, 10)}
+          style={rise(local, 8 + index * 28, 10)}
         >
           <CommandCard command={command} />
         </Interactive.Div>
@@ -213,12 +256,155 @@ const ApiBeat = ({frame}: {frame: number}) => {
   );
 };
 
+/**
+ * Configure Connection, from empty to answering.
+ *
+ * The 2-minute cut's `connect` beat, at 150 frames instead of 330. The order is the
+ * recording's and does not change: the form opens already knowing the protocol, the port,
+ * the encoding and the line ending; only the address is typed; the button becomes
+ * DISCONNECT; the log says the device is there. Three command rows rather than two,
+ * because two leave the bottom third of the panel empty under a one-line log — see the
+ * note on `ConnectBeat` in `DeviceDatabase.tsx`, which is where that number was settled.
+ */
+const ConnectBeat = ({frame}: {frame: number}) => {
+  const local = frame - BEATS.connect.from;
+  const connected = local >= 130;
+  return (
+    <DriverConnection
+      name={EPSON_CONNECTION}
+      saved={local >= 100}
+      scroll={scroll(local, 210, 0, 30)}
+      transport={
+        // 70 frames to type twelve characters, finishing at 90, and the button does not
+        // flip until 130. The address and the CONNECT IP beside it are both readable for
+        // a beat and a half before either changes.
+        <IpTransportRow
+          host={typed(local, HOST, 20, 70)}
+          port={EPSON_PORT}
+          action={connected ? 'DISCONNECT' : 'CONNECT IP'}
+        />
+      }
+    >
+      <ConnectionSummary
+        manufacturer="EPSON"
+        model="EPSON Projectors"
+        category="Projectors"
+        transport={[
+          {label: 'Authentication:', value: 'No'},
+          {label: 'Encoding:', value: 'ASCII'},
+          {label: 'Line Ending:', value: 'CR'},
+        ]}
+      />
+      <div style={{marginTop: 16}}>
+        {EPSON_COMMANDS.slice(0, 3).map((command, index) => (
+          <Arrive
+            key={command.key}
+            name={`Send row — ${command.key}`}
+            frame={local}
+            at={8 + index * 22}
+            distance={8}
+          >
+            <SendRow label={command.label} payload={command.payload} />
+          </Arrive>
+        ))}
+      </div>
+      <Arrive name="Connection log" frame={local} at={140} distance={10}>
+        <ConnectionLog lines={EPSON_LOG.slice(0, 1)} />
+      </Arrive>
+    </DriverConnection>
+  );
+};
+
+/**
+ * Which row is pressed when, and therefore which line the log gains.
+ *
+ * The three the recording sends — POWER ON, VOLUME DOWN, MUTE TOGGLE — and their order
+ * here has to match `EPSON_LOG`, because the log is what the viewer reads the payload
+ * off. Held 16 frames apiece: long enough to read as a button going down, short enough
+ * that two are never down at once.
+ *
+ * 54 frames apart rather than 38, and the last one lands at 146 of 180 — the log's final
+ * line gets a full second on screen before the beat ends, which it did not have before.
+ */
+const SENDS = [
+  {row: 0, at: 24},
+  {row: 4, at: 78},
+  {row: 5, at: 132},
+] as const;
+const SEND_HELD = 16;
+
+/**
+ * The same screen, scrolled to the commands, with three of them sent on camera.
+ *
+ * `DeviceDatabase.tsx`'s `test` drops the summary and renders the rows alone. That works
+ * in a 680px panel and does not work here: the shot is 745dp tall, six rows and a
+ * three-line log are about 590, and the difference is a dead band across the bottom
+ * fifth of the frame — the same failure its `ConnectBeat` comment describes with two
+ * command rows. Keeping the summary and scrolling up through it is also what the screen
+ * actually does, since this is `connect`'s screen a few seconds later.
+ */
+const TerminalBeat = ({frame}: {frame: number}) => {
+  const local = frame - BEATS.terminal.from;
+  const landed = SENDS.filter((send) => local >= send.at + 14).length;
+  return (
+    <DriverConnection
+      name={EPSON_CONNECTION}
+      saved
+      // Settles in the first 60 frames and then holds, rather than drifting for the whole
+      // beat: the log has to be on camera before the first SEND lands, not after it.
+      scroll={scroll(local, 60, 40, 105)}
+      transport={<IpTransportRow host={HOST} port={EPSON_PORT} action="DISCONNECT" />}
+    >
+      {/* No Volume Set or Switcher Config here, where `connect` has both. Six command
+          rows are 324dp against that beat's three, and with the variable blocks as well
+          the screen is taller than the shot — which puts the log, the one thing this
+          beat is about, below the bottom edge for all of it. */}
+      <ConnectionSummary
+        manufacturer="EPSON"
+        model="EPSON Projectors"
+        category="Projectors"
+        variables={false}
+        transport={[
+          {label: 'Authentication:', value: 'No'},
+          {label: 'Encoding:', value: 'ASCII'},
+          {label: 'Line Ending:', value: 'CR'},
+        ]}
+      />
+      <div style={{marginTop: 14}}>
+        {EPSON_COMMANDS.slice(0, 6).map((command, index) => (
+          <SendRow
+            key={command.key}
+            label={command.label}
+            payload={command.payload}
+            sent={SENDS.some(
+              (send) => send.row === index && local >= send.at && local < send.at + SEND_HELD,
+            )}
+          />
+        ))}
+      </div>
+      <ConnectionLog lines={EPSON_LOG.slice(0, 1 + landed)} />
+    </DriverConnection>
+  );
+};
+
+/**
+ * The return, and the reason it exists.
+ *
+ * The loop wraps here, so the last frame has to be `library`'s frame 0: the list at rest,
+ * scrolled to the top, nothing selected. The scroll lands by frame 70 of 120 so nothing
+ * is still easing when `loop:seam` compares the two ends, and the 50 frames after it are
+ * the still picture the seam is measured on.
+ *
+ * **It has its own copy block**, unlike the 34-second cut, where it had none and the
+ * panel went on saying THE TERMINAL over a picture of the catalog. A block that does not
+ * describe what is on screen is worse than a short beat.
+ */
 const CloseBeat = ({frame}: {frame: number}) => (
   <DriverCatalog
     device="tablet"
     drivers={IP_DRIVERS}
     background={SETUP_BACKGROUND}
-    listScroll={scroll(frame - BEATS.close.from, 40, 134, 0)}
+    listScroll={scroll(frame - BEATS.close.from, 70, 134, 0)}
   />
 );
 
@@ -229,7 +415,9 @@ const SurfaceTrack = () => {
     if (frame < BEATS.manual.from) return <TypesBeat frame={frame} />;
     if (frame < BEATS.connection.from) return <ManualBeat frame={frame} />;
     if (frame < BEATS.api.from) return <ConnectionBeat frame={frame} />;
-    if (frame < BEATS.close.from) return <ApiBeat frame={frame} />;
+    if (frame < BEATS.connect.from) return <ApiBeat frame={frame} />;
+    if (frame < BEATS.terminal.from) return <ConnectBeat frame={frame} />;
+    if (frame < BEATS.close.from) return <TerminalBeat frame={frame} />;
     return <CloseBeat frame={frame} />;
   })();
 
@@ -240,12 +428,8 @@ const SurfaceTrack = () => {
 };
 
 export const HubCell = () => (
-  <AbsoluteFill style={{backgroundColor: color.void}}>
-    <Camera
-      contentSize={TABLET_VIEWPORT}
-      shots={SHOTS}
-      viewport={{width: 1920, height: 1200}}
-    >
+  <AbsoluteFill style={{background: SETUP_BACKGROUND}}>
+    <Camera contentSize={TABLET_VIEWPORT} shots={SHOTS}>
       <SurfaceTrack />
     </Camera>
   </AbsoluteFill>

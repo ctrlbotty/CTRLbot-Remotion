@@ -1,6 +1,6 @@
 // CTRLbot — the device database, in two minutes. 1920x1080, copy left, tablet right.
 //
-// Built from the speaker's own recording (docs/DEVICE-DATABASE-TRANSCRIPT.md), which is
+// Built from the speaker's own recording (ingest/device-database/transcript.md), which is
 // why the order is his: the library, what a driver contains, connecting one, and only
 // then the End Point that gets a serial device onto the network. He states the transport
 // claim at 0:33 and demonstrates it at 3:39, and everything between is the driver.

@@ -75,4 +75,4 @@ The guardrails above still apply to any copy that touches the subject.
 where to get help, not a second look at a notice they have already dismissed.
 
 The editorial guardrails, approved sources and product claims in the sections above
-remain in force. See [ROADMAP.md](ROADMAP.md) for outstanding work.
+remain in force. See [Roadmap.md](../Roadmap.md) for outstanding work.

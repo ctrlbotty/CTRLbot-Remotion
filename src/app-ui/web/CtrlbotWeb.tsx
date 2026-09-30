@@ -6,7 +6,7 @@
 // web page opens on a blank prompt with nothing beside it.
 //
 // Every number below is the site's own, read out of
-// `../0 - CTRLbot.ai/ctrlbot.ai/public/index.html`. `rem` values are resolved at the
+// `../../0 - CTRLbot.ai/ctrlbot.ai/public/index.html`. `rem` values are resolved at the
 // browser default of 16px and left as the arithmetic that produced them, so a change to
 // the stylesheet can be checked against this file line for line. Nothing is scaled here —
 // `BrowserFrame` scales the whole plane once.

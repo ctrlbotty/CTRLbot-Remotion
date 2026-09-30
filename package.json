@@ -2,7 +2,7 @@
   "name": "ctrlbot-remotion",
   "version": "0.1.0",
   "private": true,
-  "description": "Programmatic training videos and motion graphics for CTRLbot IoT.",
+  "description": "Programmatic training videos and motion graphics for the CTRLbot products.",
   "scripts": {
     "dev": "remotion studio src/index.ts",
     "check": "tsc --noEmit && remotion compositions src/index.ts",
@@ -11,6 +11,10 @@
     "render": "remotion render src/index.ts",
     "still": "remotion still src/index.ts",
     "ingest:captures": "node scripts/ingest-captures.mjs",
+    "ingest:recording": "node scripts/ingest-recording.mjs",
+    "shorts": "node scripts/shorts.mjs",
+    "narration:prepare": "node scripts/narration.mjs prepare",
+    "narration:check": "node scripts/narration.mjs check",
     "video:lint": "node scripts/video-lint.mjs",
     "video:lint:selftest": "node scripts/video-lint.mjs --selftest",
     "video:frames": "node scripts/video-frames.mjs",
@@ -19,11 +23,13 @@
     "loop:render": "node scripts/loop-render.mjs"
   },
   "dependencies": {
+    "@remotion/captions": "4.0.500",
     "@remotion/cli": "4.0.500",
     "@remotion/fonts": "4.0.500",
     "@remotion/google-fonts": "4.0.500",
     "@remotion/media": "4.0.500",
     "@remotion/transitions": "4.0.500",
+    "lucide-react": "1.27.0",
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "remotion": "4.0.500",

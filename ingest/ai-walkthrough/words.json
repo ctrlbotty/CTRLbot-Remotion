@@ -1,0 +1,3847 @@
+{
+ "tool": "faster-whisper 1.2.1",
+ "model": "medium.en",
+ "device": "cuda/float16",
+ "settings": "language=en beam_size=5 vad_filter word_timestamps condition_on_previous_text=False, product vocabulary as initial_prompt",
+ "source": "public/narration/ai-walkthrough/source-normalized.m4a",
+ "duration": 262.66,
+ "seconds": 21.4,
+ "segments": [
+  {
+   "start": 0.62,
+   "end": 9.12,
+   "text": "Welcome to CTRLbot.AI, the AI chatbot that asks questions first and assumes later.",
+   "words": [
+    {
+     "text": " Welcome",
+     "start": 0.62,
+     "end": 1.32,
+     "p": 0.596
+    },
+    {
+     "text": " to",
+     "start": 1.32,
+     "end": 1.72,
+     "p": 0.991
+    },
+    {
+     "text": " CTRLbot",
+     "start": 1.72,
+     "end": 2.28,
+     "p": 0.125
+    },
+    {
+     "text": ".AI,",
+     "start": 2.28,
+     "end": 2.76,
+     "p": 0.236
+    },
+    {
+     "text": " the",
+     "start": 3.92,
+     "end": 4.22,
+     "p": 0.987
+    },
+    {
+     "text": " AI",
+     "start": 4.22,
+     "end": 4.94,
+     "p": 0.993
+    },
+    {
+     "text": " chatbot",
+     "start": 4.94,
+     "end": 5.42,
+     "p": 0.877
+    },
+    {
+     "text": " that",
+     "start": 5.42,
+     "end": 5.66,
+     "p": 0.997
+    },
+    {
+     "text": " asks",
+     "start": 5.66,
+     "end": 5.88,
+     "p": 0.991
+    },
+    {
+     "text": " questions",
+     "start": 5.88,
+     "end": 6.38,
+     "p": 0.992
+    },
+    {
+     "text": " first",
+     "start": 6.38,
+     "end": 6.94,
+     "p": 0.999
+    },
+    {
+     "text": " and",
+     "start": 6.94,
+     "end": 7.58,
+     "p": 0.869
+    },
+    {
+     "text": " assumes",
+     "start": 7.58,
+     "end": 8.12,
+     "p": 0.995
+    },
+    {
+     "text": " later.",
+     "start": 8.12,
+     "end": 9.12,
+     "p": 0.996
+    }
+   ]
+  },
+  {
+   "start": 10.08,
+   "end": 23.06,
+   "text": "This is how it works. You put in a problem you're having, and it'll try and troubleshoot that problem and give you the best answer possible by asking you a series of questions.",
+   "words": [
+    {
+     "text": " This",
+     "start": 10.08,
+     "end": 10.56,
+     "p": 0.978
+    },
+    {
+     "text": " is",
+     "start": 10.56,
+     "end": 10.72,
+     "p": 0.999
+    },
+    {
+     "text": " how",
+     "start": 10.72,
+     "end": 10.88,
+     "p": 1.0
+    },
+    {
+     "text": " it",
+     "start": 10.88,
+     "end": 11.02,
+     "p": 0.998
+    },
+    {
+     "text": " works.",
+     "start": 11.02,
+     "end": 11.36,
+     "p": 0.999
+    },
+    {
+     "text": " You",
+     "start": 12.66,
+     "end": 12.88,
+     "p": 0.976
+    },
+    {
+     "text": " put",
+     "start": 12.88,
+     "end": 13.12,
+     "p": 0.991
+    },
+    {
+     "text": " in",
+     "start": 13.12,
+     "end": 13.38,
+     "p": 0.996
+    },
+    {
+     "text": " a",
+     "start": 13.38,
+     "end": 13.88,
+     "p": 0.999
+    },
+    {
+     "text": " problem",
+     "start": 13.88,
+     "end": 14.22,
+     "p": 0.999
+    },
+    {
+     "text": " you're",
+     "start": 14.22,
+     "end": 14.46,
+     "p": 0.994
+    },
+    {
+     "text": " having,",
+     "start": 14.46,
+     "end": 14.92,
+     "p": 1.0
+    },
+    {
+     "text": " and",
+     "start": 14.92,
+     "end": 15.92,
+     "p": 0.997
+    },
+    {
+     "text": " it'll",
+     "start": 15.92,
+     "end": 17.62,
+     "p": 0.989
+    },
+    {
+     "text": " try",
+     "start": 17.62,
+     "end": 17.88,
+     "p": 0.976
+    },
+    {
+     "text": " and",
+     "start": 17.88,
+     "end": 18.14,
+     "p": 0.991
+    },
+    {
+     "text": " troubleshoot",
+     "start": 18.14,
+     "end": 18.64,
+     "p": 0.999
+    },
+    {
+     "text": " that",
+     "start": 18.64,
+     "end": 18.92,
+     "p": 0.999
+    },
+    {
+     "text": " problem",
+     "start": 18.92,
+     "end": 19.4,
+     "p": 1.0
+    },
+    {
+     "text": " and",
+     "start": 19.4,
+     "end": 19.84,
+     "p": 0.866
+    },
+    {
+     "text": " give",
+     "start": 19.84,
+     "end": 19.98,
+     "p": 1.0
+    },
+    {
+     "text": " you",
+     "start": 19.98,
+     "end": 20.08,
+     "p": 0.999
+    },
+    {
+     "text": " the",
+     "start": 20.08,
+     "end": 20.28,
+     "p": 0.999
+    },
+    {
+     "text": " best",
+     "start": 20.28,
+     "end": 20.42,
+     "p": 1.0
+    },
+    {
+     "text": " answer",
+     "start": 20.42,
+     "end": 20.8,
+     "p": 0.996
+    },
+    {
+     "text": " possible",
+     "start": 20.8,
+     "end": 21.34,
+     "p": 0.997
+    },
+    {
+     "text": " by",
+     "start": 21.34,
+     "end": 21.56,
+     "p": 0.981
+    },
+    {
+     "text": " asking",
+     "start": 21.56,
+     "end": 21.92,
+     "p": 0.998
+    },
+    {
+     "text": " you",
+     "start": 21.92,
+     "end": 22.02,
+     "p": 0.761
+    },
+    {
+     "text": " a",
+     "start": 22.02,
+     "end": 22.18,
+     "p": 0.998
+    },
+    {
+     "text": " series",
+     "start": 22.18,
+     "end": 22.38,
+     "p": 0.999
+    },
+    {
+     "text": " of",
+     "start": 22.38,
+     "end": 22.6,
+     "p": 0.999
+    },
+    {
+     "text": " questions.",
+     "start": 22.6,
+     "end": 23.06,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 25.18,
+   "end": 34.24,
+   "text": "I broke my phone. Great. It's experiencing a hardware failure or something, then asks you",
+   "words": [
+    {
+     "text": " I",
+     "start": 25.18,
+     "end": 25.82,
+     "p": 0.373
+    },
+    {
+     "text": " broke",
+     "start": 25.82,
+     "end": 26.46,
+     "p": 0.967
+    },
+    {
+     "text": " my",
+     "start": 26.46,
+     "end": 27.54,
+     "p": 0.985
+    },
+    {
+     "text": " phone.",
+     "start": 27.54,
+     "end": 27.98,
+     "p": 0.998
+    },
+    {
+     "text": " Great.",
+     "start": 30.32,
+     "end": 30.46,
+     "p": 0.974
+    },
+    {
+     "text": " It's",
+     "start": 31.56,
+     "end": 31.68,
+     "p": 0.87
+    },
+    {
+     "text": " experiencing",
+     "start": 31.68,
+     "end": 32.14,
+     "p": 0.986
+    },
+    {
+     "text": " a",
+     "start": 32.14,
+     "end": 32.34,
+     "p": 0.938
+    },
+    {
+     "text": " hardware",
+     "start": 32.34,
+     "end": 32.58,
+     "p": 0.998
+    },
+    {
+     "text": " failure",
+     "start": 32.58,
+     "end": 32.88,
+     "p": 0.995
+    },
+    {
+     "text": " or",
+     "start": 32.88,
+     "end": 33.06,
+     "p": 0.94
+    },
+    {
+     "text": " something,",
+     "start": 33.06,
+     "end": 33.58,
+     "p": 1.0
+    },
+    {
+     "text": " then",
+     "start": 33.76,
+     "end": 33.96,
+     "p": 0.85
+    },
+    {
+     "text": " asks",
+     "start": 33.96,
+     "end": 34.1,
+     "p": 0.607
+    },
+    {
+     "text": " you",
+     "start": 34.1,
+     "end": 34.24,
+     "p": 0.996
+    }
+   ]
+  },
+  {
+   "start": 34.24,
+   "end": 42.92,
+   "text": "some questions. Yes, I cracked it. Did I break it myself? No. Is it old? Yes. Is your phone too old?",
+   "words": [
+    {
+     "text": " some",
+     "start": 34.24,
+     "end": 34.4,
+     "p": 0.997
+    },
+    {
+     "text": " questions.",
+     "start": 34.4,
+     "end": 34.76,
+     "p": 0.998
+    },
+    {
+     "text": " Yes,",
+     "start": 34.82,
+     "end": 35.06,
+     "p": 0.959
+    },
+    {
+     "text": " I",
+     "start": 35.1,
+     "end": 35.32,
+     "p": 0.995
+    },
+    {
+     "text": " cracked",
+     "start": 35.32,
+     "end": 35.68,
+     "p": 0.998
+    },
+    {
+     "text": " it.",
+     "start": 35.68,
+     "end": 36.38,
+     "p": 0.999
+    },
+    {
+     "text": " Did",
+     "start": 37.06,
+     "end": 37.18,
+     "p": 0.967
+    },
+    {
+     "text": " I",
+     "start": 37.18,
+     "end": 37.3,
+     "p": 0.935
+    },
+    {
+     "text": " break",
+     "start": 37.3,
+     "end": 37.42,
+     "p": 0.997
+    },
+    {
+     "text": " it",
+     "start": 37.42,
+     "end": 37.54,
+     "p": 0.997
+    },
+    {
+     "text": " myself?",
+     "start": 37.54,
+     "end": 37.88,
+     "p": 0.993
+    },
+    {
+     "text": " No.",
+     "start": 37.88,
+     "end": 38.44,
+     "p": 0.994
+    },
+    {
+     "text": " Is",
+     "start": 38.66,
+     "end": 38.76,
+     "p": 0.977
+    },
+    {
+     "text": " it",
+     "start": 38.76,
+     "end": 38.9,
+     "p": 0.819
+    },
+    {
+     "text": " old?",
+     "start": 38.9,
+     "end": 39.56,
+     "p": 0.75
+    },
+    {
+     "text": " Yes.",
+     "start": 39.74,
+     "end": 40.12,
+     "p": 0.992
+    },
+    {
+     "text": " Is",
+     "start": 41.28,
+     "end": 41.92,
+     "p": 0.912
+    },
+    {
+     "text": " your",
+     "start": 41.92,
+     "end": 42.08,
+     "p": 0.994
+    },
+    {
+     "text": " phone",
+     "start": 42.08,
+     "end": 42.34,
+     "p": 1.0
+    },
+    {
+     "text": " too",
+     "start": 42.34,
+     "end": 42.58,
+     "p": 0.986
+    },
+    {
+     "text": " old?",
+     "start": 42.58,
+     "end": 42.92,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 43.24,
+   "end": 52.0,
+   "text": "No. These answers then go in and make the the next assumption better, right? You're asking about it,",
+   "words": [
+    {
+     "text": " No.",
+     "start": 43.24,
+     "end": 43.48,
+     "p": 0.997
+    },
+    {
+     "text": " These",
+     "start": 44.54,
+     "end": 44.92,
+     "p": 0.99
+    },
+    {
+     "text": " answers",
+     "start": 44.92,
+     "end": 45.58,
+     "p": 0.96
+    },
+    {
+     "text": " then",
+     "start": 45.58,
+     "end": 45.9,
+     "p": 0.979
+    },
+    {
+     "text": " go",
+     "start": 45.9,
+     "end": 46.16,
+     "p": 0.996
+    },
+    {
+     "text": " in",
+     "start": 46.16,
+     "end": 46.54,
+     "p": 0.999
+    },
+    {
+     "text": " and",
+     "start": 46.54,
+     "end": 46.96,
+     "p": 0.969
+    },
+    {
+     "text": " make",
+     "start": 46.96,
+     "end": 47.36,
+     "p": 0.998
+    },
+    {
+     "text": " the",
+     "start": 47.36,
+     "end": 48.04,
+     "p": 0.999
+    },
+    {
+     "text": " the",
+     "start": 48.04,
+     "end": 48.14,
+     "p": 0.257
+    },
+    {
+     "text": " next",
+     "start": 48.14,
+     "end": 48.34,
+     "p": 0.973
+    },
+    {
+     "text": " assumption",
+     "start": 48.34,
+     "end": 48.8,
+     "p": 0.999
+    },
+    {
+     "text": " better,",
+     "start": 48.8,
+     "end": 49.28,
+     "p": 0.997
+    },
+    {
+     "text": " right?",
+     "start": 49.46,
+     "end": 49.96,
+     "p": 0.992
+    },
+    {
+     "text": " You're",
+     "start": 50.7,
+     "end": 51.12,
+     "p": 0.925
+    },
+    {
+     "text": " asking",
+     "start": 51.12,
+     "end": 51.34,
+     "p": 0.976
+    },
+    {
+     "text": " about",
+     "start": 51.34,
+     "end": 51.58,
+     "p": 0.987
+    },
+    {
+     "text": " it,",
+     "start": 51.58,
+     "end": 52.0,
+     "p": 0.6
+    }
+   ]
+  },
+  {
+   "start": 52.0,
+   "end": 55.08,
+   "text": "and it gives you a snarky reply, right?",
+   "words": [
+    {
+     "text": " and",
+     "start": 52.0,
+     "end": 52.52,
+     "p": 0.528
+    },
+    {
+     "text": " it",
+     "start": 52.52,
+     "end": 52.84,
+     "p": 0.991
+    },
+    {
+     "text": " gives",
+     "start": 52.84,
+     "end": 53.12,
+     "p": 0.987
+    },
+    {
+     "text": " you",
+     "start": 53.12,
+     "end": 53.34,
+     "p": 0.999
+    },
+    {
+     "text": " a",
+     "start": 53.34,
+     "end": 53.64,
+     "p": 0.998
+    },
+    {
+     "text": " snarky",
+     "start": 53.64,
+     "end": 54.18,
+     "p": 0.999
+    },
+    {
+     "text": " reply,",
+     "start": 54.18,
+     "end": 54.62,
+     "p": 0.998
+    },
+    {
+     "text": " right?",
+     "start": 55.08,
+     "end": 55.08,
+     "p": 0.958
+    }
+   ]
+  },
+  {
+   "start": 55.34,
+   "end": 57.26,
+   "text": "There's some snark here, right?",
+   "words": [
+    {
+     "text": " There's",
+     "start": 55.34,
+     "end": 55.92,
+     "p": 0.968
+    },
+    {
+     "text": " some",
+     "start": 55.92,
+     "end": 56.06,
+     "p": 0.999
+    },
+    {
+     "text": " snark",
+     "start": 56.06,
+     "end": 56.46,
+     "p": 0.997
+    },
+    {
+     "text": " here,",
+     "start": 56.46,
+     "end": 56.84,
+     "p": 0.996
+    },
+    {
+     "text": " right?",
+     "start": 56.84,
+     "end": 57.26,
+     "p": 0.979
+    }
+   ]
+  },
+  {
+   "start": 57.54,
+   "end": 62.44,
+   "text": "And this is because it's not trying",
+   "words": [
+    {
+     "text": " And",
+     "start": 57.54,
+     "end": 57.56,
+     "p": 0.773
+    },
+    {
+     "text": " this",
+     "start": 57.56,
+     "end": 57.92,
+     "p": 0.506
+    },
+    {
+     "text": " is",
+     "start": 57.92,
+     "end": 58.46,
+     "p": 0.997
+    },
+    {
+     "text": " because",
+     "start": 58.46,
+     "end": 59.1,
+     "p": 0.945
+    },
+    {
+     "text": " it's",
+     "start": 59.1,
+     "end": 61.46,
+     "p": 0.984
+    },
+    {
+     "text": " not",
+     "start": 61.46,
+     "end": 61.64,
+     "p": 0.953
+    },
+    {
+     "text": " trying",
+     "start": 61.64,
+     "end": 62.44,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 63.04,
+   "end": 66.0,
+   "text": "to make you feel better about anything,",
+   "words": [
+    {
+     "text": " to",
+     "start": 63.04,
+     "end": 63.62,
+     "p": 0.999
+    },
+    {
+     "text": " make",
+     "start": 63.62,
+     "end": 64.38,
+     "p": 0.999
+    },
+    {
+     "text": " you",
+     "start": 64.38,
+     "end": 64.58,
+     "p": 1.0
+    },
+    {
+     "text": " feel",
+     "start": 64.58,
+     "end": 64.86,
+     "p": 1.0
+    },
+    {
+     "text": " better",
+     "start": 64.86,
+     "end": 65.18,
+     "p": 1.0
+    },
+    {
+     "text": " about",
+     "start": 65.18,
+     "end": 65.48,
+     "p": 1.0
+    },
+    {
+     "text": " anything,",
+     "start": 65.48,
+     "end": 66.0,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 66.0,
+   "end": 70.1,
+   "text": "it's trying to really help you and give you hard truths.",
+   "words": [
+    {
+     "text": " it's",
+     "start": 66.0,
+     "end": 66.78,
+     "p": 0.998
+    },
+    {
+     "text": " trying",
+     "start": 66.78,
+     "end": 67.2,
+     "p": 0.999
+    },
+    {
+     "text": " to",
+     "start": 67.2,
+     "end": 67.56,
+     "p": 1.0
+    },
+    {
+     "text": " really",
+     "start": 67.56,
+     "end": 67.88,
+     "p": 0.998
+    },
+    {
+     "text": " help",
+     "start": 67.88,
+     "end": 68.22,
+     "p": 1.0
+    },
+    {
+     "text": " you",
+     "start": 68.22,
+     "end": 68.46,
+     "p": 1.0
+    },
+    {
+     "text": " and",
+     "start": 68.46,
+     "end": 68.68,
+     "p": 0.981
+    },
+    {
+     "text": " give",
+     "start": 68.68,
+     "end": 68.86,
+     "p": 1.0
+    },
+    {
+     "text": " you",
+     "start": 68.86,
+     "end": 69.08,
+     "p": 1.0
+    },
+    {
+     "text": " hard",
+     "start": 69.08,
+     "end": 69.46,
+     "p": 0.999
+    },
+    {
+     "text": " truths.",
+     "start": 69.46,
+     "end": 70.1,
+     "p": 0.986
+    }
+   ]
+  },
+  {
+   "start": 71.42,
+   "end": 76.52,
+   "text": "And it wants the user to feel like it is,",
+   "words": [
+    {
+     "text": " And",
+     "start": 71.42,
+     "end": 71.8,
+     "p": 0.987
+    },
+    {
+     "text": " it",
+     "start": 71.8,
+     "end": 72.08,
+     "p": 0.994
+    },
+    {
+     "text": " wants",
+     "start": 72.08,
+     "end": 72.5,
+     "p": 0.843
+    },
+    {
+     "text": " the",
+     "start": 72.5,
+     "end": 72.82,
+     "p": 0.996
+    },
+    {
+     "text": " user",
+     "start": 72.82,
+     "end": 73.12,
+     "p": 1.0
+    },
+    {
+     "text": " to",
+     "start": 73.12,
+     "end": 73.36,
+     "p": 1.0
+    },
+    {
+     "text": " feel",
+     "start": 73.36,
+     "end": 74.0,
+     "p": 1.0
+    },
+    {
+     "text": " like",
+     "start": 74.0,
+     "end": 74.92,
+     "p": 0.917
+    },
+    {
+     "text": " it",
+     "start": 74.92,
+     "end": 75.34,
+     "p": 0.667
+    },
+    {
+     "text": " is,",
+     "start": 75.34,
+     "end": 76.52,
+     "p": 0.823
+    }
+   ]
+  },
+  {
+   "start": 77.86,
+   "end": 79.3,
+   "text": "that it has integrity,",
+   "words": [
+    {
+     "text": " that",
+     "start": 77.86,
+     "end": 78.24,
+     "p": 0.994
+    },
+    {
+     "text": " it",
+     "start": 78.24,
+     "end": 78.44,
+     "p": 0.986
+    },
+    {
+     "text": " has",
+     "start": 78.44,
+     "end": 78.7,
+     "p": 1.0
+    },
+    {
+     "text": " integrity,",
+     "start": 78.7,
+     "end": 79.3,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 79.3,
+   "end": 83.9,
+   "text": "that it's not just trying to say what the user wants to hear.",
+   "words": [
+    {
+     "text": " that",
+     "start": 79.3,
+     "end": 80.04,
+     "p": 0.642
+    },
+    {
+     "text": " it's",
+     "start": 80.04,
+     "end": 80.26,
+     "p": 0.991
+    },
+    {
+     "text": " not",
+     "start": 80.26,
+     "end": 80.5,
+     "p": 0.998
+    },
+    {
+     "text": " just",
+     "start": 80.5,
+     "end": 80.82,
+     "p": 0.998
+    },
+    {
+     "text": " trying",
+     "start": 80.82,
+     "end": 81.26,
+     "p": 0.997
+    },
+    {
+     "text": " to",
+     "start": 81.26,
+     "end": 81.48,
+     "p": 0.999
+    },
+    {
+     "text": " say",
+     "start": 81.48,
+     "end": 81.84,
+     "p": 0.999
+    },
+    {
+     "text": " what",
+     "start": 81.84,
+     "end": 82.18,
+     "p": 0.998
+    },
+    {
+     "text": " the",
+     "start": 82.18,
+     "end": 82.4,
+     "p": 0.999
+    },
+    {
+     "text": " user",
+     "start": 82.4,
+     "end": 82.64,
+     "p": 1.0
+    },
+    {
+     "text": " wants",
+     "start": 82.64,
+     "end": 83.14,
+     "p": 0.999
+    },
+    {
+     "text": " to",
+     "start": 83.14,
+     "end": 83.48,
+     "p": 1.0
+    },
+    {
+     "text": " hear.",
+     "start": 83.48,
+     "end": 83.9,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 84.12,
+   "end": 87.62,
+   "text": "And that's important because most chatbots out there,",
+   "words": [
+    {
+     "text": " And",
+     "start": 84.12,
+     "end": 84.58,
+     "p": 0.917
+    },
+    {
+     "text": " that's",
+     "start": 84.58,
+     "end": 84.78,
+     "p": 0.999
+    },
+    {
+     "text": " important",
+     "start": 84.78,
+     "end": 85.24,
+     "p": 1.0
+    },
+    {
+     "text": " because",
+     "start": 85.24,
+     "end": 85.6,
+     "p": 0.741
+    },
+    {
+     "text": " most",
+     "start": 85.6,
+     "end": 86.18,
+     "p": 0.998
+    },
+    {
+     "text": " chatbots",
+     "start": 86.18,
+     "end": 86.82,
+     "p": 0.856
+    },
+    {
+     "text": " out",
+     "start": 86.82,
+     "end": 87.22,
+     "p": 0.999
+    },
+    {
+     "text": " there,",
+     "start": 87.22,
+     "end": 87.62,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 88.02,
+   "end": 93.0,
+   "text": "they're designed to want to please the user",
+   "words": [
+    {
+     "text": " they're",
+     "start": 88.02,
+     "end": 88.58,
+     "p": 0.997
+    },
+    {
+     "text": " designed",
+     "start": 88.58,
+     "end": 89.26,
+     "p": 0.999
+    },
+    {
+     "text": " to",
+     "start": 89.26,
+     "end": 90.28,
+     "p": 0.997
+    },
+    {
+     "text": " want",
+     "start": 90.28,
+     "end": 91.68,
+     "p": 0.971
+    },
+    {
+     "text": " to",
+     "start": 91.68,
+     "end": 91.92,
+     "p": 1.0
+    },
+    {
+     "text": " please",
+     "start": 91.92,
+     "end": 92.24,
+     "p": 0.999
+    },
+    {
+     "text": " the",
+     "start": 92.24,
+     "end": 92.56,
+     "p": 0.998
+    },
+    {
+     "text": " user",
+     "start": 92.56,
+     "end": 93.0,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 93.0,
+   "end": 95.5,
+   "text": "over quality information.",
+   "words": [
+    {
+     "text": " over",
+     "start": 93.0,
+     "end": 93.86,
+     "p": 0.917
+    },
+    {
+     "text": " quality",
+     "start": 93.86,
+     "end": 94.78,
+     "p": 0.999
+    },
+    {
+     "text": " information.",
+     "start": 94.78,
+     "end": 95.5,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 97.0,
+   "end": 97.84,
+   "text": "Well, here you go.",
+   "words": [
+    {
+     "text": " Well,",
+     "start": 97.0,
+     "end": 97.32,
+     "p": 0.951
+    },
+    {
+     "text": " here",
+     "start": 97.32,
+     "end": 97.46,
+     "p": 1.0
+    },
+    {
+     "text": " you",
+     "start": 97.46,
+     "end": 97.62,
+     "p": 0.997
+    },
+    {
+     "text": " go.",
+     "start": 97.62,
+     "end": 97.84,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 98.0,
+   "end": 100.22,
+   "text": "Oh, battery degradation, right?",
+   "words": [
+    {
+     "text": " Oh,",
+     "start": 98.0,
+     "end": 98.12,
+     "p": 0.963
+    },
+    {
+     "text": " battery",
+     "start": 98.42,
+     "end": 98.7,
+     "p": 0.965
+    },
+    {
+     "text": " degradation,",
+     "start": 98.7,
+     "end": 99.6,
+     "p": 0.989
+    },
+    {
+     "text": " right?",
+     "start": 100.06,
+     "end": 100.22,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 100.88,
+   "end": 101.98,
+   "text": "Phone is completely dead.",
+   "words": [
+    {
+     "text": " Phone",
+     "start": 100.88,
+     "end": 101.02,
+     "p": 0.43
+    },
+    {
+     "text": " is",
+     "start": 101.02,
+     "end": 101.16,
+     "p": 0.952
+    },
+    {
+     "text": " completely",
+     "start": 101.16,
+     "end": 101.52,
+     "p": 0.998
+    },
+    {
+     "text": " dead.",
+     "start": 101.52,
+     "end": 101.98,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 102.58,
+   "end": 104.32,
+   "text": "No, then it gives you three questions.",
+   "words": [
+    {
+     "text": " No,",
+     "start": 102.58,
+     "end": 102.58,
+     "p": 0.176
+    },
+    {
+     "text": " then",
+     "start": 102.84,
+     "end": 103.06,
+     "p": 0.983
+    },
+    {
+     "text": " it",
+     "start": 103.06,
+     "end": 103.16,
+     "p": 0.99
+    },
+    {
+     "text": " gives",
+     "start": 103.16,
+     "end": 103.3,
+     "p": 1.0
+    },
+    {
+     "text": " you",
+     "start": 103.3,
+     "end": 103.46,
+     "p": 0.999
+    },
+    {
+     "text": " three",
+     "start": 103.46,
+     "end": 103.78,
+     "p": 0.999
+    },
+    {
+     "text": " questions.",
+     "start": 103.78,
+     "end": 104.32,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 104.36,
+   "end": 106.84,
+   "text": "Is your phone fully dead, no power button, no light,",
+   "words": [
+    {
+     "text": " Is",
+     "start": 104.36,
+     "end": 104.5,
+     "p": 0.96
+    },
+    {
+     "text": " your",
+     "start": 104.5,
+     "end": 104.68,
+     "p": 0.996
+    },
+    {
+     "text": " phone",
+     "start": 104.68,
+     "end": 104.86,
+     "p": 0.998
+    },
+    {
+     "text": " fully",
+     "start": 104.86,
+     "end": 105.16,
+     "p": 0.993
+    },
+    {
+     "text": " dead,",
+     "start": 105.16,
+     "end": 105.52,
+     "p": 0.999
+    },
+    {
+     "text": " no",
+     "start": 105.62,
+     "end": 105.74,
+     "p": 0.995
+    },
+    {
+     "text": " power",
+     "start": 105.74,
+     "end": 106.0,
+     "p": 0.958
+    },
+    {
+     "text": " button,",
+     "start": 106.0,
+     "end": 106.24,
+     "p": 0.994
+    },
+    {
+     "text": " no",
+     "start": 106.38,
+     "end": 106.48,
+     "p": 0.999
+    },
+    {
+     "text": " light,",
+     "start": 106.48,
+     "end": 106.84,
+     "p": 0.997
+    }
+   ]
+  },
+  {
+   "start": 106.84,
+   "end": 110.58,
+   "text": "or is it just unresponsive, screen on but frozen?",
+   "words": [
+    {
+     "text": " or",
+     "start": 106.84,
+     "end": 107.32,
+     "p": 0.482
+    },
+    {
+     "text": " is",
+     "start": 107.32,
+     "end": 107.46,
+     "p": 0.993
+    },
+    {
+     "text": " it",
+     "start": 107.46,
+     "end": 107.62,
+     "p": 0.99
+    },
+    {
+     "text": " just",
+     "start": 107.62,
+     "end": 107.86,
+     "p": 0.992
+    },
+    {
+     "text": " unresponsive,",
+     "start": 107.86,
+     "end": 108.68,
+     "p": 0.926
+    },
+    {
+     "text": " screen",
+     "start": 108.9,
+     "end": 109.24,
+     "p": 0.896
+    },
+    {
+     "text": " on",
+     "start": 109.24,
+     "end": 109.9,
+     "p": 0.946
+    },
+    {
+     "text": " but",
+     "start": 109.9,
+     "end": 110.12,
+     "p": 0.765
+    },
+    {
+     "text": " frozen?",
+     "start": 110.12,
+     "end": 110.58,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 112.04,
+   "end": 115.54,
+   "text": "No, my phone is stuck or frozen, right?",
+   "words": [
+    {
+     "text": " No,",
+     "start": 112.04,
+     "end": 112.68,
+     "p": 0.994
+    },
+    {
+     "text": " my",
+     "start": 112.94,
+     "end": 113.08,
+     "p": 0.996
+    },
+    {
+     "text": " phone",
+     "start": 113.08,
+     "end": 113.38,
+     "p": 1.0
+    },
+    {
+     "text": " is",
+     "start": 113.38,
+     "end": 113.7,
+     "p": 0.999
+    },
+    {
+     "text": " stuck",
+     "start": 113.7,
+     "end": 114.02,
+     "p": 0.997
+    },
+    {
+     "text": " or",
+     "start": 114.02,
+     "end": 114.22,
+     "p": 0.997
+    },
+    {
+     "text": " frozen,",
+     "start": 114.22,
+     "end": 114.68,
+     "p": 1.0
+    },
+    {
+     "text": " right?",
+     "start": 115.22,
+     "end": 115.54,
+     "p": 0.991
+    }
+   ]
+  },
+  {
+   "start": 115.96,
+   "end": 117.58,
+   "text": "Ah, it does some thinking,",
+   "words": [
+    {
+     "text": " Ah,",
+     "start": 115.96,
+     "end": 116.18,
+     "p": 0.521
+    },
+    {
+     "text": " it",
+     "start": 116.64,
+     "end": 116.8,
+     "p": 0.806
+    },
+    {
+     "text": " does",
+     "start": 116.8,
+     "end": 116.98,
+     "p": 0.998
+    },
+    {
+     "text": " some",
+     "start": 116.98,
+     "end": 117.18,
+     "p": 0.998
+    },
+    {
+     "text": " thinking,",
+     "start": 117.18,
+     "end": 117.58,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 119.6,
+   "end": 122.3,
+   "text": "and then it gives me three really good links.",
+   "words": [
+    {
+     "text": " and",
+     "start": 119.6,
+     "end": 120.16,
+     "p": 0.999
+    },
+    {
+     "text": " then",
+     "start": 120.16,
+     "end": 120.36,
+     "p": 0.998
+    },
+    {
+     "text": " it",
+     "start": 120.36,
+     "end": 120.46,
+     "p": 0.992
+    },
+    {
+     "text": " gives",
+     "start": 120.46,
+     "end": 120.62,
+     "p": 0.998
+    },
+    {
+     "text": " me",
+     "start": 120.62,
+     "end": 120.84,
+     "p": 0.998
+    },
+    {
+     "text": " three",
+     "start": 120.84,
+     "end": 121.2,
+     "p": 0.997
+    },
+    {
+     "text": " really",
+     "start": 121.2,
+     "end": 121.54,
+     "p": 0.999
+    },
+    {
+     "text": " good",
+     "start": 121.54,
+     "end": 121.76,
+     "p": 1.0
+    },
+    {
+     "text": " links.",
+     "start": 121.76,
+     "end": 122.3,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 122.86,
+   "end": 127.22,
+   "text": "I have a nice Wikipedia link, a nice Reddit link,",
+   "words": [
+    {
+     "text": " I",
+     "start": 122.86,
+     "end": 123.18,
+     "p": 0.876
+    },
+    {
+     "text": " have",
+     "start": 123.18,
+     "end": 123.28,
+     "p": 0.985
+    },
+    {
+     "text": " a",
+     "start": 123.28,
+     "end": 123.4,
+     "p": 0.99
+    },
+    {
+     "text": " nice",
+     "start": 123.4,
+     "end": 123.78,
+     "p": 1.0
+    },
+    {
+     "text": " Wikipedia",
+     "start": 123.78,
+     "end": 124.82,
+     "p": 0.992
+    },
+    {
+     "text": " link,",
+     "start": 124.82,
+     "end": 125.52,
+     "p": 0.977
+    },
+    {
+     "text": " a",
+     "start": 125.9,
+     "end": 126.02,
+     "p": 0.99
+    },
+    {
+     "text": " nice",
+     "start": 126.02,
+     "end": 126.26,
+     "p": 1.0
+    },
+    {
+     "text": " Reddit",
+     "start": 126.26,
+     "end": 126.76,
+     "p": 0.994
+    },
+    {
+     "text": " link,",
+     "start": 126.76,
+     "end": 127.22,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 127.22,
+   "end": 130.8,
+   "text": "and then a video that'll actually help with the problem.",
+   "words": [
+    {
+     "text": " and",
+     "start": 127.22,
+     "end": 127.54,
+     "p": 1.0
+    },
+    {
+     "text": " then",
+     "start": 127.54,
+     "end": 127.68,
+     "p": 0.995
+    },
+    {
+     "text": " a",
+     "start": 127.68,
+     "end": 128.0,
+     "p": 0.99
+    },
+    {
+     "text": " video",
+     "start": 128.0,
+     "end": 128.44,
+     "p": 1.0
+    },
+    {
+     "text": " that'll",
+     "start": 128.44,
+     "end": 128.86,
+     "p": 0.928
+    },
+    {
+     "text": " actually",
+     "start": 128.86,
+     "end": 129.2,
+     "p": 0.999
+    },
+    {
+     "text": " help",
+     "start": 129.2,
+     "end": 129.58,
+     "p": 1.0
+    },
+    {
+     "text": " with",
+     "start": 129.58,
+     "end": 130.18,
+     "p": 1.0
+    },
+    {
+     "text": " the",
+     "start": 130.18,
+     "end": 130.44,
+     "p": 1.0
+    },
+    {
+     "text": " problem.",
+     "start": 130.44,
+     "end": 130.8,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 131.92,
+   "end": 134.16,
+   "text": "Great, it's not dead or frozen,",
+   "words": [
+    {
+     "text": " Great,",
+     "start": 131.92,
+     "end": 132.16,
+     "p": 0.999
+    },
+    {
+     "text": " it's",
+     "start": 132.44,
+     "end": 132.64,
+     "p": 0.993
+    },
+    {
+     "text": " not",
+     "start": 132.64,
+     "end": 132.86,
+     "p": 0.988
+    },
+    {
+     "text": " dead",
+     "start": 132.86,
+     "end": 133.62,
+     "p": 0.9
+    },
+    {
+     "text": " or",
+     "start": 133.62,
+     "end": 133.78,
+     "p": 0.996
+    },
+    {
+     "text": " frozen,",
+     "start": 133.78,
+     "end": 134.16,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 134.3,
+   "end": 136.26,
+   "text": "you smash the screen on the phone,",
+   "words": [
+    {
+     "text": " you",
+     "start": 134.3,
+     "end": 134.46,
+     "p": 0.995
+    },
+    {
+     "text": " smash",
+     "start": 134.46,
+     "end": 134.8,
+     "p": 0.782
+    },
+    {
+     "text": " the",
+     "start": 134.8,
+     "end": 135.0,
+     "p": 0.997
+    },
+    {
+     "text": " screen",
+     "start": 135.0,
+     "end": 135.2,
+     "p": 1.0
+    },
+    {
+     "text": " on",
+     "start": 135.2,
+     "end": 135.42,
+     "p": 0.984
+    },
+    {
+     "text": " the",
+     "start": 135.42,
+     "end": 135.9,
+     "p": 0.985
+    },
+    {
+     "text": " phone,",
+     "start": 135.9,
+     "end": 136.26,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 136.26,
+   "end": 140.28,
+   "text": "that's not ancient and now, it's now your problem.",
+   "words": [
+    {
+     "text": " that's",
+     "start": 136.26,
+     "end": 136.9,
+     "p": 0.911
+    },
+    {
+     "text": " not",
+     "start": 136.9,
+     "end": 137.12,
+     "p": 0.999
+    },
+    {
+     "text": " ancient",
+     "start": 137.12,
+     "end": 137.58,
+     "p": 0.993
+    },
+    {
+     "text": " and",
+     "start": 137.58,
+     "end": 137.98,
+     "p": 0.783
+    },
+    {
+     "text": " now,",
+     "start": 137.98,
+     "end": 138.46,
+     "p": 0.626
+    },
+    {
+     "text": " it's",
+     "start": 138.96,
+     "end": 139.44,
+     "p": 0.997
+    },
+    {
+     "text": " now",
+     "start": 139.44,
+     "end": 139.64,
+     "p": 0.989
+    },
+    {
+     "text": " your",
+     "start": 139.64,
+     "end": 139.84,
+     "p": 0.992
+    },
+    {
+     "text": " problem.",
+     "start": 139.84,
+     "end": 140.28,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 140.8,
+   "end": 142.1,
+   "text": "Right, there's some snark here,",
+   "words": [
+    {
+     "text": " Right,",
+     "start": 140.8,
+     "end": 140.96,
+     "p": 0.806
+    },
+    {
+     "text": " there's",
+     "start": 141.08,
+     "end": 141.26,
+     "p": 0.987
+    },
+    {
+     "text": " some",
+     "start": 141.26,
+     "end": 141.4,
+     "p": 0.996
+    },
+    {
+     "text": " snark",
+     "start": 141.4,
+     "end": 141.7,
+     "p": 0.947
+    },
+    {
+     "text": " here,",
+     "start": 141.7,
+     "end": 142.1,
+     "p": 0.996
+    }
+   ]
+  },
+  {
+   "start": 142.36,
+   "end": 145.44,
+   "text": "but it's gonna tell you how to restart it, right?",
+   "words": [
+    {
+     "text": " but",
+     "start": 142.36,
+     "end": 142.6,
+     "p": 0.999
+    },
+    {
+     "text": " it's",
+     "start": 142.6,
+     "end": 143.12,
+     "p": 0.998
+    },
+    {
+     "text": " gonna",
+     "start": 143.12,
+     "end": 143.26,
+     "p": 0.828
+    },
+    {
+     "text": " tell",
+     "start": 143.26,
+     "end": 143.48,
+     "p": 0.998
+    },
+    {
+     "text": " you",
+     "start": 143.48,
+     "end": 143.66,
+     "p": 0.997
+    },
+    {
+     "text": " how",
+     "start": 143.66,
+     "end": 144.0,
+     "p": 0.997
+    },
+    {
+     "text": " to",
+     "start": 144.0,
+     "end": 144.42,
+     "p": 0.97
+    },
+    {
+     "text": " restart",
+     "start": 144.42,
+     "end": 144.84,
+     "p": 0.993
+    },
+    {
+     "text": " it,",
+     "start": 144.84,
+     "end": 145.16,
+     "p": 0.999
+    },
+    {
+     "text": " right?",
+     "start": 145.28,
+     "end": 145.44,
+     "p": 0.973
+    }
+   ]
+  },
+  {
+   "start": 145.58,
+   "end": 148.42,
+   "text": "It says hold down your volume key, blah, blah, blah, blah.",
+   "words": [
+    {
+     "text": " It",
+     "start": 145.58,
+     "end": 145.7,
+     "p": 0.78
+    },
+    {
+     "text": " says",
+     "start": 145.7,
+     "end": 145.9,
+     "p": 0.975
+    },
+    {
+     "text": " hold",
+     "start": 145.9,
+     "end": 146.12,
+     "p": 0.735
+    },
+    {
+     "text": " down",
+     "start": 146.12,
+     "end": 146.28,
+     "p": 0.975
+    },
+    {
+     "text": " your",
+     "start": 146.28,
+     "end": 146.46,
+     "p": 0.98
+    },
+    {
+     "text": " volume",
+     "start": 146.46,
+     "end": 146.74,
+     "p": 0.944
+    },
+    {
+     "text": " key,",
+     "start": 146.74,
+     "end": 147.16,
+     "p": 0.998
+    },
+    {
+     "text": " blah,",
+     "start": 147.34,
+     "end": 147.46,
+     "p": 0.975
+    },
+    {
+     "text": " blah,",
+     "start": 147.46,
+     "end": 147.6,
+     "p": 1.0
+    },
+    {
+     "text": " blah,",
+     "start": 147.64,
+     "end": 147.78,
+     "p": 0.999
+    },
+    {
+     "text": " blah.",
+     "start": 147.78,
+     "end": 148.42,
+     "p": 0.997
+    }
+   ]
+  },
+  {
+   "start": 149.4,
+   "end": 152.44,
+   "text": "That's essentially what control bot is, right?",
+   "words": [
+    {
+     "text": " That's",
+     "start": 149.4,
+     "end": 150.0,
+     "p": 0.997
+    },
+    {
+     "text": " essentially",
+     "start": 150.0,
+     "end": 150.54,
+     "p": 0.997
+    },
+    {
+     "text": " what",
+     "start": 150.54,
+     "end": 151.04,
+     "p": 0.998
+    },
+    {
+     "text": " control",
+     "start": 151.04,
+     "end": 151.34,
+     "p": 0.356
+    },
+    {
+     "text": " bot",
+     "start": 151.34,
+     "end": 151.58,
+     "p": 0.646
+    },
+    {
+     "text": " is,",
+     "start": 151.58,
+     "end": 151.98,
+     "p": 0.997
+    },
+    {
+     "text": " right?",
+     "start": 152.12,
+     "end": 152.44,
+     "p": 0.995
+    }
+   ]
+  },
+  {
+   "start": 152.8,
+   "end": 155.8,
+   "text": "It's a troubleshooter that's going to give you",
+   "words": [
+    {
+     "text": " It's",
+     "start": 152.8,
+     "end": 153.4,
+     "p": 0.998
+    },
+    {
+     "text": " a",
+     "start": 153.4,
+     "end": 153.5,
+     "p": 0.998
+    },
+    {
+     "text": " troubleshooter",
+     "start": 153.5,
+     "end": 154.18,
+     "p": 0.981
+    },
+    {
+     "text": " that's",
+     "start": 154.18,
+     "end": 154.96,
+     "p": 0.988
+    },
+    {
+     "text": " going",
+     "start": 154.96,
+     "end": 155.16,
+     "p": 0.993
+    },
+    {
+     "text": " to",
+     "start": 155.16,
+     "end": 155.46,
+     "p": 1.0
+    },
+    {
+     "text": " give",
+     "start": 155.46,
+     "end": 155.62,
+     "p": 0.999
+    },
+    {
+     "text": " you",
+     "start": 155.62,
+     "end": 155.8,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 155.8,
+   "end": 159.76,
+   "text": "real good links and is going, it's no nonsense,",
+   "words": [
+    {
+     "text": " real",
+     "start": 155.8,
+     "end": 156.14,
+     "p": 0.979
+    },
+    {
+     "text": " good",
+     "start": 156.14,
+     "end": 156.38,
+     "p": 0.993
+    },
+    {
+     "text": " links",
+     "start": 156.38,
+     "end": 156.88,
+     "p": 0.841
+    },
+    {
+     "text": " and",
+     "start": 156.88,
+     "end": 157.6,
+     "p": 0.788
+    },
+    {
+     "text": " is",
+     "start": 157.6,
+     "end": 157.98,
+     "p": 0.764
+    },
+    {
+     "text": " going,",
+     "start": 157.98,
+     "end": 158.38,
+     "p": 0.983
+    },
+    {
+     "text": " it's",
+     "start": 158.82,
+     "end": 159.04,
+     "p": 0.996
+    },
+    {
+     "text": " no",
+     "start": 159.04,
+     "end": 159.2,
+     "p": 0.996
+    },
+    {
+     "text": " nonsense,",
+     "start": 159.2,
+     "end": 159.76,
+     "p": 0.905
+    }
+   ]
+  },
+  {
+   "start": 160.4,
+   "end": 163.64,
+   "text": "it has some attitude, but that attitude",
+   "words": [
+    {
+     "text": " it",
+     "start": 160.4,
+     "end": 160.52,
+     "p": 0.976
+    },
+    {
+     "text": " has",
+     "start": 160.52,
+     "end": 160.72,
+     "p": 0.999
+    },
+    {
+     "text": " some",
+     "start": 160.72,
+     "end": 160.94,
+     "p": 0.996
+    },
+    {
+     "text": " attitude,",
+     "start": 160.94,
+     "end": 161.48,
+     "p": 0.999
+    },
+    {
+     "text": " but",
+     "start": 161.48,
+     "end": 162.22,
+     "p": 0.999
+    },
+    {
+     "text": " that",
+     "start": 162.22,
+     "end": 162.86,
+     "p": 0.999
+    },
+    {
+     "text": " attitude",
+     "start": 162.86,
+     "end": 163.64,
+     "p": 0.963
+    }
+   ]
+  },
+  {
+   "start": 164.62,
+   "end": 167.24,
+   "text": "is what makes it different, right?",
+   "words": [
+    {
+     "text": " is",
+     "start": 164.62,
+     "end": 165.22,
+     "p": 0.974
+    },
+    {
+     "text": " what",
+     "start": 165.22,
+     "end": 165.54,
+     "p": 0.999
+    },
+    {
+     "text": " makes",
+     "start": 165.54,
+     "end": 165.92,
+     "p": 0.998
+    },
+    {
+     "text": " it",
+     "start": 165.92,
+     "end": 166.2,
+     "p": 0.999
+    },
+    {
+     "text": " different,",
+     "start": 166.2,
+     "end": 166.62,
+     "p": 1.0
+    },
+    {
+     "text": " right?",
+     "start": 166.88,
+     "end": 167.24,
+     "p": 0.847
+    }
+   ]
+  },
+  {
+   "start": 167.3,
+   "end": 168.62,
+   "text": "And makes it more believable.",
+   "words": [
+    {
+     "text": " And",
+     "start": 167.3,
+     "end": 167.5,
+     "p": 0.61
+    },
+    {
+     "text": " makes",
+     "start": 167.5,
+     "end": 167.7,
+     "p": 0.979
+    },
+    {
+     "text": " it",
+     "start": 167.7,
+     "end": 167.86,
+     "p": 0.998
+    },
+    {
+     "text": " more",
+     "start": 167.86,
+     "end": 168.08,
+     "p": 1.0
+    },
+    {
+     "text": " believable.",
+     "start": 168.08,
+     "end": 168.62,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 172.56,
+   "end": 175.52,
+   "text": "The other thing you'll notice about the UI",
+   "words": [
+    {
+     "text": " The",
+     "start": 172.56,
+     "end": 173.16,
+     "p": 0.998
+    },
+    {
+     "text": " other",
+     "start": 173.16,
+     "end": 173.3,
+     "p": 1.0
+    },
+    {
+     "text": " thing",
+     "start": 173.3,
+     "end": 173.5,
+     "p": 0.998
+    },
+    {
+     "text": " you'll",
+     "start": 173.5,
+     "end": 173.68,
+     "p": 0.996
+    },
+    {
+     "text": " notice",
+     "start": 173.68,
+     "end": 173.94,
+     "p": 1.0
+    },
+    {
+     "text": " about",
+     "start": 173.94,
+     "end": 174.56,
+     "p": 0.999
+    },
+    {
+     "text": " the",
+     "start": 174.56,
+     "end": 175.1,
+     "p": 0.996
+    },
+    {
+     "text": " UI",
+     "start": 175.1,
+     "end": 175.52,
+     "p": 0.938
+    }
+   ]
+  },
+  {
+   "start": 175.52,
+   "end": 177.48,
+   "text": "is that it's all black.",
+   "words": [
+    {
+     "text": " is",
+     "start": 175.52,
+     "end": 176.18,
+     "p": 0.909
+    },
+    {
+     "text": " that",
+     "start": 176.18,
+     "end": 176.36,
+     "p": 1.0
+    },
+    {
+     "text": " it's",
+     "start": 176.36,
+     "end": 176.66,
+     "p": 0.998
+    },
+    {
+     "text": " all",
+     "start": 176.66,
+     "end": 177.04,
+     "p": 1.0
+    },
+    {
+     "text": " black.",
+     "start": 177.04,
+     "end": 177.48,
+     "p": 0.991
+    }
+   ]
+  },
+  {
+   "start": 177.64,
+   "end": 180.32,
+   "text": "There isn't sign-in, there isn't anything else.",
+   "words": [
+    {
+     "text": " There",
+     "start": 177.64,
+     "end": 177.74,
+     "p": 0.998
+    },
+    {
+     "text": " isn't",
+     "start": 177.74,
+     "end": 178.14,
+     "p": 0.882
+    },
+    {
+     "text": " sign",
+     "start": 178.14,
+     "end": 178.68,
+     "p": 0.503
+    },
+    {
+     "text": "-in,",
+     "start": 178.68,
+     "end": 178.98,
+     "p": 0.806
+    },
+    {
+     "text": " there",
+     "start": 179.06,
+     "end": 179.18,
+     "p": 0.998
+    },
+    {
+     "text": " isn't",
+     "start": 179.18,
+     "end": 179.44,
+     "p": 0.999
+    },
+    {
+     "text": " anything",
+     "start": 179.44,
+     "end": 179.74,
+     "p": 0.999
+    },
+    {
+     "text": " else.",
+     "start": 179.74,
+     "end": 180.32,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 180.9,
+   "end": 184.18,
+   "text": "There isn't all of this external stuff.",
+   "words": [
+    {
+     "text": " There",
+     "start": 180.9,
+     "end": 181.04,
+     "p": 0.958
+    },
+    {
+     "text": " isn't",
+     "start": 181.04,
+     "end": 181.44,
+     "p": 0.998
+    },
+    {
+     "text": " all",
+     "start": 181.44,
+     "end": 181.78,
+     "p": 0.998
+    },
+    {
+     "text": " of",
+     "start": 181.78,
+     "end": 181.98,
+     "p": 0.978
+    },
+    {
+     "text": " this",
+     "start": 181.98,
+     "end": 182.72,
+     "p": 0.998
+    },
+    {
+     "text": " external",
+     "start": 182.72,
+     "end": 183.74,
+     "p": 0.788
+    },
+    {
+     "text": " stuff.",
+     "start": 183.74,
+     "end": 184.18,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 184.28,
+   "end": 185.86,
+   "text": "It's just nice and clean.",
+   "words": [
+    {
+     "text": " It's",
+     "start": 184.28,
+     "end": 184.44,
+     "p": 0.999
+    },
+    {
+     "text": " just",
+     "start": 184.44,
+     "end": 184.62,
+     "p": 0.999
+    },
+    {
+     "text": " nice",
+     "start": 184.62,
+     "end": 185.0,
+     "p": 1.0
+    },
+    {
+     "text": " and",
+     "start": 185.0,
+     "end": 185.4,
+     "p": 0.999
+    },
+    {
+     "text": " clean.",
+     "start": 185.4,
+     "end": 185.86,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 186.4,
+   "end": 187.58,
+   "text": "And if you wait long enough,",
+   "words": [
+    {
+     "text": " And",
+     "start": 186.4,
+     "end": 186.6,
+     "p": 0.986
+    },
+    {
+     "text": " if",
+     "start": 186.6,
+     "end": 186.68,
+     "p": 0.988
+    },
+    {
+     "text": " you",
+     "start": 186.68,
+     "end": 186.78,
+     "p": 0.896
+    },
+    {
+     "text": " wait",
+     "start": 186.78,
+     "end": 186.92,
+     "p": 0.998
+    },
+    {
+     "text": " long",
+     "start": 186.92,
+     "end": 187.22,
+     "p": 0.999
+    },
+    {
+     "text": " enough,",
+     "start": 187.22,
+     "end": 187.58,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 188.06,
+   "end": 191.3,
+   "text": "you'll see that it will start prompting you for questions.",
+   "words": [
+    {
+     "text": " you'll",
+     "start": 188.06,
+     "end": 188.3,
+     "p": 0.999
+    },
+    {
+     "text": " see",
+     "start": 188.3,
+     "end": 188.44,
+     "p": 0.999
+    },
+    {
+     "text": " that",
+     "start": 188.44,
+     "end": 188.64,
+     "p": 0.998
+    },
+    {
+     "text": " it",
+     "start": 188.64,
+     "end": 189.02,
+     "p": 0.998
+    },
+    {
+     "text": " will",
+     "start": 189.02,
+     "end": 189.24,
+     "p": 0.994
+    },
+    {
+     "text": " start",
+     "start": 189.24,
+     "end": 189.68,
+     "p": 0.999
+    },
+    {
+     "text": " prompting",
+     "start": 189.68,
+     "end": 190.34,
+     "p": 0.993
+    },
+    {
+     "text": " you",
+     "start": 190.34,
+     "end": 190.52,
+     "p": 0.999
+    },
+    {
+     "text": " for",
+     "start": 190.52,
+     "end": 190.74,
+     "p": 0.999
+    },
+    {
+     "text": " questions.",
+     "start": 190.74,
+     "end": 191.3,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 191.3,
+   "end": 194.66,
+   "text": "All right, this is the frequently asked questions system.",
+   "words": [
+    {
+     "text": " All",
+     "start": 191.3,
+     "end": 191.82,
+     "p": 0.187
+    },
+    {
+     "text": " right,",
+     "start": 191.82,
+     "end": 191.98,
+     "p": 0.999
+    },
+    {
+     "text": " this",
+     "start": 192.16,
+     "end": 192.44,
+     "p": 0.997
+    },
+    {
+     "text": " is",
+     "start": 192.44,
+     "end": 192.62,
+     "p": 0.998
+    },
+    {
+     "text": " the",
+     "start": 192.62,
+     "end": 192.9,
+     "p": 0.998
+    },
+    {
+     "text": " frequently",
+     "start": 192.9,
+     "end": 193.28,
+     "p": 0.72
+    },
+    {
+     "text": " asked",
+     "start": 193.28,
+     "end": 193.64,
+     "p": 0.987
+    },
+    {
+     "text": " questions",
+     "start": 193.64,
+     "end": 194.12,
+     "p": 0.734
+    },
+    {
+     "text": " system.",
+     "start": 194.12,
+     "end": 194.66,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 195.32,
+   "end": 198.44,
+   "text": "And the way it works is that you can click on any of these.",
+   "words": [
+    {
+     "text": " And",
+     "start": 195.32,
+     "end": 195.62,
+     "p": 0.976
+    },
+    {
+     "text": " the",
+     "start": 195.62,
+     "end": 195.76,
+     "p": 0.991
+    },
+    {
+     "text": " way",
+     "start": 195.76,
+     "end": 195.86,
+     "p": 1.0
+    },
+    {
+     "text": " it",
+     "start": 195.86,
+     "end": 196.04,
+     "p": 0.997
+    },
+    {
+     "text": " works",
+     "start": 196.04,
+     "end": 196.24,
+     "p": 0.999
+    },
+    {
+     "text": " is",
+     "start": 196.24,
+     "end": 196.58,
+     "p": 0.992
+    },
+    {
+     "text": " that",
+     "start": 196.58,
+     "end": 196.82,
+     "p": 0.491
+    },
+    {
+     "text": " you",
+     "start": 196.82,
+     "end": 196.92,
+     "p": 0.998
+    },
+    {
+     "text": " can",
+     "start": 196.92,
+     "end": 197.12,
+     "p": 0.998
+    },
+    {
+     "text": " click",
+     "start": 197.12,
+     "end": 197.38,
+     "p": 0.999
+    },
+    {
+     "text": " on",
+     "start": 197.38,
+     "end": 197.56,
+     "p": 0.998
+    },
+    {
+     "text": " any",
+     "start": 197.56,
+     "end": 197.84,
+     "p": 0.999
+    },
+    {
+     "text": " of",
+     "start": 197.84,
+     "end": 198.04,
+     "p": 0.999
+    },
+    {
+     "text": " these.",
+     "start": 198.04,
+     "end": 198.44,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 199.82,
+   "end": 202.46,
+   "text": "Is ControlBot AI free to use?",
+   "words": [
+    {
+     "text": " Is",
+     "start": 199.82,
+     "end": 200.38,
+     "p": 0.954
+    },
+    {
+     "text": " ControlBot",
+     "start": 200.38,
+     "end": 200.94,
+     "p": 0.711
+    },
+    {
+     "text": " AI",
+     "start": 200.94,
+     "end": 201.42,
+     "p": 0.877
+    },
+    {
+     "text": " free",
+     "start": 201.42,
+     "end": 201.9,
+     "p": 0.968
+    },
+    {
+     "text": " to",
+     "start": 201.9,
+     "end": 202.06,
+     "p": 0.973
+    },
+    {
+     "text": " use?",
+     "start": 202.06,
+     "end": 202.46,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 202.78,
+   "end": 203.86,
+   "text": "Yes, it's free to use.",
+   "words": [
+    {
+     "text": " Yes,",
+     "start": 202.78,
+     "end": 203.06,
+     "p": 0.997
+    },
+    {
+     "text": " it's",
+     "start": 203.06,
+     "end": 203.26,
+     "p": 0.996
+    },
+    {
+     "text": " free",
+     "start": 203.26,
+     "end": 203.44,
+     "p": 1.0
+    },
+    {
+     "text": " to",
+     "start": 203.44,
+     "end": 203.58,
+     "p": 0.999
+    },
+    {
+     "text": " use.",
+     "start": 203.58,
+     "end": 203.86,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 203.9,
+   "end": 206.68,
+   "text": "There is no login, no account, no subscription required.",
+   "words": [
+    {
+     "text": " There",
+     "start": 203.9,
+     "end": 204.04,
+     "p": 0.997
+    },
+    {
+     "text": " is",
+     "start": 204.04,
+     "end": 204.16,
+     "p": 0.658
+    },
+    {
+     "text": " no",
+     "start": 204.16,
+     "end": 204.34,
+     "p": 0.998
+    },
+    {
+     "text": " login,",
+     "start": 204.34,
+     "end": 204.68,
+     "p": 0.854
+    },
+    {
+     "text": " no",
+     "start": 204.84,
+     "end": 204.98,
+     "p": 0.998
+    },
+    {
+     "text": " account,",
+     "start": 204.98,
+     "end": 205.32,
+     "p": 1.0
+    },
+    {
+     "text": " no",
+     "start": 205.44,
+     "end": 205.6,
+     "p": 0.996
+    },
+    {
+     "text": " subscription",
+     "start": 205.6,
+     "end": 206.12,
+     "p": 0.999
+    },
+    {
+     "text": " required.",
+     "start": 206.12,
+     "end": 206.68,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 207.08,
+   "end": 208.72,
+   "text": "They don't give you follow-up questions",
+   "words": [
+    {
+     "text": " They",
+     "start": 207.08,
+     "end": 207.24,
+     "p": 0.584
+    },
+    {
+     "text": " don't",
+     "start": 207.24,
+     "end": 207.36,
+     "p": 0.997
+    },
+    {
+     "text": " give",
+     "start": 207.36,
+     "end": 207.54,
+     "p": 0.999
+    },
+    {
+     "text": " you",
+     "start": 207.54,
+     "end": 207.68,
+     "p": 0.997
+    },
+    {
+     "text": " follow",
+     "start": 207.68,
+     "end": 208.1,
+     "p": 0.994
+    },
+    {
+     "text": "-up",
+     "start": 208.1,
+     "end": 208.24,
+     "p": 0.763
+    },
+    {
+     "text": " questions",
+     "start": 208.24,
+     "end": 208.72,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 208.72,
+   "end": 211.22,
+   "text": "that related to this.",
+   "words": [
+    {
+     "text": " that",
+     "start": 208.72,
+     "end": 209.16,
+     "p": 0.988
+    },
+    {
+     "text": " related",
+     "start": 209.16,
+     "end": 210.52,
+     "p": 0.815
+    },
+    {
+     "text": " to",
+     "start": 210.52,
+     "end": 210.88,
+     "p": 1.0
+    },
+    {
+     "text": " this.",
+     "start": 210.88,
+     "end": 211.22,
+     "p": 0.997
+    }
+   ]
+  },
+  {
+   "start": 211.66,
+   "end": 213.86,
+   "text": "And in this way, you can dig down",
+   "words": [
+    {
+     "text": " And",
+     "start": 211.66,
+     "end": 212.0,
+     "p": 0.914
+    },
+    {
+     "text": " in",
+     "start": 212.0,
+     "end": 212.32,
+     "p": 0.769
+    },
+    {
+     "text": " this",
+     "start": 212.32,
+     "end": 212.5,
+     "p": 1.0
+    },
+    {
+     "text": " way,",
+     "start": 212.5,
+     "end": 212.72,
+     "p": 1.0
+    },
+    {
+     "text": " you",
+     "start": 212.72,
+     "end": 212.9,
+     "p": 1.0
+    },
+    {
+     "text": " can",
+     "start": 212.9,
+     "end": 213.08,
+     "p": 0.999
+    },
+    {
+     "text": " dig",
+     "start": 213.08,
+     "end": 213.34,
+     "p": 1.0
+    },
+    {
+     "text": " down",
+     "start": 213.34,
+     "end": 213.86,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 213.86,
+   "end": 217.12,
+   "text": "and find out more about ControlBot AI.",
+   "words": [
+    {
+     "text": " and",
+     "start": 213.86,
+     "end": 214.38,
+     "p": 0.969
+    },
+    {
+     "text": " find",
+     "start": 214.38,
+     "end": 214.68,
+     "p": 1.0
+    },
+    {
+     "text": " out",
+     "start": 214.68,
+     "end": 214.98,
+     "p": 0.998
+    },
+    {
+     "text": " more",
+     "start": 214.98,
+     "end": 215.42,
+     "p": 1.0
+    },
+    {
+     "text": " about",
+     "start": 215.42,
+     "end": 216.0,
+     "p": 0.999
+    },
+    {
+     "text": " ControlBot",
+     "start": 216.0,
+     "end": 216.62,
+     "p": 0.982
+    },
+    {
+     "text": " AI.",
+     "start": 216.62,
+     "end": 217.12,
+     "p": 0.981
+    }
+   ]
+  },
+  {
+   "start": 218.46,
+   "end": 221.3,
+   "text": "The other little hidden feature",
+   "words": [
+    {
+     "text": " The",
+     "start": 218.46,
+     "end": 219.14,
+     "p": 0.64
+    },
+    {
+     "text": " other",
+     "start": 219.14,
+     "end": 219.82,
+     "p": 0.998
+    },
+    {
+     "text": " little",
+     "start": 219.82,
+     "end": 220.46,
+     "p": 0.865
+    },
+    {
+     "text": " hidden",
+     "start": 220.46,
+     "end": 220.84,
+     "p": 0.993
+    },
+    {
+     "text": " feature",
+     "start": 220.84,
+     "end": 221.3,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 221.3,
+   "end": 222.64,
+   "text": "that a lot of people don't see",
+   "words": [
+    {
+     "text": " that",
+     "start": 221.3,
+     "end": 221.52,
+     "p": 0.99
+    },
+    {
+     "text": " a",
+     "start": 221.52,
+     "end": 221.66,
+     "p": 0.996
+    },
+    {
+     "text": " lot",
+     "start": 221.66,
+     "end": 221.72,
+     "p": 0.981
+    },
+    {
+     "text": " of",
+     "start": 221.72,
+     "end": 221.82,
+     "p": 0.996
+    },
+    {
+     "text": " people",
+     "start": 221.82,
+     "end": 221.98,
+     "p": 0.96
+    },
+    {
+     "text": " don't",
+     "start": 221.98,
+     "end": 222.26,
+     "p": 1.0
+    },
+    {
+     "text": " see",
+     "start": 222.26,
+     "end": 222.64,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 222.64,
+   "end": 226.02,
+   "text": "is you can manipulate the AI real easy,",
+   "words": [
+    {
+     "text": " is",
+     "start": 222.64,
+     "end": 223.26,
+     "p": 0.861
+    },
+    {
+     "text": " you",
+     "start": 223.26,
+     "end": 223.48,
+     "p": 0.764
+    },
+    {
+     "text": " can",
+     "start": 223.48,
+     "end": 223.74,
+     "p": 0.998
+    },
+    {
+     "text": " manipulate",
+     "start": 223.74,
+     "end": 224.38,
+     "p": 0.998
+    },
+    {
+     "text": " the",
+     "start": 224.38,
+     "end": 224.92,
+     "p": 0.996
+    },
+    {
+     "text": " AI",
+     "start": 224.92,
+     "end": 225.26,
+     "p": 0.979
+    },
+    {
+     "text": " real",
+     "start": 225.26,
+     "end": 225.56,
+     "p": 0.648
+    },
+    {
+     "text": " easy,",
+     "start": 225.56,
+     "end": 226.02,
+     "p": 0.985
+    }
+   ]
+  },
+  {
+   "start": 226.2,
+   "end": 229.94,
+   "text": "make a small change by just clicking on the control bot.",
+   "words": [
+    {
+     "text": " make",
+     "start": 226.2,
+     "end": 226.34,
+     "p": 0.995
+    },
+    {
+     "text": " a",
+     "start": 226.34,
+     "end": 226.5,
+     "p": 0.997
+    },
+    {
+     "text": " small",
+     "start": 226.5,
+     "end": 226.78,
+     "p": 1.0
+    },
+    {
+     "text": " change",
+     "start": 226.78,
+     "end": 227.36,
+     "p": 1.0
+    },
+    {
+     "text": " by",
+     "start": 227.36,
+     "end": 227.76,
+     "p": 0.658
+    },
+    {
+     "text": " just",
+     "start": 227.76,
+     "end": 227.96,
+     "p": 0.995
+    },
+    {
+     "text": " clicking",
+     "start": 227.96,
+     "end": 228.34,
+     "p": 0.999
+    },
+    {
+     "text": " on",
+     "start": 228.34,
+     "end": 228.9,
+     "p": 0.999
+    },
+    {
+     "text": " the",
+     "start": 228.9,
+     "end": 229.32,
+     "p": 0.958
+    },
+    {
+     "text": " control",
+     "start": 229.32,
+     "end": 229.66,
+     "p": 0.597
+    },
+    {
+     "text": " bot.",
+     "start": 229.66,
+     "end": 229.94,
+     "p": 0.731
+    }
+   ]
+  },
+  {
+   "start": 231.0,
+   "end": 232.82,
+   "text": "Look at that, now we're in white mode.",
+   "words": [
+    {
+     "text": " Look",
+     "start": 231.0,
+     "end": 231.16,
+     "p": 0.989
+    },
+    {
+     "text": " at",
+     "start": 231.16,
+     "end": 231.3,
+     "p": 0.999
+    },
+    {
+     "text": " that,",
+     "start": 231.3,
+     "end": 231.48,
+     "p": 1.0
+    },
+    {
+     "text": " now",
+     "start": 231.6,
+     "end": 231.78,
+     "p": 0.998
+    },
+    {
+     "text": " we're",
+     "start": 231.78,
+     "end": 231.98,
+     "p": 0.996
+    },
+    {
+     "text": " in",
+     "start": 231.98,
+     "end": 232.18,
+     "p": 0.999
+    },
+    {
+     "text": " white",
+     "start": 232.18,
+     "end": 232.36,
+     "p": 0.945
+    },
+    {
+     "text": " mode.",
+     "start": 232.36,
+     "end": 232.82,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 233.3,
+   "end": 234.32,
+   "text": "Click on it again.",
+   "words": [
+    {
+     "text": " Click",
+     "start": 233.3,
+     "end": 233.6,
+     "p": 0.998
+    },
+    {
+     "text": " on",
+     "start": 233.6,
+     "end": 233.78,
+     "p": 0.999
+    },
+    {
+     "text": " it",
+     "start": 233.78,
+     "end": 233.92,
+     "p": 0.989
+    },
+    {
+     "text": " again.",
+     "start": 233.92,
+     "end": 234.32,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 234.62,
+   "end": 237.14,
+   "text": "Now we're in emergency construction mode.",
+   "words": [
+    {
+     "text": " Now",
+     "start": 234.62,
+     "end": 234.9,
+     "p": 0.998
+    },
+    {
+     "text": " we're",
+     "start": 234.9,
+     "end": 235.12,
+     "p": 0.981
+    },
+    {
+     "text": " in",
+     "start": 235.12,
+     "end": 235.5,
+     "p": 0.998
+    },
+    {
+     "text": " emergency",
+     "start": 235.5,
+     "end": 236.04,
+     "p": 0.822
+    },
+    {
+     "text": " construction",
+     "start": 236.04,
+     "end": 236.66,
+     "p": 0.97
+    },
+    {
+     "text": " mode.",
+     "start": 236.66,
+     "end": 237.14,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 238.72,
+   "end": 240.32,
+   "text": "Construction yellow mode.",
+   "words": [
+    {
+     "text": " Construction",
+     "start": 238.72,
+     "end": 239.34,
+     "p": 0.994
+    },
+    {
+     "text": " yellow",
+     "start": 239.34,
+     "end": 239.7,
+     "p": 0.988
+    },
+    {
+     "text": " mode.",
+     "start": 239.7,
+     "end": 240.32,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 241.52,
+   "end": 243.52,
+   "text": "This is the AV mode.",
+   "words": [
+    {
+     "text": " This",
+     "start": 241.52,
+     "end": 241.86,
+     "p": 0.999
+    },
+    {
+     "text": " is",
+     "start": 241.86,
+     "end": 242.04,
+     "p": 0.999
+    },
+    {
+     "text": " the",
+     "start": 242.04,
+     "end": 242.24,
+     "p": 0.999
+    },
+    {
+     "text": " AV",
+     "start": 242.24,
+     "end": 242.58,
+     "p": 0.919
+    },
+    {
+     "text": " mode.",
+     "start": 242.58,
+     "end": 243.52,
+     "p": 0.987
+    }
+   ]
+  },
+  {
+   "start": 243.52,
+   "end": 247.42,
+   "text": "and then this is my favorite, retro 80s mode.",
+   "words": [
+    {
+     "text": " and",
+     "start": 243.52,
+     "end": 244.48,
+     "p": 0.494
+    },
+    {
+     "text": " then",
+     "start": 244.48,
+     "end": 244.62,
+     "p": 0.847
+    },
+    {
+     "text": " this",
+     "start": 244.62,
+     "end": 244.88,
+     "p": 0.968
+    },
+    {
+     "text": " is",
+     "start": 244.88,
+     "end": 245.06,
+     "p": 0.998
+    },
+    {
+     "text": " my",
+     "start": 245.06,
+     "end": 245.26,
+     "p": 0.999
+    },
+    {
+     "text": " favorite,",
+     "start": 245.26,
+     "end": 245.82,
+     "p": 0.982
+    },
+    {
+     "text": " retro",
+     "start": 246.22,
+     "end": 246.52,
+     "p": 0.32
+    },
+    {
+     "text": " 80s",
+     "start": 246.52,
+     "end": 247.1,
+     "p": 0.804
+    },
+    {
+     "text": " mode.",
+     "start": 247.1,
+     "end": 247.42,
+     "p": 0.996
+    }
+   ]
+  },
+  {
+   "start": 249.16,
+   "end": 251.16,
+   "text": "And that essentially is what ControlBot is,",
+   "words": [
+    {
+     "text": " And",
+     "start": 249.16,
+     "end": 249.26,
+     "p": 0.949
+    },
+    {
+     "text": " that",
+     "start": 249.26,
+     "end": 249.44,
+     "p": 0.986
+    },
+    {
+     "text": " essentially",
+     "start": 249.44,
+     "end": 249.86,
+     "p": 0.922
+    },
+    {
+     "text": " is",
+     "start": 249.86,
+     "end": 250.1,
+     "p": 0.99
+    },
+    {
+     "text": " what",
+     "start": 250.1,
+     "end": 250.26,
+     "p": 0.996
+    },
+    {
+     "text": " ControlBot",
+     "start": 250.26,
+     "end": 250.7,
+     "p": 0.448
+    },
+    {
+     "text": " is,",
+     "start": 250.7,
+     "end": 251.16,
+     "p": 0.994
+    }
+   ]
+  },
+  {
+   "start": 251.58,
+   "end": 258.34,
+   "text": "how to use it, and what its primary reason for existence is.",
+   "words": [
+    {
+     "text": " how",
+     "start": 251.58,
+     "end": 251.92,
+     "p": 0.997
+    },
+    {
+     "text": " to",
+     "start": 251.92,
+     "end": 252.08,
+     "p": 0.932
+    },
+    {
+     "text": " use",
+     "start": 252.08,
+     "end": 252.32,
+     "p": 0.998
+    },
+    {
+     "text": " it,",
+     "start": 252.32,
+     "end": 252.72,
+     "p": 0.999
+    },
+    {
+     "text": " and",
+     "start": 253.3,
+     "end": 253.48,
+     "p": 0.996
+    },
+    {
+     "text": " what",
+     "start": 253.48,
+     "end": 253.66,
+     "p": 0.848
+    },
+    {
+     "text": " its",
+     "start": 253.66,
+     "end": 254.88,
+     "p": 0.356
+    },
+    {
+     "text": " primary",
+     "start": 254.88,
+     "end": 255.52,
+     "p": 0.995
+    },
+    {
+     "text": " reason",
+     "start": 255.52,
+     "end": 257.1,
+     "p": 0.994
+    },
+    {
+     "text": " for",
+     "start": 257.1,
+     "end": 257.34,
+     "p": 0.999
+    },
+    {
+     "text": " existence",
+     "start": 257.34,
+     "end": 257.8,
+     "p": 0.985
+    },
+    {
+     "text": " is.",
+     "start": 257.8,
+     "end": 258.34,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 259.24,
+   "end": 259.78,
+   "text": "Thank you.",
+   "words": [
+    {
+     "text": " Thank",
+     "start": 259.24,
+     "end": 259.6,
+     "p": 0.998
+    },
+    {
+     "text": " you.",
+     "start": 259.6,
+     "end": 259.78,
+     "p": 0.995
+    }
+   ]
+  }
+ ]
+}

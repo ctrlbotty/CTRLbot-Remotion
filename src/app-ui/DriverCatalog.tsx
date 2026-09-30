@@ -30,7 +30,7 @@ export {VIEWPORT as CATALOG_VIEWPORT} from './viewports';
  * Opt-in via `background`, not the default. `gray_10` is what this surface has rendered
  * since it was built and it is baked into the approved First-Run cuts; switching every
  * caller at once would restyle those without anybody asking for it. See
- * docs/ROADMAP.md — the drift is real and belongs in its own change.
+ * Roadmap.md, Deferred — the drift is real and belongs in its own change.
  */
 const blueAt = (amount: number) => {
   const value = parseInt(appColors.blue.slice(1), 16);

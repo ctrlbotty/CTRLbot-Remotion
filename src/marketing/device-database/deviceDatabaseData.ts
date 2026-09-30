@@ -4,8 +4,8 @@
 // Same split as `ai-walkthrough/walkthroughData.ts`, and for the same reason.
 //
 // `BEATS` and `COPY` are the video. They are written from
-// `docs/DEVICE-DATABASE-TRANSCRIPT.md` — the speaker's own walkthrough — and checked
-// against `../CTRLbot-IoT/AGENTS.md` and the Android resources.
+// `ingest/device-database/transcript.md` — the speaker's own walkthrough — and checked
+// against `../../1 - CTRLbot.av/CTRLbot-IoT/AGENTS.md` and the Android resources.
 //
 // Everything below the divider is what is *on* the screen, transcribed from the
 // recording's frames rather than written. Driver names, model numbers, command payloads,
@@ -45,7 +45,7 @@ export const DATABASE_FRAMES = BEATS.close.from + BEATS.close.duration;
 /**
  * The copy column, one entry per beat.
  *
- * **Every line here comes from `docs/DEVICE-DATABASE-TRANSCRIPT.md`.** This is a
+ * **Every line here comes from `ingest/device-database/transcript.md`.** This is a
  * walkthrough of the driver library, not a positioning piece: what a driver carries —
  * documentation, links to the manufacturer and product pages, and the API codes used to
  * connect to and control the device — and what it takes to add one. If the speaker did
@@ -65,7 +65,7 @@ export const DATABASE_FRAMES = BEATS.close.from + BEATS.close.duration;
  * dropdown and its `+ RS232 End Point` button say. It is also not the deferred feature:
  * `video-lint`'s `no-deferred-features` rule is about **EndPoint switching**, the hidden
  * AV-over-IP encoder/decoder mode in `SwitchingFragment`. A Global Cache End Point is a
- * shipping device driver and one of the transports `../CTRLbot-IoT/AGENTS.md` lists on
+ * shipping device driver and one of the transports `../../1 - CTRLbot.av/CTRLbot-IoT/AGENTS.md` lists on
  * its first page. See the brief.
  */
 export const COPY = {

@@ -8,6 +8,13 @@ them. Gates between every task stop slop reaching the render. Then you iterate.
 
 It is not a one-shot machine. The goal is *in the ballpark and never slop*.
 
+When the starting point is Nathan's narrated app demonstration, use the source recording
+to fill the same brief instead of inventing the beat order or rewriting his voice. The
+complete branch is in [NARRATED-WALKTHROUGH.md](NARRATED-WALKTHROUGH.md): prepare the
+recording's audio, index it with a timestamped transcript, build the motion graphic and
+voice edit together, and keep separate silent and narrated render targets. The same
+visual and product-accuracy gates below still apply.
+
 ```
   videos/_TEMPLATE.md
         │  Nathan fills it out                       ~10 minutes
@@ -18,7 +25,7 @@ It is not a one-shot machine. The goal is *in the ballpark and never slop*.
   videos/<slug>.md                                   brief + [ ] T1..Tn
         │  the line runs                             Gemini AGY, Sonnet, Codex
         ▼
-  implement → verify → commit → next                 up to 3 repair rounds
+  implement → verify → commit → next                 up to 2 repair rounds
         │
         ▼
   out/<slug>/contact.html                            one sheet, Nathan looks at it
@@ -50,7 +57,7 @@ Each task goes through one cycle:
    the rendered still*. Three verdicts:
    - **PASS** → commit, `[x]`, next task.
    - **PASS WITH NOTES** → same, plus a line under `## Review notes`. No pause.
-   - **FAIL** → repair loop with a concrete fix list, up to **three rounds**. Still
+   - **FAIL** → repair loop with a concrete fix list, up to **two rounds**. Still
      failing after that: mark `[!]`, record the evidence, stop — later tasks would
      inherit a broken baseline.
 3. **Commit** — path-scoped, the task's files plus the brief. Never `git add -A`.
@@ -72,7 +79,7 @@ Machine-parsed. Keep it exact.
 ```
 - [ ] T1: One sentence naming what changes — files: src/marketing/<Beat>.tsx
 - [x] T2: Verified and committed
-- [!] T3: Blocked after three rounds — see Blocked notes
+- [!] T3: Blocked after two rounds — see Blocked notes
 ```
 
 Cannot describe a task in one sentence naming its files? It is too big.
@@ -185,7 +192,7 @@ Measure before you argue with a gate.
 
 ### Rules that came out of the EUI promo
 
-The second cut through this line. Its brief is `videos/playStore_promo2.md`, its
+The second cut through this line. Its brief is `videos/archive/2026-08-03-playStore_promo2.md`, its
 source is `src/marketing/eui-promo/`, and everything here was found by a rendered
 frame or a measurement.
 
@@ -294,8 +301,8 @@ headline's worth of words it stops reading as language.
 
 **Every claim is checked against**, in this order:
 
-1. `../CTRLbot-IoT/app/src/main/res` and a current build — the source of truth
-2. `../CTRLbot-IoT/AGENTS.md`
+1. `../../1 - CTRLbot.av/CTRLbot-IoT/app/src/main/res` and a current build — the source of truth
+2. `../../1 - CTRLbot.av/CTRLbot-IoT/AGENTS.md`
 3. `docs/About_CTRLbot_IoT.md`
 
 The July 29 Markdown user manual is a supporting snapshot, not a substitute.
@@ -363,7 +370,7 @@ Run every pending task in order. Fresh context per task. For each one:
    is not its evidence line. Warnings and style are notes, never failures.
 4. On PASS or PASS WITH NOTES: mark [x], stage only the task's files plus the brief,
    commit with a "Tn: " message, require a clean tree, continue.
-5. On FAIL: repair with the concrete fix list, up to three rounds. Then mark [!],
+5. On FAIL: repair with the concrete fix list, up to two rounds. Then mark [!],
    record why under Blocked notes, and stop.
 
 When every task is [x], run the full gate set and render:

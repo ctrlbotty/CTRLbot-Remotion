@@ -12,12 +12,16 @@ downstream is mechanical. Think here.
 - `docs/VIDEO_WORKFLOW.md` — the contract, the gates, and the standing constants
 - `docs/AUTHORING.md` — how a scene is written
 - `src/scenes/EuiHandoff.tsx` — the worked example
-- `docs/ROADMAP.md` — the gotchas that have already cost time
+- `docs/GOTCHAS.md` — the gotchas that have already cost time
 - `videos/$1.md` — the brief
+- for a narrated cut, the brief's `ingest/<slug>/transcript.md` and `contact.html` — what
+  was said and what was on screen. If the transcript still says `Status: DRAFT`, correct
+  it against the contact sheet and mark it corrected before decomposing; beats cut from a
+  misheard transcript are wrong twice
 - `src/destinations.ts` — the destination's frame, window and banned phrases
 
 Verify every claim in the beats table against the Android resources in
-`../CTRLbot-IoT/app/src/main/res` before writing a word of copy. A claim the build
+`../../1 - CTRLbot.av/CTRLbot-IoT/app/src/main/res` before writing a word of copy. A claim the build
 does not support is the most expensive thing to find late.
 
 ## Then

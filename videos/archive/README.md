@@ -12,6 +12,16 @@ is finished. Copy `../_TEMPLATE.md` instead.
 | Brief | Produced | Outcome |
 |---|---|---|
 | `2026-08-02-play-store-promo.md` | `V1-Play-Store-Promo` — `src/marketing/play-store-promo-v1/` | 26s, 1920×1080, EUI only. 42% inert against a 60% ceiling; lint clean; poster frame composed. |
+| `2026-08-03-playStore_promo2.md` | `Play-Store-EUI-Promo`, `src/marketing/eui-promo/` | 60s EUI promo; all 12 tasks verified. Its beat-state screenshots, once `videos/play store promo/`, are `2026-08-03-playStore_promo2-reference/` beside it. |
+| `2026-08-03-playStore_promo2_30.md` | `Play-Store-EUI-Promo-30` | The 30s cut of the promo above. |
+| `2026-08-06-playStore_promo3.md` | `Play-Store-EUI-Promo-V3`, `src/marketing/eui-promo-v3/` | 60s, `out/playStore_promo3_1min.mp4`. |
+| `2026-08-06-playStore_promo3_30.md` | `Play-Store-EUI-Promo-V3-30` | 30s, `out/playStore_promo3_30s.mp4`, the file `loop:seam` is calibrated to fail. |
+| `2026-08-14-device-database.md` | `device-database`, `src/marketing/device-database/` | 2 minutes from a narrated recording, `out/device-database-2min.mp4`. Transcript: `ingest/device-database/transcript.md`. |
+| `2026-08-14-hub-30.md` | `hub-30`, `hub-30-square`, `src/marketing/hub-cell/` | THE HUB cell for ctrlbot.io, T1 to T9 committed. Its run documents are in `docs/archive/`. |
+| `2026-09-03-ai-walkthrough.md` | `AI-Walkthrough`, `AI-Walkthrough-Narrated`, `src/marketing/ai-walkthrough/` | The worked example of a narrated walkthrough. Transcript: `ingest/ai-walkthrough/transcript.md`. |
+
+Paths inside an archived brief are left as they were when it ran. Where a file has moved
+since, this table says where to.
 
 ## What the first run taught
 

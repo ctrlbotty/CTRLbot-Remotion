@@ -13,7 +13,7 @@
 // to 12px in the frame.
 //
 // Every measurement in CtrlbotWeb is the site's own, straight out of
-// `../0 - CTRLbot.ai/ctrlbot.ai/public/index.html`. Nothing here is scaled by hand — the
+// `../../0 - CTRLbot.ai/ctrlbot.ai/public/index.html`. Nothing here is scaled by hand — the
 // scale lives in one place, on the frame.
 
 export const WEB_VIEWPORT = {width: 810, height: 611} as const;

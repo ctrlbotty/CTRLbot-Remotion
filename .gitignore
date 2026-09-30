@@ -13,6 +13,13 @@ dist/
 *.mp3
 !public/**
 
+# Ingest output that is regenerable from the recording in seconds. transcript.md,
+# words.json, captions.json and ingest.json stay committed: the first is corrected by
+# hand, and narration edit lists are cut against the second.
+ingest/*/frames/
+ingest/*/frames.json
+ingest/*/contact.html
+
 # Installed Remotion agent skills. skills-lock.json pins the versions, so these are
 # reproducible with `npx skills add remotion-dev/skills`. .claude/skills holds
 # absolute symlinks into this checkout and would break on any other machine.

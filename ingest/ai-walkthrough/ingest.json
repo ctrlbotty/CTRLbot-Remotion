@@ -1,0 +1,31 @@
+{
+ "slug": "ai-walkthrough",
+ "source": {
+  "path": "video input/archive/CTRLbot AI Walkthrough.mp4",
+  "bytes": 126217553,
+  "modified": "2026-08-13T21:56:49.536Z",
+  "duration": 262.7,
+  "video": "h264 1362x1074 10fps",
+  "audio": "aac 44100 Hz mono"
+ },
+ "narration": "public/narration/ai-walkthrough/source-normalized.m4a",
+ "transcript": {
+  "tool": "faster-whisper 1.2.1",
+  "model": "medium.en",
+  "device": "cuda/float16",
+  "seconds": 21.4,
+  "segments": 68
+ },
+ "heard": {
+  "letters": "Xenova/wav2vec2-base-960h (onnxruntime 1.28.0)",
+  "phrases": "medium.en on cuda/float16",
+  "seconds": 99.7,
+  "fillers": 6
+ },
+ "frames": {
+  "count": 36,
+  "rule": "scene > 0.01, at least 3s apart, at least one every 20s",
+  "ffmpeg": "ffmpeg"
+ },
+ "ingested": "2026-09-29T21:51:25.496Z"
+}

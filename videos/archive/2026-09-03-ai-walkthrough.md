@@ -27,6 +27,17 @@ they are deciding in about ten seconds whether this is another wrapper.
 
 It asks the questions a technician would ask before it answers — and keeps nothing.
 
+## Narration
+
+- Mode: `source-edit`
+- Source recording: `CTRLbot AI Walkthrough.mp4`
+- Timestamped transcript: `docs/AI-WALKTHROUGH-TRANSCRIPT.md`
+- Prepared audio: `public/narration/ai-walkthrough/source-normalized.m4a`
+- Edit list: `src/marketing/ai-walkthrough/aiWalkthroughNarration.ts`
+- Silent composition: `AI-Walkthrough`
+- Narrated composition: `AI-Walkthrough-Narrated`
+- Narrated output: `out/ai-walkthrough-2min-narrated.mp4`
+
 ## Beats
 
 Cut order. Seconds sum to 120 at 30fps. The surface is `CtrlbotWeb` throughout, inside

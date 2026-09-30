@@ -36,19 +36,34 @@ const OUT = 'out/web';
  * what actually changed, and bump it here BEFORE rendering: the sync at the bottom
  * writes whatever name is in this array.
  *
- * `Web-Loop-Matrix` — the 16:10 cut — is rendered but not used by the site, which lays
- * the matrix row out square. It is kept registered rather than deleted so the wide
- * composition does not rot, but there is no need to spend a render on it.
+ * `Web-Loop-Route`, `Web-Loop-Matrix` and `Web-Loop-Audio` are the single-beat wide cuts.
+ * The site plays `Web-Loop-Full` instead, which contains all three, and lays the matrix
+ * row out square; they are kept registered rather than deleted so the wide compositions
+ * do not rot, but there is no need to spend a render on them.
+ *
+ * **`width`/`height` here is the ffmpeg downscale target and it has to match what
+ * `Root.tsx` registers**, or pass two scales a 2x render to the wrong shape and delivers
+ * a stretched file under a name the site already trusts. These three sat at 1920 for a
+ * while after `WEB_LOOP.width` went to 1600 — harmless only because nothing rendered
+ * them.
  */
 const LOOPS = [
-  {id: 'Web-Loop-Route', name: 'eui-loop-route-v5', width: 1920, height: 1200},
-  {id: 'Web-Loop-Matrix', name: 'eui-loop-matrix-v6', width: 1920, height: 1200},
-  {id: 'Web-Loop-Audio', name: 'eui-loop-audio-v4', width: 1920, height: 1200},
+  {id: 'Web-Loop-Route', name: 'eui-loop-route-v5', width: 1600, height: 1200},
+  {id: 'Web-Loop-Matrix', name: 'eui-loop-matrix-v6', width: 1600, height: 1200},
+  {id: 'Web-Loop-Audio', name: 'eui-loop-audio-v4', width: 1600, height: 1200},
   {id: 'Web-Loop-Matrix-Square', name: 'eui-loop-matrix-sq-v6', width: 1200, height: 1200},
   {id: 'Web-Loop-App-Square', name: 'eui-loop-app-sq-v5', width: 1200, height: 1200},
-  {id: 'Web-Loop-Full', name: 'eui-loop-full-v1', width: 1920, height: 1200},
-  {id: 'Web-Loop-Ai', name: 'ai-loop-v1', width: 1920, height: 1200},
-  {id: 'hub-30', name: 'hub-30-v1', width: 1920, height: 1200},
+  // v2 was the first 4:3 cut, at panelClose 980 — a 1612px panel in a 1600px frame, so
+  // the bezel ran off both sides through the end of the matrix beat. v3 is 780/890.
+  {id: 'Web-Loop-Full', name: 'eui-loop-full-v3', width: 1600, height: 1200},
+  {id: 'Web-Loop-Ai', name: 'ai-loop-v2', width: 1600, height: 1200},
+  // v2 gained `connect` and `terminal` and went 30s -> 34s. v3 slowed the whole cut to
+  // 48s so the site's copy panel can be read, and gave the return its own block.
+  // v4 was rendered at 1600x1200 while HubCell still pinned the camera's viewport to
+  // 1920x1200, so it is the left 1600px of the wide frame, not a 4:3 shot. v5 is the
+  // same cut with the camera reading the real frame: same shot widths, taller region.
+  {id: 'hub-30', name: 'hub-30-v5', width: 1600, height: 1200},
+  {id: 'hub-30-square', name: 'hub-30-sq-v1', width: 1200, height: 1200},
 ];
 
 const CRF = 23;

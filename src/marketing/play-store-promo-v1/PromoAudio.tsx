@@ -54,7 +54,7 @@ export const PromoAudio = () => {
       {/* Emphasis comes from the spotlight, not the camera. The panel and the surface
           share a 16:10 aspect, so a full shot fits exactly and any push crops all four
           edges at once — a 0.66 push here cut off the speaker control and both ends of
-          the volume bar, which is the entire subject of the beat. ROADMAP.md records
+          the volume bar, which is the entire subject of the beat. docs/GOTCHAS.md records
           the same lesson from the tablet cut. Dim the rest instead. */}
       <Sequence from={22} durationInFrames={113} layout="none" name="Room audio">
         <Spotlight region={TABLET_EUI_REGIONS.volumeBar} appearAt={0} radius={0} />
