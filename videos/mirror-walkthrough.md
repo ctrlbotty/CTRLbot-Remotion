@@ -185,7 +185,7 @@ a check failing only in them is a Review note, not a repair. Full renders run on
 - [x] T9: Build the `paste` beat in `MirrorBeats.tsx`, mirroring the tablet `ConnectionPanel` with its host field filling in one frame — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx
   - Host `192.168.1.169`. Use `connectionRegions('tablet')` for any ring; do not estimate regions.
 - [x] T10: Build the `capture` beat in `MirrorBeats.tsx` on T3's toast and the stage's existing recording clock — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx
-- [ ] T11: Build the `apps` beat in `MirrorBeats.tsx`, the highlight stopping on `Kindle` with its Uninstall action visible — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx, src/app-ui/mirror/Mirror.tsx
+- [x] T11: Build the `apps` beat in `MirrorBeats.tsx`, the highlight stopping on `Kindle` with its Uninstall action visible — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx, src/app-ui/mirror/Mirror.tsx
   - If `AppsPanel` cannot show a row's Uninstall action, add it from Mirror's `AppsPanel.tsx` behind an optional prop. Never highlight a system package.
 - [ ] T12: Build the `files` beat in `MirrorBeats.tsx`, the dropped file joining the `/sdcard` list — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx, src/app-ui/mirror/Mirror.tsx
   - `FilesPanel` gains an optional extra file for after the drop; defaults unchanged.

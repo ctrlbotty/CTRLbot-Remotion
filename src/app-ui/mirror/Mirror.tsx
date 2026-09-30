@@ -39,6 +39,7 @@ import {
   Square,
   SquareStop,
   TerminalSquare,
+  Trash2,
   Upload,
   Usb,
   Volume1,
@@ -928,7 +929,13 @@ export const StudioPanel = ({
 );
 
 /** Apps: the tablet's packages, the list Nathan cleans the preinstalled ones from. */
-export const AppsPanel = ({highlight}: {highlight?: number}) => (
+export const AppsPanel = ({
+  highlight,
+  uninstallAction,
+}: {
+  highlight?: number;
+  uninstallAction?: boolean;
+}) => (
   <Panel title="Apps" subtitle="28 packages" actions={<IconButton icon={RefreshCw} size={15} />}>
     <Input placeholder="Filter packages…" />
     <Row label="Include system apps">
@@ -953,9 +960,15 @@ export const AppsPanel = ({highlight}: {highlight?: number}) => (
             <div style={{fontSize: 10, lineHeight: '14px', fontFamily: mirrorFont.mono, color: mist[400]}}>{app.id}</div>
           </div>
           {index === highlight ? (
-            <div style={{display: 'flex', gap: 2, color: mist[300]}}>
+            <div style={{display: 'flex', alignItems: 'center', gap: 2, color: mist[300]}}>
               <Play size={14} />
-              <span style={{fontSize: 10, fontWeight: 700, color: alert[400], marginLeft: 8}}>✕</span>
+              {uninstallAction ? (
+                <span style={{color: alert[400], display: 'flex', alignItems: 'center', marginLeft: 8}} title="Uninstall">
+                  <Trash2 size={14} />
+                </span>
+              ) : (
+                <span style={{fontSize: 10, fontWeight: 700, color: alert[400], marginLeft: 8}}>✕</span>
+              )}
             </div>
           ) : null}
         </div>

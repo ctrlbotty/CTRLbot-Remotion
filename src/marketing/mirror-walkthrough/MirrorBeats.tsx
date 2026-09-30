@@ -1,6 +1,7 @@
 import React from 'react';
 import {interpolate, Easing} from 'remotion';
 import {
+  AppsPanel,
   DevicesPanel,
   MirrorApp,
   MirrorStage,
@@ -345,6 +346,31 @@ export const CaptureBeat: React.FC<{frame: number; frames: number}> = ({
   );
 };
 
+/**
+ * Apps beat (15s = 450 frames):
+ * Apps panel lists the tablet's packages; the highlight walks down the list
+ * and stops on Kindle, whose row shows its Uninstall action.
+ * Never highlights a system package (Calendar: 1, Galaxycontinuity: 4).
+ */
+export const AppsBeat: React.FC<{frame: number; frames: number}> = ({
+  frame,
+  frames,
+}) => {
+  // Steps through user apps: 0 (Acr2), 2 (Chatgpt), 3 (Docs), 5 (Iot), then stops on 6 (Kindle)
+  const highlight =
+    frame < 60 ? 0 : frame < 120 ? 2 : frame < 180 ? 3 : frame < 240 ? 5 : 6;
+
+  return (
+    <MirrorApp
+      panel="apps"
+      status={`Mirroring ${MIRROR_DEVICE.name}`}
+      hasDevice
+      side={<AppsPanel highlight={highlight} uninstallAction />}
+      stage={<MirrorStage mirrored={catalog(frame, frames)} />}
+    />
+  );
+};
+
 export const BEAT_RENDERERS: Partial<
   Record<BeatName, React.FC<{frame: number; frames: number}>>
 > = {
@@ -355,4 +381,5 @@ export const BEAT_RENDERERS: Partial<
   frame: FrameBeat,
   paste: PasteBeat,
   capture: CaptureBeat,
+  apps: AppsBeat,
 };
