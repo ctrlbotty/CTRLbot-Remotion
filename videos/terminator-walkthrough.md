@@ -198,7 +198,7 @@ branch, no worktree.
 
 - [x] T1: Correct `ingest/terminator-walkthrough/transcript.md` against `ingest/terminator-walkthrough/contact.html` and mark it `Status: corrected 2026-09-30` — files: ingest/terminator-walkthrough/transcript.md
   - Product names and terms only: "ControlBot IoT" → CTRLbot IoT, "ControlBot mirror" → CTRLbot Mirror, "Luxel"/"Luxall" → Luxul, "Mac address" → MAC address, "USB.com" → USB COM, "open up to 12" → COM12, and anything else the stills contradict. Keep filler and false starts; change no timestamp; never edit the JSON files.
-- [ ] T2: Add an optional `pinned` state to the instance tab's pin in `Terminator.tsx`, styled from `PinIcon` and the tab markup in Terminator's `src/storage.tsx` and `src/TcpServer.tsx`, and thread it through `TermTcpServer` — files: src/app-ui/term/Terminator.tsx
+- [x] T2: Add an optional `pinned` state to the instance tab's pin in `Terminator.tsx`, styled from `PinIcon` and the tab markup in Terminator's `src/storage.tsx` and `src/TcpServer.tsx`, and thread it through `TermTcpServer` — files: src/app-ui/term/Terminator.tsx
   - Absent means today's outline, so S02 and `Proof-Term-Server` are unchanged. Verify: `npm run check`; `npm run still -- Proof-Term-Server out/_t2-server.png` looks as before.
 - [ ] T3: Add optional caption spelling corrections to `captionsFromClips`, and a `--corrections=<export>` flag to `narration:srt` — files: src/audio/narrationCaptions.ts, scripts/narration-srt.mjs
   - `corrections?: Record<string, string>` replaces whole words, keeping the word's leading space and trailing punctuation ("Luxall," → "Luxul,"). Keep the file import-free.

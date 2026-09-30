@@ -128,14 +128,24 @@ const Check = ({label, checked}: {label: string; checked: boolean}) => (
   </div>
 );
 
-const Pin = ({colour}: {colour: string}) => (
-  <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke={colour} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+const Pin = ({colour, pinned}: {colour: string; pinned?: boolean}) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={14}
+    height={14}
+    fill={pinned ? colour : 'none'}
+    stroke={pinned ? 'none' : colour}
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{minWidth: 14, minHeight: 14, transform: pinned ? 'scale(1.1)' : undefined}}
+  >
     <path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z" />
   </svg>
 );
 
 /** The per-screen instance tabs: `Server 1 (23)`, `192.168.0.135:1515`, and `+ New`. */
-const InstanceTabs = ({label, live}: {label: string; live: boolean}) => (
+const InstanceTabs = ({label, live, pinned}: {label: string; live: boolean; pinned?: boolean}) => (
   <div
     style={{
       display: 'flex',
@@ -165,7 +175,7 @@ const InstanceTabs = ({label, live}: {label: string; live: boolean}) => (
     >
       <span style={{width: sp(2), height: sp(2), borderRadius: 999, backgroundColor: live ? tw.green400 : tw.gray500}} />
       <span>{label}</span>
-      <Pin colour={mix(tw.white, 60)} />
+      <Pin colour={pinned ? brand.yellow : mix(tw.white, 60)} pinned={pinned} />
       <span style={{fontSize: 11, fontWeight: 700, padding: `0 ${sp(1)}px`, color: mix(tw.white, 80)}}>✕</span>
     </div>
     <div
@@ -543,7 +553,7 @@ export const TermScan = ({state, adapter}: {state: TermScanState; adapter: {name
 
 // ── Connections ─────────────────────────────────────────────────────────────────────
 
-export const TermTcpServer = ({port, listening, clients, received, sent, input, pressing}: {
+export const TermTcpServer = ({port, listening, clients, received, sent, input, pressing, pinned}: {
   port: string;
   listening: boolean;
   clients: number;
@@ -551,9 +561,10 @@ export const TermTcpServer = ({port, listening, clients, received, sent, input, 
   sent: string[];
   input?: string;
   pressing?: boolean;
+  pinned?: boolean;
 }) => (
   <>
-    <InstanceTabs label={`Server 1 (${port})`} live={listening} />
+    <InstanceTabs label={`Server 1 (${port})`} live={listening} pinned={pinned} />
     <Screen>
       <ControlRow>
         <div>
