@@ -1,8 +1,8 @@
 # CTRLbot Terminatior Tutorial: transcript
 
-**Status: DRAFT.** Machine transcript from `faster-whisper 1.2.1` `medium.en`, not yet
-checked against the recording. Correct it by hand against the frames in
-`ingest/terminator-walkthrough/contact.html`, then change this line to `Status: corrected <date>`.
+**Status: corrected 2026-09-30.** Machine transcript from `faster-whisper 1.2.1` `medium.en`, checked
+against the recording and contact sheet.
+Fixed: MAC address at 1:31.3; CTRLbot Mirror at 2:50.7; USB COM at 5:54.7; COM12 at 6:46.6; Luxul at 7:37.6 and 8:06.4; serial COM ports at 8:27.1.
 Once corrected it is the script of record, and a re-run of `npm run ingest:recording`
 leaves it alone unless given `--force`.
 
@@ -35,7 +35,7 @@ a polished read.
 | 1:21.8 | For now, you can see it gives us |
 | 1:23.8 | a lot of good information here, right? |
 | 1:26.0 | You can get the host name, device name, manufacturer, |
-| 1:31.3 | as well as Mac address. |
+| 1:31.3 | as well as MAC address. |
 | 1:34.0 | And if you scroll over, you can see that there's even links |
 | 1:36.8 | that you can go to directly to the website |
 | 1:45.3 | and view a device webpage right there, right? |
@@ -55,7 +55,7 @@ a polished read.
 | 2:41.9 | and I can just copy that right over |
 | 2:45.3 | And then I'm gonna add that in to my connection right here, |
 | 2:49.3 | and you can see I can paste it |
-| 2:50.7 | with our handy dandy CTRLbot mirror. |
+| 2:50.7 | with our handy dandy CTRLbot Mirror. |
 | 2:55.2 | And this is mirroring our app on an Android tablet. |
 | 3:00.2 | And you can see I have that IP address in there. |
 | 3:04.4 | So at this point, I can create this server on my laptop |
@@ -89,7 +89,7 @@ a polished read.
 | 5:46.8 | A lot of people may not know that |
 | 5:48.3 | depending on the capabilities of your machine. |
 | 5:51.6 | What we're gonna do, I have two COM ports |
-| 5:54.7 | that are USB.com that are set up, |
+| 5:54.7 | that are USB COM that are set up, |
 | 5:59.7 | and I'm gonna connect them to each other |
 | 6:01.4 | so they can talk to each other. |
 | 6:03.2 | So you can see right here, I have a little refresh button. |
@@ -105,7 +105,7 @@ a polished read.
 | 6:38.7 | And we fully support all the parameters |
 | 6:41.0 | for most serial communication. |
 | 6:44.0 | And then we're just gonna open that up. |
-| 6:46.6 | On the other side, because these are connected to each other, I'll open up to 12. |
+| 6:46.6 | On the other side, because these are connected to each other, I'll COM12. |
 | 6:53.4 | Was it 38? Yeah it was. And we'll open up that. And now we are connected and |
 | 7:03.6 | we can talk to each other. Look at that. And there's our whole hello world. Goodbye. |
 | 7:13.0 | Well, it's not even buy, but hey, whatever, right? |
@@ -113,7 +113,7 @@ a polished read.
 | 7:23.1 | Finally, I'd like to show that we have an SSH client as well. |
 | 7:29.2 | So you're able to connect to an SSH client, |
 | 7:32.5 | and you can do that right here. |
-| 7:37.6 | We'll use our Luxel, right? |
+| 7:37.6 | We'll use our Luxul, right? |
 | 7:40.4 | I could just copy that right over and put it in there. |
 | 7:46.5 | All right, and you'll want to put in the credentials. |
 | 7:55.6 | If you need to see them, |
@@ -121,12 +121,12 @@ a polished read.
 | 7:58.7 | Okay, that looks correct. |
 | 8:01.5 | And oh, okay, it looks like I'm connected. |
 | 8:03.7 | Let's just see, I'll type in help. |
-| 8:06.4 | Oh yes, we are connected to Luxall |
+| 8:06.4 | Oh yes, we are connected to Luxul |
 | 8:09.3 | and everything is showing up just great. |
 | 8:12.4 | Great. |
 | 8:13.2 | Well, this has been a short little walkthrough |
 | 8:16.8 | of the terminal and we went over how to scan, |
 | 8:20.9 | how to create a TCP server, |
 | 8:23.4 | how to connect to a device via Telnet, |
-| 8:27.1 | SSH client or through the serial com ports. |
+| 8:27.1 | SSH client or through the serial COM ports. |
 | 8:31.8 | Thank you. |
