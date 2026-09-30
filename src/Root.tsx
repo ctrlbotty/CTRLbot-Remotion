@@ -57,6 +57,7 @@ import {LoopFull} from './marketing/web-loops/LoopFull';
 import {LoopAi, aiLoopDuration} from './marketing/web-loops/LoopAi';
 import {DevicesStill} from './marketing/web-loops/DevicesStill';
 import {FirstRunEducation} from './app-ui/FirstRunEducation';
+import {ConnectTest} from './app-ui/ConnectTest';
 import {
   ConnectDiagram,
   connectDiagramDuration,
@@ -552,6 +553,7 @@ export const RemotionRoot = () => (
       <Still id="Proof-Phone-CTRLbot" component={PhoneCtrlbotProof} width={360} height={780} />
       <Still id="Proof-Tablet-CTRLbot" component={TabletCtrlbotProof} width={1280} height={800} />
       <Still id="Proof-Phone-FirstRunEducation" component={FirstRunEducation} width={360} height={780} />
+      <Still id="Proof-Phone-ConnectTest" component={ConnectTest} width={360} height={780} />
       {/* CTRLbot Terminator, the Windows utility: CSS pixels, its own Tailwind palette. */}
       <Still id="Proof-Term-Scan" component={TermScanProof} width={1280} height={800} />
       <Still id="Proof-Term-Server" component={TermServerProof} width={1280} height={800} />

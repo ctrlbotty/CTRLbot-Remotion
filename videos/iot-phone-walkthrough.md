@@ -237,7 +237,7 @@ branch, no worktree.
 
 - [x] T4: Build `FirstRunEducation` from `layout/dialog_first_run_education.xml`: the walkthrough card over the setup screen, its step and ✕ as props — files: src/app-ui/FirstRunEducation.tsx, src/Root.tsx
   - Reference frames: `f_0003.jpg`–`f_0007.jpg`.
-- [ ] T5: Build `ConnectTest` from `layout/menu_connections.xml`, `driver_connection.xml`, `layout-port/remotes_test.xml` and `layout-port/av_sw_remote_nx1.xml`: the Device Driver Connections / Test Device Drivers tabs, the Buttons, Switcher, Terminal and Web page tab bar, and the Buttons and single-output Switcher tabs — files: src/app-ui/ConnectTest.tsx, src/Root.tsx
+- [x] T5: Build `ConnectTest` from `layout/menu_connections.xml`, `driver_connection.xml`, `layout-port/remotes_test.xml` and `layout-port/av_sw_remote_nx1.xml`: the Device Driver Connections / Test Device Drivers tabs, the Buttons, Switcher, Terminal and Web page tab bar, and the Buttons and single-output Switcher tabs — files: src/app-ui/ConnectTest.tsx, src/Root.tsx
   - Terminal tab reuses `ConnectionPanel`'s terminal colours and `TerminalLine`; Web page tab shows the app's web view chrome over an empty page. Reference frames: `f_0021.jpg`–`f_0024.jpg`, `f_0041.jpg`.
 - [ ] T6: Add the multi-output Switcher tab to `ConnectTest` from `layout-port/av_sw_remote_nxo.xml`, with the system and single-device selection shown for Matrox — files: src/app-ui/ConnectTest.tsx
   - Outputs and inputs are props (`CONVERTIP RX 1–4` over `CONVERTIP TX 1–4`); a selected output is yellow as in the recording. Reference frames: `f_0042.jpg`–`f_0044.jpg`.
