@@ -10,6 +10,11 @@ import {
 } from '../../app-ui/mirror/Mirror';
 import {MIRROR_CATALOG, MIRROR_DEVICE} from '../../app-ui/mirror/mirrorData';
 import {CATALOG_VIEWPORT, DriverCatalog} from '../../app-ui/DriverCatalog';
+import {
+  ConnectionPanel,
+  CONNECTION_VIEWPORT,
+  type DeviceCommand,
+} from '../../app-ui/ConnectionPanel';
 import type {BeatName} from './walkthroughData';
 
 const catalog = (frame: number, frames: number): Mirrored => ({
@@ -230,6 +235,55 @@ export const FrameBeat: React.FC<{frame: number; frames: number}> = ({
   );
 };
 
+const CONNECTION_COMMANDS: DeviceCommand[] = [
+  {label: 'Power On', reference: 'PWR ON\\r'},
+  {label: 'Power Off', reference: 'PWR OFF\\r'},
+  {label: 'Power Toggle', reference: 'KEY 01\\r'},
+  {label: 'Volume Up', reference: 'KEY 56\\r'},
+  {label: 'Aspect', reference: 'ASPECT 30\\r'},
+];
+
+/**
+ * Paste beat (14s = 420 frames):
+ * The mirrored tablet shows CTRLbot IoT's connection panel; its host field
+ * goes from empty to 192.168.1.169 in one frame, caret after it.
+ */
+export const PasteBeat: React.FC<{frame: number; frames: number}> = ({
+  frame,
+}) => {
+  // Host field empty for first 4 seconds (120 frames), then fills in one frame (paste!)
+  const isPasted = frame >= 120;
+  const host = isPasted ? '192.168.1.169' : '';
+
+  const connectionScreen: Mirrored = {
+    width: CONNECTION_VIEWPORT.tablet.width,
+    height: CONNECTION_VIEWPORT.tablet.height,
+    screen: (
+      <ConnectionPanel
+        device="tablet"
+        deviceName="EPSON PowerLite - New"
+        protocol="TCP"
+        host={host}
+        port="3629"
+        connected={false}
+        commands={CONNECTION_COMMANDS}
+        terminal={[]}
+        hostCaret
+      />
+    ),
+  };
+
+  return (
+    <MirrorApp
+      panel="devices"
+      status={`Mirroring ${MIRROR_DEVICE.name}`}
+      hasDevice
+      side={<DevicesPanel selected details live />}
+      stage={<MirrorStage mirrored={connectionScreen} />}
+    />
+  );
+};
+
 export const BEAT_RENDERERS: Partial<
   Record<BeatName, React.FC<{frame: number; frames: number}>>
 > = {
@@ -238,4 +292,5 @@ export const BEAT_RENDERERS: Partial<
   debugging: DebuggingBeat,
   connect: ConnectBeat,
   frame: FrameBeat,
+  paste: PasteBeat,
 };

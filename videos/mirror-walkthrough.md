@@ -182,7 +182,7 @@ a check failing only in them is a Review note, not a repair. Full renders run on
   - Verify: per-task check on `--beat=setup` and `--beat=debugging`.
 - [x] T7: Build the `connect` beat in `MirrorBeats.tsx` — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx
 - [x] T8: Build the `frame` beat in `MirrorBeats.tsx` on T2's picker and `frameStyle` — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx
-- [ ] T9: Build the `paste` beat in `MirrorBeats.tsx`, mirroring the tablet `ConnectionPanel` with its host field filling in one frame — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx
+- [x] T9: Build the `paste` beat in `MirrorBeats.tsx`, mirroring the tablet `ConnectionPanel` with its host field filling in one frame — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx
   - Host `192.168.1.169`. Use `connectionRegions('tablet')` for any ring; do not estimate regions.
 - [ ] T10: Build the `capture` beat in `MirrorBeats.tsx` on T3's toast and the stage's existing recording clock — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx
 - [ ] T11: Build the `apps` beat in `MirrorBeats.tsx`, the highlight stopping on `Kindle` with its Uninstall action visible — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx, src/app-ui/mirror/Mirror.tsx
