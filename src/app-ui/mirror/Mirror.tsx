@@ -15,6 +15,7 @@ import {
   Bell,
   Camera,
   Check,
+  CheckCircle2,
   ChevronLeft,
   Circle,
   Expand,
@@ -318,13 +319,115 @@ const Sidebar = ({panel, hasDevice}: {panel: MirrorPanel; hasDevice: boolean}) =
   </div>
 );
 
+export const DEFAULT_SCREENSHOT_PATH = 'Pictures\\CTRLbot Mirror\\samsung-SM-X210_2026-09-30_14-32-07.png';
+
+export type MirrorToast = {
+  title?: string;
+  detail?: string;
+  opacity?: number;
+  translateY?: number;
+};
+
+/**
+ * Toast notification matching Mirror's `Toasts.tsx` and `StageToolbar.tsx`.
+ * Used for the *Screenshot saved* notification.
+ */
+export const MirrorToastNotification = ({
+  toast,
+}: {
+  toast: boolean | MirrorToast;
+}) => {
+  const data = typeof toast === 'object' ? toast : {};
+  const title = data.title ?? 'Screenshot saved';
+  const detail = data.detail !== undefined ? data.detail : DEFAULT_SCREENSHOT_PATH;
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        right: sp(5),
+        bottom: sp(5),
+        zIndex: 50,
+        width: 320,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: sp(2),
+        pointerEvents: 'none',
+      }}
+    >
+      <div
+        role="status"
+        style={{
+          display: 'flex',
+          gap: sp(3),
+          borderRadius: round.xl,
+          border: border(mix(signal[500], 40)),
+          backgroundColor: mix(ink[850], 95),
+          padding: sp(3),
+          boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.4)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          opacity: data.opacity ?? 1,
+          transform: data.translateY !== undefined ? `translateY(${data.translateY}px)` : undefined,
+        }}
+      >
+        <CheckCircle2 size={16} color={signal[400]} style={{marginTop: 2, flexShrink: 0}} />
+        <div style={{minWidth: 0, flex: 1}}>
+          <p style={{...text.xs, fontWeight: 600, color: mist[100], margin: 0}}>{title}</p>
+          {detail ? (
+            <p
+              style={{
+                marginTop: 4,
+                ...text.px11,
+                lineHeight: '15px',
+                wordBreak: 'break-all',
+                color: mist[400],
+                margin: '4px 0 0 0',
+              }}
+            >
+              {detail}
+            </p>
+          ) : null}
+        </div>
+        <div
+          style={{
+            height: 'fit-content',
+            flexShrink: 0,
+            borderRadius: round.md,
+            padding: 2,
+            color: mist[400],
+            display: 'flex',
+          }}
+        >
+          <X size={13} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 /**
  * The window: title bar, rail, panel and stage. `status` is the title bar's middle text:
  * `No device connected`, `1 device ready`, or `Mirroring samsung SM-X210`.
  */
-export const MirrorApp = ({panel, status, hasDevice, side, stage}: {panel: MirrorPanel; status: string; hasDevice: boolean; side: ReactNode; stage: ReactNode}) => (
+export const MirrorApp = ({
+  panel,
+  status,
+  hasDevice,
+  side,
+  stage,
+  toast,
+}: {
+  panel: MirrorPanel;
+  status: string;
+  hasDevice: boolean;
+  side: ReactNode;
+  stage: ReactNode;
+  toast?: boolean | MirrorToast;
+}) => (
   <div
     style={{
+      position: 'relative',
       width: MIRROR_VIEWPORT.width,
       height: MIRROR_VIEWPORT.height,
       display: 'flex',
@@ -341,6 +444,7 @@ export const MirrorApp = ({panel, status, hasDevice, side, stage}: {panel: Mirro
       <div style={{width: 340, flexShrink: 0, borderRight: border(ink[800]), backgroundColor: ink[900]}}>{side}</div>
       {stage}
     </div>
+    {toast ? <MirrorToastNotification toast={toast} /> : null}
   </div>
 );
 
