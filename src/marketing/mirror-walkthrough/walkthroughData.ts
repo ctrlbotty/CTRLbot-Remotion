@@ -4,7 +4,6 @@
 // `video input/CTRLbot Mirror Tutorial.mp4` (8:29).
 
 import type {Shot} from '../../camera/Camera';
-import {fullFrame} from '../../camera/Camera';
 import {MIRROR_VIEWPORT} from '../../app-ui/mirror/mirrorData';
 
 /**
@@ -93,28 +92,53 @@ export const COPY: Record<BeatName, {eyebrow: string; title: string; line: strin
   },
 };
 
+/** Where each beat pushes: the panel side (sidebar, panel, and the stage's left) or the stage. */
+const SUBJECT: Record<BeatName, 'panel' | 'stage' | 'toolbar'> = {
+  open: 'stage',
+  setup: 'panel',
+  debugging: 'panel',
+  connect: 'panel',
+  frame: 'panel',
+  paste: 'stage',
+  capture: 'toolbar',
+  apps: 'panel',
+  files: 'panel',
+  tools: 'panel',
+  close: 'panel',
+};
+
 /**
- * Continuous gentle camera drift over the mirror viewport: a slow pull-back from full
- * frame (1.0) to `target` across the cut.
+ * The camera: every beat opens on the whole window, pushes in to its subject by mid-beat,
+ * and is back on the whole window as the beat ends, so every cut lands wide.
  *
- * It pulls back rather than pushing in. A push to 0.94 trims 3% off every edge, and
- * Mirror's chrome lives at the edges: by the close it had cropped the 32px title bar, the
- * 64px icon sidebar and the stage toolbar. A region wider than the window is centred by
- * the camera, so a pull-back keeps all four edges in shot for the whole cut.
+ * A single slow drift across the cut measured 89% inert against the 60% ceiling — every
+ * beat between 80% and 95%, because Mirror's state changes are small in a 1021px panel.
+ * What reads as change is frame-wide motion, so each beat carries its own push. The
+ * push crops the window's far edges while it is in; the wide shots at both ends of
+ * every beat show the whole window.
  */
-export const drift = (
-  viewport: {width: number; height: number} = MIRROR_VIEWPORT,
-  duration: number = MIRROR_WALKTHROUGH_FRAMES,
-  target = 1.05,
-): Shot[] => [
-  {at: 0, region: fullFrame(viewport)},
-  {
-    at: duration,
-    region: {
-      x: (viewport.width * (1 - target)) / 2,
-      y: (viewport.height * (1 - target)) / 2,
-      width: viewport.width * target,
-      height: viewport.height * target,
-    },
-  },
-];
+export const beatShots = (push = 0.88, viewport = MIRROR_VIEWPORT): Shot[] => {
+  const wide = 1.04;
+  const w = viewport.width * push;
+  const h = viewport.height * push;
+  const region = (subject: 'panel' | 'stage' | 'toolbar') => ({
+    x: subject === 'panel' ? 0 : viewport.width - w,
+    y: subject === 'panel' ? 0 : subject === 'toolbar' ? viewport.height - h : (viewport.height - h) / 2,
+    width: w,
+    height: h,
+  });
+  const whole = {
+    x: (viewport.width * (1 - wide)) / 2,
+    y: (viewport.height * (1 - wide)) / 2,
+    width: viewport.width * wide,
+    height: viewport.height * wide,
+  };
+  return BEAT_NAMES.flatMap((name) => {
+    const {from, duration} = BEATS[name];
+    return [
+      {at: from, region: whole},
+      {at: from + Math.round(duration / 2), region: region(SUBJECT[name])},
+      {at: from + duration - 1, region: whole},
+    ];
+  });
+};

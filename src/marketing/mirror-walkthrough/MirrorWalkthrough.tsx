@@ -23,7 +23,7 @@ import {
   BEATS,
   BEAT_NAMES,
   COPY,
-  drift,
+  beatShots,
   MIRROR_WALKTHROUGH_FRAMES,
   type BeatName,
 } from './walkthroughData';
@@ -118,7 +118,7 @@ export const MirrorWalkthrough = ({narration = false}: {narration?: boolean}) =>
       <PromoPreload />
       <Stage
         contentSize={MIRROR_VIEWPORT}
-        shots={drift(MIRROR_VIEWPORT, MIRROR_WALKTHROUGH_FRAMES)}
+        shots={beatShots()}
         panelHeight={STAGE.panelHeight}
         panelAspect={MIRROR_VIEWPORT.width / MIRROR_VIEWPORT.height}
         panelRadius={round.xl}

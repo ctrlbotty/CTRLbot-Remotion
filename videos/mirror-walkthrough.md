@@ -196,7 +196,7 @@ a check failing only in them is a Review note, not a repair. Full renders run on
 - [x] T15: Write the narration edit list from the Narration clips table and register the `mirror-walkthrough-narrated` composition — files: src/marketing/mirror-walkthrough/mirrorWalkthroughNarration.ts, src/marketing/mirror-walkthrough/MirrorWalkthrough.tsx, src/Root.tsx
   - Needs T1. `NarrationTrack` with `playbackRate` 1; each `at` inside its beat; each boundary checked against corrected word times and the waveform. The silent composition stays silent.
   - Verify: `npm run check`; render `out/mirror-walkthrough-narrated.mp4` without `--muted`; `npm run narration:check -- out/mirror-walkthrough-narrated.mp4`.
-- [ ] T16: Run the feature gates and both renders, and record results in this brief — files: videos/mirror-walkthrough.md
+- [x] T16: Run the feature gates and both renders, and record results in this brief — files: videos/mirror-walkthrough.md
   - `npm run video:lint -- --destination=social-walkthrough`; `npm run video:frames -- mirror-walkthrough contact`; `npm run render -- mirror-walkthrough out/mirror-walkthrough.mp4 --codec=h264 --crf=20 --muted`; `npm run video:frames -- mirror-walkthrough check out/mirror-walkthrough.mp4`; the same check on the narrated file; `npm run narration:check -- out/mirror-walkthrough-narrated.mp4`. Confirm each output file exists.
   - Regression: `npm run still` of `Proof-Mirror-Setup`, `-Devices`, `-Studio`, `-Apps`, `-Files` match their pre-T2 renders.
   - Runs straight after T15 with no approval stop. Does not mark the video done: Nathan reviews both renders and `out/mirror-walkthrough/contact.html`, and his notes come back as new tasks.
@@ -236,6 +236,18 @@ a check failing only in them is a Review note, not a repair. Full renders run on
   from "Welcome to CTRLbot" to "Thank you for your time"; `narration:check` -13.4 LUFS,
   -1.4 dBTP. Two joins to listen for: "…record it as video. But it's also going to record
   your voice" and "…you pair over wireless" (both as spoken).
+- T16, first render: 89% inert on both cuts (every beat 80–95%), a FAIL against 0.6. The
+  single slow drift barely moves. Fixed with `beatShots()` in `walkthroughData.ts`: each
+  beat opens on the whole window (1.04), pushes to 0.88 on its subject (panel, stage, or
+  toolbar for capture) by mid-beat, and is back to 1.04 at its end, so every cut lands
+  wide. Measured 22% at a 0.8 push, 33% at 0.88; 0.88 kept.
+- T16, final: `npm run check` OK; `video:lint --destination=social-walkthrough` 0 errors;
+  `out/mirror-walkthrough.mp4` 30% inert, `out/mirror-walkthrough-narrated.mp4` 29%
+  inert, both "no problems"; `narration:check` passed, -13.4 LUFS, -1.4 dBTP.
+- T16 regression: no pre-T2 baseline was saved, so the five `Proof-Mirror-*` stills were
+  checked by eye, not diffed. Setup, Devices, Apps and Files match their defaults; Studio
+  now carries T2's Device frame picker, by design. The picker's default highlight is
+  *Rounded* while the stage draws the tablet frame: a pre-existing default, not touched.
 - T13/T14 were built and committed together: both live in `MirrorBeats.tsx`.
 - T14: the close's wordmark is `StageCopy`'s Audiowide title, and the brief's line is its
   Montserrat body.
