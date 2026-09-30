@@ -978,43 +978,55 @@ export const AppsPanel = ({
 );
 
 /** Files: /sdcard, with the drop target for copying from the PC. */
-export const FilesPanel = ({dragging}: {dragging?: boolean}) => (
-  <Panel title="Files" subtitle={MIRROR_FILES.path} actions={<IconButton icon={RefreshCw} size={15} />}>
-    <div
-      style={{
-        ...text.px11,
-        textAlign: 'center',
-        padding: sp(3),
-        borderRadius: round.xl,
-        border: `1px dashed ${dragging ? beam[400] : ink[600]}`,
-        backgroundColor: dragging ? mix(beam[500], 10) : 'transparent',
-        color: dragging ? beam[300] : mist[400],
-      }}
-    >
-      <div style={{display: 'flex', justifyContent: 'center', marginBottom: 4}}>
-        <Upload size={14} />
+export const FilesPanel = ({
+  dragging,
+  extraFile,
+}: {
+  dragging?: boolean;
+  extraFile?: {name: string; size: string};
+}) => {
+  const files = extraFile
+    ? [...MIRROR_FILES.files, extraFile]
+    : MIRROR_FILES.files;
+
+  return (
+    <Panel title="Files" subtitle={MIRROR_FILES.path} actions={<IconButton icon={RefreshCw} size={15} />}>
+      <div
+        style={{
+          ...text.px11,
+          textAlign: 'center',
+          padding: sp(3),
+          borderRadius: round.xl,
+          border: `1px dashed ${dragging ? beam[400] : ink[600]}`,
+          backgroundColor: dragging ? mix(beam[500], 10) : 'transparent',
+          color: dragging ? beam[300] : mist[400],
+        }}
+      >
+        <div style={{display: 'flex', justifyContent: 'center', marginBottom: 4}}>
+          <Upload size={14} />
+        </div>
+        Drop files here to copy them to <span style={{fontFamily: mirrorFont.mono}}>{MIRROR_FILES.path}</span>
       </div>
-      Drop files here to copy them to <span style={{fontFamily: mirrorFont.mono}}>{MIRROR_FILES.path}</span>
-    </div>
-    <div style={{marginTop: sp(2), display: 'flex', flexDirection: 'column', gap: 2}}>
-      {MIRROR_FILES.folders.map((name) => (
-        <div key={name} style={{display: 'flex', alignItems: 'center', gap: sp(2), padding: `6px ${sp(2)}px`}}>
-          <Folder size={14} color={beam[400]} />
-          <span style={{...text.xs, color: mist[200]}}>{name}</span>
-        </div>
-      ))}
-      {MIRROR_FILES.files.map((file) => (
-        <div key={file.name} style={{display: 'flex', alignItems: 'center', gap: sp(2), padding: `6px ${sp(2)}px`}}>
-          <File size={14} color={mist[400]} />
-          <span>
-            <span style={{...text.xs, display: 'block', color: mist[200]}}>{file.name}</span>
-            <span style={{display: 'block', fontFamily: mirrorFont.mono, fontSize: 10, color: mist[400]}}>{file.size}</span>
-          </span>
-        </div>
-      ))}
-    </div>
-  </Panel>
-);
+      <div style={{marginTop: sp(2), display: 'flex', flexDirection: 'column', gap: 2}}>
+        {MIRROR_FILES.folders.map((name) => (
+          <div key={name} style={{display: 'flex', alignItems: 'center', gap: sp(2), padding: `6px ${sp(2)}px`}}>
+            <Folder size={14} color={beam[400]} />
+            <span style={{...text.xs, color: mist[200]}}>{name}</span>
+          </div>
+        ))}
+        {files.map((file) => (
+          <div key={file.name} style={{display: 'flex', alignItems: 'center', gap: sp(2), padding: `6px ${sp(2)}px`}}>
+            <File size={14} color={mist[400]} />
+            <span>
+              <span style={{...text.xs, display: 'block', color: mist[200]}}>{file.name}</span>
+              <span style={{display: 'block', fontFamily: mirrorFont.mono, fontSize: 10, color: mist[400]}}>{file.size}</span>
+            </span>
+          </div>
+        ))}
+      </div>
+    </Panel>
+  );
+};
 
 /** Shell: one command on the device and its output. */
 export const ShellPanel = ({command, output}: {command?: string; output: string[]}) => (

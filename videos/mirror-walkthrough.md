@@ -187,7 +187,7 @@ a check failing only in them is a Review note, not a repair. Full renders run on
 - [x] T10: Build the `capture` beat in `MirrorBeats.tsx` on T3's toast and the stage's existing recording clock — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx
 - [x] T11: Build the `apps` beat in `MirrorBeats.tsx`, the highlight stopping on `Kindle` with its Uninstall action visible — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx, src/app-ui/mirror/Mirror.tsx
   - If `AppsPanel` cannot show a row's Uninstall action, add it from Mirror's `AppsPanel.tsx` behind an optional prop. Never highlight a system package.
-- [ ] T12: Build the `files` beat in `MirrorBeats.tsx`, the dropped file joining the `/sdcard` list — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx, src/app-ui/mirror/Mirror.tsx
+- [x] T12: Build the `files` beat in `MirrorBeats.tsx`, the dropped file joining the `/sdcard` list — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx, src/app-ui/mirror/Mirror.tsx
   - `FilesPanel` gains an optional extra file for after the drop; defaults unchanged.
 - [ ] T13: Build the `tools` beat in `MirrorBeats.tsx`: one shell command and its output, then T4's Logcat panel streaming — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx
   - Command `getprop ro.product.model`, output from `MIRROR_DEVICE`. No other device data.

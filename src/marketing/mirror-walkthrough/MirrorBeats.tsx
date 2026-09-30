@@ -3,6 +3,7 @@ import {interpolate, Easing} from 'remotion';
 import {
   AppsPanel,
   DevicesPanel,
+  FilesPanel,
   MirrorApp,
   MirrorStage,
   SetupPanel,
@@ -371,6 +372,30 @@ export const AppsBeat: React.FC<{frame: number; frames: number}> = ({
   );
 };
 
+/**
+ * Files beat (11s = 330 frames):
+ * Files panel at /sdcard; a file is dragged onto the drop area,
+ * the area lights, and the file appears in the list.
+ */
+export const FilesBeat: React.FC<{frame: number; frames: number}> = ({
+  frame,
+  frames,
+}) => {
+  const isDragging = frame >= 90 && frame < 180;
+  const extraFile =
+    frame >= 180 ? {name: 'audio-eui-dummy.xml', size: '12 kB'} : undefined;
+
+  return (
+    <MirrorApp
+      panel="files"
+      status={`Mirroring ${MIRROR_DEVICE.name}`}
+      hasDevice
+      side={<FilesPanel dragging={isDragging} extraFile={extraFile} />}
+      stage={<MirrorStage mirrored={catalog(frame, frames)} />}
+    />
+  );
+};
+
 export const BEAT_RENDERERS: Partial<
   Record<BeatName, React.FC<{frame: number; frames: number}>>
 > = {
@@ -382,4 +407,5 @@ export const BEAT_RENDERERS: Partial<
   paste: PasteBeat,
   capture: CaptureBeat,
   apps: AppsBeat,
+  files: FilesBeat,
 };
