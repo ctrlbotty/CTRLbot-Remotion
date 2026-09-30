@@ -177,7 +177,7 @@ a check failing only in them is a Review note, not a repair. Full renders run on
   - Beat ids and seconds exactly as the Beats table; copy exactly as the Copy table. Follow `AiWalkthrough.tsx` for Stage geometry and data shape. 1920x1080, 30fps, metadata inline on `<Composition>`.
   - Every beat not yet built renders the open beat's live-mirroring state, so the contact sheet renders all eleven from here on. Beats resolve through a lookup that T6 introduces.
   - Verify: `npm run video:frames -- mirror-walkthrough validate`, then the per-task check on `--beat=open` and `--beat=poster`; `opens-composed` must hold.
-- [ ] T6: Build the `setup` and `debugging` beats in a new `MirrorBeats.tsx` and resolve beats through it from `MirrorWalkthrough.tsx`, adding filled values and a pressed Pair to the pairing fields in `Mirror.tsx` — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx, src/marketing/mirror-walkthrough/MirrorWalkthrough.tsx, src/app-ui/mirror/Mirror.tsx
+- [x] T6: Build the `setup` and `debugging` beats in a new `MirrorBeats.tsx` and resolve beats through it from `MirrorWalkthrough.tsx`, adding filled values and a pressed Pair to the pairing fields in `Mirror.tsx` — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx, src/marketing/mirror-walkthrough/MirrorWalkthrough.tsx, src/app-ui/mirror/Mirror.tsx
   - Pairing values are private placeholders (`192.168.1.42:37021`, a six-digit code); defaults leave `DevicesPanel` as it is.
   - Verify: per-task check on `--beat=setup` and `--beat=debugging`.
 - [ ] T7: Build the `connect` beat in `MirrorBeats.tsx` — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx

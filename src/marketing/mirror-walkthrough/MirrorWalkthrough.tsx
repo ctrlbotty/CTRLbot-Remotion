@@ -13,18 +13,7 @@ import {
   Sequence,
   useCurrentFrame,
 } from 'remotion';
-import {CATALOG_VIEWPORT, DriverCatalog} from '../../app-ui/DriverCatalog';
-import {
-  DevicesPanel,
-  MirrorApp,
-  MirrorStage,
-  type Mirrored,
-} from '../../app-ui/mirror/Mirror';
-import {
-  MIRROR_CATALOG,
-  MIRROR_DEVICE,
-  MIRROR_VIEWPORT,
-} from '../../app-ui/mirror/mirrorData';
+import {MIRROR_VIEWPORT} from '../../app-ui/mirror/mirrorData';
 import {round} from '../../app-ui/mirror/mirrorTheme';
 import {background} from '../../design/theme';
 import {PromoPreload} from '../eui-promo/PromoPreload';
@@ -55,50 +44,9 @@ const mirrorBg = (t: number) =>
     }),
   );
 
-/** The IoT driver catalog scrolling inside the tablet frame. */
-const catalog = (frame: number, frames: number): Mirrored => ({
-  width: CATALOG_VIEWPORT.tablet.width,
-  height: CATALOG_VIEWPORT.tablet.height,
-  screen: (
-    <DriverCatalog
-      device="tablet"
-      drivers={MIRROR_CATALOG}
-      listScroll={interpolate(frame, [0, frames], [0, 120], {
-        easing: Easing.bezier(0.45, 0, 0.55, 1),
-        extrapolateLeft: 'clamp',
-        extrapolateRight: 'clamp',
-      })}
-    />
-  ),
-});
+import {BEAT_RENDERERS, OpenBeat} from './MirrorBeats';
 
-/**
- * Open beat: Mirror window with the tablet live on the stage,
- * Devices panel showing the tablet mirroring, catalog scrolling.
- */
-export const OpenBeat: React.FC<{frame: number; frames: number}> = ({
-  frame,
-  frames,
-}) => (
-  <MirrorApp
-    panel="devices"
-    status={`Mirroring ${MIRROR_DEVICE.name}`}
-    hasDevice
-    side={<DevicesPanel selected details live />}
-    stage={<MirrorStage mirrored={catalog(frame, frames)} />}
-  />
-);
-
-/**
- * Beat registry. Every beat not yet built renders OpenBeat's live-mirroring state,
- * so the contact sheet can render all eleven from T5 onward. T6 introduces
- * specialized beat components.
- */
-export const BEAT_RENDERERS: Partial<
-  Record<BeatName, React.FC<{frame: number; frames: number}>>
-> = {
-  open: OpenBeat,
-};
+export {OpenBeat, BEAT_RENDERERS};
 
 export const resolveBeat = (name: BeatName, frame: number, frames: number) => {
   const Component = BEAT_RENDERERS[name] ?? OpenBeat;

@@ -718,7 +718,23 @@ export const SetupPanel = ({step, downloaded}: {step: number; downloaded?: numbe
 };
 
 /** Devices: the tablet on USB, its details once selected, and Wi-Fi pairing. */
-export const DevicesPanel = ({selected, details, live, starting}: {selected: boolean; details: boolean; live: boolean; starting?: boolean}) => (
+export const DevicesPanel = ({
+  selected,
+  details,
+  live,
+  starting,
+  pairingAddress,
+  pairingCode,
+  pairPressed,
+}: {
+  selected: boolean;
+  details: boolean;
+  live: boolean;
+  starting?: boolean;
+  pairingAddress?: string;
+  pairingCode?: string;
+  pairPressed?: boolean;
+}) => (
   <Panel title="Devices" subtitle="1 connected" actions={<IconButton icon={RefreshCw} size={15} />}>
     <div
       style={{
@@ -793,12 +809,12 @@ export const DevicesPanel = ({selected, details, live, starting}: {selected: boo
       </div>
       <div style={{display: 'flex', flexDirection: 'column', gap: sp(2)}}>
         <Field label="Pairing address">
-          <Input placeholder="192.168.1.42:37021" />
+          <Input value={pairingAddress} placeholder="192.168.1.42:37021" mono />
         </Field>
         <Field label="Pairing code">
-          <Input placeholder="123456" />
+          <Input value={pairingCode} placeholder="123456" mono />
         </Field>
-        <Button label="Pair" wide />
+        <Button label="Pair" wide pressed={pairPressed} />
       </div>
     </div>
   </Panel>
