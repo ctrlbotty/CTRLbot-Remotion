@@ -1,8 +1,8 @@
 # CTRLbot Mirror Tutorial: transcript
 
-**Status: DRAFT.** Machine transcript from `faster-whisper 1.2.1` `medium.en`, not yet
-checked against the recording. Correct it by hand against the frames in
-`ingest/mirror-walkthrough/contact.html`, then change this line to `Status: corrected <date>`.
+**Status: corrected 2026-09-30.** Machine transcript from `faster-whisper 1.2.1` `medium.en`, checked
+against the recording.
+Fixed: capitalised Galaxy Continuity at 6:47.5; confirmed ADB, IoT, Epson and 169 against the stills.
 Once corrected it is the script of record, and a re-run of `npm run ingest:recording`
 leaves it alone unless given `--force`.
 
@@ -113,7 +113,7 @@ a polished read.
 | 6:32.3 | and this is a really great feature |
 | 6:36.4 | because you can come in and you can delete, remove stuff in here that |
 | 6:42.7 | sometimes you may not even be able to remove, right? Like, you know, you may |
-| 6:47.5 | not be able to remove a galaxy continuity or, you know, some of the |
+| 6:47.5 | not be able to remove a Galaxy Continuity or, you know, some of the |
 | 6:53.6 | things that are set up on here that have absolutely nothing to do |
 | 6:59.1 | with, you know, what you want. There's a lot of garbageware on |
 | 7:03.9 | here that comes with any kind of Android device, and this will allow you |
