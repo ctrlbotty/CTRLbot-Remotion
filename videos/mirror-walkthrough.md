@@ -170,7 +170,7 @@ a check failing only in them is a Review note, not a repair. Full renders run on
 - [x] T3: Add the *Screenshot saved* toast from Mirror's `Toasts.tsx` and `StageToolbar.tsx` as an optional `toast` prop on `MirrorApp` — files: src/app-ui/mirror/Mirror.tsx
   - Title *Screenshot saved*, detail a `Pictures\CTRLbot Mirror\…png` path with no user name in it. Absent by default.
   - Verify: `npm run check`; a scratch `npm run still` of a Proof still is unchanged.
-- [ ] T4: Add a `LogcatPanel` rebuilt from Mirror's `LogcatPanel.tsx`, its lines transcribed from the recording's frames near 7:58 into `mirrorData.ts` — files: src/app-ui/mirror/Mirror.tsx, src/app-ui/mirror/mirrorData.ts
+- [x] T4: Add a `LogcatPanel` rebuilt from Mirror's `LogcatPanel.tsx`, its lines transcribed from the recording's frames near 7:58 into `mirrorData.ts` — files: src/app-ui/mirror/Mirror.tsx, src/app-ui/mirror/mirrorData.ts
   - `MirrorPanel` gains `'logcat'` so the sidebar can mark it active. Lines take a count so the beat can stream them. No serials, accounts or addresses beyond what `mirrorData.ts` already holds.
   - Verify: `npm run check`; existing Proof stills unchanged.
 - [ ] T5: Create the beat table and copy in `walkthroughData.ts`, the `mirror-walkthrough` composition in `MirrorWalkthrough.tsx` (Stage, drift, PromoPreload, copy column, open beat), and register it in `Root.tsx` — files: src/marketing/mirror-walkthrough/walkthroughData.ts, src/marketing/mirror-walkthrough/MirrorWalkthrough.tsx, src/Root.tsx

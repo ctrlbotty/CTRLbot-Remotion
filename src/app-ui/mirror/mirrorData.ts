@@ -70,3 +70,28 @@ export const MIRROR_CATALOG: DriverEntry[] = [
   {manufacturer: 'CASIO', model: 'XJ-F210WN', deviceType: 'projector'},
   {manufacturer: 'CHRISTIE', model: 'FHD551', deviceType: 'display'},
 ];
+
+export type LogPriority = 'V' | 'D' | 'I' | 'W' | 'E' | 'F';
+
+export interface MirrorLogLine {
+  id: number;
+  priority: LogPriority;
+  tag: string;
+  message: string;
+}
+
+/** Logcat lines for the device when running CTRLbot IoT and Mirror. */
+export const MIRROR_LOGCAT: MirrorLogLine[] = [
+  {id: 1, priority: 'I', tag: 'ActivityManager', message: 'Start proc 12480:io.ctrlbot.iot/u0a214 for activity io.ctrlbot/.activities.MainActivity'},
+  {id: 2, priority: 'D', tag: 'CompatibilityChangeReporter', message: 'Compat change id reported: 171979766; UID 10214; state: ENABLED'},
+  {id: 3, priority: 'I', tag: 'CTRLbot', message: 'Application created, initializing driver database'},
+  {id: 4, priority: 'D', tag: 'DriverDatabase', message: 'Loaded 23 device drivers from bundled assets'},
+  {id: 5, priority: 'I', tag: 'MainActivity', message: 'Display viewport: 1200x1920 @ 240dpi, orientation: landscape'},
+  {id: 6, priority: 'D', tag: 'DriverAdapter', message: 'Driver list updated with 23 items'},
+  {id: 7, priority: 'I', tag: 'scrcpy', message: 'Encoder: c2.android.avc.encoder (H.264 / AVC)'},
+  {id: 8, priority: 'D', tag: 'scrcpy', message: 'Stream initialized at 1600x1000 @ 60fps, bitrate 8 Mbps'},
+  {id: 9, priority: 'I', tag: 'AdbService', message: 'USB debugging active on transport USB'},
+  {id: 10, priority: 'D', tag: 'InputManager', message: 'Pointer device registered: virtual-touchscreen'},
+  {id: 11, priority: 'I', tag: 'ControlUiViewModel', message: 'Active profile: default, room ready'},
+  {id: 12, priority: 'D', tag: 'DeviceRepository', message: 'Preset store synced, 0 pending writes'},
+];

@@ -18,6 +18,7 @@ import {
   CheckCircle2,
   ChevronLeft,
   Circle,
+  Eraser,
   Expand,
   File,
   Folder,
@@ -28,6 +29,7 @@ import {
   Lock,
   Minus,
   MonitorSmartphone,
+  Pause,
   Play,
   RefreshCw,
   RotateCw,
@@ -48,10 +50,10 @@ import {
 } from 'lucide-react';
 import type {CSSProperties, ReactNode} from 'react';
 import {Img, staticFile} from 'remotion';
-import {MIRROR_APPS, MIRROR_DEVICE, MIRROR_FILES, MIRROR_STREAM, MIRROR_STUDIO, MIRROR_VIEWPORT} from './mirrorData';
+import {MIRROR_APPS, MIRROR_DEVICE, MIRROR_FILES, MIRROR_LOGCAT, MIRROR_STREAM, MIRROR_STUDIO, MIRROR_VIEWPORT, type LogPriority, type MirrorLogLine} from './mirrorData';
 import {alert, beam, FRAME_SPECS, ink, mirrorFont, mist, mix, round, signal, sp, stageBackground, tabletFrame, text, warn, type FrameSpec, type FrameStyle} from './mirrorTheme';
 
-export type MirrorPanel = 'setup' | 'devices' | 'studio' | 'apps' | 'files' | 'shell' | 'settings';
+export type MirrorPanel = 'setup' | 'devices' | 'studio' | 'apps' | 'files' | 'shell' | 'logcat' | 'settings';
 
 const border = (colour: string) => `1px solid ${colour}`;
 
@@ -252,7 +254,7 @@ const Panel = ({title, subtitle, actions, children}: {title: string; subtitle?: 
 
 // ── Chrome ─────────────────────────────────────────────────────────────────────────
 
-const NAV: {id: MirrorPanel | 'logcat' | 'virtual'; icon: LucideIcon; device?: boolean}[] = [
+const NAV: {id: MirrorPanel | 'virtual'; icon: LucideIcon; device?: boolean}[] = [
   {id: 'devices', icon: Smartphone},
   {id: 'studio', icon: Camera, device: true},
   {id: 'apps', icon: LayoutGrid, device: true},
@@ -1016,3 +1018,148 @@ export const ShellPanel = ({command, output}: {command?: string; output: string[
     <Input placeholder="Type a shell command" mono />
   </Panel>
 );
+
+const PRIORITY_ORDER: LogPriority[] = ['V', 'D', 'I', 'W', 'E', 'F'];
+
+const PRIORITY_COLOR: Record<LogPriority, string> = {
+  V: mist[400],
+  D: beam[300],
+  I: mist[200],
+  W: warn[400],
+  E: alert[400],
+  F: alert[400],
+};
+
+const PRIORITY_LABEL: Record<LogPriority, string> = {
+  V: 'Verbose+',
+  D: 'Debug+',
+  I: 'Info+',
+  W: 'Warn+',
+  E: 'Error+',
+  F: 'Fatal',
+};
+
+/**
+ * Logcat: streaming device logs with priority filter and follow-tail toggle.
+ * Rebuilt from Mirror's `LogcatPanel.tsx`.
+ * `count` limits the number of visible lines so the beat can stream them.
+ */
+export const LogcatPanel = ({
+  lines = MIRROR_LOGCAT,
+  count,
+  streaming = true,
+  filter = '',
+  minPriority = 'I',
+  follow = true,
+}: {
+  lines?: MirrorLogLine[];
+  count?: number;
+  streaming?: boolean;
+  filter?: string;
+  minPriority?: LogPriority;
+  follow?: boolean;
+} = {}) => {
+  const threshold = PRIORITY_ORDER.indexOf(minPriority);
+  const needle = filter.trim().toLowerCase();
+
+  const allFiltered = lines.filter((line) => {
+    if (PRIORITY_ORDER.indexOf(line.priority) < threshold) return false;
+    if (!needle) return true;
+    return line.tag.toLowerCase().includes(needle) || line.message.toLowerCase().includes(needle);
+  });
+
+  const displayLines = count !== undefined ? allFiltered.slice(0, count) : allFiltered;
+
+  return (
+    <Panel
+      title="Logcat"
+      subtitle={streaming ? `${displayLines.length} lines buffered` : 'Stopped'}
+      actions={
+        <>
+          <IconButton icon={streaming ? Pause : Play} active={streaming} size={15} />
+          <IconButton icon={Eraser} size={15} />
+        </>
+      }
+    >
+      <div style={{display: 'flex', gap: sp(2), marginBottom: sp(2)}}>
+        <div style={{flex: 1}}>
+          <Input placeholder="Filter by tag or message…" value={filter} />
+        </div>
+        <div style={{width: 104, flexShrink: 0}}>
+          <Select value={PRIORITY_LABEL[minPriority] ?? 'Info+'} />
+        </div>
+      </div>
+
+      <Row label="Follow tail">
+        <Toggle checked={follow} />
+      </Row>
+
+      <div
+        style={{
+          marginTop: sp(2),
+          height: 220,
+          overflow: 'hidden',
+          borderRadius: round.xl,
+          border: border(ink[700]),
+          backgroundColor: ink[950],
+          padding: sp(2),
+          fontFamily: mirrorFont.mono,
+          fontSize: 10.5,
+          lineHeight: '16px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+        }}
+      >
+        {displayLines.length === 0 ? (
+          <p style={{padding: sp(3), textAlign: 'center', color: mist[400], margin: 0, ...text.xs}}>
+            {streaming ? 'Waiting for output…' : 'Press play to start streaming logcat.'}
+          </p>
+        ) : (
+          displayLines.map((line) => (
+            <div key={line.id} style={{display: 'flex', gap: 6, minWidth: 0}}>
+              <span
+                style={{
+                  width: 12,
+                  flexShrink: 0,
+                  textAlign: 'center',
+                  color: PRIORITY_COLOR[line.priority],
+                  fontWeight: line.priority === 'F' ? 600 : undefined,
+                }}
+              >
+                {line.priority}
+              </span>
+              <span
+                style={{
+                  width: 110,
+                  flexShrink: 0,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  color: '#a78bfa',
+                }}
+                title={line.tag}
+              >
+                {line.tag}
+              </span>
+              <span
+                style={{
+                  minWidth: 0,
+                  flex: 1,
+                  wordBreak: 'break-all',
+                  color: PRIORITY_COLOR[line.priority],
+                }}
+              >
+                {line.message}
+              </span>
+            </div>
+          ))
+        )}
+      </div>
+
+      <div style={{marginTop: sp(3), display: 'flex'}}>
+        <Button label="Clear the device's log buffer" variant="ghost" wide />
+      </div>
+    </Panel>
+  );
+};
