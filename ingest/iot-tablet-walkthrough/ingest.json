@@ -1,0 +1,31 @@
+{
+ "slug": "iot-tablet-walkthrough",
+ "source": {
+  "path": "video input/CTRLbot-IoT Walkthough v1.09.mp4",
+  "bytes": 57407764,
+  "modified": "2026-09-30T13:17:03.629Z",
+  "duration": 426.95,
+  "video": "h264 2040x1440 60fps",
+  "audio": "aac 48000 Hz mono"
+ },
+ "narration": "public/narration/iot-tablet-walkthrough/source-normalized.m4a",
+ "transcript": {
+  "tool": "faster-whisper 1.2.1",
+  "model": "medium.en",
+  "device": "cuda/float16",
+  "seconds": 61.4,
+  "segments": 97
+ },
+ "heard": {
+  "letters": "Xenova/wav2vec2-base-960h (onnxruntime 1.28.0)",
+  "phrases": "medium.en on cuda/float16",
+  "seconds": 185,
+  "fillers": 9
+ },
+ "frames": {
+  "count": 55,
+  "rule": "scene > 0.01, at least 3s apart, at least one every 20s",
+  "ffmpeg": "ffmpeg"
+ },
+ "ingested": "2026-09-30T23:00:34.132Z"
+}
