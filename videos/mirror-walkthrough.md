@@ -229,6 +229,9 @@ a check failing only in them is a Review note, not a repair. Full renders run on
   (`MainActivity`, `ControlUiViewModel`, `DriverAdapter`, `DeviceRepository`,
   `DriverDatabase`) and "23 device drivers" matches the recording's "23 devices found"; the
   messages themselves are plausible, not captured.
+- Framing fix (after T14): `drift()` now pulls back from 1.0 to 1.05 instead of pushing
+  to 0.94. The push had cropped Mirror's title bar, icon sidebar and toolbar by the close;
+  every beat still now shows the whole window.
 - T13/T14 were built and committed together: both live in `MirrorBeats.tsx`.
 - T14: the close's wordmark is `StageCopy`'s Audiowide title, and the brief's line is its
   Montserrat body.

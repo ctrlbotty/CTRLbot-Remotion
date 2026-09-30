@@ -94,14 +94,18 @@ export const COPY: Record<BeatName, {eyebrow: string; title: string; line: strin
 };
 
 /**
- * Continuous gentle camera drift over the mirror viewport.
- * Starts at full frame (1.0) and drifts smoothly to target (0.94) at duration.
- * Keeps inert-fraction under 0.6 while keeping opens-composed holding.
+ * Continuous gentle camera drift over the mirror viewport: a slow pull-back from full
+ * frame (1.0) to `target` across the cut.
+ *
+ * It pulls back rather than pushing in. A push to 0.94 trims 3% off every edge, and
+ * Mirror's chrome lives at the edges: by the close it had cropped the 32px title bar, the
+ * 64px icon sidebar and the stage toolbar. A region wider than the window is centred by
+ * the camera, so a pull-back keeps all four edges in shot for the whole cut.
  */
 export const drift = (
   viewport: {width: number; height: number} = MIRROR_VIEWPORT,
   duration: number = MIRROR_WALKTHROUGH_FRAMES,
-  target = 0.94,
+  target = 1.05,
 ): Shot[] => [
   {at: 0, region: fullFrame(viewport)},
   {
