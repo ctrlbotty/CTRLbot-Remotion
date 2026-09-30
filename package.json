@@ -15,6 +15,7 @@
     "shorts": "node scripts/shorts.mjs",
     "narration:prepare": "node scripts/narration.mjs prepare",
     "narration:check": "node scripts/narration.mjs check",
+    "narration:srt": "node scripts/narration-srt.mjs",
     "video:lint": "node scripts/video-lint.mjs",
     "video:lint:selftest": "node scripts/video-lint.mjs --selftest",
     "video:frames": "node scripts/video-frames.mjs",

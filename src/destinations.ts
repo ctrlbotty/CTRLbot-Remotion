@@ -176,7 +176,7 @@ export const WEBSITE_HUB_CELL: Destination = {
 };
 
 /**
- * A product walkthrough posted to YouTube or shared as a social promo.
+ * The landscape cut of a long video: YouTube as a regular video, and ctrlbot.io.
  *
  * The loosest destination here, because the platform imposes almost nothing: no length
  * ceiling worth encoding, no banned-phrase policy of the kind Play enforces, and the
@@ -185,12 +185,16 @@ export const WEBSITE_HUB_CELL: Destination = {
  * First-Run cut, not a platform rule — a long format is permission to explain more, not
  * permission to hold a still picture for two minutes.
  *
- * `audio: muted-first` is kept for the same reason it is kept everywhere else: social
- * timelines autoplay muted, and this cut carries no voice track.
+ * Long videos are narrated, and every one is made in both shapes from one set of beats:
+ * this one, and `SOCIAL_WALKTHROUGH_VERTICAL` for the feeds. There is no silent cut. This
+ * shape keeps its frame for the step text and ships its captions as an .srt
+ * (`npm run narration:srt`), which YouTube shows on request and spells as written.
+ * `audio: muted-first` still holds: the step text has to carry the video on its own.
  *
  * The duration window is wide because this is the shape a walkthrough comes in, and the
  * 30-second website cut derived from it is a different destination, not a shorter one of
- * these.
+ * these. A long video also posted in portrait is held to the vertical ceiling, because
+ * the two share their beats.
  */
 export const SOCIAL_WALKTHROUGH: Destination = {
   id: 'social-walkthrough',
@@ -202,8 +206,39 @@ export const SOCIAL_WALKTHROUGH: Destination = {
   maxInertFraction: 0.6,
   banned: [],
   hosting:
-    'YouTube, public or unlisted, and re-uploaded natively to each social platform ' +
-    'rather than linked — timelines do not autoplay a link.',
+    'YouTube, as a regular video, with the .srt from npm run narration:srt uploaded as ' +
+    'its captions. The feeds get the portrait cut, not this one.',
+};
+
+/**
+ * The portrait cut of a long video: TikTok, YouTube Shorts, LinkedIn and X, one file for all
+ * four, uploaded natively to each.
+ *
+ * 1080x1920 at 30fps, which every one of them takes as-is. The safe area is `SOCIAL_SHORT`'s,
+ * the conservative union of the four feeds' overlays; it also keeps what matters inside the
+ * middle 4:5 of the frame, so a feed that previews a tall video cropped loses nothing.
+ *
+ * The ceiling is 140 seconds because X caps uploads at 2:20 for accounts without Premium,
+ * and this is the file X gets. YouTube files anything vertical at three minutes or less as
+ * a Short, so this cut is also that channel's Short, with the landscape cut as its
+ * related video.
+ *
+ * Captions are burned in: the feeds autoplay muted and their auto-captions misspell CTRLbot.
+ * `firstImpressionSeconds` is the feeds' three, as for a short: the product's name and what
+ * it does are composed at frame 0.
+ */
+export const SOCIAL_WALKTHROUGH_VERTICAL: Destination = {
+  id: 'social-walkthrough-vertical',
+  frame: {width: 1080, height: 1920, fps: 30},
+  duration: {min: 60, target: 120, max: 140},
+  audio: 'muted-first',
+  safeArea: {top: 220, right: 140, bottom: 380, left: 72},
+  firstImpressionSeconds: 3,
+  maxInertFraction: 0.6,
+  banned: [],
+  hosting:
+    'Uploaded natively to TikTok, YouTube (as a Short), LinkedIn and X. Captions are burned ' +
+    'in. X refuses anything over 2:20 without Premium.',
 };
 
 /**
@@ -264,6 +299,7 @@ export const DESTINATIONS: Record<string, Destination> = {
   [WEBSITE_PANEL_LOOP.id]: WEBSITE_PANEL_LOOP,
   [WEBSITE_HUB_CELL.id]: WEBSITE_HUB_CELL,
   [SOCIAL_WALKTHROUGH.id]: SOCIAL_WALKTHROUGH,
+  [SOCIAL_WALKTHROUGH_VERTICAL.id]: SOCIAL_WALKTHROUGH_VERTICAL,
   [SOCIAL_SHORT.id]: SOCIAL_SHORT,
   [SOCIAL_SHORT_LANDSCAPE.id]: SOCIAL_SHORT_LANDSCAPE,
 };

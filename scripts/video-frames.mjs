@@ -9,6 +9,12 @@
 //   npm run video:frames -- <slug> check out/promo.mp4  dead air and bars
 //   npm run video:frames -- <slug> validate             brief arithmetic only, no render
 //
+// A long video is rendered in two shapes from one brief. VIDEO_COMPOSITION names the
+// other one, and its stills and samples then go under out/<that composition>/ rather than
+// over the first shape's:
+//
+//   VIDEO_COMPOSITION=mirror-walkthrough-portrait npm run video:frames -- mirror-walkthrough contact
+//
 // ffmpeg comes from the Remotion compositor already in node_modules — no new dependency,
 // and no assumption about what is on PATH.
 
@@ -51,6 +57,8 @@ const loadDestinations = async () => {
 };
 
 const brief = readBrief(slug);
+const compositionOverride = process.env.VIDEO_COMPOSITION;
+const outName = compositionOverride ?? slug;
 const {DESTINATIONS} = await loadDestinations();
 const destination = brief.destination ? DESTINATIONS[brief.destination] : null;
 const fps = destination?.frame.fps ?? 30;
@@ -74,9 +82,9 @@ if (command === 'validate') {
 // ── contact ──────────────────────────────────────────────────────────────────────────
 
 if (command === 'contact') {
-  const outputDirectory = `out/${slug}/contact`;
+  const outputDirectory = `out/${outName}/contact`;
   mkdirSync(outputDirectory, {recursive: true});
-  const compositionId = process.env.VIDEO_COMPOSITION ?? brief.id;
+  const compositionId = compositionOverride ?? brief.id;
 
   // The poster frame.
   //
@@ -126,7 +134,7 @@ if (command === 'contact') {
   // evidence", so the evidence line belongs next to the frame it is being judged
   // against. A tiled PNG cannot carry it.
   if (!only && beats.length > 1) {
-    const sheet = `out/${slug}/contact.html`;
+    const sheet = `out/${outName}/contact.html`;
     const cards = beats
       .map(
         (beat) => `
@@ -143,7 +151,7 @@ if (command === 'contact') {
 
     writeFileSync(
       sheet,
-      `<!doctype html><meta charset="utf-8"><title>${slug} — contact sheet</title>
+      `<!doctype html><meta charset="utf-8"><title>${outName} — contact sheet</title>
 <style>
   body{background:#111;color:#eee;font:14px/1.5 system-ui,sans-serif;margin:32px}
   h1{font-size:18px;font-weight:600}
@@ -155,7 +163,7 @@ if (command === 'contact') {
   figcaption span{color:#bbb}
   figcaption em{color:#008FD4;font-style:normal}
 </style>
-<h1>${slug} — ${beats.length} beats, ${brief.totalSeconds}s</h1>
+<h1>${outName} — ${beats.length} beats, ${brief.totalSeconds}s</h1>
 <p>Judge each frame against its evidence line. Anything that fails becomes a task.</p>
 <div class="grid">${cards}
 </div>
@@ -174,7 +182,7 @@ if (command === 'check') {
     process.exit(2);
   }
 
-  const sampleDirectory = `out/${slug}/samples`;
+  const sampleDirectory = `out/${outName}/samples`;
   mkdirSync(sampleDirectory, {recursive: true});
 
   // Sample rather than decode every frame: four a second is fine for spotting a shot
