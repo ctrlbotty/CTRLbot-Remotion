@@ -61,11 +61,48 @@ export const round = {md: 6, lg: 8, xl: 12, xl2: 16} as const;
 export const stageBackground =
   'radial-gradient(125% 125% at 50% 50%, rgba(0,143,212,0.52) 0%, rgba(0,143,212,0.18) 55%, rgba(0,0,0,0) 92%), #000000';
 
+export type FrameStyle = 'none' | 'flat' | 'rounded' | 'tablet1' | 'tablet2';
+
+export interface FrameSpec {
+  thickness: number;
+  innerBorder?: number;
+  radius: number;
+  outerRadius?: number;
+  body: string;
+  rim: string;
+}
+
+/** `compose.ts` FRAME_SPECS: the four framed device geometries Mirror supports. */
+export const FRAME_SPECS = {
+  flat: {
+    thickness: 0.012,
+    radius: 0.02,
+    body: '#1e2430',
+    rim: '#3c475d',
+  },
+  rounded: {
+    thickness: 0.028,
+    radius: 0.075,
+    body: '#1a202c',
+    rim: '#3e4a60',
+  },
+  tablet1: {
+    thickness: 0.055,
+    innerBorder: 5,
+    radius: 0,
+    outerRadius: 0.012,
+    body: '#1f2533',
+    rim: '#414d64',
+  },
+  tablet2: {
+    thickness: 0.055,
+    innerBorder: 5,
+    radius: 0,
+    outerRadius: 0.035,
+    body: '#1f2533',
+    rim: '#414d64',
+  },
+} as const satisfies Record<Exclude<FrameStyle, 'none'>, FrameSpec>;
+
 /** `compose.ts` FRAME_SPECS.tablet1: the frame Mirror draws around a landscape tablet. */
-export const tabletFrame = {
-  thickness: 0.055,
-  innerBorder: 5,
-  outerRadius: 0.012,
-  body: '#1f2533',
-  rim: '#414d64',
-} as const;
+export const tabletFrame = FRAME_SPECS.tablet1;

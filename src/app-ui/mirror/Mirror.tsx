@@ -48,7 +48,7 @@ import {
 import type {CSSProperties, ReactNode} from 'react';
 import {Img, staticFile} from 'remotion';
 import {MIRROR_APPS, MIRROR_DEVICE, MIRROR_FILES, MIRROR_STREAM, MIRROR_STUDIO, MIRROR_VIEWPORT} from './mirrorData';
-import {alert, beam, ink, mirrorFont, mist, mix, round, signal, sp, stageBackground, tabletFrame, text, warn} from './mirrorTheme';
+import {alert, beam, FRAME_SPECS, ink, mirrorFont, mist, mix, round, signal, sp, stageBackground, tabletFrame, text, warn, type FrameSpec, type FrameStyle} from './mirrorTheme';
 
 export type MirrorPanel = 'setup' | 'devices' | 'studio' | 'apps' | 'files' | 'shell' | 'settings';
 
@@ -361,67 +361,119 @@ export const MirrorStage = ({
   idle,
   ripple,
   recording,
+  frameStyle = tabletFrame,
 }: {
   mirrored?: Mirrored;
   idle?: {title: string; detail: string; action?: string};
   /** A tap ripple on the mirrored screen, as a fraction of its width and height, 0..1 through. */
   ripple?: {x: number; y: number; progress: number};
   recording?: string;
+  frameStyle?: FrameStyle | FrameSpec;
 }) => {
   const stageWidth = MIRROR_VIEWPORT.width - 64 - 340;
   const stageHeight = MIRROR_VIEWPORT.height - 32 - TOOLBAR;
   let frame: ReactNode = null;
   if (mirrored) {
-    const shortEdge = Math.min(mirrored.width, mirrored.height);
-    const thickness = Math.round(shortEdge * tabletFrame.thickness) + tabletFrame.innerBorder;
-    const outerWidth = mirrored.width + thickness * 2;
-    const outerHeight = mirrored.height + thickness * 2;
-    const scale = Math.min((stageWidth - STAGE_MARGIN * 2) / outerWidth, (stageHeight - STAGE_MARGIN * 2) / outerHeight);
-    frame = (
-      <div style={{position: 'relative', width: outerWidth * scale, height: outerHeight * scale}}>
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: tabletFrame.body,
-            border: `${Math.max(1, Math.min(2, thickness * 0.16) * scale)}px solid ${tabletFrame.rim}`,
-            borderRadius: shortEdge * tabletFrame.outerRadius * scale,
-            boxShadow: `0 ${Math.min(thickness, 8) * scale * 2}px ${Math.min(thickness, 8) * scale * 6}px rgba(0,0,0,0.55)`,
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            left: thickness * scale,
-            top: thickness * scale,
-            width: mirrored.width * scale,
-            height: mirrored.height * scale,
-            overflow: 'hidden',
-            boxShadow: `0 0 0 ${tabletFrame.innerBorder * scale}px #000000`,
-          }}
-        >
-          <div style={{width: mirrored.width, height: mirrored.height, scale: String(scale), transformOrigin: '0 0'}}>{mirrored.screen}</div>
-          {ripple && ripple.progress > 0 && ripple.progress < 1 ? (
-            <span
-              style={{
-                position: 'absolute',
-                left: `${ripple.x * 100}%`,
-                top: `${ripple.y * 100}%`,
-                width: 64,
-                height: 64,
-                marginLeft: -32,
-                marginTop: -32,
-                borderRadius: 999,
-                border: `2px solid ${beam[300]}`,
-                backgroundColor: mix(beam[400], 25),
-                scale: String(0.35 + 1.25 * ripple.progress),
-                opacity: 0.55 * (1 - ripple.progress),
-              }}
-            />
-          ) : null}
+    const spec: FrameSpec | null =
+      typeof frameStyle === 'string'
+        ? frameStyle === 'none'
+          ? null
+          : FRAME_SPECS[frameStyle]
+        : frameStyle;
+
+    if (!spec) {
+      const outerWidth = mirrored.width;
+      const outerHeight = mirrored.height;
+      const scale = Math.min((stageWidth - STAGE_MARGIN * 2) / outerWidth, (stageHeight - STAGE_MARGIN * 2) / outerHeight);
+      frame = (
+        <div style={{position: 'relative', width: outerWidth * scale, height: outerHeight * scale}}>
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: mirrored.width * scale,
+              height: mirrored.height * scale,
+              overflow: 'hidden',
+            }}
+          >
+            <div style={{width: mirrored.width, height: mirrored.height, scale: String(scale), transformOrigin: '0 0'}}>{mirrored.screen}</div>
+            {ripple && ripple.progress > 0 && ripple.progress < 1 ? (
+              <span
+                style={{
+                  position: 'absolute',
+                  left: `${ripple.x * 100}%`,
+                  top: `${ripple.y * 100}%`,
+                  width: 64,
+                  height: 64,
+                  marginLeft: -32,
+                  marginTop: -32,
+                  borderRadius: 999,
+                  border: `2px solid ${beam[300]}`,
+                  backgroundColor: mix(beam[400], 25),
+                  scale: String(0.35 + 1.25 * ripple.progress),
+                  opacity: 0.55 * (1 - ripple.progress),
+                }}
+              />
+            ) : null}
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      const shortEdge = Math.min(mirrored.width, mirrored.height);
+      const innerBorder = spec.innerBorder ?? 0;
+      const thickness = Math.round(shortEdge * spec.thickness) + innerBorder;
+      const outerWidth = mirrored.width + thickness * 2;
+      const outerHeight = mirrored.height + thickness * 2;
+      const scale = Math.min((stageWidth - STAGE_MARGIN * 2) / outerWidth, (stageHeight - STAGE_MARGIN * 2) / outerHeight);
+      const screenRadius = shortEdge * spec.radius;
+      const outerRadius = spec.outerRadius !== undefined ? shortEdge * spec.outerRadius : screenRadius + thickness;
+      frame = (
+        <div style={{position: 'relative', width: outerWidth * scale, height: outerHeight * scale}}>
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: spec.body,
+              border: `${Math.max(1, Math.min(2, thickness * 0.16) * scale)}px solid ${spec.rim}`,
+              borderRadius: outerRadius * scale,
+              boxShadow: `0 ${Math.min(thickness, 8) * scale * 2}px ${Math.min(thickness, 8) * scale * 6}px rgba(0,0,0,0.55)`,
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              left: thickness * scale,
+              top: thickness * scale,
+              width: mirrored.width * scale,
+              height: mirrored.height * scale,
+              overflow: 'hidden',
+              borderRadius: screenRadius * scale,
+              boxShadow: innerBorder > 0 ? `0 0 0 ${innerBorder * scale}px #000000` : undefined,
+            }}
+          >
+            <div style={{width: mirrored.width, height: mirrored.height, scale: String(scale), transformOrigin: '0 0'}}>{mirrored.screen}</div>
+            {ripple && ripple.progress > 0 && ripple.progress < 1 ? (
+              <span
+                style={{
+                  position: 'absolute',
+                  left: `${ripple.x * 100}%`,
+                  top: `${ripple.y * 100}%`,
+                  width: 64,
+                  height: 64,
+                  marginLeft: -32,
+                  marginTop: -32,
+                  borderRadius: 999,
+                  border: `2px solid ${beam[300]}`,
+                  backgroundColor: mix(beam[400], 25),
+                  scale: String(0.35 + 1.25 * ripple.progress),
+                  opacity: 0.55 * (1 - ripple.progress),
+                }}
+              />
+            ) : null}
+          </div>
+        </div>
+      );
+    }
   }
 
   return (
@@ -646,15 +698,73 @@ export const DevicesPanel = ({selected, details, live, starting}: {selected: boo
   </Panel>
 );
 
+export interface FrameButton {
+  id: FrameStyle;
+  label: string;
+  width: number;
+  height: number;
+  radius: number;
+  borderWidth: number;
+  borderStyle: 'dashed' | 'solid';
+}
+
+export const FRAMES: FrameButton[] = [
+  {id: 'none', label: 'None', width: 16, height: 28, radius: 2, borderWidth: 1, borderStyle: 'dashed'},
+  {id: 'flat', label: 'Flat', width: 16, height: 28, radius: 6, borderWidth: 1, borderStyle: 'solid'},
+  {id: 'rounded', label: 'Rounded', width: 16, height: 28, radius: 12, borderWidth: 2, borderStyle: 'solid'},
+  {id: 'tablet1', label: 'Tablet 1', width: 28, height: 20, radius: 3, borderWidth: 4, borderStyle: 'solid'},
+  {id: 'tablet2', label: 'Tablet 2', width: 28, height: 20, radius: 5, borderWidth: 4, borderStyle: 'solid'},
+];
+
 /** Studio: capture and stream quality, the settings Nathan walks through. */
-export const StudioPanel = () => (
+export const StudioPanel = ({
+  frame = 'rounded',
+  padding = MIRROR_STUDIO.padding,
+}: {
+  frame?: FrameStyle;
+  padding?: number;
+} = {}) => (
   <Panel title="Studio" subtitle="How captures look">
-    <Card>
+    <SectionLabel>Device frame</SectionLabel>
+    <div style={{display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 6}}>
+      {FRAMES.map((item) => {
+        const selected = item.id === frame;
+        return (
+          <div
+            key={item.id}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 6,
+              borderRadius: round.lg,
+              border: border(selected ? mix(beam[500], 60) : ink[700]),
+              backgroundColor: selected ? mix(beam[500], 10) : 'transparent',
+              padding: sp(2),
+              boxSizing: 'border-box',
+            }}
+          >
+            <span
+              style={{
+                width: item.width,
+                height: item.height,
+                borderRadius: item.radius,
+                border: `${item.borderWidth}px ${item.borderStyle} ${ink[500]}`,
+                backgroundColor: ink[700],
+                boxSizing: 'border-box',
+              }}
+            />
+            <span style={{fontSize: 9, lineHeight: '12px', color: mist[400]}}>{item.label}</span>
+          </div>
+        );
+      })}
+    </div>
+    <Card style={{marginTop: sp(4)}}>
       <Row label="Frame in captures" hint="Off exports the raw screen at native resolution">
         <Toggle checked={MIRROR_STUDIO.frameInCaptures} />
       </Row>
-      <Field label={`Padding — ${MIRROR_STUDIO.padding}px`}>
-        <Slider fraction={MIRROR_STUDIO.padding / 160} readout={`${MIRROR_STUDIO.padding}px`} />
+      <Field label={`Padding — ${padding}px`}>
+        <Slider fraction={padding / 160} readout={`${padding}px`} />
       </Field>
     </Card>
     <div style={{marginTop: sp(4)}}>

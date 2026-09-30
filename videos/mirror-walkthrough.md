@@ -136,6 +136,15 @@ early); every clip must still start and end on a complete word and sit inside it
 | tools | 472.0–479.6 | we have also a shell … look at the logs for the device |
 | close | 494.0–502.1 | come back to this setup if you're ever having problems. Thank you for your time |
 
+## Concurrency with W02
+
+W02 (`videos/terminator-walkthrough.md`) may run in this checkout at the same time. The
+only shared file is `src/Root.tsx` (T5, T15 here; one task there): before editing it,
+`git diff --quiet src/Root.tsx` must succeed, else wait for the other commit (two checks
+at most) and report blocked. Never touch `src/app-ui/term/`, `src/marketing/terminator-walkthrough/`,
+`ingest/terminator-walkthrough/` or W02's brief. W02's uncommitted paths are expected, and
+a check failing only in them is a Review note, not a repair. Full renders run one at a time.
+
 ## Tasks
 
 > Machine-parsed — keep exact.
@@ -155,7 +164,7 @@ early); every clip must still start and end on a complete word and sit inside it
 - [x] T1: Correct `ingest/mirror-walkthrough/transcript.md` against `ingest/mirror-walkthrough/contact.html` and mark it `Status: corrected 2026-09-30` — files: ingest/mirror-walkthrough/transcript.md
   - Fix misheard product names, acronyms and numbers only: "galaxy continuity" at 6:47.5 → Galaxy Continuity; confirm ADB, IoT, Epson and "169" against the stills. "CTRLbot" is already applied throughout. Keep filler and false starts. Never edit `words.json`, `captions.json` or `heard.json`.
   - Done when the status line reads corrected and every line in the Narration clips table still says what the table says.
-- [ ] T2: Add Mirror's Studio "Device frame" picker to `StudioPanel` and a `frameStyle` prop to `MirrorStage`, transcribed from Mirror's `StudioPanel.tsx` `FRAMES` and `compose.ts` `FRAME_SPECS` — files: src/app-ui/mirror/Mirror.tsx, src/app-ui/mirror/mirrorTheme.ts
+- [x] T2: Add Mirror's Studio "Device frame" picker to `StudioPanel` and a `frameStyle` prop to `MirrorStage`, transcribed from Mirror's `StudioPanel.tsx` `FRAMES` and `compose.ts` `FRAME_SPECS` — files: src/app-ui/mirror/Mirror.tsx, src/app-ui/mirror/mirrorTheme.ts
   - `frameStyle` defaults to the current `tabletFrame`; `StudioPanel` takes an optional `frame` and `padding` so the beat can move them. Only frames and colours the Mirror source defines.
   - Verify: `npm run still -- Proof-Mirror-Studio out/_t2-studio.png` shows the picker; `Proof-Mirror-Devices` renders as before.
 - [ ] T3: Add the *Screenshot saved* toast from Mirror's `Toasts.tsx` and `StageToolbar.tsx` as an optional `toast` prop on `MirrorApp` — files: src/app-ui/mirror/Mirror.tsx
@@ -190,7 +199,7 @@ early); every clip must still start and end on a complete word and sit inside it
 - [ ] T16: Run the feature gates and both renders, and record results in this brief — files: videos/mirror-walkthrough.md
   - `npm run video:lint -- --destination=social-walkthrough`; `npm run video:frames -- mirror-walkthrough contact`; `npm run render -- mirror-walkthrough out/mirror-walkthrough.mp4 --codec=h264 --crf=20 --muted`; `npm run video:frames -- mirror-walkthrough check out/mirror-walkthrough.mp4`; the same check on the narrated file; `npm run narration:check -- out/mirror-walkthrough-narrated.mp4`. Confirm each output file exists.
   - Regression: `npm run still` of `Proof-Mirror-Setup`, `-Devices`, `-Studio`, `-Apps`, `-Files` match their pre-T2 renders.
-  - Does not mark the video done. Nathan's gate is `out/mirror-walkthrough/contact.html`, then the renders.
+  - Runs straight after T15 with no approval stop. Does not mark the video done: Nathan reviews both renders and `out/mirror-walkthrough/contact.html`, and his notes come back as new tasks.
 
 ## Deferred
 
