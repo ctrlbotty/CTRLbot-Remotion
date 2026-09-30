@@ -17,6 +17,7 @@ import {staticFile} from 'remotion';
 import {AppIcon} from './AppIcon';
 import {appColors, appDimens, appTextStyles} from '../design/tokens.generated';
 import {PHONE_VIEWPORT} from './viewports';
+import {font} from '../design/theme';
 
 export {PHONE_VIEWPORT} from './viewports';
 
@@ -190,6 +191,8 @@ export type EuiOutput = {
   label: string;
   /** Routed source label, or null for an unrouted output. */
   source: string | null;
+  selected?: boolean;
+  highlight?: 'yellow' | 'blue';
 };
 
 export type EuiInput = {label: string};
@@ -203,7 +206,16 @@ const OutputCell = ({
   selectedSource: string | null;
 }) => {
   const routed = output.source !== null;
-  const selected = routed && output.source === selectedSource;
+  const isYellow = output.highlight === 'yellow' || output.selected;
+  const isBlue =
+    output.highlight === 'blue' ||
+    (!isYellow && routed && output.source === selectedSource);
+
+  const bgImage = isYellow
+    ? 'app-assets/disp_m_yellow.png'
+    : isBlue
+      ? 'app-assets/disp_m_blue.png'
+      : 'app-assets/disp_m_grey.png';
 
   return (
     <div style={{width: CELL_WIDTH, margin: CELL_MARGIN}}>
@@ -215,9 +227,7 @@ const OutputCell = ({
           alignItems: 'center',
           justifyContent: 'center',
           gap: 10,
-          backgroundImage: `url(${staticFile(
-            selected ? 'app-assets/disp_m_blue.png' : 'app-assets/disp_m_grey.png',
-          )})`,
+          backgroundImage: `url(${staticFile(bgImage)})`,
           backgroundSize: '100% 100%',
           backgroundRepeat: 'no-repeat',
         }}
@@ -227,7 +237,7 @@ const OutputCell = ({
             <AppIcon name="ic_hdmi_icon" size={22} tint={appColors.white} />
             <span
               style={{
-                fontFamily: 'Montserrat, sans-serif',
+                fontFamily: font.ui,
                 fontWeight: 400,
                 fontSize: 13,
                 letterSpacing: 0.4,
@@ -249,7 +259,7 @@ const OutputCell = ({
           alignItems: 'center',
           justifyContent: 'center',
           backgroundColor: appColors.black,
-          fontFamily: 'Montserrat, sans-serif',
+          fontFamily: font.ui,
           fontWeight: 400,
           fontSize: 12,
           letterSpacing: 0.6,
@@ -267,10 +277,12 @@ const OutputCell = ({
 const SourceCard = ({
   input,
   selected,
+  selectedColor = appColors.blue,
   width = CARD_WIDTH,
 }: {
   input: EuiInput;
   selected: boolean;
+  selectedColor?: string;
   width?: number;
 }) => (
   <div
@@ -285,7 +297,7 @@ const SourceCard = ({
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: selected ? 5 : 6,
-      backgroundColor: selected ? appColors.blue : appColors.black,
+      backgroundColor: selected ? selectedColor : appColors.black,
     }}
   >
     <AppIcon
@@ -403,14 +415,7 @@ export const PhoneVolumeBar = ({
   </div>
 );
 
-export const PhoneEui = ({
-  outputs,
-  inputs,
-  selectedInput,
-  volume,
-  speakerMuted = false,
-  inputScroll = 0,
-}: {
+export type PhoneEuiProps = {
   outputs: EuiOutput[];
   inputs: EuiInput[];
   /** Index into `inputs`, or null for the cold state — nothing selected yet. */
@@ -420,12 +425,34 @@ export const PhoneEui = ({
   speakerMuted?: boolean;
   /** Source-strip scroll in dp. See phoneInputScrollFor(). */
   inputScroll?: number;
-}) => (
+  showExitHint?: boolean;
+  selectedInputColor?: 'blue' | 'yellow';
+  drag?: {
+    inputIndex: number;
+    x: number;
+    y: number;
+    opacity?: number;
+    scale?: number;
+  } | null;
+};
+
+export const PhoneEui = ({
+  outputs,
+  inputs,
+  selectedInput,
+  volume,
+  speakerMuted = false,
+  inputScroll = 0,
+  showExitHint = false,
+  selectedInputColor = 'blue',
+  drag,
+}: PhoneEuiProps) => (
   // Column layout mirrors av_switch_nxo.xml: the grid takes its natural height, the
   // ALL row absorbs the leftover and centres in it, the source strip and volume bar
   // sit at the bottom.
   <div
     style={{
+      position: 'relative',
       display: 'flex',
       flexDirection: 'column',
       width: PHONE_VIEWPORT.width,
@@ -435,6 +462,52 @@ export const PhoneEui = ({
       backgroundColor: appColors.gray15,
     }}
   >
+    {/* Dragged source card overlay */}
+    {drag ? (
+      <div
+        style={{
+          position: 'absolute',
+          left: drag.x,
+          top: drag.y,
+          width: CARD_WIDTH,
+          height: CARD_HEIGHT,
+          zIndex: 100,
+          pointerEvents: 'none',
+          transform: `translate(-50%, -50%) scale(${drag.scale ?? 1.05})`,
+          opacity: drag.opacity ?? 0.95,
+          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.6)',
+          borderRadius: 6,
+          backgroundColor: appColors.blue,
+          padding: 10,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+        }}
+      >
+        <AppIcon
+          name="ic_hdmi_icon_sm"
+          size={44}
+          tint={appColors.white}
+          style={{flex: 1, width: '100%', height: 'auto'}}
+        />
+        <span
+          style={{
+            marginTop: 4,
+            fontFamily: font.ui,
+            fontWeight: 400,
+            fontSize: 13,
+            letterSpacing: 0.4,
+            textTransform: 'uppercase',
+            color: appColors.white,
+          }}
+        >
+          {inputs[drag.inputIndex]?.label ?? ''}
+        </span>
+      </div>
+    ) : null}
+
     {/* Header — exit control left, system power right */}
     <div
       style={{
@@ -448,7 +521,22 @@ export const PhoneEui = ({
         backgroundColor: appColors.black,
       }}
     >
-      <AppIcon name="ic_settings2" size={28} tint={appColors.white} />
+      <div style={{display: 'flex', alignItems: 'center'}}>
+        <AppIcon name="ic_settings2" size={28} tint={appColors.white} />
+        {showExitHint ? (
+          <span
+            style={{
+              marginLeft: 6,
+              fontFamily: font.display,
+              fontSize: 13,
+              color: appColors.white,
+              letterSpacing: 0.2,
+            }}
+          >
+            Keep holding to return to Setup
+          </span>
+        ) : null}
+      </div>
       <AppIcon name="ic_power" size={30} />
     </div>
 
@@ -526,7 +614,12 @@ export const PhoneEui = ({
         }}
       >
         {inputs.map((input, index) => (
-          <SourceCard key={input.label} input={input} selected={index === selectedInput} />
+          <SourceCard
+            key={input.label}
+            input={input}
+            selected={index === selectedInput}
+            selectedColor={selectedInputColor === 'yellow' ? '#FFFF00' : appColors.blue}
+          />
         ))}
       </div>
     </div>
@@ -546,6 +639,7 @@ export const PhoneEuiManyToOne = ({
   volume,
   speakerMuted = false,
   outputLabel = 'Display 1',
+  showExitHint = false,
 }: {
   inputs: EuiInput[];
   /** Index into `inputs`, or null for the cold state — nothing routed yet. */
@@ -554,6 +648,7 @@ export const PhoneEuiManyToOne = ({
   volume: number;
   speakerMuted?: boolean;
   outputLabel?: string;
+  showExitHint?: boolean;
 }) => {
   const selectedSource = selectedInput === null ? undefined : inputs[selectedInput];
   const routed = selectedSource !== undefined;
@@ -582,7 +677,22 @@ export const PhoneEuiManyToOne = ({
           backgroundColor: appColors.black,
         }}
       >
-        <AppIcon name="ic_settings2" size={28} tint={appColors.white} />
+        <div style={{display: 'flex', alignItems: 'center'}}>
+          <AppIcon name="ic_settings2" size={28} tint={appColors.white} />
+          {showExitHint ? (
+            <span
+              style={{
+                marginLeft: 6,
+                fontFamily: font.display,
+                fontSize: 13,
+                color: appColors.white,
+                letterSpacing: 0.2,
+              }}
+            >
+              Keep holding to return to Setup
+            </span>
+          ) : null}
+        </div>
         <AppIcon name="ic_power" size={30} />
       </div>
 

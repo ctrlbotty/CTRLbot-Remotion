@@ -253,7 +253,7 @@ branch, no worktree.
   - Device rows come from the recording's own stills (`f_0035.jpg`–`f_0040.jpg`): private IPs only. Put the row data in a `discoverData.ts` beside it only if the component file passes 400 lines.
 - [x] T12: Build `SettingsSupport` from `layout-port/menu_set.xml`: Support with User Manual, Quick Start, Factory Reset and Database Management — files: src/app-ui/SettingsSupport.tsx, src/Root.tsx
   - Reference frames: `f_0057.jpg`–`f_0059.jpg`.
-- [ ] T13: Add to `PhoneEui` the drag of a source onto an output and the "Keep holding to return to Setup" hint — files: src/app-ui/PhoneEui.tsx
+- [x] T13: Add to `PhoneEui` the drag of a source onto an output and the "Keep holding to return to Setup" hint — files: src/app-ui/PhoneEui.tsx
   - Both optional props; absent means today's render, so `First-Run-Phone` and every `PhoneEui` proof are unchanged. Hint from `layout-port/_end_ui.xml`; reference frames `f_0054.jpg`, `f_0055.jpg`.
 
 ### W03
