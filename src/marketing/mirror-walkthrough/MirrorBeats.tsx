@@ -144,10 +144,62 @@ export const DebuggingBeat: React.FC<{frame: number; frames: number}> = ({
   );
 };
 
+/**
+ * Connect beat (14s = 420 frames):
+ * Step 4 "Authorise this computer" ticks, the Devices card shows "Ready",
+ * Start mirroring is pressed and the stage changes from the idle message to the live tablet.
+ */
+export const ConnectBeat: React.FC<{frame: number; frames: number}> = ({
+  frame,
+}) => {
+  // 0..80 (0s..2.67s): Setup panel where step 4 ticks to authorised
+  // 80..180 (2.67s..6s): Devices panel showing Ready and device details, Start mirroring clicked
+  // 180..420 (6s..14s): Live mirroring begins; stage transitions to live tablet
+  if (frame < 80) {
+    const step = frame < 40 ? 4 : 5;
+    return (
+      <MirrorApp
+        panel="setup"
+        status="No device connected"
+        hasDevice={false}
+        side={<SetupPanel step={step} />}
+        stage={<MirrorStage idle={IDLE_STAGE} />}
+      />
+    );
+  }
+
+  const live = frame >= 180;
+  const starting = frame >= 140 && frame < 180;
+
+  return (
+    <MirrorApp
+      panel="devices"
+      status={live ? `Mirroring ${MIRROR_DEVICE.name}` : '1 device ready'}
+      hasDevice
+      side={
+        <DevicesPanel
+          selected
+          details
+          live={live}
+          starting={starting}
+        />
+      }
+      stage={
+        live ? (
+          <MirrorStage mirrored={catalog(frame - 180, 420 - 180)} />
+        ) : (
+          <MirrorStage idle={IDLE_STAGE} />
+        )
+      }
+    />
+  );
+};
+
 export const BEAT_RENDERERS: Partial<
   Record<BeatName, React.FC<{frame: number; frames: number}>>
 > = {
   open: OpenBeat,
   setup: SetupBeat,
   debugging: DebuggingBeat,
+  connect: ConnectBeat,
 };
