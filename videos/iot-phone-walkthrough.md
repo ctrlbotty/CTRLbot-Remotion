@@ -247,7 +247,7 @@ branch, no worktree.
   - Reference frames: `f_0025.jpg`–`f_0027.jpg`, `f_0033.jpg`.
 - [x] T9: Build `ActivitiesSwitch` from `layout/switching_type.xml`, `switching_many_to_one.xml`, `layout-port/switching_end_point.xml`, `item_switching_ep_encoder.xml` and `item_switching_ep_decoder.xml`: the switch-type picker, many-to-one on one device, and AVoIP encoders and decoders — files: src/app-ui/ActivitiesSwitch.tsx, src/Root.tsx
   - Reference frames: `f_0046.jpg`–`f_0049.jpg`.
-- [ ] T10: Build `ActivitiesAudio` from `layout/audio.xml` and `item_audio_control_mapping.xml`: the audio device, volume range and the volume up, down and set mappings — files: src/app-ui/ActivitiesAudio.tsx, src/Root.tsx
+- [x] T10: Build `ActivitiesAudio` from `layout/audio.xml` and `item_audio_control_mapping.xml`: the audio device, volume range and the volume up, down and set mappings — files: src/app-ui/ActivitiesAudio.tsx, src/Root.tsx
   - Reference frames: `f_0028.jpg`, `f_0029.jpg`.
 - [ ] T11: Build `DiscoverDevices` from `layout-port/fragment_discover_devices.xml` and `item_discovered_device.xml`: the found-count header, rows with name, IP, driver match and Add driver, and a row's Added state — files: src/app-ui/DiscoverDevices.tsx, src/Root.tsx
   - Device rows come from the recording's own stills (`f_0035.jpg`–`f_0040.jpg`): private IPs only. Put the row data in a `discoverData.ts` beside it only if the component file passes 400 lines.
