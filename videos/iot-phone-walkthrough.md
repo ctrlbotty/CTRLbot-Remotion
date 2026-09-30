@@ -245,7 +245,7 @@ branch, no worktree.
   - Reference frames: `f_0013.jpg`, `f_0014.jpg`. Draw no website content.
 - [x] T8: Build `ActivitiesPresets` from `layout/menu_activity.xml`, `preset_list.xml`, `preset_card.xml`, `preset_edit.xml` and `layout-port/preset_command_card.xml`: the Presets / Switch / Audio tabs, the preset list, and a preset opened with its commands — files: src/app-ui/ActivitiesPresets.tsx, src/Root.tsx
   - Reference frames: `f_0025.jpg`–`f_0027.jpg`, `f_0033.jpg`.
-- [ ] T9: Build `ActivitiesSwitch` from `layout/switching_type.xml`, `switching_many_to_one.xml`, `layout-port/switching_end_point.xml`, `item_switching_ep_encoder.xml` and `item_switching_ep_decoder.xml`: the switch-type picker, many-to-one on one device, and AVoIP encoders and decoders — files: src/app-ui/ActivitiesSwitch.tsx, src/Root.tsx
+- [x] T9: Build `ActivitiesSwitch` from `layout/switching_type.xml`, `switching_many_to_one.xml`, `layout-port/switching_end_point.xml`, `item_switching_ep_encoder.xml` and `item_switching_ep_decoder.xml`: the switch-type picker, many-to-one on one device, and AVoIP encoders and decoders — files: src/app-ui/ActivitiesSwitch.tsx, src/Root.tsx
   - Reference frames: `f_0046.jpg`–`f_0049.jpg`.
 - [ ] T10: Build `ActivitiesAudio` from `layout/audio.xml` and `item_audio_control_mapping.xml`: the audio device, volume range and the volume up, down and set mappings — files: src/app-ui/ActivitiesAudio.tsx, src/Root.tsx
   - Reference frames: `f_0028.jpg`, `f_0029.jpg`.

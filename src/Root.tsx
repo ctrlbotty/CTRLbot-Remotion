@@ -60,6 +60,7 @@ import {FirstRunEducation} from './app-ui/FirstRunEducation';
 import {ConnectTest} from './app-ui/ConnectTest';
 import {ProductWebView} from './app-ui/ProductWebView';
 import {ActivitiesPresets} from './app-ui/ActivitiesPresets';
+import {ActivitiesSwitch} from './app-ui/ActivitiesSwitch';
 import {
   ConnectDiagram,
   connectDiagramDuration,
@@ -558,6 +559,7 @@ export const RemotionRoot = () => (
       <Still id="Proof-Phone-ConnectTest" component={ConnectTest} width={360} height={780} />
       <Still id="Proof-Phone-ProductWebView" component={ProductWebView} width={360} height={780} />
       <Still id="Proof-Phone-ActivitiesPresets" component={ActivitiesPresets} width={360} height={780} />
+      <Still id="Proof-Phone-ActivitiesSwitch" component={ActivitiesSwitch} width={360} height={780} />
       {/* CTRLbot Terminator, the Windows utility: CSS pixels, its own Tailwind palette. */}
       <Still id="Proof-Term-Scan" component={TermScanProof} width={1280} height={800} />
       <Still id="Proof-Term-Server" component={TermServerProof} width={1280} height={800} />
