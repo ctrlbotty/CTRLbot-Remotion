@@ -157,7 +157,7 @@ beat's start + 0.25s, and each next clip at the previous clip's end + 0.2s.
 | settings | 399.4–403.9, 404.1–407.3, 408.6–414.1, 414.7–421.0 | At any time, if you need to start over or you need help with the user manual, · So full user manual … right here. And the quick start … play that right here. And if you need to do a factory reset or update the database … right here. |
 | close | 423.0–423.9 | Thank you for your time. |
 
-Cut on purpose: "and Chromebook" (11.4s), "It's not" filler around 312–329s ("the way that we,
+Cut on purpose: "and Chromebook" (11.4s), the stumbles around 312–329s ("the way that we,
 we organize these is, is interesting"), the IPMX "universal control protocol" aside
 (276–281s), and the doubled "you can you can" (192s).
 
