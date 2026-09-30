@@ -5,6 +5,7 @@ import {
   MirrorApp,
   MirrorStage,
   SetupPanel,
+  StudioPanel,
   type Mirrored,
 } from '../../app-ui/mirror/Mirror';
 import {MIRROR_CATALOG, MIRROR_DEVICE} from '../../app-ui/mirror/mirrorData';
@@ -195,6 +196,40 @@ export const ConnectBeat: React.FC<{frame: number; frames: number}> = ({
   );
 };
 
+/**
+ * Frame beat (14s = 420 frames):
+ * Studio panel's Device frame picker: the selection moves to another frame
+ * and the frame drawn around the mirrored tablet changes shape, then the
+ * padding value rises and the backdrop margin grows.
+ */
+export const FrameBeat: React.FC<{frame: number; frames: number}> = ({
+  frame,
+  frames,
+}) => {
+  const currentFrame = frame < 120 ? 'rounded' : 'tablet1';
+  const padding = Math.round(
+    interpolate(frame, [180, 270], [48, 88], {
+      extrapolateLeft: 'clamp',
+      extrapolateRight: 'clamp',
+    }),
+  );
+
+  return (
+    <MirrorApp
+      panel="studio"
+      status={`Mirroring ${MIRROR_DEVICE.name}`}
+      hasDevice
+      side={<StudioPanel frame={currentFrame} padding={padding} />}
+      stage={
+        <MirrorStage
+          mirrored={catalog(frame, frames)}
+          frameStyle={currentFrame}
+        />
+      }
+    />
+  );
+};
+
 export const BEAT_RENDERERS: Partial<
   Record<BeatName, React.FC<{frame: number; frames: number}>>
 > = {
@@ -202,4 +237,5 @@ export const BEAT_RENDERERS: Partial<
   setup: SetupBeat,
   debugging: DebuggingBeat,
   connect: ConnectBeat,
+  frame: FrameBeat,
 };
