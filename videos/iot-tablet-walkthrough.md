@@ -232,7 +232,7 @@ branch, no worktree.
   - From `layout/av_sw_remote_nxo.xml` (or `av_sw_remote_nx4.xml` where the app uses it for four outputs). Reference frame: `f_0041.jpg`.
 - [x] T5: Add the tablet layout to `ProductWebView`, over the nav rail — files: src/app-ui/ProductWebView.tsx, src/Root.tsx
   - Reference frames: `f_0012.jpg`, `f_0018.jpg`. Draw no website content.
-- [ ] T6: Add the tablet layout to `ActivitiesPresets` — files: src/app-ui/ActivitiesPresets.tsx, src/Root.tsx
+- [x] T6: Add the tablet layout to `ActivitiesPresets` — files: src/app-ui/ActivitiesPresets.tsx, src/Root.tsx
   - Reference frames: `f_0020.jpg`–`f_0022.jpg`, `f_0030.jpg`.
 - [ ] T7: Add the tablet layout to `ActivitiesSwitch`: the switch-type picker, many-to-one on one device, and AVoIP encoders and decoders side by side — files: src/app-ui/ActivitiesSwitch.tsx, src/Root.tsx
   - Reference frames: `f_0043.jpg`, `f_0044.jpg`. `ActivitiesSwitching.tsx` is not touched.
