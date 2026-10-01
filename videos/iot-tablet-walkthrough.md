@@ -254,7 +254,7 @@ branch, no worktree.
 - [x] T14: Build beats `open` to `test` in `IotTabletBeats.tsx`, each a component of `{frame, frames}` in a `BEAT_RENDERERS` map — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [x] T15: Build beats `activities` to `discovery` in `IotTabletBeats.tsx` — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [x] T16: Build beats `matrox-add` to `close` in `IotTabletBeats.tsx` — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
-- [ ] T17: Build both compositions and register them — files: src/marketing/iot-tablet-walkthrough/IotTabletWalkthrough.tsx, src/Root.tsx
+- [x] T17: Build both compositions and register them — files: src/marketing/iot-tablet-walkthrough/IotTabletWalkthrough.tsx, src/Root.tsx
   - On the pattern of W03's `IotPhoneWalkthrough.tsx`: landscape `<Stage>` at its default panel with the 1280/800 aspect; portrait `<PortraitStage>` with `<NarrationCaptions>` (captions from `captionsFromClips(clips, words, IOT_TABLET_CAPTION_CORRECTIONS)`); `<NarrationTrack>` in both; `<PromoPreload />`; copy through `<WalkthroughCopy>` with `at={-40}` on open. Register `iot-tablet-walkthrough` (1920x1080) and `iot-tablet-walkthrough-portrait` (1080x1920) in W03's `CTRLbot-IoT-Walkthrough` folder, metadata inline.
   - Verify: `npm run video:frames -- iot-tablet-walkthrough validate`; both contact sheets, every still against its evidence line; a half-scale inert check on the portrait under 60%. T14–T16 render their stills only once T17 has registered the composition: until then their check is `npm run check` and `npm run video:lint`.
 - [ ] T18: Run the feature gates on both shapes, render both, write the .srt, and record the results here — files: videos/iot-tablet-walkthrough.md

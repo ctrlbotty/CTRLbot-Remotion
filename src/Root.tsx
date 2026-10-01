@@ -48,6 +48,11 @@ import {
   IotPhoneWalkthroughPortrait,
   iotPhoneWalkthroughDuration,
 } from './marketing/iot-phone-walkthrough/IotPhoneWalkthrough';
+import {
+  IotTabletWalkthrough,
+  IotTabletWalkthroughPortrait,
+  iotTabletWalkthroughDuration,
+} from './marketing/iot-tablet-walkthrough/IotTabletWalkthrough';
 import {HubCell, hubCellDuration} from './marketing/hub-cell/HubCell';
 import {Short, assertShortReady} from './shorts/Short';
 import {MirrorAppsProof, MirrorDevicesProof, MirrorFilesProof, MirrorSetupProof, MirrorStudioProof} from './app-ui/mirror/MirrorProofs';
@@ -263,6 +268,22 @@ export const RemotionRoot = () => (
         id="iot-phone-walkthrough-portrait"
         component={IotPhoneWalkthroughPortrait}
         durationInFrames={iotPhoneWalkthroughDuration}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="iot-tablet-walkthrough"
+        component={IotTabletWalkthrough}
+        durationInFrames={iotTabletWalkthroughDuration}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="iot-tablet-walkthrough-portrait"
+        component={IotTabletWalkthroughPortrait}
+        durationInFrames={iotTabletWalkthroughDuration}
         fps={30}
         width={1080}
         height={1920}
