@@ -2,11 +2,13 @@ import React from 'react';
 import {appColors} from '../design/tokens.generated';
 import {VIEWPORT} from './viewports';
 import {PhoneNavMenu, type NavItem} from './PhoneNavMenu';
+import {TabletNavRail} from './TabletNavRail';
 import {font} from '../design/theme';
 
 export type SettingsSupportProps = {
-  device?: 'phone';
+  device?: 'phone' | 'tablet';
   resetButtonState?: 'idle' | 'pressed' | 'restored';
+  showResetDialog?: boolean;
   showDocumentationHighlight?: boolean;
   toast?: string;
   snackbar?: string;
@@ -46,6 +48,7 @@ const PlayIcon = ({color = appColors.white, size = 22}: {color?: string; size?: 
 export const SettingsSupport: React.FC<SettingsSupportProps> = ({
   device = 'phone',
   resetButtonState = 'idle',
+  showResetDialog = false,
   showDocumentationHighlight = false,
   toast,
   snackbar,
@@ -55,6 +58,477 @@ export const SettingsSupport: React.FC<SettingsSupportProps> = ({
 }) => {
   const isRestored = resetButtonState === 'restored';
   const effectiveShowRoomMenus = isRestored ? false : showRoomMenus;
+
+  if (device === 'tablet') {
+    return (
+      <div
+        style={{
+          position: 'relative',
+          width: VIEWPORT.tablet.width,
+          height: VIEWPORT.tablet.height,
+          backgroundColor: appColors.black,
+          overflow: 'hidden',
+          fontFamily: font.ui,
+          display: 'flex',
+          flexDirection: 'row',
+        }}
+      >
+        {/* Left Nav Rail */}
+        <TabletNavRail active={activeNav} showRoomMenus={effectiveShowRoomMenus} />
+
+        {/* Right Content Area */}
+        <div
+          style={{
+            flex: 1,
+            height: '100%',
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Background glow matching setup screens */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background:
+                'radial-gradient(circle at 68% 32%, rgba(0, 143, 212, 0.22) 0%, rgba(0, 0, 0, 0) 80%)',
+              pointerEvents: 'none',
+            }}
+          />
+
+          {/* Scrollable / padded Settings Content */}
+          <div
+            style={{
+              position: 'relative',
+              flex: 1,
+              overflow: 'hidden',
+              padding: '24px 32px 32px 32px',
+              display: 'flex',
+              flexDirection: 'column',
+              transform: scrollY ? `translateY(-${scrollY}px)` : undefined,
+            }}
+          >
+            {/* Header: Eyebrow "Settings" */}
+            <div
+              style={{
+                fontSize: 16,
+                fontWeight: 500,
+                color: appColors.white,
+                marginBottom: 12,
+              }}
+            >
+              Settings
+            </div>
+
+            {/* Support Section Title */}
+            <div
+              style={{
+                fontSize: 24,
+                fontWeight: 700,
+                color: appColors.white,
+                marginBottom: 4,
+              }}
+            >
+              Support
+            </div>
+
+            {/* Support Section Subtitle / Highlight Banner */}
+            <div
+              style={{
+                position: 'relative',
+                fontSize: 14,
+                color: showDocumentationHighlight ? '#FFA726' : appColors.gray75,
+                marginBottom: 16,
+                padding: showDocumentationHighlight ? '4px 8px' : '0',
+                backgroundColor: showDocumentationHighlight ? '#9A5B00' : 'transparent',
+                borderRadius: showDocumentationHighlight ? 3 : 0,
+                fontWeight: showDocumentationHighlight ? 600 : 400,
+                alignSelf: 'flex-start',
+              }}
+            >
+              Documentation and setup guides, available offline
+            </div>
+
+            {/* Card 1: User Manual */}
+            <div
+              style={{
+                backgroundColor: '#262626',
+                borderRadius: 5,
+                padding: '14px 18px',
+                marginBottom: 10,
+                display: 'flex',
+                alignItems: 'center',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+              }}
+            >
+              <div style={{marginRight: 16, display: 'flex', alignItems: 'center'}}>
+                <HelpIcon size={24} color={appColors.white} />
+              </div>
+              <div style={{flex: 1, display: 'flex', flexDirection: 'column'}}>
+                <span style={{fontSize: 16, fontWeight: 600, color: appColors.white, marginBottom: 2}}>
+                  User Manual
+                </span>
+                <span style={{fontSize: 13, color: appColors.gray75}}>
+                  Full setup and operation reference
+                </span>
+              </div>
+              <span style={{fontSize: 20, color: appColors.gray50, marginLeft: 8}}>&rsaquo;</span>
+            </div>
+
+            {/* Card 2: Quick Start */}
+            <div
+              style={{
+                backgroundColor: '#262626',
+                borderRadius: 5,
+                padding: '14px 18px',
+                marginBottom: 16,
+                display: 'flex',
+                alignItems: 'center',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+              }}
+            >
+              <div style={{marginRight: 16, display: 'flex', alignItems: 'center'}}>
+                <PlayIcon size={24} color={appColors.white} />
+              </div>
+              <div style={{flex: 1, display: 'flex', flexDirection: 'column'}}>
+                <span style={{fontSize: 16, fontWeight: 600, color: appColors.white, marginBottom: 2}}>
+                  Quick Start
+                </span>
+                <span style={{fontSize: 13, color: appColors.gray75}}>
+                  Get a first room running in a few steps
+                </span>
+              </div>
+              <span style={{fontSize: 20, color: appColors.gray50, marginLeft: 8}}>&rsaquo;</span>
+            </div>
+
+            {/* Two Column Layout: Factory Reset & Database Management */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 16,
+                marginBottom: 20,
+              }}
+            >
+              {/* Left Column: Factory Reset */}
+              <div
+                style={{
+                  flex: 1,
+                  backgroundColor: '#262626',
+                  borderRadius: 5,
+                  padding: '16px 18px',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <div>
+                  <div style={{fontSize: 18, fontWeight: 700, color: appColors.white, marginBottom: 6}}>
+                    Factory Reset
+                  </div>
+                  <div style={{fontSize: 13.5, color: appColors.gray75, marginBottom: 16, lineHeight: 1.3}}>
+                    Clear all settings and database. This action cannot be undone.
+                  </div>
+                </div>
+                <div
+                  style={{
+                    height: 44,
+                    borderRadius: 4,
+                    backgroundColor:
+                      resetButtonState === 'pressed' ? appColors.blue : '#1E1E1E',
+                    backgroundImage:
+                      resetButtonState === 'pressed'
+                        ? 'radial-gradient(circle at center, #35ABEE 0%, #008FD4 80%)'
+                        : undefined,
+                    boxShadow:
+                      resetButtonState === 'pressed'
+                        ? '0 0 16px rgba(0, 143, 212, 0.5)'
+                        : undefined,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 8,
+                    color: appColors.white,
+                    fontSize: 14,
+                    fontWeight: 600,
+                  }}
+                >
+                  <WarningIcon size={18} color={appColors.white} />
+                  <span>Factory Reset</span>
+                </div>
+              </div>
+
+              {/* Right Column: Database Management */}
+              <div
+                style={{
+                  flex: 1,
+                  backgroundColor: '#262626',
+                  borderRadius: 5,
+                  padding: '16px 18px',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <div>
+                  <div style={{fontSize: 18, fontWeight: 700, color: appColors.white, marginBottom: 6}}>
+                    Database Management
+                  </div>
+                  <div style={{fontSize: 13.5, color: appColors.gray75, marginBottom: 16}}>
+                    Update or reset the driver database
+                  </div>
+                </div>
+                <div
+                  style={{
+                    height: 44,
+                    borderRadius: 4,
+                    backgroundColor: '#1E1E1E',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 8,
+                    color: appColors.white,
+                    fontSize: 14,
+                    fontWeight: 600,
+                  }}
+                >
+                  <RefreshIcon size={16} color={appColors.white} />
+                  <span>Update Database</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Privacy & Security Section */}
+            <div
+              style={{
+                fontSize: 22,
+                fontWeight: 700,
+                color: appColors.white,
+                marginBottom: 4,
+              }}
+            >
+              Privacy &amp; Security
+            </div>
+            <div style={{fontSize: 13.5, color: appColors.gray75, marginBottom: 12}}>
+              Manage your privacy settings and security preferences
+            </div>
+
+            <div
+              style={{
+                fontSize: 16,
+                fontWeight: 700,
+                color: appColors.white,
+                marginBottom: 8,
+              }}
+            >
+              Privacy
+            </div>
+
+            {/* Privacy Policy Card */}
+            <div
+              style={{
+                backgroundColor: '#262626',
+                borderRadius: 5,
+                padding: '14px 18px',
+                marginBottom: 8,
+                display: 'flex',
+                alignItems: 'center',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+              }}
+            >
+              <div style={{flex: 1, fontSize: 15, color: appColors.white}}>
+                Privacy Policy
+              </div>
+              <span style={{fontSize: 20, color: appColors.gray50, marginLeft: 8}}>&rsaquo;</span>
+            </div>
+
+            {/* Data Handling Card */}
+            <div
+              style={{
+                backgroundColor: '#262626',
+                borderRadius: 5,
+                padding: '14px 18px',
+                display: 'flex',
+                alignItems: 'center',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+              }}
+            >
+              <div style={{flex: 1, fontSize: 15, color: appColors.white}}>
+                Data Handling
+              </div>
+              <span style={{fontSize: 20, color: appColors.gray50, marginLeft: 8}}>&rsaquo;</span>
+            </div>
+          </div>
+
+          {/* Floating Toast */}
+          {toast ? (
+            <div
+              style={{
+                position: 'absolute',
+                bottom: 32,
+                left: 0,
+                right: 0,
+                zIndex: 30,
+                display: 'flex',
+                justifyContent: 'center',
+                pointerEvents: 'none',
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor: 'rgba(70, 70, 70, 0.92)',
+                  borderRadius: 22,
+                  padding: '8px 20px',
+                  color: appColors.white,
+                  fontSize: 13,
+                  fontWeight: 500,
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
+                  border: '1px solid rgba(255,255,255,0.12)',
+                }}
+              >
+                {toast}
+              </div>
+            </div>
+          ) : null}
+
+          {/* Bottom Snackbar */}
+          {snackbar ? (
+            <div
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                zIndex: 30,
+                backgroundColor: '#1A1A1A',
+                padding: '14px 20px',
+                borderTop: '1px solid rgba(255,255,255,0.1)',
+                color: appColors.white75,
+                fontSize: 13,
+                fontWeight: 500,
+              }}
+            >
+              {snackbar}
+            </div>
+          ) : null}
+        </div>
+
+        {/* Modal Dialog for Factory Reset (f_0055.jpg) */}
+        {showResetDialog && (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.65)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 50,
+            }}
+          >
+            <div
+              style={{
+                width: 520,
+                backgroundColor: '#FAFAFA',
+                borderRadius: 4,
+                boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
+                padding: '24px 24px 16px 24px',
+                display: 'flex',
+                flexDirection: 'column',
+                fontFamily: font.ui,
+              }}
+            >
+              {/* Dialog Header */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 12,
+                  marginBottom: 16,
+                }}
+              >
+                <WarningIcon size={24} color="#757575" />
+                <span
+                  style={{
+                    fontSize: 20,
+                    fontWeight: 700,
+                    color: '#212121',
+                  }}
+                >
+                  Factory Reset
+                </span>
+              </div>
+
+              {/* Dialog Content */}
+              <div
+                style={{
+                  fontSize: 14,
+                  lineHeight: 1.5,
+                  color: '#424242',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 12,
+                }}
+              >
+                <div>This returns CTRLbot to a first-run state.</div>
+                <div>
+                  Deleted: your connections, presets, switching setups, saved credentials,
+                  host keys, and app settings.
+                </div>
+                <div>Kept: the bundled driver catalog, reinstalled fresh.</div>
+                <div>This action cannot be undone. Proceed?</div>
+              </div>
+
+              {/* Action Buttons */}
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  gap: 20,
+                  marginTop: 24,
+                }}
+              >
+                <button
+                  type="button"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#E65100',
+                    fontSize: 14,
+                    fontWeight: 600,
+                    letterSpacing: 0.5,
+                    cursor: 'pointer',
+                    padding: '8px 12px',
+                  }}
+                >
+                  CANCEL
+                </button>
+                <button
+                  type="button"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#E65100',
+                    fontSize: 14,
+                    fontWeight: 600,
+                    letterSpacing: 0.5,
+                    cursor: 'pointer',
+                    padding: '8px 12px',
+                  }}
+                >
+                  RESET
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div

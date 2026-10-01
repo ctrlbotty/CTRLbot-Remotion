@@ -240,7 +240,7 @@ branch, no worktree.
   - Reference frames: `f_0023.jpg`, `f_0024.jpg`, `f_0045.jpg`.
 - [x] T9: Add the tablet layout to `DiscoverDevices` — files: src/app-ui/DiscoverDevices.tsx, src/Root.tsx
   - From `layout/fragment_discover_devices.xml`. Rows from the recording's stills (`f_0032.jpg`–`f_0040.jpg`), private IPs only.
-- [ ] T10: Add the tablet layout to `SettingsSupport` — files: src/app-ui/SettingsSupport.tsx, src/Root.tsx
+- [x] T10: Add the tablet layout to `SettingsSupport` — files: src/app-ui/SettingsSupport.tsx, src/Root.tsx
   - From `layout/menu_set.xml`. Reference frames: `f_0053.jpg`, `f_0054.jpg`.
 - [ ] T11: Add to `TabletEui` the drag of a source onto an output and the "Keep holding to return to Setup" hint — files: src/app-ui/TabletEui.tsx
   - Both optional props on the pattern W03's T13 used for `PhoneEui`; absent means today's render, so `First-Run-Tablet`, both EUI promos and every `TabletEui` proof are unchanged. Reference frames: `f_0047.jpg`–`f_0050.jpg`.
