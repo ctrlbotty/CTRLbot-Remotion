@@ -647,6 +647,34 @@ export const RemotionRoot = () => (
         width={1920}
         height={1080}
       />
+      <Composition
+        id="Proof-Card-Mirror"
+        component={() => (
+          <MasterControlCard
+            lockup="CTRLbot Mirror"
+            eyebrow="For Windows and Android"
+            line="Control your Android phone or tablet from your Windows PC."
+          />
+        )}
+        durationInFrames={180}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="Proof-Card-Mirror-Portrait"
+        component={() => (
+          <MasterControlCard
+            lockup="CTRLbot Mirror"
+            eyebrow="For Windows and Android"
+            line="Control your Android phone or tablet from your Windows PC."
+          />
+        )}
+        durationInFrames={180}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
     </Folder>
   </>
 );

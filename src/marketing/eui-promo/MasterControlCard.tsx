@@ -19,7 +19,7 @@
 // happened to be on screen. The mark owns a third and most of it is empty; the type
 // owns the rest and is set hard against the same left edge all the way down.
 
-import {AbsoluteFill, Easing, Img, Interactive, interpolate, staticFile, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Easing, Img, Interactive, interpolate, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {background, color, font, space, type} from '../../design/theme';
 import {DitherOverlay} from '../DitherOverlay';
 import {PromoCopy, streamEnd} from './PromoCopy';
@@ -35,6 +35,7 @@ export const MasterControlCard = ({
   eyebrow,
   line,
   kickers,
+  lockup = 'MASTER CONTROL',
 }: {
   frames?: number;
   /** Space Mono, in CTRLbot blue, under the lockup. */
@@ -43,19 +44,23 @@ export const MasterControlCard = ({
   line: string;
   /** Small mono lines at the foot — the URLs on the closing card. */
   kickers?: string[];
+  /** Lockup text in Audiowide. Defaults to 'MASTER CONTROL'. */
+  lockup?: string;
 }) => {
   const frame = useCurrentFrame();
+  const {width, height} = useVideoConfig();
+  const isPortrait = height > width;
 
   // The whole of the card's continuous motion. A brand card is inert by design and
   // this cut spends a fifth of itself on one, so the bloom travels for the entire
   // beat. Amplitude is deliberately small: `opens-composed` compares frame 0 against
   // the frame 62% in, and a bloom that crosses the frame would fail it.
-  const bloomX = interpolate(frame, [0, frames], [74, 59], {
+  const bloomX = interpolate(frame, [0, frames], isPortrait ? [50, 42] : [74, 59], {
     easing: Easing.bezier(0.4, 0, 0.6, 1),
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const bloomY = interpolate(frame, [0, frames], [25, 41], {
+  const bloomY = interpolate(frame, [0, frames], isPortrait ? [38, 48] : [25, 41], {
     easing: Easing.bezier(0.4, 0, 0.6, 1),
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
@@ -74,6 +79,123 @@ export const MasterControlCard = ({
   // everything-at-once problem this card was rebuilt to fix.
   const kickerAt =
     eyebrowAt + streamEnd(frames - eyebrowAt, line.split(/\s+/).filter(Boolean).length) + 6;
+
+  if (isPortrait) {
+    return (
+      <AbsoluteFill
+        style={{
+          backgroundColor: color.void,
+          backgroundImage: background.promo(bloomX, bloomY),
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          paddingLeft: 96,
+          paddingRight: 140,
+          paddingTop: 380,
+        }}
+      >
+        <DitherOverlay />
+        <Interactive.Div
+          name="Tricon"
+          style={{
+            height: 240,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            marginBottom: 48,
+            scale: String(markScale),
+            transformOrigin: 'left center',
+          }}
+        >
+          <Img
+            src={staticFile('brand/ctrlbot_tricon_white.svg')}
+            style={{height: 240, width: 'auto', display: 'block'}}
+          />
+        </Interactive.Div>
+
+        {/* Composed at frame 0. Fixed layout so copy streaming in never shifts the lockup. */}
+        <div
+          style={{
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+          }}
+        >
+          <Interactive.Div
+            name="Lockup"
+            style={{
+              fontFamily: font.display,
+              fontSize: type.display,
+              lineHeight: 1.05,
+              letterSpacing: 0,
+              color: color.text,
+              maxWidth: 844,
+              wordBreak: 'normal',
+            }}
+          >
+            {lockup}
+          </Interactive.Div>
+
+          <div
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              top: 'calc(100% + 48px)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              gap: space(3),
+            }}
+          >
+            <PromoCopy eyebrow={eyebrow} body={line} at={eyebrowAt} span={frames} />
+
+            {kickers?.length ? (
+              <Interactive.Div
+                name="Kickers"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 22,
+                  marginTop: space(2),
+                  fontFamily: font.mono,
+                  fontSize: type.body,
+                  fontWeight: 700,
+                  letterSpacing: '0.12em',
+                  color: color.accent,
+                  opacity: interpolate(frame, [kickerAt, kickerAt + 18], [0, 1], {
+                    easing: Easing.bezier(0.16, 1, 0.3, 1),
+                    extrapolateLeft: 'clamp',
+                    extrapolateRight: 'clamp',
+                  }),
+                  translate: interpolate(
+                    frame,
+                    [kickerAt, kickerAt + 24],
+                    ['0px 12px', '0px 0px'],
+                    {
+                      easing: Easing.bezier(0.16, 1, 0.3, 1),
+                      extrapolateLeft: 'clamp',
+                      extrapolateRight: 'clamp',
+                    },
+                  ),
+                }}
+              >
+                {kickers.map((kicker, index) => (
+                  <span key={kicker} style={{display: 'flex', alignItems: 'center', gap: 22}}>
+                    {index > 0 ? (
+                      <span style={{color: color.textDim}}>·</span>
+                    ) : null}
+                    {kicker}
+                  </span>
+                ))}
+              </Interactive.Div>
+            ) : null}
+          </div>
+        </div>
+      </AbsoluteFill>
+    );
+  }
 
   return (
     <AbsoluteFill
@@ -133,7 +255,7 @@ export const MasterControlCard = ({
             whiteSpace: 'nowrap',
           }}
         >
-          MASTER CONTROL
+          {lockup}
         </Interactive.Div>
 
         <div

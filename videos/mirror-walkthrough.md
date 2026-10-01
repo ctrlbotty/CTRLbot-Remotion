@@ -357,7 +357,7 @@ After approval, close out per `AGENTS.md`: archive this brief as
   - It also takes an optional `dragTo` for the files beat.
   - It sits inside `<Camera>` like `TapIndicator`, with interpolations inline and clamped. `TapIndicator` is untouched.
   - Verify: `npm run still -- Proof-Mirror-Pointer out/_t4.png`. The pointer's tip sits on Setup's Install now button; the ring is centred on it.
-- [ ] T5: Give `MasterControlCard` an optional `lockup` and a portrait layout, with `Proof-Card-Mirror` stills in both shapes — files: src/marketing/eui-promo/MasterControlCard.tsx, src/Root.tsx
+- [x] T5: Give `MasterControlCard` an optional `lockup` and a portrait layout, with `Proof-Card-Mirror` stills in both shapes — files: src/marketing/eui-promo/MasterControlCard.tsx, src/Root.tsx
   - `lockup` defaults to `MASTER CONTROL`, so every promo renders as before. The text is set as given, never upper-cased, so `CTRLbot Mirror` keeps its camel case.
   - It must fit on one line in landscape. In portrait, the tricon sits above the lockup and the lockup may break onto two lines. Keep the card's rules: the lockup is composed at frame 0, the line streams in, and the bloom is the motion.
   - Register `Proof-Card-Mirror` at 1920x1080 and `Proof-Card-Mirror-Portrait` at 1080x1920, both with the open card's copy.
