@@ -264,7 +264,7 @@ branch, no worktree.
 - [x] T15: Build beats `open` to `terminal` in `IotPhoneBeats.tsx`, each a component of `{frame, frames}` in a `BEAT_RENDERERS` map — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [x] T16: Build beats `test` to `exit` in `IotPhoneBeats.tsx` — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [x] T17: Build beats `discovery` to `close` in `IotPhoneBeats.tsx` — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
-- [ ] T18: Build both compositions and register them — files: src/marketing/iot-phone-walkthrough/IotPhoneWalkthrough.tsx, src/Root.tsx
+- [x] T18: Build both compositions and register them — files: src/marketing/iot-phone-walkthrough/IotPhoneWalkthrough.tsx, src/Root.tsx
   - On the pattern of W01's `MirrorWalkthrough.tsx`: one `Walkthrough({format})`; landscape `<Stage>` with `panelHeight={900}` and the phone's aspect; portrait `<PortraitStage>` with `<NarrationCaptions>` (captions from `captionsFromClips(clips, words, IOT_PHONE_CAPTION_CORRECTIONS)`); `<NarrationTrack>` in both; `<PromoPreload />` (the phone surfaces draw CSS images); copy through `<WalkthroughCopy>` with `at={-40}` on open. Register `iot-phone-walkthrough` (1920x1080) and `iot-phone-walkthrough-portrait` (1080x1920) in a `<Folder name="CTRLbot-IoT-Walkthrough">`, metadata inline.
   - Verify: `npm run video:frames -- iot-phone-walkthrough validate`; both contact sheets, every still against its evidence line; a half-scale inert check on the portrait (`--scale=0.5 --crf=28`, then `video:frames … check` with `VIDEO_COMPOSITION`) under 60%.
   - T15–T17 render their stills only once T18 has registered the composition: until then their check is `npm run check` and `npm run video:lint`, and T18 renders every beat.

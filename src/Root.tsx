@@ -43,6 +43,11 @@ import {
   TerminatorWalkthroughPortrait,
   terminatorWalkthroughDuration,
 } from './marketing/terminator-walkthrough/TerminatorWalkthrough';
+import {
+  IotPhoneWalkthrough,
+  IotPhoneWalkthroughPortrait,
+  iotPhoneWalkthroughDuration,
+} from './marketing/iot-phone-walkthrough/IotPhoneWalkthrough';
 import {HubCell, hubCellDuration} from './marketing/hub-cell/HubCell';
 import {Short, assertShortReady} from './shorts/Short';
 import {MirrorAppsProof, MirrorDevicesProof, MirrorFilesProof, MirrorSetupProof, MirrorStudioProof} from './app-ui/mirror/MirrorProofs';
@@ -239,6 +244,25 @@ export const RemotionRoot = () => (
         id="terminator-walkthrough-portrait"
         component={TerminatorWalkthroughPortrait}
         durationInFrames={terminatorWalkthroughDuration}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+    </Folder>
+
+    <Folder name="CTRLbot-IoT-Walkthrough">
+      <Composition
+        id="iot-phone-walkthrough"
+        component={IotPhoneWalkthrough}
+        durationInFrames={iotPhoneWalkthroughDuration}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="iot-phone-walkthrough-portrait"
+        component={IotPhoneWalkthroughPortrait}
+        durationInFrames={iotPhoneWalkthroughDuration}
         fps={30}
         width={1080}
         height={1920}
