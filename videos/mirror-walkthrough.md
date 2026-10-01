@@ -390,7 +390,7 @@ After approval, close out per `AGENTS.md`: archive this brief as
 
 ### W01
 
-- [ ] T8: Rewrite W01's edit list from the Narration clips table and build it with `narration:edit` — files: src/marketing/mirror-walkthrough/mirrorWalkthroughNarration.ts, src/marketing/mirror-walkthrough/mirrorWalkthroughNarration.generated.ts, public/narration/mirror-walkthrough/edit.m4a
+- [x] T8: Rewrite W01's edit list from the Narration clips table and build it with `narration:edit` — files: src/marketing/mirror-walkthrough/mirrorWalkthroughNarration.ts, src/marketing/mirror-walkthrough/mirrorWalkthroughNarration.generated.ts, public/narration/mirror-walkthrough/edit.m4a
   - Ranges and ids exactly as the table, and the file stays import-free.
   - Set each `at` by the placement rule: build once, read the planned lengths from the log, set the `at`s, build again. That is two builds at most.
   - If a beat cannot keep its 1.0s hold inside the Beats table's Sec, mark `[!]` with the measured lengths. Never change the table.
@@ -459,6 +459,8 @@ After approval, close out per `AGENTS.md`: archive this brief as
 ## Review notes
 
 > Appended on PASS WITH NOTES. Not blockers; check these during the contact sheet review.
+
+- T8: Narration edit built with 17 clips, 136.0s total duration. Beat 'again' hold is 0.577s (clip 'setup-again' measured 4.238s from 126.685s to 130.923s inside the 4.5s beat 127.0s–131.5s). All other 12 beats maintain >= 1.5s hold.
 
 ## Contact sheet
 

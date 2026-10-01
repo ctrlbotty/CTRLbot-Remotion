@@ -1,65 +1,62 @@
-import type {NarrationClip} from '../../audio/NarrationTrack';
-
 /** Loudness-normalized voice from `video input/CTRLbot Mirror Tutorial.mp4`. */
 export const MIRROR_WALKTHROUGH_NARRATION_SOURCE =
   'narration/mirror-walkthrough/source-normalized.m4a';
 
 /**
- * The narrated edit: complete phrases from Nathan's recording, one or two per beat. Both
- * shapes play it; the portrait cut burns it in as captions and the landscape cut ships it
- * as an .srt (`npm run narration:srt`), both through src/audio/narrationCaptions.ts.
+ * The narrated edit: complete phrases from Nathan's recording, one or two per beat.
+ * Planned with `npm run narration:edit`.
  *
- * Source times come from `ingest/mirror-walkthrough/words.json` (transcript corrected
- * 2026-09-30). Each clip starts ~0.1s before its first word and ends ~0.25s after its last
- * word's end, because Whisper's word ends run early — but never past the next word's
- * start. `at` places each clip inside its beat (walkthroughData.ts: open 0–16s, setup
- * 16–30.5, debugging 30.5–38.5, connect 38.5–52.5, frame 52.5–67, paste 67–81, capture
- * 81–94.5, apps 94.5–108, files 108–116.5, tools 116.5–124, close 124–133).
+ * Source ranges in seconds on the prepared track from the Narration clips table in
+ * `videos/mirror-walkthrough.md`.
  *
- * Left out on purpose (videos/archive/2026-09-30-mirror-walkthrough.md): pairing over Wi-Fi, removing
- * preinstalled apps and "garbageware", virtual devices, and "just email me".
- *
- * KEEP THIS FILE free of runtime imports: scripts/narration-srt.mjs transpiles it.
+ * KEEP THIS FILE free of runtime imports: scripts/narration-srt.mjs and narration-edit.mjs
+ * transpile it.
  */
 export const MIRROR_WALKTHROUGH_NARRATION_CLIPS = [
-  // open: "Welcome to CTRLbot … called CTRLbot Mirror, — a way to mirror what is on your
-  // Android phone or tablet."
+  // open → proof: "Welcome to CTRLbot. This will be a walkthrough of one of our utilities called CTRLbot Mirror,"
   {id: 'welcome', at: 0.35, sourceStart: 0.33, sourceEnd: 9.0},
-  {id: 'mirror-what', at: 9.25, sourceStart: 10.65, sourceEnd: 16.85},
 
-  // setup: install ADB, and what it is for.
-  {id: 'install-adb', at: 16.25, sourceStart: 30.4, sourceEnd: 44.0},
+  // proof: "basically a way to mirror what is on your Android phone or tablet."
+  {id: 'mirror-what', at: 8.95, sourceStart: 10.65, sourceEnd: 16.85},
 
-  // debugging: USB debugging. The recording goes on to pair over Wi-Fi; that is cut.
-  {id: 'usb-debugging', at: 30.75, sourceStart: 190.45, sourceEnd: 196.45},
+  // setup: "So I've done the basic installation, but what we also have to do is we have to install ADB … but also manage applications on it"
+  {id: 'install-adb', at: 17.25, sourceStart: 30.4, sourceEnd: 44.0},
 
-  // connect: authorize once, then green, ready, start mirroring.
-  {id: 'authorize', at: 38.75, sourceStart: 93.15, sourceEnd: 99.05},
-  {id: 'ready', at: 44.85, sourceStart: 99.3, sourceEnd: 106.75},
+  // debugging: "make sure that USB debugging mode is on"
+  {id: 'usb-debugging', at: 32.25, sourceStart: 190.45, sourceEnd: 196.45},
 
-  // frame: pick a better-fitting frame, then padding and shadow.
-  {id: 'pick-frame', at: 52.7, sourceStart: 118.5, sourceEnd: 127.05},
-  {id: 'padding', at: 61.45, sourceStart: 130.2, sourceEnd: 135.3},
+  // connect: "asked to authorize that connection"
+  {id: 'authorize', at: 40.25, sourceStart: 93.15, sourceEnd: 99.05},
+  // connect: "… green and ready … start mirroring"
+  {id: 'ready', at: 46.17, sourceStart: 99.3, sourceEnd: 106.75},
 
-  // paste: copying and pasting instead of doing it on the panel.
-  {id: 'copy-paste', at: 67.25, sourceStart: 224.5, sourceEnd: 237.8},
+  // frame: "pick one of these other ones … a better fit"
+  {id: 'pick-frame', at: 54.75, sourceStart: 118.5, sourceEnd: 127.05},
+  // frame: "… padding and shadow and such"
+  {id: 'padding', at: 61.76, sourceStart: 130.2, sourceEnd: 135.3},
 
-  // capture: the screenshot button, then video with your voice.
-  {id: 'screenshot', at: 81.2, sourceStart: 311.35, sourceEnd: 316.8},
-  {id: 'record-video', at: 86.85, sourceStart: 330.25, sourceEnd: 335.35},
-  {id: 'record-voice', at: 92.2, sourceStart: 342.8, sourceEnd: 344.8},
+  // paste: "… copying and pasting … cumbersome to do straight from the panel"
+  {id: 'copy-paste', at: 69.75, sourceStart: 224.5, sourceEnd: 237.8},
 
-  // apps: every app on the device, and removing what you do not want. Ends before
-  // "that sometimes you may not even be able to remove".
-  {id: 'apps', at: 94.75, sourceStart: 388.7, sourceEnd: 401.67},
+  // capture: "… hit the screenshot button"
+  {id: 'screenshot', at: 84.25, sourceStart: 311.35, sourceEnd: 316.8},
+  // capture: "… record it as video"
+  {id: 'record-video', at: 88.70, sourceStart: 330.25, sourceEnd: 335.35},
+  // capture: "It's also going to record your voice."
+  {id: 'record-voice', at: 93.10, sourceStart: 342.8, sourceEnd: 344.8},
 
-  // files: drag and drop into the device.
-  {id: 'drag-drop', at: 108.3, sourceStart: 459.85, sourceEnd: 466.9},
+  // apps: "You have access to all the apps … delete, remove stuff in here"
+  {id: 'apps', at: 98.25, sourceStart: 388.7, sourceEnd: 401.67},
 
-  // tools: the shell and the device log. Ends before "virtual devices".
-  {id: 'shell-logs', at: 116.7, sourceStart: 473.0, sourceEnd: 479.6},
+  // files: "If you wanted to look at your images, you'd be able to copy stuff over right here."
+  {id: 'files-copy', at: 112.25, sourceStart: 454.3, sourceEnd: 459.2},
 
-  // close: back to Setup, then thanks. Ends before "and just email me".
-  {id: 'setup-again', at: 124.25, sourceStart: 494.25, sourceEnd: 497.65},
-  {id: 'thank-you', at: 128.1, sourceStart: 500.85, sourceEnd: 503.1},
-] as const satisfies readonly NarrationClip[];
+  // tools: "we have also a shell … look at the logs for the device if you want."
+  {id: 'shell-logs', at: 119.25, sourceStart: 473.0, sourceEnd: 479.6},
+
+  // again: "you can come back to this setup if you're ever having problems."
+  {id: 'setup-again', at: 127.25, sourceStart: 494.25, sourceEnd: 497.65},
+
+  // close: "Thank you for your time"
+  {id: 'thank-you', at: 131.75, sourceStart: 500.85, sourceEnd: 503.1},
+];
