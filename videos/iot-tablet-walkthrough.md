@@ -234,7 +234,7 @@ branch, no worktree.
   - Reference frames: `f_0012.jpg`, `f_0018.jpg`. Draw no website content.
 - [x] T6: Add the tablet layout to `ActivitiesPresets` — files: src/app-ui/ActivitiesPresets.tsx, src/Root.tsx
   - Reference frames: `f_0020.jpg`–`f_0022.jpg`, `f_0030.jpg`.
-- [ ] T7: Add the tablet layout to `ActivitiesSwitch`: the switch-type picker, many-to-one on one device, and AVoIP encoders and decoders side by side — files: src/app-ui/ActivitiesSwitch.tsx, src/Root.tsx
+- [x] T7: Add the tablet layout to `ActivitiesSwitch`: the switch-type picker, many-to-one on one device, and AVoIP encoders and decoders side by side — files: src/app-ui/ActivitiesSwitch.tsx, src/Root.tsx
   - Reference frames: `f_0043.jpg`, `f_0044.jpg`. `ActivitiesSwitching.tsx` is not touched.
 - [ ] T8: Add the tablet layout to `ActivitiesAudio` — files: src/app-ui/ActivitiesAudio.tsx, src/Root.tsx
   - Reference frames: `f_0023.jpg`, `f_0024.jpg`, `f_0045.jpg`.

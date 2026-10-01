@@ -11,6 +11,7 @@
 import React from 'react';
 import {AppIcon} from './AppIcon';
 import {PhoneNavMenu} from './PhoneNavMenu';
+import {TabletNavRail} from './TabletNavRail';
 import {VIEWPORT} from './viewports';
 import {appColors} from '../design/tokens.generated';
 import {font} from '../design/theme';
@@ -62,7 +63,7 @@ export const DEFAULT_AVOIP_DECODERS: AVoIPDecoder[] = [
 ];
 
 export type ActivitiesSwitchProps = {
-  device?: 'phone';
+  device?: 'phone' | 'tablet';
   activeTab?: ActivitiesTab;
   switchType?: SwitchType;
   switchTypePickerOpen?: boolean;
@@ -96,6 +97,822 @@ export const ActivitiesSwitch: React.FC<ActivitiesSwitchProps> = ({
       : switchType === 'many_to_many'
         ? 'Many to Many: Matrix Switching'
         : 'Many to One: AV Switching';
+
+  if (device === 'tablet') {
+    return (
+      <div
+        style={{
+          position: 'relative',
+          width: VIEWPORT.tablet.width,
+          height: VIEWPORT.tablet.height,
+          backgroundColor: appColors.black,
+          overflow: 'hidden',
+          fontFamily: font.ui,
+          display: 'flex',
+          flexDirection: 'row',
+        }}
+      >
+        {/* Left Nav Rail */}
+        <TabletNavRail active="activities" showRoomMenus={true} />
+
+        {/* Right Content Area */}
+        <div
+          style={{
+            flex: 1,
+            height: '100%',
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Background glow matching setup screens */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background:
+                'radial-gradient(circle at 68% 32%, rgba(0, 143, 212, 0.22) 0%, rgba(0, 0, 0, 0) 80%)',
+              pointerEvents: 'none',
+            }}
+          />
+
+          {/* Top Tab Pill: Presets | Switch | Audio */}
+          <div
+            style={{
+              position: 'relative',
+              zIndex: 2,
+              display: 'flex',
+              height: 46,
+              margin: '10px 16px 6px',
+              borderRadius: 6,
+              overflow: 'hidden',
+            }}
+          >
+            {[
+              {id: 'presets', label: 'Presets'},
+              {id: 'switch', label: 'Switch'},
+              {id: 'audio', label: 'Audio'},
+            ].map((tab, idx) => {
+              const active = activeTab === tab.id;
+              return (
+                <div
+                  key={tab.id}
+                  style={{
+                    flex: 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: active ? appColors.blue : appColors.gray20,
+                    color: appColors.white,
+                    fontSize: 13.5,
+                    fontWeight: 600,
+                    borderRight: idx < 2 ? '1px solid rgba(0,0,0,0.3)' : undefined,
+                  }}
+                >
+                  {tab.label}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Scrollable Content Area */}
+          <div
+            style={{
+              position: 'relative',
+              zIndex: 2,
+              flex: 1,
+              overflowY: 'auto',
+              padding: '4px 16px 20px',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            {/* Eyebrow: SWITCH TYPE */}
+            <div
+              style={{
+                fontSize: 11,
+                color: appColors.gray50,
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+                margin: '4px 2px 4px',
+              }}
+            >
+              SWITCH TYPE
+            </div>
+
+            {/* Mode Selector Split Button */}
+            <div
+              style={{
+                display: 'flex',
+                height: 40,
+                marginBottom: 10,
+              }}
+            >
+              <div
+                style={{
+                  flex: 1,
+                  backgroundColor: appColors.gray20,
+                  borderTopLeftRadius: 5,
+                  borderBottomLeftRadius: 5,
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingLeft: 14,
+                  color: appColors.white,
+                  fontSize: 13,
+                  fontWeight: 500,
+                  borderRight: '1px solid rgba(0,0,0,0.4)',
+                }}
+              >
+                {switchTypeLabel}
+              </div>
+              <div
+                style={{
+                  width: 44,
+                  backgroundColor: appColors.gray20,
+                  borderTopRightRadius: 5,
+                  borderBottomRightRadius: 5,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: appColors.white,
+                  fontSize: 12,
+                }}
+              >
+                ▾
+              </div>
+            </div>
+
+            {switchType === 'avoip' ? (
+              /* Tablet AVoIP View: Encoders and Decoders Side by Side (Reference f_0043.jpg) */
+              <div style={{display: 'flex', flexDirection: 'column', flex: 1}}>
+                {/* Two Columns Side by Side */}
+                <div style={{display: 'flex', gap: 16, flex: 1}}>
+                  {/* Left Column: Encoders */}
+                  <div style={{flex: 1, display: 'flex', flexDirection: 'column'}}>
+                    {/* Encoders Split Button */}
+                    <div style={{display: 'flex', height: 38, marginBottom: 8}}>
+                      <div
+                        style={{
+                          flex: 1,
+                          backgroundColor: appColors.gray20,
+                          borderTopLeftRadius: 5,
+                          borderBottomLeftRadius: 5,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: appColors.white,
+                          fontSize: 12.5,
+                          fontWeight: 600,
+                          borderRight: '1px solid rgba(0,0,0,0.3)',
+                        }}
+                      >
+                        Encoders +
+                      </div>
+                      <div
+                        style={{
+                          width: 36,
+                          backgroundColor: appColors.gray20,
+                          borderTopRightRadius: 5,
+                          borderBottomRightRadius: 5,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: appColors.white,
+                          fontSize: 11,
+                        }}
+                      >
+                        ▾
+                      </div>
+                    </div>
+
+                    {/* Eyebrow: SOURCE */}
+                    <div
+                      style={{
+                        fontSize: 10.5,
+                        color: appColors.gray50,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.08em',
+                        margin: '2px 2px 6px',
+                      }}
+                    >
+                      SOURCE
+                    </div>
+
+                    {/* Encoders List */}
+                    <div style={{display: 'flex', flexDirection: 'column', gap: 6}}>
+                      {encoders.map((enc) => (
+                        <div
+                          key={enc.num}
+                          style={{
+                            height: 44,
+                            backgroundColor: '#1C1C1C',
+                            borderRadius: 4,
+                            display: 'flex',
+                            alignItems: 'center',
+                            padding: '0 8px',
+                            gap: 8,
+                          }}
+                        >
+                          <span
+                            style={{
+                              width: 16,
+                              fontSize: 11,
+                              color: appColors.gray50,
+                              fontFamily: font.mono,
+                              textAlign: 'center',
+                            }}
+                          >
+                            {enc.num}
+                          </span>
+                          {/* Checkbox */}
+                          <div
+                            style={{
+                              width: 18,
+                              height: 18,
+                              backgroundColor: enc.enabled ? appColors.blue : appColors.gray25,
+                              borderRadius: 3,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}
+                          >
+                            {enc.enabled ? (
+                              <svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                                <path
+                                  d="M5 13L9 17L19 7"
+                                  stroke={appColors.white}
+                                  strokeWidth={3}
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            ) : null}
+                          </div>
+                          {/* HDMI Icon Box */}
+                          <div
+                            style={{
+                              width: 34,
+                              height: 34,
+                              backgroundColor: '#2A2A2A',
+                              borderRadius: 4,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}
+                          >
+                            <AppIcon name="ic_hdmi_icon" size={22} tint={appColors.white} />
+                          </div>
+                          {/* Label */}
+                          <div
+                            style={{
+                              flex: 1,
+                              height: 34,
+                              backgroundColor: '#2A2A2A',
+                              borderRadius: 4,
+                              display: 'flex',
+                              alignItems: 'center',
+                              padding: '0 10px',
+                              color: appColors.white,
+                              fontSize: 11.5,
+                              fontWeight: 600,
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            {enc.name} Tx 239.100.4{enc.num}.1
+                          </div>
+                          {/* SRC Button */}
+                          <div
+                            style={{
+                              width: 50,
+                              height: 34,
+                              backgroundColor: enc.active ? appColors.blue : '#2A2A2A',
+                              borderRadius: 4,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              color: appColors.white,
+                              fontSize: 11,
+                              fontWeight: 700,
+                            }}
+                          >
+                            SRC
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Right Column: Decoders */}
+                  <div style={{flex: 1, display: 'flex', flexDirection: 'column'}}>
+                    {/* Decoders Split Button */}
+                    <div style={{display: 'flex', height: 38, marginBottom: 8}}>
+                      <div
+                        style={{
+                          flex: 1,
+                          backgroundColor: appColors.gray20,
+                          borderTopLeftRadius: 5,
+                          borderBottomLeftRadius: 5,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: appColors.white,
+                          fontSize: 12.5,
+                          fontWeight: 600,
+                          borderRight: '1px solid rgba(0,0,0,0.3)',
+                        }}
+                      >
+                        Decoders +
+                      </div>
+                      <div
+                        style={{
+                          width: 36,
+                          backgroundColor: appColors.gray20,
+                          borderTopRightRadius: 5,
+                          borderBottomRightRadius: 5,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: appColors.white,
+                          fontSize: 11,
+                        }}
+                      >
+                        ▾
+                      </div>
+                    </div>
+
+                    {/* Eyebrow: DISPLAY */}
+                    <div
+                      style={{
+                        fontSize: 10.5,
+                        color: appColors.gray50,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.08em',
+                        margin: '2px 2px 6px',
+                      }}
+                    >
+                      DISPLAY
+                    </div>
+
+                    {/* Decoders List */}
+                    <div style={{display: 'flex', flexDirection: 'column', gap: 6}}>
+                      {decoders.map((dec) => (
+                        <div
+                          key={dec.num}
+                          style={{
+                            height: 44,
+                            backgroundColor: '#1C1C1C',
+                            borderRadius: 4,
+                            display: 'flex',
+                            alignItems: 'center',
+                            padding: '0 8px',
+                            gap: 8,
+                          }}
+                        >
+                          <span
+                            style={{
+                              width: 16,
+                              fontSize: 11,
+                              color: appColors.gray50,
+                              fontFamily: font.mono,
+                              textAlign: 'center',
+                            }}
+                          >
+                            {dec.num}
+                          </span>
+                          {/* Checkbox */}
+                          <div
+                            style={{
+                              width: 18,
+                              height: 18,
+                              backgroundColor: dec.enabled ? appColors.blue : appColors.gray25,
+                              borderRadius: 3,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}
+                          >
+                            {dec.enabled ? (
+                              <svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                                <path
+                                  d="M5 13L9 17L19 7"
+                                  stroke={appColors.white}
+                                  strokeWidth={3}
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            ) : null}
+                          </div>
+                          {/* Label */}
+                          <div
+                            style={{
+                              flex: 1,
+                              height: 34,
+                              backgroundColor: '#2A2A2A',
+                              borderRadius: 4,
+                              display: 'flex',
+                              alignItems: 'center',
+                              padding: '0 10px',
+                              color: appColors.white,
+                              fontSize: 11.5,
+                              fontWeight: 600,
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            {dec.name}
+                          </div>
+                          {/* DIS Button (Green in f_0043.jpg) */}
+                          <div
+                            style={{
+                              width: 50,
+                              height: 34,
+                              backgroundColor: '#43A047',
+                              borderRadius: 4,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              color: appColors.white,
+                              fontSize: 11,
+                              fontWeight: 700,
+                            }}
+                          >
+                            DIS
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bottom Routing Controls (Reference f_0043.jpg) */}
+                <div style={{marginTop: 14, display: 'flex', flexDirection: 'column', gap: 6}}>
+                  <div style={{fontSize: 11, color: appColors.gray50}}>
+                    Select a source and a display, then route.
+                  </div>
+                  <div style={{display: 'flex', gap: 8, height: 42}}>
+                    <div
+                      style={{
+                        flex: 1,
+                        backgroundColor: '#1E1E1E',
+                        borderRadius: 4,
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '0 14px',
+                        color: appColors.white,
+                        fontSize: 13,
+                        fontFamily: font.mono,
+                      }}
+                    >
+                      Tx 239.100.41.1
+                    </div>
+                    <div
+                      style={{
+                        width: 90,
+                        backgroundColor: appColors.gray25,
+                        borderRadius: 4,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: appColors.white,
+                        fontSize: 12,
+                        fontWeight: 700,
+                        letterSpacing: '0.04em',
+                      }}
+                    >
+                      ROUTE
+                    </div>
+                  </div>
+                  <div style={{textAlign: 'center', fontSize: 11, color: appColors.gray50, marginTop: 4}}>
+                    Loading...
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* Tablet Many-to-One View */
+              <>
+                {/* Eyebrow: SWITCH DEVICE */}
+                <div
+                  style={{
+                    fontSize: 11,
+                    color: appColors.gray50,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
+                    margin: '4px 2px 4px',
+                  }}
+                >
+                  SWITCH DEVICE
+                </div>
+
+                {/* Switch Device Split Button */}
+                <div style={{display: 'flex', height: 40, marginBottom: 10}}>
+                  <div
+                    style={{
+                      flex: 1,
+                      backgroundColor: appColors.gray20,
+                      borderTopLeftRadius: 5,
+                      borderBottomLeftRadius: 5,
+                      display: 'flex',
+                      alignItems: 'center',
+                      paddingLeft: 14,
+                      color: appColors.white,
+                      fontSize: 13,
+                      fontWeight: 500,
+                      borderRight: '1px solid rgba(0,0,0,0.4)',
+                    }}
+                  >
+                    {deviceName}
+                  </div>
+                  <div
+                    style={{
+                      width: 44,
+                      backgroundColor: appColors.gray20,
+                      borderTopRightRadius: 5,
+                      borderBottomRightRadius: 5,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: appColors.white,
+                      fontSize: 12,
+                    }}
+                  >
+                    ▾
+                  </div>
+                </div>
+
+                {/* Device Info & Output Label Row */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '4px 2px 10px',
+                  }}
+                >
+                  <div>
+                    <div style={{fontSize: 13, fontWeight: 700, color: appColors.white}}>
+                      {deviceName}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 10,
+                        color: appColors.gray50,
+                        fontFamily: font.mono,
+                        marginTop: 2,
+                      }}
+                    >
+                      IP {deviceIp}
+                    </div>
+                  </div>
+                  <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}>
+                    <span
+                      style={{
+                        fontSize: 9.5,
+                        color: appColors.gray50,
+                        letterSpacing: '0.06em',
+                        marginBottom: 2,
+                      }}
+                    >
+                      OUTPUT LABEL
+                    </span>
+                    <div
+                      style={{
+                        width: 140,
+                        height: 30,
+                        backgroundColor: appColors.white,
+                        borderRadius: 3,
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '0 8px',
+                        fontSize: 12,
+                        color: appColors.black,
+                      }}
+                    >
+                      {outputLabel}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Inputs Table Header */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '0 4px',
+                    marginBottom: 6,
+                    fontSize: 11,
+                    color: appColors.gray50,
+                  }}
+                >
+                  <span style={{width: 28, textAlign: 'center'}}>#</span>
+                  <span style={{width: 50, textAlign: 'center'}}>Enable</span>
+                  <span style={{width: 50, textAlign: 'center'}}>Icon</span>
+                  <span style={{flex: 1, paddingLeft: 8}}>Label</span>
+                  <span style={{width: 90, textAlign: 'center'}}>Command</span>
+                  <span style={{width: 70}} />
+                </div>
+
+                {/* Inputs Table Rows */}
+                <div style={{display: 'flex', flexDirection: 'column', gap: 6}}>
+                  {inputRows.map((row) => (
+                    <div
+                      key={row.num}
+                      style={{
+                        height: 48,
+                        backgroundColor: '#1C1C1C',
+                        borderRadius: 4,
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '0 8px',
+                        gap: 8,
+                      }}
+                    >
+                      <span
+                        style={{
+                          width: 24,
+                          fontSize: 12,
+                          color: appColors.gray50,
+                          fontFamily: font.mono,
+                          textAlign: 'center',
+                        }}
+                      >
+                        {row.num}
+                      </span>
+                      {/* Checkbox */}
+                      <div
+                        style={{
+                          width: 22,
+                          height: 22,
+                          backgroundColor: row.enabled ? appColors.blue : appColors.gray25,
+                          borderRadius: 3,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        {row.enabled ? (
+                          <svg width={14} height={14} viewBox="0 0 24 24" fill="none">
+                            <path
+                              d="M5 13L9 17L19 7"
+                              stroke={appColors.white}
+                              strokeWidth={3}
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        ) : null}
+                      </div>
+                      {/* Icon */}
+                      <div
+                        style={{
+                          width: 36,
+                          height: 36,
+                          backgroundColor: '#2A2A2A',
+                          borderRadius: 4,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <AppIcon name="ic_hdmi_icon" size={22} tint={appColors.white} />
+                      </div>
+                      {/* Label */}
+                      <div
+                        style={{
+                          flex: 1,
+                          height: 36,
+                          backgroundColor: '#2A2A2A',
+                          borderRadius: 4,
+                          display: 'flex',
+                          alignItems: 'center',
+                          padding: '0 10px',
+                          color: appColors.white,
+                          fontSize: 12,
+                          fontWeight: 600,
+                        }}
+                      >
+                        {row.label}
+                      </div>
+                      {/* Command Button */}
+                      <div
+                        style={{
+                          width: 86,
+                          height: 36,
+                          backgroundColor: '#2A2A2A',
+                          borderRadius: 4,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: appColors.white75,
+                          fontSize: 10.5,
+                          fontFamily: font.mono,
+                        }}
+                      >
+                        {row.command}
+                      </div>
+                      {/* SEND Button */}
+                      <div
+                        style={{
+                          width: 64,
+                          height: 36,
+                          backgroundColor: '#2E2E2E',
+                          borderRadius: 4,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: appColors.white,
+                          fontSize: 11.5,
+                          fontWeight: 700,
+                        }}
+                      >
+                        SEND
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Switch Type Dropdown Picker Overlay (Reference f_0043.jpg) */}
+          {switchTypePickerOpen ? (
+            <div
+              style={{
+                position: 'absolute',
+                top: 104,
+                left: 16,
+                width: 300,
+                backgroundColor: '#1E1E1E',
+                border: '1px solid rgba(255,255,255,0.15)',
+                borderRadius: 6,
+                zIndex: 30,
+                boxShadow: '0 8px 24px rgba(0,0,0,0.8)',
+                overflow: 'hidden',
+              }}
+            >
+              {[
+                {id: 'many_to_one', label: 'Many to One: AV Switching'},
+                {id: 'many_to_many', label: 'Many to Many: Matrix Switching'},
+                {id: 'avoip', label: 'AVoIP: Encoders Decoders'},
+              ].map((item, idx) => (
+                <div
+                  key={item.id}
+                  style={{
+                    height: 44,
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '0 16px',
+                    color: appColors.white,
+                    fontSize: 13,
+                    fontWeight: item.id === switchType ? 700 : 400,
+                    borderBottom: idx < 2 ? '1px solid rgba(255,255,255,0.06)' : undefined,
+                    backgroundColor: item.id === switchType ? 'rgba(0,144,255,0.1)' : 'transparent',
+                  }}
+                >
+                  {item.label}
+                </div>
+              ))}
+            </div>
+          ) : null}
+
+          {/* Floating Toast */}
+          {toast ? (
+            <div
+              style={{
+                position: 'absolute',
+                bottom: 28,
+                left: 0,
+                right: 0,
+                zIndex: 30,
+                display: 'flex',
+                justifyContent: 'center',
+                pointerEvents: 'none',
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor: 'rgba(50, 50, 50, 0.92)',
+                  borderRadius: 22,
+                  padding: '9px 24px',
+                  color: appColors.white75,
+                  fontSize: 13,
+                  fontWeight: 500,
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
+                  border: '1px solid rgba(255,255,255,0.12)',
+                }}
+              >
+                {toast}
+              </div>
+            </div>
+          ) : null}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
