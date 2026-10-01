@@ -201,9 +201,9 @@ export const BEAT_REGIONS: Record<string, Region | Region[]> = {
   connect: [mirrorRegions.setupStep(4), mirrorRegions.devicesCard, mirrorRegions.stage],
   frame: [mirrorRegions.studioFrames, mirrorRegions.stage],
   paste: mirrorRegions.mirroredScreen(),
-  capture: mirrorRegions.toolbarCapture,
+  capture: {x: 404, y: 32, width: 1196, height: 908},
   apps: mirrorRegions.sidePanel,
-  files: [mirrorRegions.sidePanel, mirrorRegions.filesDrop],
+  files: mirrorRegions.sidePanel,
   tools: mirrorRegions.sidePanel,
   again: [mirrorRegions.sidePanel, mirrorRegions.railItem('setup')],
 };

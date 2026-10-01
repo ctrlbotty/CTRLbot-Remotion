@@ -133,6 +133,7 @@ const IconButton = ({icon: Icon, size = 16, active, tone}: {icon: LucideIcon; si
       justifyContent: 'center',
       color: active ? beam[300] : tone === 'danger' ? alert[400] : mist[300],
       backgroundColor: active ? mix(beam[500], 20) : 'transparent',
+      scale: active ? '0.92' : undefined,
     }}
   >
     <Icon size={size} />
@@ -483,6 +484,8 @@ export const MirrorStage = ({
   idle,
   ripple,
   recording,
+  cameraPressed,
+  recordPressed,
   frameStyle = tabletFrame,
   stageMargin = STAGE_MARGIN,
 }: {
@@ -491,6 +494,8 @@ export const MirrorStage = ({
   /** A tap ripple on the mirrored screen, as a fraction of its width and height, 0..1 through. */
   ripple?: {x: number; y: number; progress: number};
   recording?: string;
+  cameraPressed?: boolean;
+  recordPressed?: boolean;
   frameStyle?: FrameStyle | FrameSpec;
   stageMargin?: number;
 }) => {
@@ -616,12 +621,27 @@ export const MirrorStage = ({
             </div>
           ) : null)}
       </div>
-      <StageToolbar live={Boolean(mirrored)} recording={recording} />
+      <StageToolbar
+        live={Boolean(mirrored)}
+        recording={recording}
+        cameraPressed={cameraPressed}
+        recordPressed={recordPressed}
+      />
     </div>
   );
 };
 
-const StageToolbar = ({live, recording}: {live: boolean; recording?: string}) => (
+const StageToolbar = ({
+  live,
+  recording,
+  cameraPressed,
+  recordPressed,
+}: {
+  live: boolean;
+  recording?: string;
+  cameraPressed?: boolean;
+  recordPressed?: boolean;
+}) => (
   <div style={{height: TOOLBAR_HEIGHT, flexShrink: 0, display: 'flex', alignItems: 'center', gap: 4, padding: `0 ${sp(3)}px`, borderTop: border(ink[800]), backgroundColor: mix(ink[950], 70)}}>
     <div style={{display: 'flex', gap: 2, opacity: live ? 1 : 0.55}}>
       <IconButton icon={ChevronLeft} size={18} />
@@ -654,8 +674,8 @@ const StageToolbar = ({live, recording}: {live: boolean; recording?: string}) =>
           <span style={{fontFamily: mirrorFont.mono}}>{recording}</span>
         </span>
       ) : null}
-      <IconButton icon={Camera} size={17} />
-      <IconButton icon={recording ? SquareStop : Circle} size={16} tone={recording ? 'danger' : undefined} />
+      <IconButton icon={Camera} size={17} active={cameraPressed} />
+      <IconButton icon={recording ? SquareStop : Circle} size={16} tone={recording ? 'danger' : undefined} active={recordPressed} />
       <IconButton icon={Expand} />
       <span style={{margin: '0 6px', width: 1, height: 20, backgroundColor: ink[700]}} />
       <IconButton icon={SquareStop} tone="danger" />

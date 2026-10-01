@@ -16,6 +16,7 @@ import {
   MIRROR_CATALOG,
   MIRROR_DEVICE,
   mirrorRegions,
+  type Rect,
 } from '../../app-ui/mirror/mirrorData';
 import {
   CATALOG_VIEWPORT,
@@ -447,37 +448,42 @@ export const PasteBeat: React.FC<{frame: number; frames: number}> = ({
 };
 
 /**
- * Capture beat (13.5s = 405 frames):
+ * Capture beat (14s = 420 frames):
  * The toolbar camera is pressed and a *Screenshot saved* toast lands;
  * then record is pressed and a red recording clock counts up while the
  * mirrored catalog scrolls.
  */
 export const CaptureBeat: React.FC<{frame: number; frames: number}> = ({
   frame,
+  frames,
 }) => {
-  // 100..250: "hit the screenshot button" (~3.6s), and the Screenshot saved toast lands.
+  const cueScreenshot = CUE_FRAMES.screenshotScreenshot - BEATS.capture.from;
+  const cueRecord = CUE_FRAMES.recordVideoRecord - BEATS.capture.from;
+
+  const cameraPressed = frame >= cueScreenshot && frame < cueScreenshot + 4;
+  const recordPressed = frame >= cueRecord && frame < cueRecord + 4;
+
   const toast =
-    frame >= 100 && frame < 250
+    frame >= cueScreenshot
       ? {
-          opacity: interpolate(frame, [100, 115, 235, 250], [0, 1, 1, 0], {
+          opacity: interpolate(frame, [cueScreenshot, cueScreenshot + 10, 380, 400], [0, 1, 1, 0], {
             extrapolateLeft: 'clamp',
             extrapolateRight: 'clamp',
           }),
-          translateY: interpolate(frame, [100, 115], [16, 0], {
+          translateY: interpolate(frame, [cueScreenshot, cueScreenshot + 10], [16, 0], {
             extrapolateLeft: 'clamp',
             extrapolateRight: 'clamp',
           }),
         }
       : undefined;
 
-  // From 260, "record it as video" (~8.8s): record is pressed and the clock counts up.
-  const isRecording = frame >= 260;
-  const elapsedSeconds = isRecording ? Math.floor((frame - 260) / 30) : 0;
+  const isRecording = frame >= cueRecord;
+  const elapsedSeconds = isRecording ? Math.floor((frame - cueRecord) / 30) : 0;
   const recording = isRecording
     ? `${String(Math.floor(elapsedSeconds / 60)).padStart(2, '0')}:${String(elapsedSeconds % 60).padStart(2, '0')}`
     : undefined;
 
-  const catalogScroll = interpolate(frame, [0, 405], [0, 180], {
+  const catalogScroll = interpolate(frame, [0, frames], [0, 180], {
     easing: Easing.bezier(0.4, 0, 0.6, 1),
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
@@ -495,66 +501,146 @@ export const CaptureBeat: React.FC<{frame: number; frames: number}> = ({
     ),
   };
 
+  const cameraBtn = mirrorRegions.toolbarCamera;
+  const cameraX = cameraBtn.x + cameraBtn.width / 2;
+  const cameraY = cameraBtn.y + cameraBtn.height / 2;
+
+  const recordBtn = mirrorRegions.toolbarRecord;
+  const recordX = recordBtn.x + recordBtn.width / 2;
+  const recordY = recordBtn.y + recordBtn.height / 2;
+
   return (
-    <MirrorApp
-      panel="devices"
-      status={`Mirroring ${MIRROR_DEVICE.name}`}
-      hasDevice
-      side={<DevicesPanel selected details live />}
-      stage={<MirrorStage mirrored={mirrored} recording={recording} />}
-      toast={toast}
-    />
+    <>
+      <MirrorApp
+        panel="devices"
+        status={`Mirroring ${MIRROR_DEVICE.name}`}
+        hasDevice
+        side={<DevicesPanel selected details live />}
+        stage={
+          <MirrorStage
+            mirrored={mirrored}
+            recording={recording}
+            cameraPressed={cameraPressed}
+            recordPressed={recordPressed}
+            frameStyle="none"
+          />
+        }
+        toast={toast}
+      />
+      {frame < cueRecord - 20 ? (
+        <PointerClick
+          to={{x: cameraX, y: cameraY}}
+          at={cueScreenshot}
+          fadeOutAt={cueScreenshot + 16}
+          name="PointerCamera"
+        />
+      ) : (
+        <PointerClick
+          from={{x: cameraX, y: cameraY}}
+          to={{x: recordX, y: recordY}}
+          at={cueRecord}
+          fadeOutAt={cueRecord + 16}
+          name="PointerRecord"
+        />
+      )}
+    </>
   );
 };
 
 /**
- * Apps beat (13.5s = 405 frames):
+ * Apps beat (14s = 420 frames):
  * Apps panel lists the tablet's packages; the highlight walks down the list
- * and stops on Kindle, whose row shows its Uninstall action.
- * Never highlights a system package (Calendar: 1, Galaxycontinuity: 4).
+ * and stops on Kindle, whose row shows its Uninstall action ringed.
+ * Never highlights a system package (1: Calendar, 4: Galaxycontinuity).
  */
 export const AppsBeat: React.FC<{frame: number; frames: number}> = ({
   frame,
   frames,
 }) => {
+  const cueApps = CUE_FRAMES.appsApps - BEATS.apps.from;
+  const cueDelete = CUE_FRAMES.appsDelete - BEATS.apps.from;
+
   // Steps through user apps: 0 (Acr2), 2 (Chatgpt), 3 (Docs), 5 (Iot), then stops on
-  // 6 (Kindle) just before "delete, remove stuff" (~10.5s).
+  // 6 (Kindle) before "delete, remove stuff". Never highlights 1 or 4.
   const highlight =
-    frame < 75 ? 0 : frame < 150 ? 2 : frame < 225 ? 3 : frame < 290 ? 5 : 6;
+    frame < cueApps
+      ? 0
+      : frame < cueApps + 45
+        ? 2
+        : frame < cueApps + 95
+          ? 3
+          : frame < cueApps + 145
+            ? 5
+            : 6;
+
+  // Uninstall icon on Kindle row (index 6)
+  const uninstallRegion: Rect = {
+    x: 356,
+    y: 486,
+    width: 26,
+    height: 26,
+  };
 
   return (
-    <MirrorApp
-      panel="apps"
-      status={`Mirroring ${MIRROR_DEVICE.name}`}
-      hasDevice
-      side={<AppsPanel highlight={highlight} uninstallAction />}
-      stage={<MirrorStage mirrored={catalog(frame, frames)} />}
-    />
+    <>
+      <MirrorApp
+        panel="apps"
+        status={`Mirroring ${MIRROR_DEVICE.name}`}
+        hasDevice
+        side={<AppsPanel highlight={highlight} uninstallAction />}
+        stage={<MirrorStage mirrored={catalog(frame, frames)} frameStyle="none" />}
+      />
+      <FocusRing region={uninstallRegion} appearAt={cueDelete} radius={4} />
+    </>
   );
 };
 
 /**
- * Files beat (8.5s = 255 frames):
+ * Files beat (7s = 210 frames):
  * Files panel at /sdcard; a file is dragged onto the drop area,
- * the area lights, and the file appears in the list.
+ * the area lights, and the file joins the list by "here".
  */
 export const FilesBeat: React.FC<{frame: number; frames: number}> = ({
   frame,
   frames,
 }) => {
-  // "dragging, dropping into this area" runs ~5.3–6.2s.
-  const isDragging = frame >= 120 && frame < 175;
+  const cueCopy = CUE_FRAMES.filesCopy - BEATS.files.from;
+
+  const dropArea = mirrorRegions.filesDrop;
+  const dropX = dropArea.x + dropArea.width / 2;
+  const dropY = dropArea.y + dropArea.height / 2;
+
+  // File drag starts on stage at cueCopy (80) and lands on the drop area by ~122.
+  const dragStart = {x: 560, y: 220};
+  const dragTarget = {x: dropX, y: dropY};
+
+  // The drop area lights up as the file is dragged into it and released
+  const isDragging = frame >= cueCopy + 16 && frame < cueCopy + 65;
+
+  // The file joins the list by "here" (~125)
   const extraFile =
-    frame >= 175 ? {name: 'audio-eui-dummy.xml', size: '12 kB'} : undefined;
+    frame >= cueCopy + 45
+      ? {name: 'audio-eui-dummy.xml', size: '12 kB'}
+      : undefined;
 
   return (
-    <MirrorApp
-      panel="files"
-      status={`Mirroring ${MIRROR_DEVICE.name}`}
-      hasDevice
-      side={<FilesPanel dragging={isDragging} extraFile={extraFile} />}
-      stage={<MirrorStage mirrored={catalog(frame, frames)} />}
-    />
+    <>
+      <MirrorApp
+        panel="files"
+        status={`Mirroring ${MIRROR_DEVICE.name}`}
+        hasDevice
+        side={<FilesPanel dragging={isDragging} extraFile={extraFile} />}
+        stage={<MirrorStage mirrored={catalog(frame, frames)} frameStyle="none" />}
+      />
+      <PointerClick
+        from={{x: dragStart.x + 80, y: dragStart.y + 60}}
+        to={dragStart}
+        at={cueCopy}
+        dragTo={dragTarget}
+        dragDuration={36}
+        fadeOutAt={cueCopy + 62}
+      />
+    </>
   );
 };
 
