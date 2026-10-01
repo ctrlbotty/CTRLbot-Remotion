@@ -595,6 +595,7 @@ export const RemotionRoot = () => (
       <Still id="Proof-Phone-ActivitiesAudio" component={ActivitiesAudio} width={360} height={780} />
       <Still id="Proof-Tablet-ActivitiesAudio" component={ActivitiesAudio} defaultProps={{device: 'tablet'}} width={1280} height={800} />
       <Still id="Proof-Phone-DiscoverDevices" component={DiscoverDevices} width={360} height={780} />
+      <Still id="Proof-Tablet-DiscoverDevices" component={DiscoverDevices} defaultProps={{device: 'tablet'}} width={1280} height={800} />
       <Still id="Proof-Phone-SettingsSupport" component={SettingsSupport} width={360} height={780} />
       {/* CTRLbot Terminator, the Windows utility: CSS pixels, its own Tailwind palette. */}
       <Still id="Proof-Term-Scan" component={TermScanProof} width={1280} height={800} />
