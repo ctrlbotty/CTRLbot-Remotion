@@ -340,7 +340,7 @@ After approval, close out per `AGENTS.md`: archive this brief as
   - Verify:
     - Run it on today's W01 list into a scratch copy: pass `--out-dir=out/_t1/`; the output files exist and the log is sane.
     - `npm run shorts -- build S02 S03`, then `git diff --exit-code src/shorts/shorts.generated.ts`.
-- [ ] T2: Let `narration:srt` read a planned edit, with spelling corrections applied by a new `correctCaptions` in `narrationCaptions.ts` — files: scripts/narration-srt.mjs, src/audio/narrationCaptions.ts
+- [x] T2: Let `narration:srt` read a planned edit, with spelling corrections applied by a new `correctCaptions` in `narrationCaptions.ts` — files: scripts/narration-srt.mjs, src/audio/narrationCaptions.ts
   - New flag `--edit=<generated.ts>`: page the edit's `words` with `captionPages` (eight a page) instead of `captionsFromClips`. `--corrections=<export>` applies through `correctCaptions(words, corrections)`, exported from `narrationCaptions.ts`, which stays import-free.
   - Without `--edit`, output is byte-identical to today. Verify: W02's .srt regenerates identically with its existing command and `git diff --no-index`, and an .srt is written from `out/_t1/`'s generated file.
 - [ ] T3: Export Mirror's window geometry from `mirrorData.ts` and derive `mirrorRegions` from it, with `Mirror.tsx` laying out from the same constants — files: src/app-ui/mirror/mirrorData.ts, src/app-ui/mirror/Mirror.tsx

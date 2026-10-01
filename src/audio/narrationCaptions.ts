@@ -24,6 +24,27 @@ const correctWord = (text: string, corrections?: Record<string, string>): string
 };
 
 /**
+ * Applies optional word spelling corrections to an array of CaptionWords.
+ * If a correction maps a word to empty string, that word is dropped.
+ */
+export const correctCaptions = (
+  words: readonly CaptionWord[],
+  corrections?: Record<string, string>,
+): CaptionWord[] => {
+  if (!corrections || Object.keys(corrections).length === 0) {
+    return [...words];
+  }
+  const result: CaptionWord[] = [];
+  for (const word of words) {
+    const text = correctWord(word.text, corrections);
+    if (text !== null) {
+      result.push({...word, text});
+    }
+  }
+  return result;
+};
+
+/**
  * Every word whose midpoint falls inside a clip's source range, shifted to where that clip
  * plays. `words` is an ingest's `captions.json`. Whisper's word times run slightly early,
  * which is harmless in a caption and is why these are never used as cut points.
