@@ -195,6 +195,12 @@ export const beatShots = (push = 0.62, viewport = PHONE_VIEWPORT): Shot[] => {
   };
   return BEAT_NAMES.flatMap((name) => {
     const {from, duration} = BEATS[name];
+    if (name === 'open') {
+      return [
+        {at: from, region: whole},
+        {at: from + duration - 1, region: whole},
+      ];
+    }
     return [
       {at: from, region: whole},
       {at: from + Math.round(duration / 2), region: region(SUBJECT[name])},
