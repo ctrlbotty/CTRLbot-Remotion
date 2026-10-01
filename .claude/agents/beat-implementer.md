@@ -10,6 +10,7 @@ Input: a brief path (`videos/<slug>.md`) and a task ID (e.g. T3).
 
 Read first, every time:
 
+- `.claude/skills/remotion-markup/SKILL.md` before writing markup
 - `docs/VIDEO_WORKFLOW.md` — the contract
 - `docs/AUTHORING.md` — how a scene is written; `src/scenes/EuiHandoff.tsx` is the
   worked example
@@ -32,9 +33,11 @@ outputs, selection, volume, mute. A screenshot from `public/marketing/` cannot b
 pushed into, cannot change state mid-shot, and carries a baked-in bezel. The linter
 rejects it.
 
-**Marketing scenes lay out with `<Stage>`** — panel right, copy column left,
-`background.stage` underneath. Never hand-position a surface or hand-write a
-gradient.
+**Walkthroughs play through `WalkthroughShell`** — card (`MasterControlCard`),
+stage (`Stage` / `PortraitStage`), or chapter (`Camera` full frame with
+annotations and callout). Stage beats put the panel right and copy left; chapter
+beats frame full-bleed with continuous camera moves. Never hand-position a
+surface or hand-write a gradient.
 
 **Follow the house motion.** Easing literals inline in the `style` prop, from the
 table in `AUTHORING.md`. Every `interpolate()` clamped both ends. Never spring a

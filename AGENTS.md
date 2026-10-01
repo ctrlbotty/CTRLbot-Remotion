@@ -17,6 +17,7 @@ npm run ingest:recording -- <slug> "<file name>.mp4"   # transcript, voice, stil
 npm run shorts -- list                                 # every 30-second short
 npm run shorts -- all S05                              # build, brief, render, kit
 npm run narration:prepare -- <slug> "C:\path\to\walkthrough.mp4"
+npm run narration:edit -- <narration.ts> <CLIPS export> <slug> --seconds=<len>
 npm run narration:check -- out/<slug>-narrated.mp4
 npm run loop:render    # the web loops — 2x supersampled, see below. NOT `npm run render`
 npm run loop:seam -- out/web/eui-loop-route-v2.mp4    # the loop gate
@@ -111,6 +112,7 @@ Point at a different checkout with `npm run sync:tokens -- ../path/to/CTRLbot-Io
   utilities are always named in full: **CTRLbot Mirror** and **CTRLbot Terminator**.
 - Keep composition metadata (`width`, `height`, `fps`, `defaultProps`) inline on
   `<Composition>`, with no type assertions.
+- Walkthroughs play through `WalkthroughShell`, with chapters full-frame and annotated, and `Stage` only for stage beats.
 - Run `npm run check` after changes, and render a still when layout moves.
 
 ## Architecture
@@ -202,9 +204,10 @@ the frame the seam is measured against.
 
 The destination is `website-panel-loop` in `destinations.ts`.
 
-Training cuts are full-bleed and `Callout` overlays them. Marketing cuts use `<Stage>`:
-the surface in a panel down one side, copy in a column beside it. Because that panel is
-aspect-matched to the surface, the camera cannot push past about 0.94 without clipping
+Training cuts are full-bleed and `Callout` overlays them. Walkthroughs play through `WalkthroughShell`:
+chapters are full-frame with continuous camera moves and annotations (`Spotlight`, `FocusRing`, `PointerClick`, `Callout`),
+and `Stage` / `PortraitStage` is used only for stage beats (the surface in a panel down one side, copy in a column beside it).
+Because that panel is aspect-matched to the surface, the camera cannot push past about 0.94 without clipping
 the corner controls — `<Spotlight>` carries emphasis instead.
 
 The split that matters: `app-ui/` renders a surface at its natural dp size and knows

@@ -375,7 +375,7 @@ After approval, close out per `AGENTS.md`: archive this brief as
     - Export `cueFrame(edit, clipId, word, nth = 1)`. It returns the composition frame where that word starts and throws if the word is not in the clip.
   - Proof: three beats (card, stage and chapter, each on `MirrorApp`) with a Spotlight and a ring on a `mirrorRegions` region. Register the landscape and portrait versions. The proof's `edit` is a small inline object in `MirrorProofs.tsx` over the tracked `source-normalized.m4a`, with a few words for its captions; it never writes T8's files.
   - Verify: stills at the middle of each proof beat in both shapes: the card composed, the stage panel, and the chapter full-frame with the Callout clear of its subject.
-- [ ] T7: Write the hybrid format and `narration:edit` into the contract, replacing the rules that say every walkthrough lays out in `<Stage>` — files: AGENTS.md, docs/NARRATED-WALKTHROUGH.md, .claude/agents/beat-implementer.md
+- [x] T7: Write the hybrid format and `narration:edit` into the contract, replacing the rules that say every walkthrough lays out in `<Stage>` — files: AGENTS.md, docs/NARRATED-WALKTHROUGH.md, .claude/agents/beat-implementer.md
   - `AGENTS.md`:
     - Rules: walkthroughs play through `WalkthroughShell`, with chapters full-frame and annotated, and `Stage` only for stage beats.
     - Commands: add `narration:edit`.

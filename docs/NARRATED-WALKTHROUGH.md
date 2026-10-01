@@ -95,59 +95,60 @@ to follow `docs/VIDEO_WORKFLOW.md` for surfaces, copy, timing, review, and produ
 ## 5. Build the motion graphic and the voice edit together
 
 Keep narration timing beside the composition in a file named for the video, for example
-`src/marketing/<slug>/<slug>Narration.ts`. It points at the prepared source and contains
-one entry per selected phrase:
+`src/marketing/<slug>/<slug>Narration.ts`. The edit list is planned with `npm run narration:edit`,
+not hand-trimmed `NarrationTrack` clips:
+
+```powershell
+npm run narration:edit -- src/marketing/<slug>/<slug>Narration.ts <CLIPS export> <ingest slug> --seconds=<cut length>
+```
+
+The clips file stays import-free:
 
 ```ts
-import type {NarrationClip} from '../../audio/NarrationTrack';
-
 export const SOURCE = 'narration/<slug>/source-normalized.m4a';
 
 export const CLIPS = [
   {
     id: 'opening',
     at: 0.5,
-    sourceStart: 3.2,
-    sourceEnd: 10.8,
+    start: 3.2,
+    end: 10.8,
   },
-] as const satisfies readonly NarrationClip[];
+];
 ```
 
-All times are seconds. `sourceStart` and `sourceEnd` select words from the original
-recording, read straight from `ingest/<slug>/words.json`; `at` places that phrase in the final composition. Keep `playbackRate` at 1 so
-the recorded voice remains natural. Use it only for a small, reviewed correction.
-
-`NarrationTrack` adds a short edge fade at each cut and rejects duplicate IDs, invalid
-ranges, negative gain or rate, and clips that run past the end of the composition.
+All times are seconds. `start` and `end` select words from the original recording, read
+straight from `ingest/<slug>/words.json`; `at` places that phrase in the final composition.
 
 Whisper's word times are not safe cut points on their own. A word's end runs early at the
 end of a phrase and stretches across a pause, so a clip cut on them loses its last syllable:
-"PC" by 240 ms, "network" by its final k. Check each boundary against the waveform, or cut
-the way the shorts do. There, `npm run shorts -- build` hands each clip to
-`scripts/lib/voice.mjs`, which finds the quiet around the clip's words, takes out the ums,
-repeats and false starts `heard.json` found between them, shortens long pauses, and renders
-one sample-accurate track. The clip's range only has to land inside its first and last word.
+"PC" by 240 ms, "network" by its final k. Instead of hand-trimming `NarrationTrack` clips,
+`npm run narration:edit` hands the edit list to `scripts/lib/voice.mjs`, which finds the
+real quiet around the clip's words, removes fillers, repeats and false starts that `heard.json`
+found, applies `TUTORIAL_CAPS` to shorten long pauses, normalizes loudness to -16 LUFS,
+and renders one sample-accurate track to `public/narration/<slug>/edit.m4a`. It also writes
+`<slug>Narration.generated.ts` containing the planned edit, composition millisecond word timings,
+and cues for `cueFrame`.
 
 ## 6. Narrated, in two shapes
 
-There is no silent cut. One component renders the beats in two layouts, both narrated —
-`src/marketing/mirror-walkthrough/MirrorWalkthrough.tsx` is the worked example:
+There is no silent cut. Walkthroughs play through `WalkthroughShell` across card, stage and
+chapter layouts over the single audio track from `edit.m4a`. `WalkthroughShell` replaces the
+Stage-only / PortraitStage-only pattern:
 
-- **`<slug>`, 1920x1080** — `<Stage>`, copy left, surface right. YouTube. Its captions ship
-  as an .srt, so the frame stays free for the step text.
-- **`<slug>-portrait`, 1080x1920** — `<PortraitStage>`, copy on top, surface in the middle,
-  captions burned in under it (`<NarrationCaptions>`). TikTok, YouTube Shorts, LinkedIn, X.
+- **card**: `MasterControlCard` opening or closing lockup. Composed at frame 0, tricon and line.
+- **stage**: `Stage` (1920x1080) or `PortraitStage` (1080x1920) with `WalkthroughCopy`; the camera holds, then makes one push to the beat's region (never past 0.94).
+- **chapter**: full-frame `Camera` with `fit="expand"`. Consecutive chapter beats share one continuous camera path so moves between them are moves, not cuts. Screen-space `Callout` is placed in an open area beside the subject in landscape and at the top in portrait.
+- **Captions**: portrait burns in `NarrationCaptions` from `correctCaptions(edit.words)` on a bottom scrim above the safe line, across all layouts. Landscape captions ship as an .srt (`npm run narration:srt --edit=...`).
 
-Copy is `<WalkthroughCopy>`: Audiowide for the product's name at the open and close only,
-Montserrat for step titles and descriptions, Space Mono for the eyebrow. Both caption
-forms come from `captionsFromClips` in `src/audio/narrationCaptions.ts`, so they cannot
-disagree. The cut stays under 2:20, X's limit without Premium; the brief's destination is
+A 15-frame crossfade smooths every layout transition while keeping each beat's absolute start.
+The cut stays under 2:20, X's limit without Premium; the brief's destination is
 `social-walkthrough-vertical`, which enforces it.
 
 ```powershell
 npm run render -- <slug> out/<slug>.mp4 --codec=h264 --crf=20
 npm run render -- <slug>-portrait out/<slug>-portrait.mp4 --codec=h264 --crf=20
-npm run narration:srt -- <narration.ts> <CLIPS export> <ingest slug> out/<slug>.srt
+npm run narration:srt -- <narration.ts> <CLIPS export> <ingest slug> out/<slug>.srt --edit=<generated.ts>
 ```
 
 Never pass `--muted`: both renders carry the narration.
