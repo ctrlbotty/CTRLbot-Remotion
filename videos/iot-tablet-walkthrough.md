@@ -236,7 +236,7 @@ branch, no worktree.
   - Reference frames: `f_0020.jpg`–`f_0022.jpg`, `f_0030.jpg`.
 - [x] T7: Add the tablet layout to `ActivitiesSwitch`: the switch-type picker, many-to-one on one device, and AVoIP encoders and decoders side by side — files: src/app-ui/ActivitiesSwitch.tsx, src/Root.tsx
   - Reference frames: `f_0043.jpg`, `f_0044.jpg`. `ActivitiesSwitching.tsx` is not touched.
-- [ ] T8: Add the tablet layout to `ActivitiesAudio` — files: src/app-ui/ActivitiesAudio.tsx, src/Root.tsx
+- [x] T8: Add the tablet layout to `ActivitiesAudio` — files: src/app-ui/ActivitiesAudio.tsx, src/Root.tsx
   - Reference frames: `f_0023.jpg`, `f_0024.jpg`, `f_0045.jpg`.
 - [ ] T9: Add the tablet layout to `DiscoverDevices` — files: src/app-ui/DiscoverDevices.tsx, src/Root.tsx
   - From `layout/fragment_discover_devices.xml`. Rows from the recording's stills (`f_0032.jpg`–`f_0040.jpg`), private IPs only.
