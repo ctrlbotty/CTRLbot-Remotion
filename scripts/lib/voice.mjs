@@ -40,7 +40,8 @@ export const CROSSFADE = 0.012;
  * The longest pause kept, by the punctuation Whisper put after the word before it. After a
  * word nothing can end on ("the", "a", "to"), a pause is only ever a hesitation.
  */
-const CAPS = {sentence: 0.5, clause: 0.3, phrase: 0.2, hesitation: 0.1};
+export const CAPS = {sentence: 0.5, clause: 0.3, phrase: 0.2, hesitation: 0.1};
+export const TUTORIAL_CAPS = {sentence: 0.8, clause: 0.45, phrase: 0.3, hesitation: 0.15};
 const LEADS_ON = new Set(['the', 'a', 'an', 'to', 'of', 'and', 'or', 'my', 'your', 'our', 'their']);
 
 const FILLER = /^(u+[hm]+|a+h+|e+r+m*|h+m+|m+h*m+)$/;
@@ -219,11 +220,11 @@ const alignLetters = (words, heard) => {
   return owner;
 };
 
-const pauseCap = (word) => {
+const pauseCap = (word, caps = CAPS) => {
   const text = word.text.trim();
-  if (/[.?!]["')\]]*$/.test(text)) return CAPS.sentence;
-  if (/[,;:—-]["')\]]*$/.test(text)) return CAPS.clause;
-  return LEADS_ON.has(text.toLowerCase()) ? CAPS.hesitation : CAPS.phrase;
+  if (/[.?!]["')\]]*$/.test(text)) return caps.sentence;
+  if (/[,;:—-]["')\]]*$/.test(text)) return caps.clause;
+  return LEADS_ON.has(text.toLowerCase()) ? caps.hesitation : caps.phrase;
 };
 
 /** Two runs of letters where the first is the start of the second: "an" before "analog". */
@@ -244,7 +245,7 @@ const restarts = (a, b) => {
  * heard.json, or null to cut on the waveform alone without removing anything. `verbatim`
  * keeps every sound between the first word and the last, and every pause at its length.
  */
-export const planClip = (voice, words, heard, clip, {verbatim = false, debug = false} = {}) => {
+export const planClip = (voice, words, heard, clip, {verbatim = false, debug = false, caps = CAPS} = {}) => {
   const notes = [];
   const inRange = (word) => {
     const overlap = Math.min(word.end, clip.sourceEnd) - Math.max(word.start, clip.sourceStart);
@@ -535,7 +536,7 @@ export const planClip = (voice, words, heard, clip, {verbatim = false, debug = f
     const quietAfter = found[kept[n] + 1].start - a.end;
     const quietBefore = b.start - found[kept[n + 1] - 1].end;
     const natural = skipped ? quietAfter + quietBefore : b.start - a.end;
-    const cap = verbatim ? Infinity : lastWord ? pauseCap(lastWord) : CAPS.phrase;
+    const cap = verbatim ? Infinity : lastWord ? pauseCap(lastWord, caps) : caps.phrase;
     if (!skipped && natural <= cap) continue;
     const want = Math.min(cap, natural);
     const tailA = softEnd(voice, a.end, a.end + quietAfter) - a.end + CROSSFADE;
