@@ -395,7 +395,7 @@ After approval, close out per `AGENTS.md`: archive this brief as
   - Set each `at` by the placement rule: build once, read the planned lengths from the log, set the `at`s, build again. That is two builds at most.
   - If a beat cannot keep its 1.0s hold inside the Beats table's Sec, mark `[!]` with the measured lengths. Never change the table.
   - Verify: the log removes nothing but fillers and repeats. The `.generated.ts` lists 17 clips.
-- [ ] T9: Rewrite W01's beat data for the shell: beats and layouts from the Beats table, copy from the Copy table, regions and cue frames from the Shot list — files: src/marketing/mirror-walkthrough/walkthroughData.ts
+- [x] T9: Rewrite W01's beat data for the shell: beats and layouts from the Beats table, copy from the Copy table, regions and cue frames from the Shot list — files: src/marketing/mirror-walkthrough/walkthroughData.ts
   - Beats are in frames at 30fps, from the Sec column: 4080 frames in total.
   - `setupStepAt` moves to cue frames: step 2 at install-adb "manage", step 4 at authorize "authorize", step 5 at ready "mirroring", all ticked once the stage is live.
   - `beatShots()` and `SUBJECT` are removed.
