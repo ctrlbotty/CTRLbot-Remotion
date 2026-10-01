@@ -257,7 +257,7 @@ branch, no worktree.
 - [x] T17: Build both compositions and register them — files: src/marketing/iot-tablet-walkthrough/IotTabletWalkthrough.tsx, src/Root.tsx
   - On the pattern of W03's `IotPhoneWalkthrough.tsx`: landscape `<Stage>` at its default panel with the 1280/800 aspect; portrait `<PortraitStage>` with `<NarrationCaptions>` (captions from `captionsFromClips(clips, words, IOT_TABLET_CAPTION_CORRECTIONS)`); `<NarrationTrack>` in both; `<PromoPreload />`; copy through `<WalkthroughCopy>` with `at={-40}` on open. Register `iot-tablet-walkthrough` (1920x1080) and `iot-tablet-walkthrough-portrait` (1080x1920) in W03's `CTRLbot-IoT-Walkthrough` folder, metadata inline.
   - Verify: `npm run video:frames -- iot-tablet-walkthrough validate`; both contact sheets, every still against its evidence line; a half-scale inert check on the portrait under 60%. T14–T16 render their stills only once T17 has registered the composition: until then their check is `npm run check` and `npm run video:lint`.
-- [ ] T18: Run the feature gates on both shapes, render both, write the .srt, and record the results here — files: videos/iot-tablet-walkthrough.md
+- [x] T18: Run the feature gates on both shapes, render both, write the .srt, and record the results here — files: videos/iot-tablet-walkthrough.md
   - `npm run check`; `npm run video:lint -- --destination=social-walkthrough`; render `iot-tablet-walkthrough` → `out/iot-tablet-walkthrough.mp4` and `iot-tablet-walkthrough-portrait` → `out/iot-tablet-walkthrough-portrait.mp4` (`--codec=h264 --crf=20`, never `--muted`), one at a time; `video:frames … check` on both; `npm run narration:check` on both; `npm run narration:srt -- src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughNarration.ts IOT_TABLET_NARRATION_CLIPS iot-tablet-walkthrough out/iot-tablet-walkthrough.srt --corrections=IOT_TABLET_CAPTION_CORRECTIONS`, then confirm the corrections took and no caption is one word. Confirm every file exists.
   - Runs straight after T17 with no approval stop. Does not mark the video done: Nathan reviews both renders, and his notes come back as new tasks.
 
@@ -278,6 +278,23 @@ branch, no worktree.
 ## Review notes
 
 > Appended on PASS WITH NOTES. Not blockers; check these during the review.
+
+- T18, 2026-10-01: `npm run check` OK; `video:lint` 0 errors against `social-walkthrough`
+  and general (65 files, 0 errors, 0 warnings); `validate` 19 beats, 340s, no problems.
+  Landscape `out/iot-tablet-walkthrough.mp4` (65.1 MB) 38% inert (< 60%), median content area 100%,
+  no problems. Portrait `out/iot-tablet-walkthrough-portrait.mp4` (74.1 MB) 33% inert (< 60%),
+  median content area 100%, no problems.
+- Audio: `npm run narration:check` passed on both renders: 340.00s duration, -13.44 LUFS
+  integrated loudness, -1.35 dBTP true peak (target: -14 ± 1 LUFS, < -1 dBTP).
+- Captions: `out/iot-tablet-walkthrough.srt` has 161 captions, 895 words from 52 clips;
+  verified 0 occurrences of `controlbot`, 0 `RS -232`, 0 `Convert IP`, 0 `.ai.` / `.ai`,
+  and 0 one-word captions.
+- Framing: Beat `open` holds wide (`content`, 1.04) throughout its 11.0s duration; subsequent
+  beats push smoothly to 0.8 on their evidence regions (rail, list, pane, content, bar)
+  and back, with all 19 beat still validations passing cleanly.
+- Deliverables: Contact sheets at `out/iot-tablet-walkthrough/contact.html` and
+  `out/iot-tablet-walkthrough-portrait/contact.html`. Both video renders (`out/iot-tablet-walkthrough.mp4`,
+  `out/iot-tablet-walkthrough-portrait.mp4`) and .srt (`out/iot-tablet-walkthrough.srt`) confirmed.
 
 ## Contact sheet
 

@@ -111,6 +111,7 @@ export const IOT_TABLET_NARRATION_CLIPS = [
 export const IOT_TABLET_CAPTION_CORRECTIONS: Record<string, string> = {
   controlbot: 'CTRLbot',
   '.ai.': 'AI.',
+  '.ai': 'AI',
   RS: 'RS-232',
   '-232': '',
   convert: 'ConvertIP,',
