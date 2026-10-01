@@ -587,6 +587,7 @@ export const RemotionRoot = () => (
       <Still id="Proof-Phone-ConnectTest" component={ConnectTest} defaultProps={{device: 'phone'}} width={360} height={780} />
       <Still id="Proof-Tablet-ConnectTest" component={ConnectTest} defaultProps={{device: 'tablet'}} width={1280} height={800} />
       <Still id="Proof-Phone-ProductWebView" component={ProductWebView} width={360} height={780} />
+      <Still id="Proof-Tablet-ProductWebView" component={ProductWebView} defaultProps={{device: 'tablet'}} width={1280} height={800} />
       <Still id="Proof-Phone-ActivitiesPresets" component={ActivitiesPresets} width={360} height={780} />
       <Still id="Proof-Phone-ActivitiesSwitch" component={ActivitiesSwitch} width={360} height={780} />
       <Still id="Proof-Phone-ActivitiesAudio" component={ActivitiesAudio} width={360} height={780} />

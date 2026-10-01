@@ -230,7 +230,7 @@ branch, no worktree.
   - From `layout/menu_connections.xml`, `driver_connection.xml`, `remotes_test.xml`, `av_sw_remote_nx1.xml`. Reference frames: `f_0016.jpg`–`f_0018.jpg`.
 - [x] T4: Add the tablet layout to `ConnectTest`'s multi-output Switcher for Matrox — files: src/app-ui/ConnectTest.tsx
   - From `layout/av_sw_remote_nxo.xml` (or `av_sw_remote_nx4.xml` where the app uses it for four outputs). Reference frame: `f_0041.jpg`.
-- [ ] T5: Add the tablet layout to `ProductWebView`, over the nav rail — files: src/app-ui/ProductWebView.tsx, src/Root.tsx
+- [x] T5: Add the tablet layout to `ProductWebView`, over the nav rail — files: src/app-ui/ProductWebView.tsx, src/Root.tsx
   - Reference frames: `f_0012.jpg`, `f_0018.jpg`. Draw no website content.
 - [ ] T6: Add the tablet layout to `ActivitiesPresets` — files: src/app-ui/ActivitiesPresets.tsx, src/Root.tsx
   - Reference frames: `f_0020.jpg`–`f_0022.jpg`, `f_0030.jpg`.
