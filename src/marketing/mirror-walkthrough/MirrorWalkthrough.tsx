@@ -11,6 +11,7 @@ import {MIRROR_VIEWPORT} from '../../app-ui/mirror/mirrorData';
 import {PromoPreload} from '../eui-promo/PromoPreload';
 import {WalkthroughShell, type WalkthroughFormat} from '../WalkthroughShell';
 import {
+  AgainBeat,
   AppsBeat,
   CaptureBeat,
   CloseBeat,
@@ -173,7 +174,7 @@ export const MIRROR_WALKTHROUGH_BEATS = [
     calloutSide: 'right' as const,
     regions: BEAT_REGIONS.again,
     render: ({frame, frames}: {frame: number; frames: number}) => (
-      <CloseBeat frame={frame} frames={frames} />
+      <AgainBeat frame={frame} frames={frames} />
     ),
   },
   {

@@ -205,7 +205,7 @@ export const BEAT_REGIONS: Record<string, Region | Region[]> = {
   apps: mirrorRegions.sidePanel,
   files: mirrorRegions.sidePanel,
   tools: mirrorRegions.sidePanel,
-  again: [mirrorRegions.sidePanel, mirrorRegions.railItem('setup')],
+  again: {x: 0, y: 32, width: 404, height: 908},
 };
 
 /**

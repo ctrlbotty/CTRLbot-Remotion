@@ -647,7 +647,7 @@ export const FilesBeat: React.FC<{frame: number; frames: number}> = ({
 const SHELL_COMMAND = 'getprop ro.product.model';
 
 /**
- * Tools beat (7.5s = 225 frames):
+ * Tools beat (8s = 240 frames):
  * Shell panel runs one command and its output prints; the sidebar moves to
  * Logcat and log lines stream in.
  */
@@ -655,45 +655,75 @@ export const ToolsBeat: React.FC<{frame: number; frames: number}> = ({
   frame,
   frames,
 }) => {
+  const cueShell = CUE_FRAMES.shellLogsShell - BEATS.tools.from; // 40
+  const cueLogs = CUE_FRAMES.shellLogsLogs - BEATS.tools.from; // 117
+
   const typed = SHELL_COMMAND.slice(
     0,
     Math.round(
-      interpolate(frame, [12, 54], [0, SHELL_COMMAND.length], {
+      interpolate(frame, [8, 34], [0, SHELL_COMMAND.length], {
         extrapolateLeft: 'clamp',
         extrapolateRight: 'clamp',
       }),
     ),
   );
+
+  const linesCount = Math.round(
+    interpolate(frame, [cueLogs, cueLogs + 80], [1, 12], {
+      extrapolateLeft: 'clamp',
+      extrapolateRight: 'clamp',
+    }),
+  );
+
   const side =
-    frame < 125 ? (
+    frame < cueLogs ? (
       <ShellPanel
-        command={frame >= 12 ? typed : undefined}
-        output={frame >= 66 ? [MIRROR_DEVICE.model.replace('_', '-')] : []}
+        command={frame >= 8 ? typed : undefined}
+        output={frame >= cueShell ? [MIRROR_DEVICE.model.replace('_', '-')] : []}
       />
     ) : (
-      <LogcatPanel
-        count={Math.round(
-          interpolate(frame, [130, 215], [0, 12], {
-            extrapolateLeft: 'clamp',
-            extrapolateRight: 'clamp',
-          }),
-        )}
-      />
+      <LogcatPanel count={linesCount} />
     );
 
   return (
     <MirrorApp
-      panel={frame < 125 ? 'shell' : 'logcat'}
+      panel={frame < cueLogs ? 'shell' : 'logcat'}
       status={`Mirroring ${MIRROR_DEVICE.name}`}
       hasDevice
       side={side}
-      stage={<MirrorStage mirrored={catalog(frame, frames)} />}
+      stage={<MirrorStage mirrored={catalog(frame, frames)} frameStyle="none" />}
     />
   );
 };
 
 /**
- * Close beat (9s = 270 frames):
+ * Again beat (4.5s = 135 frames):
+ * Setup panel with every step ticked beside the live tablet;
+ * the Setup icon in the rail is ringed.
+ */
+export const AgainBeat: React.FC<{frame: number; frames: number}> = ({
+  frame,
+  frames,
+}) => {
+  const cueSetup = CUE_FRAMES.setupAgainSetup - BEATS.again.from; // 46
+  const setupRailRegion = mirrorRegions.railItem('setup');
+
+  return (
+    <>
+      <MirrorApp
+        panel="setup"
+        status={`Mirroring ${MIRROR_DEVICE.name}`}
+        hasDevice
+        side={<SetupPanel step={6} />}
+        stage={<MirrorStage mirrored={catalog(frame, frames)} frameStyle="none" />}
+      />
+      <FocusRing region={setupRailRegion} appearAt={cueSetup} radius={8} />
+    </>
+  );
+};
+
+/**
+ * Close beat (4.5s = 135 frames):
  * Setup panel with every step ticked beside the live tablet. The copy column
  * carries the CTRLbot Mirror wordmark (MirrorWalkthrough.tsx).
  */
@@ -706,7 +736,7 @@ export const CloseBeat: React.FC<{frame: number; frames: number}> = ({
     status={`Mirroring ${MIRROR_DEVICE.name}`}
     hasDevice
     side={<SetupPanel step={6} />}
-    stage={<MirrorStage mirrored={catalog(frame, frames)} />}
+    stage={<MirrorStage mirrored={catalog(frame, frames)} frameStyle="none" />}
   />
 );
 
@@ -723,5 +753,6 @@ export const BEAT_RENDERERS: Partial<
   apps: AppsBeat,
   files: FilesBeat,
   tools: ToolsBeat,
+  again: AgainBeat,
   close: CloseBeat,
 };
