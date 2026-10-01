@@ -251,7 +251,7 @@ branch, no worktree.
   - `BEATS` in frames from the Beats table's seconds × 30, in order (total 10200 frames, 340s); `COPY` from the Copy table; `SUBJECT` per beat (`rail`, `list`, `pane`, `content` or `bar` — whichever region of the 1280x800 surface holds the beat's evidence); `beatShots()` from wide (1.04) to a 0.8 push on the subject by mid-beat and back.
 - [x] T13: Create the narration edit — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughNarration.ts
   - `IOT_TABLET_NARRATION_SOURCE`, `IOT_TABLET_NARRATION_CLIPS` from the Narration clips table with every end refined against `words.json` word ends and each `at` from the placement rule, and `IOT_TABLET_CAPTION_CORRECTIONS` = `{controlbot: 'CTRLbot', '.ai.': 'AI.', RS: 'RS-232', '-232': '', convert: 'ConvertIP,', 'IP,': ''}`. Confirm `IP,` occurs only at 352.6s inside the clips, or narrow the correction. Only `import type`.
-- [ ] T14: Build beats `open` to `test` in `IotTabletBeats.tsx`, each a component of `{frame, frames}` in a `BEAT_RENDERERS` map — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
+- [x] T14: Build beats `open` to `test` in `IotTabletBeats.tsx`, each a component of `{frame, frames}` in a `BEAT_RENDERERS` map — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [ ] T15: Build beats `activities` to `discovery` in `IotTabletBeats.tsx` — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [ ] T16: Build beats `matrox-add` to `close` in `IotTabletBeats.tsx` — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [ ] T17: Build both compositions and register them — files: src/marketing/iot-tablet-walkthrough/IotTabletWalkthrough.tsx, src/Root.tsx

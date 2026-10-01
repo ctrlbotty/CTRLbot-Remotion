@@ -240,11 +240,13 @@ const LabelledText = ({
 export const DriverDetail = ({
   title,
   scroll = 0,
+  ringManufacturer = false,
   children,
 }: {
   title: string;
   /** dp the pane's content is scrolled by. */
   scroll?: number;
+  ringManufacturer?: boolean;
   children: ReactNode;
 }) => (
   <Interactive.Div
@@ -272,6 +274,10 @@ export const DriverDetail = ({
           fontWeight: 400,
           fontSize: SIZE.value,
           color: appColors.white,
+          outline: ringManufacturer ? `2px solid ${appColors.blue}` : undefined,
+          boxShadow: ringManufacturer ? `0 0 12px ${appColors.blue}` : undefined,
+          borderRadius: ringManufacturer ? 4 : undefined,
+          padding: ringManufacturer ? '4px 8px' : undefined,
         }}
       >
         Manufacturer
