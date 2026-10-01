@@ -131,6 +131,25 @@ const groupSegments = (beats: WalkthroughBeat[]): BeatSegment[] => {
 };
 
 /**
+ * Where a held shot drifts to by the time the camera next moves. A chapter of locked holds
+ * measured 73% inert in portrait, where the window is letterboxed and a UI state change is
+ * a small fraction of the frame; continuous motion is what carries a cut (VIDEO_WORKFLOW.md).
+ * The drift pulls back, so whatever the shot names stays whole; a shot already too wide to
+ * pull back pushes in instead, since nothing in it is small enough to crop.
+ */
+const DRIFT = 0.08;
+const drift = (region: Region, content: {width: number; height: number}): Region => {
+  const grow = 1 + DRIFT;
+  const pullBack = region.width * grow <= content.width && region.height * grow <= content.height;
+  const k = pullBack ? grow : 1 - DRIFT;
+  const width = region.width * k;
+  const height = region.height * k;
+  const x = Math.max(0, Math.min(region.x + (region.width - width) / 2, content.width - width));
+  const y = Math.max(0, Math.min(region.y + (region.height - height) / 2, content.height - height));
+  return {x, y, width, height};
+};
+
+/**
  * Build camera path across consecutive chapter beats in a segment.
  */
 const buildChapterShots = (
@@ -157,9 +176,9 @@ const buildChapterShots = (
       currentRegion = targetRegion;
       shots.push({at: 0, region: targetRegion});
     } else {
-      // Hold previous region until 20 frames before the new beat, then move
+      // Drift on the previous region until 20 frames before the new beat, then move
       const moveStart = Math.max(0, beatRelFrom - 20);
-      shots.push({at: moveStart, region: currentRegion});
+      shots.push({at: moveStart, region: drift(currentRegion, contentSize)});
       shots.push({at: beatRelFrom, region: targetRegion});
       currentRegion = targetRegion;
     }
@@ -168,6 +187,8 @@ const buildChapterShots = (
     if (beat.shots && beat.shots.length > 1) {
       for (let s = 1; s < beat.shots.length; s++) {
         const shot = beat.shots[s];
+        const moveStart = Math.max(beatRelFrom, beatRelFrom + shot.at - 20);
+        shots.push({at: moveStart, region: drift(currentRegion, contentSize)});
         shots.push({at: beatRelFrom + shot.at, region: shot.region});
         currentRegion = shot.region;
       }
@@ -175,14 +196,26 @@ const buildChapterShots = (
       for (let r = 1; r < beat.regions.length; r++) {
         const nextReg = beat.regions[r];
         const pushAt = beatRelFrom + Math.round((beat.duration * r) / beat.regions.length);
-        shots.push({at: pushAt - 20, region: currentRegion});
+        shots.push({at: pushAt - 20, region: drift(currentRegion, contentSize)});
         shots.push({at: pushAt, region: nextReg});
         currentRegion = nextReg;
       }
     }
   }
 
-  return shots;
+  // The last hold drifts too, through the segment's crossfade out.
+  const last = beats[beats.length - 1];
+  if (last) {
+    shots.push({at: last.from - segmentFrom + last.duration + 15, region: drift(currentRegion, contentSize)});
+  }
+
+  // interpolate() needs strictly increasing times: a keyframe landing on an earlier one's
+  // frame replaces it.
+  return shots.reduce<Shot[]>((out, shot) => {
+    while (out.length && out[out.length - 1].at >= shot.at) out.pop();
+    out.push(shot);
+    return out;
+  }, []);
 };
 
 const renderCopy = (

@@ -309,18 +309,11 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "id": "files-copy",
-      "at": 111.28,
-      "start": 453.33,
+      "at": 112.25,
+      "start": 454.51,
       "end": 459.02,
-      "seconds": 5.353,
-      "removed": [
-        {
-          "from": 453.89,
-          "to": 454.215,
-          "kind": "extra",
-          "heard": "im"
-        }
-      ]
+      "seconds": 4.51,
+      "removed": []
     },
     {
       "id": "shell-logs",
@@ -345,10 +338,10 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "id": "setup-again",
-      "at": 126.685,
-      "start": 493.685,
-      "end": 498.09,
-      "seconds": 4.238,
+      "at": 127.25,
+      "start": 494.65,
+      "end": 497.61,
+      "seconds": 2.793,
       "removed": [
         {
           "from": 496.02,
@@ -362,22 +355,9 @@ export const NARRATION_EDIT: NarrationEdit = {
       "id": "thank-you",
       "at": 131.75,
       "start": 501.415,
-      "end": 504.875,
-      "seconds": 2.663,
-      "removed": [
-        {
-          "from": 503.17,
-          "to": 503.535,
-          "kind": "extra",
-          "heard": "and"
-        },
-        {
-          "from": 503.59,
-          "to": 503.955,
-          "kind": "extra",
-          "heard": "tom"
-        }
-      ]
+      "end": 503.08,
+      "seconds": 1.665,
+      "removed": []
     }
   ],
   "words": [
@@ -2077,121 +2057,121 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "text": " If",
-      "startMs": 111300,
-      "endMs": 111570,
-      "timestampMs": 111435,
+      "startMs": 112250,
+      "endMs": 112370,
+      "timestampMs": 112310,
       "confidence": null
     },
     {
       "text": " you",
-      "startMs": 112243,
-      "endMs": 112403,
-      "timestampMs": 112323,
+      "startMs": 112370,
+      "endMs": 112530,
+      "timestampMs": 112450,
       "confidence": null
     },
     {
       "text": " wanted",
-      "startMs": 112403,
-      "endMs": 112583,
-      "timestampMs": 112493,
+      "startMs": 112530,
+      "endMs": 112710,
+      "timestampMs": 112620,
       "confidence": null
     },
     {
       "text": " to",
-      "startMs": 112583,
-      "endMs": 112683,
-      "timestampMs": 112633,
+      "startMs": 112710,
+      "endMs": 112810,
+      "timestampMs": 112760,
       "confidence": null
     },
     {
       "text": " look",
-      "startMs": 112683,
-      "endMs": 112903,
-      "timestampMs": 112793,
+      "startMs": 112810,
+      "endMs": 113030,
+      "timestampMs": 112920,
       "confidence": null
     },
     {
       "text": " at",
-      "startMs": 112903,
-      "endMs": 112983,
-      "timestampMs": 112943,
+      "startMs": 113030,
+      "endMs": 113110,
+      "timestampMs": 113070,
       "confidence": null
     },
     {
       "text": " your",
-      "startMs": 112983,
-      "endMs": 113403,
-      "timestampMs": 113193,
+      "startMs": 113110,
+      "endMs": 113530,
+      "timestampMs": 113320,
       "confidence": null
     },
     {
       "text": " images,",
-      "startMs": 113403,
-      "endMs": 114128,
-      "timestampMs": 113766,
+      "startMs": 113530,
+      "endMs": 114255,
+      "timestampMs": 113893,
       "confidence": null
     },
     {
       "text": " you'd",
-      "startMs": 114143,
-      "endMs": 114323,
-      "timestampMs": 114233,
+      "startMs": 114270,
+      "endMs": 114450,
+      "timestampMs": 114360,
       "confidence": null
     },
     {
       "text": " be",
-      "startMs": 114323,
-      "endMs": 114403,
-      "timestampMs": 114363,
+      "startMs": 114450,
+      "endMs": 114530,
+      "timestampMs": 114490,
       "confidence": null
     },
     {
       "text": " able",
-      "startMs": 114403,
-      "endMs": 114523,
-      "timestampMs": 114463,
+      "startMs": 114530,
+      "endMs": 114650,
+      "timestampMs": 114590,
       "confidence": null
     },
     {
       "text": " to",
-      "startMs": 114523,
-      "endMs": 114663,
-      "timestampMs": 114593,
+      "startMs": 114650,
+      "endMs": 114790,
+      "timestampMs": 114720,
       "confidence": null
     },
     {
       "text": " copy",
-      "startMs": 114663,
-      "endMs": 115043,
-      "timestampMs": 114853,
+      "startMs": 114790,
+      "endMs": 115170,
+      "timestampMs": 114980,
       "confidence": null
     },
     {
       "text": " stuff",
-      "startMs": 115043,
-      "endMs": 115443,
-      "timestampMs": 115243,
+      "startMs": 115170,
+      "endMs": 115570,
+      "timestampMs": 115370,
       "confidence": null
     },
     {
       "text": " over",
-      "startMs": 115443,
-      "endMs": 115863,
-      "timestampMs": 115653,
+      "startMs": 115570,
+      "endMs": 115990,
+      "timestampMs": 115780,
       "confidence": null
     },
     {
       "text": " right",
-      "startMs": 115863,
-      "endMs": 116163,
-      "timestampMs": 116013,
+      "startMs": 115990,
+      "endMs": 116290,
+      "timestampMs": 116140,
       "confidence": null
     },
     {
       "text": " here.",
-      "startMs": 116163,
-      "endMs": 116593,
-      "timestampMs": 116378,
+      "startMs": 116290,
+      "endMs": 116720,
+      "timestampMs": 116505,
       "confidence": null
     },
     {
@@ -2336,86 +2316,86 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "text": " you",
-      "startMs": 127400,
-      "endMs": 127660,
-      "timestampMs": 127530,
+      "startMs": 127250,
+      "endMs": 127440,
+      "timestampMs": 127345,
       "confidence": null
     },
     {
       "text": " can",
-      "startMs": 127840,
-      "endMs": 127960,
-      "timestampMs": 127900,
+      "startMs": 127440,
+      "endMs": 127560,
+      "timestampMs": 127500,
       "confidence": null
     },
     {
       "text": " come",
-      "startMs": 127960,
-      "endMs": 128100,
-      "timestampMs": 128030,
+      "startMs": 127560,
+      "endMs": 127700,
+      "timestampMs": 127630,
       "confidence": null
     },
     {
       "text": " back",
-      "startMs": 128100,
-      "endMs": 128240,
-      "timestampMs": 128170,
+      "startMs": 127700,
+      "endMs": 127840,
+      "timestampMs": 127770,
       "confidence": null
     },
     {
       "text": " to",
-      "startMs": 128240,
-      "endMs": 128340,
-      "timestampMs": 128290,
+      "startMs": 127840,
+      "endMs": 127940,
+      "timestampMs": 127890,
       "confidence": null
     },
     {
       "text": " this",
-      "startMs": 128340,
-      "endMs": 128540,
-      "timestampMs": 128440,
+      "startMs": 127940,
+      "endMs": 128140,
+      "timestampMs": 128040,
       "confidence": null
     },
     {
       "text": " setup",
-      "startMs": 128540,
-      "endMs": 128960,
-      "timestampMs": 128750,
+      "startMs": 128140,
+      "endMs": 128560,
+      "timestampMs": 128350,
       "confidence": null
     },
     {
       "text": " if",
-      "startMs": 129053,
-      "endMs": 129133,
-      "timestampMs": 129093,
+      "startMs": 128653,
+      "endMs": 128733,
+      "timestampMs": 128693,
       "confidence": null
     },
     {
       "text": " you're",
-      "startMs": 129133,
-      "endMs": 129333,
-      "timestampMs": 129233,
+      "startMs": 128733,
+      "endMs": 128933,
+      "timestampMs": 128833,
       "confidence": null
     },
     {
       "text": " ever",
-      "startMs": 129333,
-      "endMs": 129453,
-      "timestampMs": 129393,
+      "startMs": 128933,
+      "endMs": 129053,
+      "timestampMs": 128993,
       "confidence": null
     },
     {
       "text": " having",
-      "startMs": 129453,
-      "endMs": 129773,
-      "timestampMs": 129613,
+      "startMs": 129053,
+      "endMs": 129358,
+      "timestampMs": 129206,
       "confidence": null
     },
     {
       "text": " problems.",
-      "startMs": 130693,
-      "endMs": 130913,
-      "timestampMs": 130803,
+      "startMs": 129358,
+      "endMs": 129763,
+      "timestampMs": 129560,
       "confidence": null
     },
     {
@@ -2451,13 +2431,6 @@ export const NARRATION_EDIT: NarrationEdit = {
       "startMs": 132905,
       "endMs": 133375,
       "timestampMs": 133140,
-      "confidence": null
-    },
-    {
-      "text": " and",
-      "startMs": 134088,
-      "endMs": 134333,
-      "timestampMs": 134211,
       "confidence": null
     }
   ],
@@ -3459,71 +3432,71 @@ export const NARRATION_EDIT: NarrationEdit = {
     "files-copy": [
       {
         "text": "If",
-        "ms": 111300
+        "ms": 112250
       },
       {
         "text": "you",
-        "ms": 112243
+        "ms": 112370
       },
       {
         "text": "wanted",
-        "ms": 112403
+        "ms": 112530
       },
       {
         "text": "to",
-        "ms": 112583
+        "ms": 112710
       },
       {
         "text": "look",
-        "ms": 112683
+        "ms": 112810
       },
       {
         "text": "at",
-        "ms": 112903
+        "ms": 113030
       },
       {
         "text": "your",
-        "ms": 112983
+        "ms": 113110
       },
       {
         "text": "images,",
-        "ms": 113403
+        "ms": 113530
       },
       {
         "text": "you'd",
-        "ms": 114143
+        "ms": 114270
       },
       {
         "text": "be",
-        "ms": 114323
+        "ms": 114450
       },
       {
         "text": "able",
-        "ms": 114403
+        "ms": 114530
       },
       {
         "text": "to",
-        "ms": 114523
+        "ms": 114650
       },
       {
         "text": "copy",
-        "ms": 114663
+        "ms": 114790
       },
       {
         "text": "stuff",
-        "ms": 115043
+        "ms": 115170
       },
       {
         "text": "over",
-        "ms": 115443
+        "ms": 115570
       },
       {
         "text": "right",
-        "ms": 115863
+        "ms": 115990
       },
       {
         "text": "here.",
-        "ms": 116163
+        "ms": 116290
       }
     ],
     "shell-logs": [
@@ -3611,51 +3584,51 @@ export const NARRATION_EDIT: NarrationEdit = {
     "setup-again": [
       {
         "text": "you",
-        "ms": 127400
+        "ms": 127250
       },
       {
         "text": "can",
-        "ms": 127840
+        "ms": 127440
       },
       {
         "text": "come",
-        "ms": 127960
+        "ms": 127560
       },
       {
         "text": "back",
-        "ms": 128100
+        "ms": 127700
       },
       {
         "text": "to",
-        "ms": 128240
+        "ms": 127840
       },
       {
         "text": "this",
-        "ms": 128340
+        "ms": 127940
       },
       {
         "text": "setup",
-        "ms": 128540
+        "ms": 128140
       },
       {
         "text": "if",
-        "ms": 129053
+        "ms": 128653
       },
       {
         "text": "you're",
-        "ms": 129133
+        "ms": 128733
       },
       {
         "text": "ever",
-        "ms": 129333
+        "ms": 128933
       },
       {
         "text": "having",
-        "ms": 129453
+        "ms": 129053
       },
       {
         "text": "problems.",
-        "ms": 130693
+        "ms": 129358
       }
     ],
     "thank-you": [
@@ -3678,10 +3651,6 @@ export const NARRATION_EDIT: NarrationEdit = {
       {
         "text": "time",
         "ms": 132905
-      },
-      {
-        "text": "and",
-        "ms": 134088
       }
     ]
   }

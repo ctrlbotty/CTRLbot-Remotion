@@ -49,14 +49,17 @@ export const MIRROR_WALKTHROUGH_NARRATION_CLIPS = [
   {id: 'apps', at: 98.25, sourceStart: 388.7, sourceEnd: 401.67},
 
   // files: "If you wanted to look at your images, you'd be able to copy stuff over right here."
-  {id: 'files-copy', at: 112.25, sourceStart: 454.3, sourceEnd: 459.2},
+  // notBefore: Whisper stretches "If" back over "…file system, right?".
+  {id: 'files-copy', at: 112.25, sourceStart: 454.3, sourceEnd: 459.2, notBefore: 454.45},
 
   // tools: "we have also a shell … look at the logs for the device if you want."
   {id: 'shell-logs', at: 119.25, sourceStart: 473.0, sourceEnd: 479.6},
 
   // again: "you can come back to this setup if you're ever having problems."
-  {id: 'setup-again', at: 127.25, sourceStart: 494.25, sourceEnd: 497.65},
+  // notBefore: "So, a little" is a false start run into "you can"; the clip starts after it.
+  // notAfter: a "Bye" follows "problems." at 497.87s.
+  {id: 'setup-again', at: 127.25, sourceStart: 494.25, sourceEnd: 497.65, notBefore: 494.65, notAfter: 497.75},
 
   // close: "Thank you for your time"
-  {id: 'thank-you', at: 131.75, sourceStart: 500.85, sourceEnd: 503.1},
+  {id: 'thank-you', at: 131.75, sourceStart: 500.85, sourceEnd: 503.0},
 ];

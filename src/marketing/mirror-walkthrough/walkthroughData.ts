@@ -10,6 +10,7 @@
 
 import type {Region} from '../../camera/Camera';
 import {MIRROR_VIEWPORT, mirrorRegions} from '../../app-ui/mirror/mirrorData';
+import {connectionRegions, CONNECTION_VIEWPORT} from '../../app-ui/ConnectionPanel';
 import type {Step} from '../WalkthroughCopy';
 import {cueFrame, type WalkthroughBeat} from '../WalkthroughShell';
 import {NARRATION_EDIT} from './mirrorWalkthroughNarration.generated';
@@ -193,19 +194,31 @@ export const COPY: Record<BeatName, BeatCopyData> = {
   },
 };
 
+const hostFieldBase = connectionRegions('tablet').hostField;
+const screenReg = mirrorRegions.mirroredScreen(
+  {width: CONNECTION_VIEWPORT.tablet.width, height: CONNECTION_VIEWPORT.tablet.height},
+  'none',
+);
+export const PASTE_HOST_REGION: Region = {
+  x: Math.round(screenReg.x + hostFieldBase.x * screenReg.scale - 20),
+  y: Math.round(screenReg.y + hostFieldBase.y * screenReg.scale - 20),
+  width: Math.round(hostFieldBase.width * screenReg.scale + 40),
+  height: Math.round(hostFieldBase.height * screenReg.scale + 40),
+};
+
 /** Regions for each beat from the Shot list and mirrorRegions. */
 export const BEAT_REGIONS: Record<string, Region | Region[]> = {
   proof: [mirrorRegions.stage, mirrorRegions.mirroredScreen()],
   setup: mirrorRegions.sidePanel,
-  debugging: mirrorRegions.setupStep(3),
+  debugging: [mirrorRegions.sidePanel, mirrorRegions.setupStep(3)],
   connect: [mirrorRegions.setupStep(4), mirrorRegions.devicesCard, mirrorRegions.stage],
   frame: [mirrorRegions.studioFrames, mirrorRegions.stage],
-  paste: mirrorRegions.mirroredScreen(),
+  paste: [mirrorRegions.mirroredScreen(), PASTE_HOST_REGION],
   capture: {x: 404, y: 32, width: 1196, height: 908},
-  apps: mirrorRegions.sidePanel,
-  files: mirrorRegions.sidePanel,
-  tools: mirrorRegions.sidePanel,
-  again: {x: 0, y: 32, width: 404, height: 908},
+  apps: [mirrorRegions.sidePanel, {x: 64, y: 440, width: 340, height: 200}],
+  files: [{x: 64, y: 32, width: 600, height: 908}, mirrorRegions.sidePanel],
+  tools: [{x: 64, y: 32, width: 340, height: 450}, mirrorRegions.sidePanel],
+  again: [mirrorRegions.sidePanel, {x: 0, y: 32, width: 404, height: 908}],
 };
 
 /**

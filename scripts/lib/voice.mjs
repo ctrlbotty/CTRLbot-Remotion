@@ -399,16 +399,32 @@ export const planClip = (voice, words, heard, clip, {verbatim = false, debug = f
             ? 'extra'
             : 'silent',
   );
+  // A clip's optional hard edges, `notBefore` and `notAfter`, in source seconds: when Whisper
+  // stretches the first or last word across the pause, the letters can claim the sound of
+  // the phrase beside it. A stretch wholly outside the edges is not the clip's, and letters
+  // heard there spell nothing of the clip's words.
+  const outside = new Set();
+  found.forEach((isl, i) => {
+    if ((clip.notBefore != null && isl.end <= clip.notBefore) || (clip.notAfter != null && isl.start >= clip.notAfter)) {
+      if (kind[i] === 'keep' || kind[i] === 'mixed') kind[i] = 'other';
+      outside.add(i);
+    }
+  });
+  if (outside.size) {
+    letterTimes.forEach((times, k) => {
+      letterTimes[k] = times.filter((t) => !outside.has(islandAt(t)));
+    });
+  }
   // A word the letter model spelled nothing for ("mode", said softly at the end of a line)
   // still has a sound: a silent stretch its Whisper time covers, beside a spelled word, is it.
   if (heard) {
     const spelledNear = (i) =>
-      [i - 1, i + 1].some((j) => owners[j]?.keep.length && Math.abs((j < i ? found[i].start - found[j].end : found[j].start - found[i].end)) < 0.3);
+      [i - 1, i + 1].some((j) => owners[j]?.keep.length && !outside.has(j) && Math.abs((j < i ? found[i].start - found[j].end : found[j].start - found[i].end)) < 0.3);
     local.forEach((word, k) => {
       if (role[k] !== 'keep' || letterTimes[k].length) return;
       found.forEach((isl, i) => {
         const overlap = Math.min(isl.end, word.end) - Math.max(isl.start, word.start);
-        if (kind[i] !== 'silent' || overlap < (isl.end - isl.start) * 0.5 || !spelledNear(i)) return;
+        if (kind[i] !== 'silent' || outside.has(i) || overlap < (isl.end - isl.start) * 0.5 || !spelledNear(i)) return;
         kind[i] = 'keep';
         owners[i].keep.push({ch: '?', t: isl.start + 0.01, word: k});
         letterTimes[k].push(isl.start + 0.01);
@@ -420,9 +436,13 @@ export const planClip = (voice, words, heard, clip, {verbatim = false, debug = f
   if (first === -1) throw new Error(`clip ${clip.id}: none of its words could be found in the waveform`);
   // A stop's release (the burst after "network" closes on its k) or a soft onset can stand
   // apart from its word as a sliver the letter model spelled nothing in. It belongs to it.
-  const sliver = (i) => kind[i] === 'silent' && found[i].end - found[i].start < 0.12;
+  const sliver = (i) => kind[i] === 'silent' && !outside.has(i) && found[i].end - found[i].start < 0.12;
   if (first > 0 && kind[first] !== 'mixed' && sliver(first - 1) && found[first].start - found[first - 1].end < 0.1) first--;
   if (last + 1 < found.length && kind[last] !== 'mixed' && sliver(last + 1) && found[last + 1].start - found[last].end < 0.12) last++;
+  // Inside a hard end, unspelled sound run straight on from the last word is that word's tail.
+  if (clip.notAfter != null) {
+    while (last + 1 < found.length && !outside.has(last + 1) && kind[last + 1] === 'silent' && found[last + 1].start - found[last].end < 0.1) last++;
+  }
 
   if (heard && !verbatim) {
     // Letters with no word, in a stretch with the same word on both sides of it, are that
@@ -503,6 +523,11 @@ export const planClip = (voice, words, heard, clip, {verbatim = false, debug = f
     const floor = (found[head - 1]?.end ?? from) + 0.01;
     start = Math.max(floor, softStart(voice, found[head].start, floor) - LEAD);
   }
+  // A hard edge inside the opening stretch ("So you", said as one sound) starts the clip there.
+  if (clip.notBefore != null && start < clip.notBefore) {
+    start = clip.notBefore;
+    notes.push(`starts at its notBefore, ${round(start)}s`);
+  }
   let end;
   let fadeOut = FADE_OUT;
   const closing = owners[foot];
@@ -567,7 +592,7 @@ export const planClip = (voice, words, heard, clip, {verbatim = false, debug = f
   const timed = [];
   local.forEach((word, k) => {
     if (role[k] !== 'keep') return;
-    const times = letterTimes[k].filter((t) => !gone.has(islandAt(t)));
+    const times = letterTimes[k].filter((t) => !gone.has(islandAt(t)) && !outside.has(islandAt(t)) && (clip.notBefore == null || t >= start));
     timed.push(times.length ? {text: word.text, first: times[0], last: times.at(-1)} : {text: word.text, guessed: true});
   });
   timed.forEach((word, k) => {

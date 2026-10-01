@@ -410,7 +410,7 @@ After approval, close out per `AGENTS.md`: archive this brief as
 - [x] T13: Build the capture, apps and files beats to the Shot list — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx, src/app-ui/mirror/Mirror.tsx, src/marketing/mirror-walkthrough/walkthroughData.ts
   - Never highlight a system package. Any `Mirror.tsx` addition is an optional prop.
 - [x] T14: Build the tools and again beats to the Shot list — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx, src/marketing/mirror-walkthrough/MirrorWalkthrough.tsx, src/marketing/mirror-walkthrough/walkthroughData.ts
-- [ ] T15: Run the feature gates on both shapes, render both, write the .srt, check the voice, and record the results here — files: videos/mirror-walkthrough.md
+- [x] T15: Run the feature gates on both shapes, render both, write the .srt, check the voice, and record the results here — files: videos/mirror-walkthrough.md
   - Gates and renders:
     - `npm run check`.
     - `npm run video:lint -- --destination=social-walkthrough` and `--destination=social-walkthrough-vertical`.
@@ -461,6 +461,23 @@ After approval, close out per `AGENTS.md`: archive this brief as
 > Appended on PASS WITH NOTES. Not blockers; check these during the contact sheet review.
 
 - T8: Narration edit built with 17 clips, 136.0s total duration. Beat 'again' hold is 0.577s (clip 'setup-again' measured 4.238s from 126.685s to 130.923s inside the 4.5s beat 127.0s–131.5s). All other 12 beats maintain >= 1.5s hold.
+- T15, 2026-10-01 (finished by Claude after Gemini's run stalled at the portrait inert gate):
+  - **Portrait inert, 73% → 29%.** Per-beat measurement showed the chapters fully static between moves (median change 0.01), because `buildChapterShots` held each region exactly. `WalkthroughShell` now drifts every held shot by 8%: it pulls back, so the named subject stays whole, and pushes in only when the shot is already too wide to pull back. The last hold drifts through the segment's crossfade. Landscape 53% → 25%. Both are well under 60%; the approved First-Run cuts sit at 40–47%, so this is livelier. Nathan's call at review.
+  - **Gemini's T15 edits are kept:** multi-region shots for debugging, paste (`PASTE_HOST_REGION`), apps, files, tools and again, and the 20-frame move into each region.
+  - **Voice.** Comparing the render's Whisper words with the edit's found three real clip-edge leaks. They are fixed with new optional `notBefore` / `notAfter` hard edges on a clip (`scripts/lib/voice.mjs`). The edges are off by default, so `shorts -- build S02 S03` leaves `shorts.generated.ts` and both shorts' audio unchanged.
+    - `files-copy` opened on the tail of "…file system, right?" (notBefore 454.45).
+    - `setup-again` opened on the false start "So, a little" (notBefore 494.65) and closed on a "Bye" (notAfter 497.75).
+    - `thank-you`'s captions carried a stray "and" (sourceEnd 503.0).
+    - Beat `again` now holds 1.5s after its clip.
+  - **Remaining Whisper differences are spelling or mis-timing, not the audio:** "gonna"/"going", "a little bit a better", a hallucinated phrase inside `usb-debugging`, a "you" after "voice", and missing first words "you" (apps), "If" (files-copy) and "Thank" (thank-you). Each of those clip heads measures -18 to -20 dB RMS where the word should be, and the gaps between clips are digital silence.
+  - **Gates:**
+    - `check` OK. `video:lint` 0 errors, 0 warnings for both destinations. `validate` 13 beats, 136s.
+    - Landscape `out/mirror-walkthrough.mp4` (44.9 MB): 25% inert, content 100%.
+    - Portrait `out/mirror-walkthrough-portrait.mp4` (34.1 MB): 29% inert, content 72% (warn: the Mirror window is letterboxed in 9:16).
+    - `narration:check` on both: 136.04s, -16.10 LUFS, -4.37 dBTP.
+    - `out/mirror-walkthrough.srt`: 50 captions, 296 words, from the edit.
+  - **Regressions:** the six `Proof-Mirror-*` stills and frame 600 of `terminator-walkthrough`, `iot-phone-walkthrough` and `iot-tablet-walkthrough` render. None of them uses `WalkthroughShell` or the new planner path. `Proof-Walkthrough-Shell` now drifts, as intended.
+  - **Watch at review:** landscape `setup`, `files`, `tools` and `again` frame Mirror's narrow side panel by widening the shot to 16:9, so most of the frame is the mirrored tablet beside it.
 
 ## Contact sheet
 
