@@ -55,7 +55,7 @@ import {
 } from './marketing/iot-tablet-walkthrough/IotTabletWalkthrough';
 import {HubCell, hubCellDuration} from './marketing/hub-cell/HubCell';
 import {Short, assertShortReady} from './shorts/Short';
-import {MirrorAppsProof, MirrorDevicesProof, MirrorFilesProof, MirrorSetupProof, MirrorStudioProof} from './app-ui/mirror/MirrorProofs';
+import {MirrorAppsProof, MirrorDevicesProof, MirrorFilesProof, MirrorPointerProof, MirrorSetupProof, MirrorStudioProof} from './app-ui/mirror/MirrorProofs';
 import {TermRawTcpProof, TermScanProof, TermSerialProof, TermServerProof, TermSshProof} from './app-ui/term/TermProofs';
 import {SHORTS, compositionId, frameSize, shortSeconds} from './shorts/shortsData';
 import {SHORT_EXAMPLE} from './shorts/example';
@@ -631,6 +631,7 @@ export const RemotionRoot = () => (
       <Still id="Proof-Mirror-Studio" component={MirrorStudioProof} width={1600} height={940} />
       <Still id="Proof-Mirror-Apps" component={MirrorAppsProof} width={1600} height={940} />
       <Still id="Proof-Mirror-Files" component={MirrorFilesProof} width={1600} height={940} />
+      <Still id="Proof-Mirror-Pointer" component={MirrorPointerProof} width={1600} height={940} />
       <Still id="Brand-Background-Phone" component={BrandBackground} width={1080} height={1920} />
       <Still id="Brand-Background-Landscape" component={BrandBackground} width={1920} height={1080} />
       <Still id="Proof-Stage" component={StageProof} width={1920} height={1080} />

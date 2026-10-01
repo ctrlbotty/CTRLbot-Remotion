@@ -352,7 +352,7 @@ After approval, close out per `AGENTS.md`: archive this brief as
     - `setupStep(n)`, `devicesCard`, `studioFrames` and `filesDrop`.
   - Where a panel lays its rows out by flow, give those rows fixed heights from named constants, so a region can be derived and never measured.
   - Verify: `npm run check`; the five `Proof-Mirror-*` stills look exactly as before.
-- [ ] T4: Add a desktop `PointerClick` annotation to `Annotations.tsx` and a `Proof-Mirror-Pointer` still that places it with `mirrorRegions` — files: src/camera/Annotations.tsx, src/app-ui/mirror/MirrorProofs.tsx, src/Root.tsx
+- [x] T4: Add a desktop `PointerClick` annotation to `Annotations.tsx` and a `Proof-Mirror-Pointer` still that places it with `mirrorRegions` — files: src/camera/Annotations.tsx, src/app-ui/mirror/MirrorProofs.tsx, src/Root.tsx
   - What it draws: an arrow pointer that travels from `from` to `to` (content coordinates) on the house camera-move easing, arrives about 6 frames before `at`, then a press. The press is a slight scale dip and one ring in CTRLbot blue `#008FD4`, from `theme.ts`.
   - It also takes an optional `dragTo` for the files beat.
   - It sits inside `<Camera>` like `TapIndicator`, with interpolations inline and clamped. `TapIndicator` is untouched.

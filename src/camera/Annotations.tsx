@@ -402,3 +402,172 @@ export const Callout = ({
     </Interactive.Div>
   );
 };
+
+/**
+ * A desktop mouse pointer that travels from `from` to `to` in content coordinates
+ * on the house camera-move easing, arrives ~6 frames before `at`, then presses.
+ * The press dips slightly in scale and emits one expanding ring in CTRLbot blue (#008FD4).
+ * Also supports an optional `dragTo` for drag operations. Sits inside <Camera>.
+ */
+export const PointerClick = ({
+  from: fromProp,
+  to,
+  at = 0,
+  dragTo,
+  dragDuration = 20,
+  fadeOutAt,
+  name = 'Pointer',
+}: {
+  from?: {x: number; y: number};
+  to: {x: number; y: number};
+  at?: number;
+  dragTo?: {x: number; y: number};
+  dragDuration?: number;
+  fadeOutAt?: number;
+  name?: string;
+}) => {
+  const frame = useCurrentFrame();
+
+  const from = fromProp ?? {x: to.x + 80, y: to.y + 80};
+  const arriveAt = at - 6;
+  const startMove = arriveAt - 18;
+
+  const RING_SIZE = 44;
+
+  return (
+    <>
+      <Interactive.Div
+        name={`${name} ring`}
+        style={{
+          position: 'absolute',
+          left: to.x - RING_SIZE / 2,
+          top: to.y - RING_SIZE / 2,
+          width: RING_SIZE,
+          height: RING_SIZE,
+          borderRadius: 999,
+          border: '2px solid #008FD4',
+          pointerEvents: 'none',
+          opacity: interpolate(frame, [at, at + 4, at + 20], [0, 0.9, 0], {
+            easing: Easing.linear,
+            extrapolateLeft: 'clamp',
+            extrapolateRight: 'clamp',
+          }),
+          scale: interpolate(frame, [at, at + 20], [0.35, 1.25], {
+            easing: Easing.bezier(0.16, 1, 0.3, 1),
+            output: 'perceptual-scale',
+            extrapolateLeft: 'clamp',
+            extrapolateRight: 'clamp',
+          }),
+        }}
+      />
+      <Interactive.Div
+        name={`${name} cursor`}
+        style={{
+          position: 'absolute',
+          left: dragTo
+            ? frame < at + 6
+              ? interpolate(frame, [startMove, arriveAt], [from.x, to.x], {
+                  easing: Easing.bezier(0.16, 1, 0.3, 1),
+                  extrapolateLeft: 'clamp',
+                  extrapolateRight: 'clamp',
+                })
+              : interpolate(frame, [at + 6, at + 6 + dragDuration], [to.x, dragTo.x], {
+                  easing: Easing.bezier(0.16, 1, 0.3, 1),
+                  extrapolateLeft: 'clamp',
+                  extrapolateRight: 'clamp',
+                })
+            : interpolate(frame, [startMove, arriveAt], [from.x, to.x], {
+                easing: Easing.bezier(0.16, 1, 0.3, 1),
+                extrapolateLeft: 'clamp',
+                extrapolateRight: 'clamp',
+              }),
+          top: dragTo
+            ? frame < at + 6
+              ? interpolate(frame, [startMove, arriveAt], [from.y, to.y], {
+                  easing: Easing.bezier(0.16, 1, 0.3, 1),
+                  extrapolateLeft: 'clamp',
+                  extrapolateRight: 'clamp',
+                })
+              : interpolate(frame, [at + 6, at + 6 + dragDuration], [to.y, dragTo.y], {
+                  easing: Easing.bezier(0.16, 1, 0.3, 1),
+                  extrapolateLeft: 'clamp',
+                  extrapolateRight: 'clamp',
+                })
+            : interpolate(frame, [startMove, arriveAt], [from.y, to.y], {
+                easing: Easing.bezier(0.16, 1, 0.3, 1),
+                extrapolateLeft: 'clamp',
+                extrapolateRight: 'clamp',
+              }),
+          transformOrigin: '0 0',
+          scale: dragTo
+            ? interpolate(
+                frame,
+                [at, at + 3, at + 6 + dragDuration, at + 6 + dragDuration + 4],
+                [1, 0.92, 0.92, 1],
+                {
+                  easing: Easing.bezier(0.16, 1, 0.3, 1),
+                  extrapolateLeft: 'clamp',
+                  extrapolateRight: 'clamp',
+                },
+              )
+            : interpolate(frame, [at, at + 3, at + 10], [1, 0.92, 1], {
+                easing: Easing.bezier(0.16, 1, 0.3, 1),
+                extrapolateLeft: 'clamp',
+                extrapolateRight: 'clamp',
+              }),
+          opacity:
+            startMove > 0
+              ? fadeOutAt !== undefined
+                ? Math.min(
+                    interpolate(frame, [startMove - 6, startMove], [0, 1], {
+                      easing: Easing.linear,
+                      extrapolateLeft: 'clamp',
+                      extrapolateRight: 'clamp',
+                    }),
+                    interpolate(frame, [fadeOutAt, fadeOutAt + 8], [1, 0], {
+                      easing: Easing.linear,
+                      extrapolateLeft: 'clamp',
+                      extrapolateRight: 'clamp',
+                    }),
+                  )
+                : interpolate(frame, [startMove - 6, startMove], [0, 1], {
+                    easing: Easing.linear,
+                    extrapolateLeft: 'clamp',
+                    extrapolateRight: 'clamp',
+                  })
+              : fadeOutAt !== undefined
+                ? interpolate(frame, [fadeOutAt, fadeOutAt + 8], [1, 0], {
+                    easing: Easing.linear,
+                    extrapolateLeft: 'clamp',
+                    extrapolateRight: 'clamp',
+                  })
+                : 1,
+          pointerEvents: 'none',
+          zIndex: 100,
+        }}
+      >
+        <svg
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{
+            display: 'block',
+            filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45))',
+            overflow: 'visible',
+          }}
+        >
+          <path
+            d="M0 0 L0 17 L4.5 13 L8 20 L10.5 19 L7 12 L12.5 12 Z"
+            fill="#FFFFFF"
+            stroke="#000000"
+            strokeWidth={1.5}
+            strokeLinejoin="round"
+          />
+        </svg>
+      </Interactive.Div>
+    </>
+  );
+};
+

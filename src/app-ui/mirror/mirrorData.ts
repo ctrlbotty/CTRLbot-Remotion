@@ -129,7 +129,7 @@ const regionsObject = {
   toolbarCamera: {x: 1420, y: MIRROR_VIEWPORT.height - TOOLBAR_HEIGHT + 10, width: 36, height: 36},
   toolbarRecord: {x: 1458, y: MIRROR_VIEWPORT.height - TOOLBAR_HEIGHT + 10, width: 36, height: 36},
   setupStep,
-  installButton: {x: RAIL_WIDTH + PANEL_PADDING_X + 36, y: TITLE_BAR_HEIGHT + PANEL_HEADER_HEIGHT + 48, width: 105, height: 32},
+  installButton: {x: RAIL_WIDTH + PANEL_PADDING_X + 36, y: TITLE_BAR_HEIGHT + PANEL_HEADER_HEIGHT + 78, width: 84, height: 32},
   devicesCard: {x: RAIL_WIDTH + PANEL_PADDING_X, y: TITLE_BAR_HEIGHT + PANEL_HEADER_HEIGHT, width: SIDE_PANEL_WIDTH - PANEL_PADDING_X * 2, height: 288},
   devicesReadyBadge: {x: RAIL_WIDTH + PANEL_PADDING_X + 56, y: TITLE_BAR_HEIGHT + PANEL_HEADER_HEIGHT + 48, width: 50, height: 20},
   startMirroringButton: {x: RAIL_WIDTH + PANEL_PADDING_X + 16, y: TITLE_BAR_HEIGHT + PANEL_HEADER_HEIGHT + 88 + 152, width: 164, height: 32},
