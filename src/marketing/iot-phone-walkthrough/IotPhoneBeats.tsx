@@ -12,6 +12,14 @@ import {
   type DeviceCommand,
   type TerminalLine,
 } from '../../app-ui/ConnectionPanel';
+import {ConnectTest} from '../../app-ui/ConnectTest';
+import {
+  ActivitiesPresets,
+  DEFAULT_COMMAND_STEPS,
+} from '../../app-ui/ActivitiesPresets';
+import {ActivitiesSwitch} from '../../app-ui/ActivitiesSwitch';
+import {ActivitiesAudio} from '../../app-ui/ActivitiesAudio';
+import {EuiPowerCapture} from '../../app-ui/EuiPower';
 import {PhoneNavMenu} from '../../app-ui/PhoneNavMenu';
 import {appColors, appDimens} from '../../design/tokens.generated';
 import {font} from '../../design/theme';
@@ -482,6 +490,163 @@ export const TerminalBeat: React.FC<{frame: number; frames: number}> = ({frame})
   );
 };
 
+/**
+ * Test beat (20s = 600 frames):
+ * Test Device Drivers: the tab bar walks Buttons (power, D-pad), Switcher
+ * (Out 1 over the inputs), Terminal and Web page.
+ */
+export const TestBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  let testTab: 'buttons' | 'switcher' | 'terminal' | 'web' = 'buttons';
+  if (frame >= 450) {
+    testTab = 'web';
+  } else if (frame >= 300) {
+    testTab = 'terminal';
+  } else if (frame >= 150) {
+    testTab = 'switcher';
+  }
+
+  return (
+    <ConnectTest
+      device="phone"
+      topTab="test"
+      testTab={testTab}
+      deviceName="EPSON PowerLite - New"
+      connected
+    />
+  );
+};
+
+/**
+ * Activities beat (20s = 600 frames):
+ * Presets lists Power On and Power Off; Power On opens with the Epson's
+ * power-on command already in it.
+ */
+export const ActivitiesBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const isEdit = frame >= 220;
+
+  return (
+    <ActivitiesPresets
+      device="phone"
+      activeTab="presets"
+      mode={isEdit ? 'edit' : 'list'}
+      editPresetName="Power On"
+      editPresetIconColor={appColors.green}
+      commandSteps={isEdit ? DEFAULT_COMMAND_STEPS : []}
+    />
+  );
+};
+
+/**
+ * Switch-Audio beat (17.5s = 525 frames):
+ * Switch shows many-to-one on the Epson; Audio shows the Epson's volume
+ * up, down and set mapped.
+ */
+export const SwitchAudioBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const showAudio = frame >= 260;
+
+  if (showAudio) {
+    return (
+      <ActivitiesAudio
+        device="phone"
+        activeTab="audio"
+        deviceName="EPSON PowerLite - New"
+      />
+    );
+  }
+
+  return (
+    <ActivitiesSwitch
+      device="phone"
+      activeTab="switch"
+      switchType="many_to_one"
+      deviceName="EPSON PowerLite - New"
+    />
+  );
+};
+
+/**
+ * EUI beat (25.5s = 765 frames):
+ * Welcome, power pressed; a source is picked for the screen, the volume moves,
+ * then Powering Off.
+ */
+export const EuiBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  if (frame < 140) {
+    // Welcome screen with power button
+    return <EuiPowerCapture device="phone" state="off" />;
+  }
+
+  if (frame >= 600) {
+    // Powering off state
+    return (
+      <EuiPowerCapture
+        device="phone"
+        state="powering-off"
+        durationInFrames={165}
+        volume={0.72}
+      />
+    );
+  }
+
+  // Active room control
+  const selectedInput = frame < 260 ? null : 0;
+  const volume =
+    frame < 440
+      ? 0.42
+      : interpolate(frame, [440, 560], [0.42, 0.72], {
+          extrapolateLeft: 'clamp',
+          extrapolateRight: 'clamp',
+        });
+
+  return (
+    <PhoneEuiManyToOne
+      inputs={[
+        {label: 'Input 1'},
+        {label: 'Input 2'},
+        {label: 'HDMI 1'},
+        {label: 'HDMI 2'},
+      ]}
+      selectedInput={selectedInput}
+      volume={volume}
+      outputLabel="DISPLAY 1"
+    />
+  );
+};
+
+/**
+ * Exit beat (9s = 270 frames):
+ * The setup button is held; "Keep holding to return to Setup" shows;
+ * the setup menu returns.
+ */
+export const ExitBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const returnedToSetup = frame >= 140;
+
+  if (returnedToSetup) {
+    return (
+      <ActivitiesPresets
+        device="phone"
+        activeTab="presets"
+        mode="list"
+        toast="Switching activity saved to end UI"
+      />
+    );
+  }
+
+  return (
+    <PhoneEuiManyToOne
+      inputs={[
+        {label: 'Input 1'},
+        {label: 'Input 2'},
+        {label: 'HDMI 1'},
+        {label: 'HDMI 2'},
+      ]}
+      selectedInput={0}
+      volume={0.72}
+      outputLabel="DISPLAY 1"
+      showExitHint
+    />
+  );
+};
+
 export const BEAT_RENDERERS: Partial<
   Record<BeatName, React.FC<{frame: number; frames: number}>>
 > = {
@@ -492,4 +657,9 @@ export const BEAT_RENDERERS: Partial<
   epson: EpsonBeat,
   add: AddBeat,
   terminal: TerminalBeat,
+  test: TestBeat,
+  activities: ActivitiesBeat,
+  'switch-audio': SwitchAudioBeat,
+  eui: EuiBeat,
+  exit: ExitBeat,
 };
