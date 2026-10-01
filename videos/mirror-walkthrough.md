@@ -404,7 +404,7 @@ After approval, close out per `AGENTS.md`: archive this brief as
   - Pass `MIRROR_WALKTHROUGH_EDIT` from the generated file and keep `<PromoPreload />`. `NarrationTrack` and `captionsFromClips` leave this cut.
   - `proof` and `again` fall back to the open and close renderers.
   - Verify: the per-task check on `--beat=poster`, `open`, `setup` and `close` in both shapes. `opens-composed` holds.
-- [ ] T11: Build the proof, setup and debugging beats to the Shot list — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx
+- [x] T11: Build the proof, setup and debugging beats to the Shot list — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx
 - [ ] T12: Build the connect, frame and paste beats to the Shot list, adding any pressed state a pointer click needs — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx, src/app-ui/mirror/Mirror.tsx
   - Any `Mirror.tsx` addition is an optional prop; defaults unchanged. `paste` passes `frameStyle="none"`, and its host field comes from `connectionRegions('tablet')` scaled into `mirroredScreen`.
 - [ ] T13: Build the capture, apps and files beats to the Shot list — files: src/marketing/mirror-walkthrough/MirrorBeats.tsx, src/app-ui/mirror/Mirror.tsx

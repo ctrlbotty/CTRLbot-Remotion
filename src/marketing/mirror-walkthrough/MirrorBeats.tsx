@@ -12,14 +12,31 @@ import {
   StudioPanel,
   type Mirrored,
 } from '../../app-ui/mirror/Mirror';
-import {MIRROR_CATALOG, MIRROR_DEVICE} from '../../app-ui/mirror/mirrorData';
-import {CATALOG_VIEWPORT, DriverCatalog} from '../../app-ui/DriverCatalog';
+import {
+  MIRROR_CATALOG,
+  MIRROR_DEVICE,
+  mirrorRegions,
+} from '../../app-ui/mirror/mirrorData';
+import {
+  CATALOG_VIEWPORT,
+  catalogRegions,
+  DriverCatalog,
+} from '../../app-ui/DriverCatalog';
 import {
   ConnectionPanel,
   CONNECTION_VIEWPORT,
   type DeviceCommand,
 } from '../../app-ui/ConnectionPanel';
-import {BEATS, setupStepAt, type BeatName} from './walkthroughData';
+import {FocusRing, PointerClick, Spotlight} from '../../camera/Annotations';
+import {BEATS, CUE_FRAMES, setupStepAt, type BeatName} from './walkthroughData';
+
+const CONNECTION_COMMANDS: DeviceCommand[] = [
+  {label: 'Power On', reference: 'PWR ON\\r'},
+  {label: 'Power Off', reference: 'PWR OFF\\r'},
+  {label: 'Power Toggle', reference: 'KEY 01\\r'},
+  {label: 'Volume Up', reference: 'KEY 56\\r'},
+  {label: 'Aspect', reference: 'ASPECT 30\\r'},
+];
 
 const catalog = (frame: number, frames: number): Mirrored => ({
   width: CATALOG_VIEWPORT.tablet.width,
@@ -42,64 +59,182 @@ const IDLE_STAGE = {
   detail: 'Plug a phone in over USB with USB debugging turned on, then pick it from the Devices panel.',
 };
 
-/**
- * Open beat (16s): Mirror window with the tablet live on the stage,
- * Devices panel showing the tablet mirroring, catalog scrolling.
- */
-export const OpenBeat: React.FC<{frame: number; frames: number}> = ({
-  frame,
-  frames,
-}) => (
-  <MirrorApp
-    panel="devices"
-    status={`Mirroring ${MIRROR_DEVICE.name}`}
-    hasDevice
-    side={<DevicesPanel selected details live />}
-    stage={<MirrorStage mirrored={catalog(frame, frames)} />}
-  />
-);
+const proofDriverScreen = (
+  frame: number,
+  cueProof: number,
+): Mirrored => {
+  if (frame >= cueProof + 10) {
+    return {
+      width: CONNECTION_VIEWPORT.tablet.width,
+      height: CONNECTION_VIEWPORT.tablet.height,
+      screen: (
+        <ConnectionPanel
+          device="tablet"
+          deviceName={`${MIRROR_CATALOG[0].manufacturer} ${MIRROR_CATALOG[0].model}`}
+          protocol="TCP"
+          host=""
+          port="3629"
+          connected={false}
+          commands={CONNECTION_COMMANDS}
+          terminal={[]}
+        />
+      ),
+    };
+  }
+
+  return {
+    width: CATALOG_VIEWPORT.tablet.width,
+    height: CATALOG_VIEWPORT.tablet.height,
+    screen: (
+      <DriverCatalog
+        device="tablet"
+        drivers={MIRROR_CATALOG}
+        selectedIndex={frame >= cueProof ? 0 : undefined}
+        listScroll={0}
+      />
+    ),
+  };
+};
 
 /**
- * Setup beat (14.5s = 435 frames): Setup panel where the platform-tools bar fills and
+ * Proof beat (10s = 300 frames): Mirror window with the tablet live on the stage;
+ * pointer clicks a driver's + in the mirrored catalog, Mirror's ripple lands,
+ * and Configure Connection opens.
+ */
+export const ProofBeat: React.FC<{frame: number; frames: number}> = ({
+  frame,
+}) => {
+  const cueProof = CUE_FRAMES.mirrorWhatMirror - BEATS.proof.from;
+  const screenReg = mirrorRegions.mirroredScreen(
+    {width: CATALOG_VIEWPORT.tablet.width, height: CATALOG_VIEWPORT.tablet.height},
+    'none',
+  );
+  const addBtn = catalogRegions('tablet').addButton(0);
+  const btnCenterX = addBtn.x + addBtn.width / 2;
+  const btnCenterY = addBtn.y + addBtn.height / 2;
+  const pointerToX = screenReg.x + btnCenterX * screenReg.scale;
+  const pointerToY = screenReg.y + btnCenterY * screenReg.scale;
+  const rippleX = btnCenterX / CATALOG_VIEWPORT.tablet.width;
+  const rippleY = btnCenterY / CATALOG_VIEWPORT.tablet.height;
+
+  const ripple =
+    frame >= cueProof && frame < cueProof + 22
+      ? {
+          x: rippleX,
+          y: rippleY,
+          progress: interpolate(frame, [cueProof, cueProof + 20], [0, 1], {
+            extrapolateLeft: 'clamp',
+            extrapolateRight: 'clamp',
+          }),
+        }
+      : undefined;
+
+  return (
+    <>
+      <MirrorApp
+        panel="devices"
+        status={`Mirroring ${MIRROR_DEVICE.name}`}
+        hasDevice
+        side={<DevicesPanel selected details live />}
+        stage={
+          <MirrorStage
+            mirrored={proofDriverScreen(frame, cueProof)}
+            frameStyle="none"
+            ripple={ripple}
+          />
+        }
+      />
+      <PointerClick
+        to={{x: pointerToX, y: pointerToY}}
+        at={cueProof}
+        fadeOutAt={cueProof + 16}
+      />
+    </>
+  );
+};
+
+export const OpenBeat = ProofBeat;
+
+/**
+ * Setup beat (15s = 450 frames): Setup panel where the platform-tools bar fills and
  * step 1 ticks to *Android platform-tools installed*, then step 2, the ADB server, is up.
- * The step comes from `setupStepAt`, which the copy's checklist reads too.
+ * Spotlight isolates the side panel; PointerClick presses Install now.
  */
 export const SetupBeat: React.FC<{frame: number; frames: number}> = ({
   frame,
 }) => {
-  const downloaded = interpolate(frame, [0, 220], [0.15, 1.0], {
-    easing: Easing.bezier(0.45, 0, 0.55, 1),
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  const cueInstall = CUE_FRAMES.installAdbInstall - BEATS.setup.from;
+  const cueManage = CUE_FRAMES.installAdbManage - BEATS.setup.from;
+
+  const installBtn = mirrorRegions.installButton;
+  const installBtnX = installBtn.x + installBtn.width / 2;
+  const installBtnY = installBtn.y + installBtn.height / 2;
+
+  const step = setupStepAt(BEATS.setup.from + frame).step;
+  const installPressed = frame >= cueInstall && frame < cueInstall + 5;
+  const downloaded =
+    frame < cueInstall
+      ? undefined
+      : interpolate(frame, [cueInstall, cueManage], [0, 1.0], {
+          easing: Easing.bezier(0.45, 0, 0.55, 1),
+          extrapolateLeft: 'clamp',
+          extrapolateRight: 'clamp',
+        });
 
   return (
-    <MirrorApp
-      panel="setup"
-      status="No device connected"
-      hasDevice={false}
-      side={<SetupPanel step={setupStepAt(BEATS.setup.from + frame).step} downloaded={downloaded} />}
-      stage={<MirrorStage idle={IDLE_STAGE} />}
-    />
+    <>
+      <MirrorApp
+        panel="setup"
+        status="No device connected"
+        hasDevice={false}
+        side={
+          <SetupPanel
+            step={step}
+            downloaded={downloaded}
+            installPressed={installPressed}
+          />
+        }
+        stage={<MirrorStage idle={IDLE_STAGE} />}
+      />
+      <Spotlight region={mirrorRegions.sidePanel} />
+      <PointerClick
+        to={{x: installBtnX, y: installBtnY}}
+        at={cueInstall}
+        fadeOutAt={cueInstall + 16}
+      />
+    </>
   );
 };
 
 /**
  * Debugging beat (8s = 240 frames): Setup step 3, *Turn on USB debugging*, is active with
- * its Build number and Developer options instructions. USB only: the walkthrough does not
- * pair over Wi-Fi.
+ * its Build number and Developer options instructions. Spotlight and FocusRing on step 3.
  */
 export const DebuggingBeat: React.FC<{frame: number; frames: number}> = ({
   frame,
-}) => (
-  <MirrorApp
-    panel="setup"
-    status="No device connected"
-    hasDevice={false}
-    side={<SetupPanel step={setupStepAt(BEATS.debugging.from + frame).step} />}
-    stage={<MirrorStage idle={IDLE_STAGE} />}
-  />
-);
+}) => {
+  const cueUsb = CUE_FRAMES.usbDebugging - BEATS.debugging.from;
+  const baseStep3 = mirrorRegions.setupStep(3);
+  const step3Reg = {
+    ...baseStep3,
+    y: 170,
+    height: 100,
+  };
+
+  return (
+    <>
+      <MirrorApp
+        panel="setup"
+        status="No device connected"
+        hasDevice={false}
+        side={<SetupPanel step={setupStepAt(BEATS.debugging.from + frame).step} />}
+        stage={<MirrorStage idle={IDLE_STAGE} />}
+      />
+      <Spotlight region={step3Reg} appearAt={cueUsb} radius={6} />
+      <FocusRing region={step3Reg} appearAt={cueUsb} radius={6} />
+    </>
+  );
+};
 
 /**
  * Connect beat (14s = 420 frames):
@@ -185,13 +320,7 @@ export const FrameBeat: React.FC<{frame: number; frames: number}> = ({
   );
 };
 
-const CONNECTION_COMMANDS: DeviceCommand[] = [
-  {label: 'Power On', reference: 'PWR ON\\r'},
-  {label: 'Power Off', reference: 'PWR OFF\\r'},
-  {label: 'Power Toggle', reference: 'KEY 01\\r'},
-  {label: 'Volume Up', reference: 'KEY 56\\r'},
-  {label: 'Aspect', reference: 'ASPECT 30\\r'},
-];
+
 
 /**
  * Paste beat (14s = 420 frames):
