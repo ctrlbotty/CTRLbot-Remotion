@@ -20,6 +20,14 @@ import {
   type TerminalLine,
 } from '../../app-ui/ConnectionPanel';
 import {ConnectTest, type ConnectTestSubTab} from '../../app-ui/ConnectTest';
+import {
+  ActivitiesPresets,
+  DEFAULT_COMMAND_STEPS,
+} from '../../app-ui/ActivitiesPresets';
+import {ActivitiesSwitch} from '../../app-ui/ActivitiesSwitch';
+import {ActivitiesAudio} from '../../app-ui/ActivitiesAudio';
+import {EuiPowerCapture} from '../../app-ui/EuiPower';
+import {DiscoverDevices} from '../../app-ui/DiscoverDevices';
 import {appColors} from '../../design/tokens.generated';
 import {font} from '../../design/theme';
 import type {BeatName} from './iotTabletWalkthroughData';
@@ -373,6 +381,166 @@ export const TestBeat: React.FC<{frame: number; frames: number}> = ({frame}) => 
   );
 };
 
+/**
+ * Activities beat (19s = 570 frames):
+ * Presets lists Power On and Power Off; Power On opens with the Epson's
+ * power-on command already in it.
+ */
+export const ActivitiesBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const isEdit = frame >= 210;
+
+  return (
+    <ActivitiesPresets
+      device="tablet"
+      activeTab="presets"
+      mode={isEdit ? 'edit' : 'list'}
+      editPresetName="Power On"
+      editPresetIconColor={appColors.green}
+      commandSteps={isEdit ? DEFAULT_COMMAND_STEPS : []}
+    />
+  );
+};
+
+/**
+ * Switch-Audio beat (16s = 480 frames):
+ * Switch shows the Epson as the switcher; Audio shows its volume
+ * up, down and set mapped.
+ */
+export const SwitchAudioBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const showAudio = frame >= 240;
+
+  if (showAudio) {
+    return (
+      <ActivitiesAudio
+        device="tablet"
+        activeTab="audio"
+        deviceName="EPSON PowerLite - New"
+      />
+    );
+  }
+
+  return (
+    <ActivitiesSwitch
+      device="tablet"
+      activeTab="switch"
+      switchType="many_to_one"
+      deviceName="EPSON PowerLite - New"
+    />
+  );
+};
+
+/**
+ * EUI beat (24.5s = 735 frames):
+ * A source is picked for the display, the volume moves and mutes,
+ * then Powering Off and Welcome.
+ */
+export const EuiBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  if (frame >= 620) {
+    // Welcome screen with power button
+    return <EuiPowerCapture device="tablet" state="off" />;
+  }
+
+  if (frame >= 480) {
+    // Powering off state
+    return (
+      <EuiPowerCapture
+        device="tablet"
+        state="powering-off"
+        durationInFrames={140}
+        volume={0.72}
+        speakerMuted
+      />
+    );
+  }
+
+  // Active room control: source picked, volume moves, then mutes
+  const selectedInput = frame < 120 ? null : 0;
+  const volume =
+    frame < 220
+      ? 0.42
+      : interpolate(frame, [220, 340], [0.42, 0.72], {
+          extrapolateLeft: 'clamp',
+          extrapolateRight: 'clamp',
+        });
+  const speakerMuted = frame >= 380;
+
+  return (
+    <TabletEuiManyToOne
+      inputs={[
+        {label: 'Input 1'},
+        {label: 'Input 2'},
+        {label: 'HDMI 1'},
+        {label: 'HDMI 2'},
+      ]}
+      selectedInput={selectedInput}
+      volume={volume}
+      speakerMuted={speakerMuted}
+      outputLabel="Display 1"
+    />
+  );
+};
+
+/**
+ * Exit beat (8s = 240 frames):
+ * The setup button is held; "Keep holding to return to Setup" shows;
+ * the setup menu returns.
+ */
+export const ExitBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const returnedToSetup = frame >= 130;
+
+  if (returnedToSetup) {
+    return (
+      <ActivitiesPresets
+        device="tablet"
+        activeTab="presets"
+        mode="list"
+        toast="Switching activity saved to end UI"
+      />
+    );
+  }
+
+  return (
+    <TabletEuiManyToOne
+      inputs={[
+        {label: 'Input 1'},
+        {label: 'Input 2'},
+        {label: 'HDMI 1'},
+        {label: 'HDMI 2'},
+      ]}
+      selectedInput={0}
+      volume={0.72}
+      outputLabel="Display 1"
+      showExitHint
+    />
+  );
+};
+
+/**
+ * Discovery beat (20s = 600 frames):
+ * Discover Devices counts up as devices are found; each row shows its driver match or Add driver.
+ */
+export const DiscoveryBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const foundCount = Math.floor(
+    interpolate(frame, [0, 500], [3, 16], {
+      extrapolateLeft: 'clamp',
+      extrapolateRight: 'clamp',
+    }),
+  );
+  const scanningProgress = interpolate(frame, [0, 600], [10, 85], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+
+  return (
+    <DiscoverDevices
+      device="tablet"
+      foundCount={foundCount}
+      stillLooking
+      scanningProgress={scanningProgress}
+    />
+  );
+};
+
 export const BEAT_RENDERERS: Partial<
   Record<BeatName, React.FC<{frame: number; frames: number}>>
 > = {
@@ -384,4 +552,9 @@ export const BEAT_RENDERERS: Partial<
   add: AddBeat,
   terminal: TerminalBeat,
   test: TestBeat,
+  activities: ActivitiesBeat,
+  'switch-audio': SwitchAudioBeat,
+  eui: EuiBeat,
+  exit: ExitBeat,
+  discovery: DiscoveryBeat,
 };
