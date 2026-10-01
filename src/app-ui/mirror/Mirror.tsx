@@ -484,6 +484,7 @@ export const MirrorStage = ({
   ripple,
   recording,
   frameStyle = tabletFrame,
+  stageMargin = STAGE_MARGIN,
 }: {
   mirrored?: Mirrored;
   idle?: {title: string; detail: string; action?: string};
@@ -491,9 +492,11 @@ export const MirrorStage = ({
   ripple?: {x: number; y: number; progress: number};
   recording?: string;
   frameStyle?: FrameStyle | FrameSpec;
+  stageMargin?: number;
 }) => {
   const stageWidth = MIRROR_VIEWPORT.width - RAIL_WIDTH - SIDE_PANEL_WIDTH;
   const stageHeight = MIRROR_VIEWPORT.height - TITLE_BAR_HEIGHT - TOOLBAR_HEIGHT;
+  const margin = stageMargin ?? STAGE_MARGIN;
   let frame: ReactNode = null;
   if (mirrored) {
     const spec: FrameSpec | null =
@@ -506,7 +509,7 @@ export const MirrorStage = ({
     if (!spec) {
       const outerWidth = mirrored.width;
       const outerHeight = mirrored.height;
-      const scale = Math.min((stageWidth - STAGE_MARGIN * 2) / outerWidth, (stageHeight - STAGE_MARGIN * 2) / outerHeight);
+      const scale = Math.min((stageWidth - margin * 2) / outerWidth, (stageHeight - margin * 2) / outerHeight);
       frame = (
         <div style={{position: 'relative', width: outerWidth * scale, height: outerHeight * scale}}>
           <div
@@ -546,7 +549,7 @@ export const MirrorStage = ({
       const thickness = Math.round(shortEdge * spec.thickness) + innerBorder;
       const outerWidth = mirrored.width + thickness * 2;
       const outerHeight = mirrored.height + thickness * 2;
-      const scale = Math.min((stageWidth - STAGE_MARGIN * 2) / outerWidth, (stageHeight - STAGE_MARGIN * 2) / outerHeight);
+      const scale = Math.min((stageWidth - margin * 2) / outerWidth, (stageHeight - margin * 2) / outerHeight);
       const screenRadius = shortEdge * spec.radius;
       const outerRadius = spec.outerRadius !== undefined ? shortEdge * spec.outerRadius : screenRadius + thickness;
       frame = (
@@ -874,15 +877,18 @@ export const FRAMES: FrameButton[] = [
 export const StudioPanel = ({
   frame = 'rounded',
   padding = MIRROR_STUDIO.padding,
+  pressedFrame,
 }: {
   frame?: FrameStyle;
   padding?: number;
+  pressedFrame?: FrameStyle;
 } = {}) => (
   <Panel title="Studio" subtitle="How captures look">
     <SectionLabel>Device frame</SectionLabel>
     <div style={{display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 6}}>
       {FRAMES.map((item) => {
         const selected = item.id === frame;
+        const pressed = item.id === pressedFrame;
         return (
           <div
             key={item.id}
@@ -893,7 +899,12 @@ export const StudioPanel = ({
               gap: 6,
               borderRadius: round.lg,
               border: border(selected ? mix(beam[500], 60) : ink[700]),
-              backgroundColor: selected ? mix(beam[500], 10) : 'transparent',
+              backgroundColor: pressed
+                ? mix(beam[500], 25)
+                : selected
+                  ? mix(beam[500], 10)
+                  : 'transparent',
+              scale: pressed ? '0.94' : undefined,
               padding: sp(2),
               boxSizing: 'border-box',
             }}

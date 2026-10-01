@@ -25,6 +25,7 @@ import {
 import {
   ConnectionPanel,
   CONNECTION_VIEWPORT,
+  connectionRegions,
   type DeviceCommand,
 } from '../../app-ui/ConnectionPanel';
 import {FocusRing, PointerClick, Spotlight} from '../../camera/Annotations';
@@ -237,102 +238,176 @@ export const DebuggingBeat: React.FC<{frame: number; frames: number}> = ({
 };
 
 /**
- * Connect beat (14s = 420 frames):
- * Step 4 *Authorise this computer* ticks, the Devices card shows *Ready*, Start mirroring
- * is pressed and the stage changes from the idle message to the live tablet. Timed to the
- * narration: "authorize" by 170, "green and ready" as Devices opens at 190, and "start
- * mirroring" as the press lands at 330–365.
+ * Connect beat (14.5s = 435 frames):
+ * Step 4 *Authorise this computer* ticks, the Devices card shows *Ready*,
+ * the pointer clicks Start mirroring, and the stage goes from idle to live tablet.
  */
 export const ConnectBeat: React.FC<{frame: number; frames: number}> = ({
   frame,
+  frames,
 }) => {
-  if (frame < 190) {
+  const cueAuthorize = CUE_FRAMES.authorize - BEATS.connect.from;
+  const cueReady = CUE_FRAMES.readyReady - BEATS.connect.from;
+  const cueMirroring = CUE_FRAMES.readyMirroring - BEATS.connect.from;
+
+  const showDevices = frame >= cueReady - 20;
+  const live = frame >= cueMirroring + 8;
+  const starting = frame >= cueMirroring && frame < cueMirroring + 8;
+
+  const baseStep4 = mirrorRegions.setupStep(4);
+  const step4Reg = {
+    ...baseStep4,
+    y: 212,
+    height: 60,
+  };
+
+  const startBtn = mirrorRegions.startMirroringButton;
+  const startBtnX = startBtn.x + startBtn.width / 2;
+  const startBtnY = startBtn.y + startBtn.height / 2;
+
+  if (!showDevices) {
+    const step = frame >= cueAuthorize + 10 ? 5 : 4;
     return (
-      <MirrorApp
-        panel="setup"
-        status="No device connected"
-        hasDevice={false}
-        side={<SetupPanel step={setupStepAt(BEATS.connect.from + frame).step} />}
-        stage={<MirrorStage idle={IDLE_STAGE} />}
-      />
+      <>
+        <MirrorApp
+          panel="setup"
+          status="No device connected"
+          hasDevice={false}
+          side={<SetupPanel step={step} />}
+          stage={<MirrorStage idle={IDLE_STAGE} frameStyle="none" />}
+        />
+        <FocusRing region={step4Reg} appearAt={cueAuthorize} radius={6} />
+      </>
     );
   }
 
-  const live = frame >= 365;
-  const starting = frame >= 330 && frame < 365;
-
   return (
-    <MirrorApp
-      panel="devices"
-      status={live ? `Mirroring ${MIRROR_DEVICE.name}` : '1 device ready'}
-      hasDevice
-      side={
-        <DevicesPanel
-          selected
-          details
-          live={live}
-          starting={starting}
-        />
-      }
-      stage={
-        live ? (
-          <MirrorStage mirrored={catalog(frame - 365, 420 - 365)} />
-        ) : (
-          <MirrorStage idle={IDLE_STAGE} />
-        )
-      }
-    />
+    <>
+      <MirrorApp
+        panel="devices"
+        status={live ? `Mirroring ${MIRROR_DEVICE.name}` : '1 device ready'}
+        hasDevice
+        side={
+          <DevicesPanel
+            selected
+            details
+            live={live}
+            starting={starting}
+          />
+        }
+        stage={
+          live ? (
+            <MirrorStage
+              mirrored={catalog(frame - (cueMirroring + 8), frames - (cueMirroring + 8))}
+              frameStyle="none"
+            />
+          ) : (
+            <MirrorStage idle={IDLE_STAGE} frameStyle="none" />
+          )
+        }
+      />
+      <FocusRing region={mirrorRegions.devicesReadyBadge} appearAt={cueReady} radius={4} />
+      <PointerClick
+        to={{x: startBtnX, y: startBtnY}}
+        at={cueMirroring}
+        fadeOutAt={cueMirroring + 16}
+      />
+    </>
   );
 };
 
 /**
- * Frame beat (14.5s = 435 frames):
- * Studio panel's Device frame picker: the selection moves to another frame
- * and the frame drawn around the mirrored tablet changes shape, then the
- * padding value rises and the backdrop margin grows.
+ * Frame beat (15s = 450 frames):
+ * Studio panel's Device frame picker: the pointer clicks another frame
+ * and the frame drawn around the mirrored tablet changes shape;
+ * then padding rises and the backdrop margin grows.
  */
 export const FrameBeat: React.FC<{frame: number; frames: number}> = ({
   frame,
   frames,
 }) => {
-  // "let's pick one of these other ones" lands at ~2.5s; "padding and shadow" at ~9s.
-  const currentFrame = frame < 80 ? 'rounded' : 'tablet1';
+  const cuePick = CUE_FRAMES.pickFramePick - BEATS.frame.from;
+  const cuePadding = CUE_FRAMES.paddingPadding - BEATS.frame.from;
+
+  const currentFrame = frame < cuePick ? 'rounded' : 'tablet1';
+  const pressedFrame =
+    frame >= cuePick && frame < cuePick + 4 ? 'tablet1' : undefined;
+
   const padding = Math.round(
-    interpolate(frame, [280, 380], [48, 88], {
+    interpolate(frame, [cuePadding, cuePadding + 70], [48, 88], {
+      extrapolateLeft: 'clamp',
+      extrapolateRight: 'clamp',
+    }),
+  );
+  const stageMargin = Math.round(
+    interpolate(padding, [48, 88], [28, 56], {
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
     }),
   );
 
+  const frameBtn = mirrorRegions.studioFrameButton(3);
+  const frameBtnX = frameBtn.x + frameBtn.width / 2;
+  const frameBtnY = frameBtn.y + frameBtn.height / 2;
+
   return (
-    <MirrorApp
-      panel="studio"
-      status={`Mirroring ${MIRROR_DEVICE.name}`}
-      hasDevice
-      side={<StudioPanel frame={currentFrame} padding={padding} />}
-      stage={
-        <MirrorStage
-          mirrored={catalog(frame, frames)}
-          frameStyle={currentFrame}
-        />
-      }
-    />
+    <>
+      <MirrorApp
+        panel="studio"
+        status={`Mirroring ${MIRROR_DEVICE.name}`}
+        hasDevice
+        side={
+          <StudioPanel
+            frame={currentFrame}
+            padding={padding}
+            pressedFrame={pressedFrame}
+          />
+        }
+        stage={
+          <MirrorStage
+            mirrored={catalog(frame, frames)}
+            frameStyle={currentFrame}
+            stageMargin={stageMargin}
+          />
+        }
+      />
+      <PointerClick
+        to={{x: frameBtnX, y: frameBtnY}}
+        at={cuePick}
+        fadeOutAt={cuePick + 16}
+      />
+    </>
   );
 };
 
-
-
 /**
- * Paste beat (14s = 420 frames):
- * The mirrored tablet shows CTRLbot IoT's connection panel; its host field
- * goes from empty to 192.168.1.169 in one frame, caret after it.
+ * Paste beat (14.5s = 435 frames):
+ * The mirrored tablet shows CTRLbot IoT's connection panel with no drawn frame;
+ * the host field is ringed, pointer clicks it, and 192.168.1.169 appears with caret.
  */
 export const PasteBeat: React.FC<{frame: number; frames: number}> = ({
   frame,
 }) => {
-  // Host field empty until "copying and pasting" (~4.7s), then fills in one frame: a paste.
-  const isPasted = frame >= 140;
+  const cueCopying = CUE_FRAMES.copyPasteCopying - BEATS.paste.from;
+  const cuePasting = CUE_FRAMES.copyPastePasting - BEATS.paste.from;
+
+  const isPasted = frame >= cuePasting;
   const host = isPasted ? '192.168.1.169' : '';
+
+  const screenReg = mirrorRegions.mirroredScreen(
+    {width: CONNECTION_VIEWPORT.tablet.width, height: CONNECTION_VIEWPORT.tablet.height},
+    'none',
+  );
+  const hostLocal = connectionRegions('tablet').hostField;
+  const hostFieldRegion = {
+    x: screenReg.x + hostLocal.x * screenReg.scale,
+    y: screenReg.y + hostLocal.y * screenReg.scale,
+    width: hostLocal.width * screenReg.scale,
+    height: hostLocal.height * screenReg.scale,
+  };
+
+  const pointerToX = hostFieldRegion.x + 36;
+  const pointerToY = hostFieldRegion.y + hostFieldRegion.height / 2;
 
   const connectionScreen: Mirrored = {
     width: CONNECTION_VIEWPORT.tablet.width,
@@ -347,19 +422,27 @@ export const PasteBeat: React.FC<{frame: number; frames: number}> = ({
         connected={false}
         commands={CONNECTION_COMMANDS}
         terminal={[]}
-        hostCaret
+        hostCaret={isPasted}
       />
     ),
   };
 
   return (
-    <MirrorApp
-      panel="devices"
-      status={`Mirroring ${MIRROR_DEVICE.name}`}
-      hasDevice
-      side={<DevicesPanel selected details live />}
-      stage={<MirrorStage mirrored={connectionScreen} />}
-    />
+    <>
+      <MirrorApp
+        panel="devices"
+        status={`Mirroring ${MIRROR_DEVICE.name}`}
+        hasDevice
+        side={<DevicesPanel selected details live />}
+        stage={<MirrorStage mirrored={connectionScreen} frameStyle="none" />}
+      />
+      <FocusRing region={hostFieldRegion} appearAt={cueCopying} radius={4} />
+      <PointerClick
+        to={{x: pointerToX, y: pointerToY}}
+        at={cuePasting}
+        fadeOutAt={cuePasting + 16}
+      />
+    </>
   );
 };
 
