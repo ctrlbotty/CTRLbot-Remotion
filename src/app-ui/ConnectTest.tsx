@@ -390,143 +390,343 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                   </div>
                 </div>
               ) : testTab === 'switcher' ? (
-                /* Switcher Tab */
-                <div
-                  style={{
-                    flex: 1,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 24,
-                    padding: '12px 16px',
-                  }}
-                >
-                  {/* Left Column: Source Buttons */}
+                multiOutput ? (
+                  /* Multi-Output Switcher Tab for Tablet (Reference f_0041.jpg, av_sw_remote_nxo.xml) */
                   <div
                     style={{
-                      width: 220,
+                      flex: 1,
                       display: 'flex',
-                      flexDirection: 'column',
-                      gap: 12,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 18,
+                      padding: '12px 14px',
                     }}
                   >
-                    {[
-                      {id: 1, name: 'INPUT 1'},
-                      {id: 2, name: 'INPUT 2'},
-                      {id: 3, name: 'HDMI 1'},
-                      {id: 4, name: 'HDMI 2'},
-                    ].map((inp) => {
-                      const isBlue = selectedInput === inp.id;
-                      const isHighlightYellow = activeInputs ? activeInputs.includes(inp.id) : (selectedInput === 2 && inp.id === 3);
-                      const bg = isHighlightYellow
-                        ? appColors.priYellow
-                        : isBlue
-                          ? appColors.blue
-                          : appColors.gray20;
-                      const textColor = isHighlightYellow ? '#222222' : appColors.white;
-                      const iconTint = isHighlightYellow ? '#222222' : appColors.white;
-
-                      return (
-                        <div
-                          key={inp.id}
-                          style={{
-                            height: 76,
-                            backgroundColor: bg,
-                            borderRadius: 6,
-                            display: 'flex',
-                            alignItems: 'center',
-                            padding: '0 18px',
-                            gap: 16,
-                            boxShadow: isHighlightYellow ? '0 0 16px rgba(255, 230, 0, 0.4)' : undefined,
-                            border: isBlue ? '1.5px solid #33A8FF' : '1px solid rgba(255,255,255,0.06)',
-                          }}
-                        >
-                          <AppIcon name="ic_hdmi_icon" size={28} tint={iconTint} />
-                          <span
-                            style={{
-                              fontSize: 13,
-                              fontWeight: 700,
-                              color: textColor,
-                              fontFamily: font.mono,
-                              letterSpacing: '0.04em',
-                            }}
-                          >
-                            {inp.name}
-                          </span>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Middle Arrow */}
-                  <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 8px'}}>
-                    <svg width={42} height={42} viewBox="0 0 42 42" fill="none">
-                      <path
-                        d="M0 14 H22 V4 L42 21 L22 38 V28 H0 Z"
-                        fill={appColors.white}
-                      />
-                    </svg>
-                  </div>
-
-                  {/* Right Display Container */}
-                  <div style={{width: 364, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                    {/* Display Box */}
+                    {/* Left Column: Input Cards (TX 1..4) */}
                     <div
                       style={{
-                        width: 364,
-                        height: 205,
-                        borderRadius: 4,
-                        background: selectedInput === 2
-                          ? 'radial-gradient(circle at 50% 50%, #157AB5 0%, #084D76 100%)'
-                          : 'radial-gradient(circle at 50% 50%, #686868 0%, #3a3a3a 100%)',
-                        border: '1px solid rgba(255,255,255,0.15)',
+                        width: 210,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 12,
+                      }}
+                    >
+                      {inputs.map((inp) => {
+                        const isSelected = selectedInput === inp.id;
+                        const bg = isSelected ? appColors.priYellow : appColors.gray20;
+                        const textColor = isSelected ? '#151515' : appColors.white;
+                        const subColor = isSelected ? 'rgba(0,0,0,0.6)' : appColors.gray50;
+                        const iconTint = isSelected ? '#151515' : appColors.white;
+
+                        return (
+                          <div
+                            key={inp.id}
+                            style={{
+                              height: 72,
+                              backgroundColor: bg,
+                              borderRadius: 6,
+                              display: 'flex',
+                              alignItems: 'center',
+                              padding: '0 16px',
+                              gap: 14,
+                              boxShadow: isSelected ? '0 0 16px rgba(255, 230, 0, 0.4)' : undefined,
+                              border: isSelected ? '1px solid rgba(255, 230, 0, 0.8)' : '1px solid rgba(255,255,255,0.06)',
+                            }}
+                          >
+                            <AppIcon name="ic_hdmi_icon" size={26} tint={iconTint} />
+                            <div style={{display: 'flex', flexDirection: 'column'}}>
+                              <span
+                                style={{
+                                  fontSize: 12.5,
+                                  fontWeight: 700,
+                                  color: textColor,
+                                  fontFamily: font.mono,
+                                  letterSpacing: '0.04em',
+                                }}
+                              >
+                                {inp.name}
+                              </span>
+                              <span style={{fontSize: 9.5, color: subColor, fontFamily: font.mono}}>
+                                {`239.100.4${inp.id}.1`}
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Center: ALL label + route icon */}
+                    <div
+                      style={{
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        gap: 10,
+                        gap: 8,
+                        padding: '0 8px',
                       }}
                     >
-                      {selectedInput === 2 ? (
-                        <>
-                          <AppIcon name="ic_hdmi_icon" size={38} tint={appColors.white} />
-                          <span
-                            style={{
-                              color: appColors.white,
-                              fontSize: 16,
-                              fontWeight: 700,
-                              fontFamily: font.mono,
-                              letterSpacing: '0.04em',
-                            }}
-                          >
-                            IN 2
-                          </span>
-                        </>
-                      ) : null}
+                      <span
+                        style={{
+                          fontSize: 14,
+                          fontWeight: 700,
+                          color: appColors.white,
+                        }}
+                      >
+                        All
+                      </span>
+                      <AppIcon
+                        name="ic_route5"
+                        size={36}
+                        tint={appColors.white}
+                        style={{transform: 'rotate(270deg)'}}
+                      />
                     </div>
 
-                    {/* OUT 1 Bar */}
+                    {/* Right Column: Output Displays 2x2 grid */}
                     <div
                       style={{
-                        width: 364,
-                        height: 38,
-                        backgroundColor: '#1E1E1E',
-                        marginTop: 8,
-                        borderRadius: 2,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: appColors.white,
-                        fontSize: 13,
-                        fontWeight: 700,
-                        letterSpacing: '0.06em',
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(2, 1fr)',
+                        gap: 12,
+                        width: 380,
                       }}
                     >
-                      OUT 1
+                      {outputs.map((out, idx) => {
+                        const outIndex = idx + 1;
+                        const isSelected = selectedOutput === outIndex;
+                        const isRouted = out.routed !== null && out.routed !== undefined;
+
+                        return (
+                          <div
+                            key={out.name}
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              width: 180,
+                            }}
+                          >
+                            {/* Monitor Box */}
+                            <div
+                              style={{
+                                height: 94,
+                                borderRadius: 4,
+                                background: isRouted
+                                  ? 'radial-gradient(circle at 50% 50%, #157AB5 0%, #084D76 100%)'
+                                  : isSelected
+                                    ? 'radial-gradient(circle at 50% 50%, #FFF875 0%, #FFE600 65%, #E5CE00 100%)'
+                                    : 'radial-gradient(circle at 50% 50%, #686868 0%, #444444 100%)',
+                                border: isSelected
+                                  ? `1.5px solid ${appColors.priYellow}`
+                                  : '1px solid rgba(255,255,255,0.12)',
+                                boxShadow: isSelected ? '0 0 12px rgba(255, 230, 0, 0.45)' : undefined,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexDirection: 'column',
+                                gap: 4,
+                              }}
+                            >
+                              {isRouted ? (
+                                <>
+                                  <AppIcon name="ic_hdmi_icon" size={24} tint={appColors.white} />
+                                  <span
+                                    style={{
+                                      fontSize: 11,
+                                      fontWeight: 700,
+                                      color: appColors.white,
+                                      fontFamily: font.mono,
+                                    }}
+                                  >
+                                    {out.routed}
+                                  </span>
+                                </>
+                              ) : (
+                                <span
+                                  style={{
+                                    fontSize: 10.5,
+                                    fontWeight: 700,
+                                    letterSpacing: '0.04em',
+                                    color: isSelected ? 'rgba(130, 110, 0, 0.75)' : '#888888',
+                                  }}
+                                >
+                                  NOT ROUTED
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Label Bar */}
+                            <div
+                              style={{
+                                height: 32,
+                                backgroundColor: '#1E1E1E',
+                                marginTop: 4,
+                                borderRadius: 2,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}
+                            >
+                              <span
+                                style={{
+                                  fontSize: 10,
+                                  fontWeight: 700,
+                                  color: appColors.white,
+                                  letterSpacing: '0.04em',
+                                }}
+                              >
+                                {out.name}
+                              </span>
+                              <span style={{fontSize: 8.5, color: appColors.gray50, fontFamily: font.mono}}>
+                                {out.ip ?? `239.100.4${outIndex + 4}.1`}
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
-                </div>
+                ) : (
+                  /* Single-Output Switcher Tab (Reference f_0017.jpg, f_0018.jpg) */
+                  <div
+                    style={{
+                      flex: 1,
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 24,
+                      padding: '12px 16px',
+                    }}
+                  >
+                    {/* Left Column: Source Buttons */}
+                    <div
+                      style={{
+                        width: 220,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 12,
+                      }}
+                    >
+                      {[
+                        {id: 1, name: 'INPUT 1'},
+                        {id: 2, name: 'INPUT 2'},
+                        {id: 3, name: 'HDMI 1'},
+                        {id: 4, name: 'HDMI 2'},
+                      ].map((inp) => {
+                        const isBlue = selectedInput === inp.id;
+                        const isHighlightYellow = activeInputs ? activeInputs.includes(inp.id) : (selectedInput === 2 && inp.id === 3);
+                        const bg = isHighlightYellow
+                          ? appColors.priYellow
+                          : isBlue
+                            ? appColors.blue
+                            : appColors.gray20;
+                        const textColor = isHighlightYellow ? '#222222' : appColors.white;
+                        const iconTint = isHighlightYellow ? '#222222' : appColors.white;
+
+                        return (
+                          <div
+                            key={inp.id}
+                            style={{
+                              height: 76,
+                              backgroundColor: bg,
+                              borderRadius: 6,
+                              display: 'flex',
+                              alignItems: 'center',
+                              padding: '0 18px',
+                              gap: 16,
+                              boxShadow: isHighlightYellow ? '0 0 16px rgba(255, 230, 0, 0.4)' : undefined,
+                              border: isBlue ? '1.5px solid #33A8FF' : '1px solid rgba(255,255,255,0.06)',
+                            }}
+                          >
+                            <AppIcon name="ic_hdmi_icon" size={28} tint={iconTint} />
+                            <span
+                              style={{
+                                fontSize: 13,
+                                fontWeight: 700,
+                                color: textColor,
+                                fontFamily: font.mono,
+                                letterSpacing: '0.04em',
+                              }}
+                            >
+                              {inp.name}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Middle Arrow */}
+                    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 8px'}}>
+                      <svg width={42} height={42} viewBox="0 0 42 42" fill="none">
+                        <path
+                          d="M0 14 H22 V4 L42 21 L22 38 V28 H0 Z"
+                          fill={appColors.white}
+                        />
+                      </svg>
+                    </div>
+
+                    {/* Right Display Container */}
+                    <div style={{width: 364, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                      {/* Display Box */}
+                      <div
+                        style={{
+                          width: 364,
+                          height: 205,
+                          borderRadius: 4,
+                          background: selectedInput === 2
+                            ? 'radial-gradient(circle at 50% 50%, #157AB5 0%, #084D76 100%)'
+                            : 'radial-gradient(circle at 50% 50%, #686868 0%, #3a3a3a 100%)',
+                          border: '1px solid rgba(255,255,255,0.15)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: 10,
+                        }}
+                      >
+                        {selectedInput === 2 ? (
+                          <>
+                            <AppIcon name="ic_hdmi_icon" size={38} tint={appColors.white} />
+                            <span
+                              style={{
+                                color: appColors.white,
+                                fontSize: 16,
+                                fontWeight: 700,
+                                fontFamily: font.mono,
+                                letterSpacing: '0.04em',
+                              }}
+                            >
+                              IN 2
+                            </span>
+                          </>
+                        ) : null}
+                      </div>
+
+                      {/* OUT 1 Bar */}
+                      <div
+                        style={{
+                          width: 364,
+                          height: 38,
+                          backgroundColor: '#1E1E1E',
+                          marginTop: 8,
+                          borderRadius: 2,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: appColors.white,
+                          fontSize: 13,
+                          fontWeight: 700,
+                          letterSpacing: '0.06em',
+                        }}
+                      >
+                        OUT 1
+                      </div>
+                    </div>
+                  </div>
+                )
               ) : testTab === 'terminal' ? (
                 /* Terminal Tab */
                 <div style={{flex: 1, display: 'flex', flexDirection: 'column', padding: '8px 4px'}}>
