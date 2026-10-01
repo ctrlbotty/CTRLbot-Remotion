@@ -362,7 +362,7 @@ After approval, close out per `AGENTS.md`: archive this brief as
   - It must fit on one line in landscape. In portrait, the tricon sits above the lockup and the lockup may break onto two lines. Keep the card's rules: the lockup is composed at frame 0, the line streams in, and the bloom is the motion.
   - Register `Proof-Card-Mirror` at 1920x1080 and `Proof-Card-Mirror-Portrait` at 1080x1920, both with the open card's copy.
   - Verify: `npm run still` of both proofs at frame 0 and frame 90. `npm run still -- Play-Store-EUI-Promo-V3 out/_t5-promo.png --frame=0` looks as before.
-- [ ] T6: Add `WalkthroughShell`, which plays a cut's beats as card, stage or chapter over the planned edit's audio, with burned-in captions in portrait and `cueFrame`, plus a `Proof-Walkthrough-Shell` composition in both shapes — files: src/marketing/WalkthroughShell.tsx, src/app-ui/mirror/MirrorProofs.tsx, src/Root.tsx
+- [x] T6: Add `WalkthroughShell`, which plays a cut's beats as card, stage or chapter over the planned edit's audio, with burned-in captions in portrait and `cueFrame`, plus a `Proof-Walkthrough-Shell` composition in both shapes — files: src/marketing/WalkthroughShell.tsx, src/app-ui/mirror/MirrorProofs.tsx, src/Root.tsx
   - Props: `format`, `contentSize`, the beats (`{id, from, duration, layout, card?, copy?, regions?, render?, calloutSide?}`), the generated `edit`, optional `corrections`, `preload` and `background`.
   - How each layout renders:
     - **card:** `MasterControlCard`.

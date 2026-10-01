@@ -55,7 +55,16 @@ import {
 } from './marketing/iot-tablet-walkthrough/IotTabletWalkthrough';
 import {HubCell, hubCellDuration} from './marketing/hub-cell/HubCell';
 import {Short, assertShortReady} from './shorts/Short';
-import {MirrorAppsProof, MirrorDevicesProof, MirrorFilesProof, MirrorPointerProof, MirrorSetupProof, MirrorStudioProof} from './app-ui/mirror/MirrorProofs';
+import {
+  MirrorAppsProof,
+  MirrorDevicesProof,
+  MirrorFilesProof,
+  MirrorPointerProof,
+  MirrorSetupProof,
+  MirrorStudioProof,
+  ProofWalkthroughShellLandscape,
+  ProofWalkthroughShellPortrait,
+} from './app-ui/mirror/MirrorProofs';
 import {TermRawTcpProof, TermScanProof, TermSerialProof, TermServerProof, TermSshProof} from './app-ui/term/TermProofs';
 import {SHORTS, compositionId, frameSize, shortSeconds} from './shorts/shortsData';
 import {SHORT_EXAMPLE} from './shorts/example';
@@ -671,6 +680,22 @@ export const RemotionRoot = () => (
           />
         )}
         durationInFrames={180}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="Proof-Walkthrough-Shell"
+        component={ProofWalkthroughShellLandscape}
+        durationInFrames={270}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="Proof-Walkthrough-Shell-Portrait"
+        component={ProofWalkthroughShellPortrait}
+        durationInFrames={270}
         fps={30}
         width={1080}
         height={1920}
