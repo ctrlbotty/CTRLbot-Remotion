@@ -41,7 +41,7 @@ export const FIRST_RUN_STEPS: FirstRunStep[] = [
 ];
 
 export type FirstRunEducationProps = {
-  device?: 'phone';
+  device?: 'phone' | 'tablet';
   /** 1-based step index (1 = first room card, 2 = setup menu card, 3+ = dismissed). Default 1. */
   step?: number;
   /** Whether the top-right ✕ close button is visible. Default true. */
@@ -59,9 +59,11 @@ export const FirstRunEducation: React.FC<FirstRunEducationProps> = ({
   cardOpacity,
   cardOffsetY = 0,
 }) => {
+  const isTablet = device === 'tablet';
   const isDismissed = step > FIRST_RUN_STEPS.length;
   const currentStep = FIRST_RUN_STEPS[Math.max(0, Math.min(step - 1, FIRST_RUN_STEPS.length - 1))];
   const opacity = cardOpacity !== undefined ? cardOpacity : isDismissed ? 0 : 1;
+  const tag = isTablet ? currentStep.tag.replace('PHONE', 'TABLET') : currentStep.tag;
 
   return (
     <div
@@ -74,9 +76,9 @@ export const FirstRunEducation: React.FC<FirstRunEducationProps> = ({
         fontFamily: font.ui,
       }}
     >
-      {/* Underlying phone setup screen: CTRLbot AI and expanded bottom nav sheet */}
-      <CtrlbotAi device={device} promptFocused={false} visibleQuestions={2} />
-      <PhoneNavMenu expanded active="ctrlbot" />
+      {/* Underlying setup screen: CTRLbot AI (and expanded phone bottom nav sheet on phone) */}
+      <CtrlbotAi device={device} promptFocused={false} visibleQuestions={isTablet ? 1 : 2} />
+      {!isTablet ? <PhoneNavMenu expanded active="ctrlbot" /> : null}
 
       {/* Dim scrim overlay behind the walkthrough card */}
       {opacity > 0 ? (
@@ -96,14 +98,16 @@ export const FirstRunEducation: React.FC<FirstRunEducationProps> = ({
         <div
           style={{
             position: 'absolute',
-            top: 210 + cardOffsetY,
-            left: 24,
-            right: 24,
+            top: (isTablet ? 190 : 210) + cardOffsetY,
+            left: isTablet ? '50%' : 24,
+            right: isTablet ? undefined : 24,
+            transform: isTablet ? 'translateX(-50%)' : undefined,
+            width: isTablet ? 480 : undefined,
             opacity,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            padding: '24px 20px',
+            padding: isTablet ? '28px 24px' : '24px 20px',
             borderRadius: 16,
             backgroundColor: appColors.firstRunDialogBackground,
             boxShadow: '0 20px 60px rgba(0, 0, 0, 0.75)',
@@ -190,7 +194,7 @@ export const FirstRunEducation: React.FC<FirstRunEducationProps> = ({
                 color: appColors.blue,
               }}
             >
-              {currentStep.tag}
+              {tag}
             </span>
           </div>
         </div>
@@ -202,7 +206,7 @@ export const FirstRunEducation: React.FC<FirstRunEducationProps> = ({
           style={{
             position: 'absolute',
             top: 36,
-            right: 22,
+            right: isTablet ? 36 : 22,
             width: 36,
             height: 36,
             borderRadius: '50%',

@@ -582,7 +582,8 @@ export const RemotionRoot = () => (
       <Still id="Proof-Tablet-Capture" component={TabletCaptureProof} width={1280} height={800} />
       <Still id="Proof-Phone-CTRLbot" component={PhoneCtrlbotProof} width={360} height={780} />
       <Still id="Proof-Tablet-CTRLbot" component={TabletCtrlbotProof} width={1280} height={800} />
-      <Still id="Proof-Phone-FirstRunEducation" component={FirstRunEducation} width={360} height={780} />
+      <Still id="Proof-Phone-FirstRunEducation" component={FirstRunEducation} defaultProps={{device: 'phone'}} width={360} height={780} />
+      <Still id="Proof-Tablet-FirstRunEducation" component={FirstRunEducation} defaultProps={{device: 'tablet'}} width={1280} height={800} />
       <Still id="Proof-Phone-ConnectTest" component={ConnectTest} width={360} height={780} />
       <Still id="Proof-Phone-ProductWebView" component={ProductWebView} width={360} height={780} />
       <Still id="Proof-Phone-ActivitiesPresets" component={ActivitiesPresets} width={360} height={780} />

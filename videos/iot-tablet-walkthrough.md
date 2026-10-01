@@ -224,7 +224,7 @@ branch, no worktree.
 
 ### Tablet layouts of W03's surfaces
 
-- [ ] T2: Add the tablet layout to `FirstRunEducation` — files: src/app-ui/FirstRunEducation.tsx, src/Root.tsx
+- [x] T2: Add the tablet layout to `FirstRunEducation` — files: src/app-ui/FirstRunEducation.tsx, src/Root.tsx
   - Reference frames: `f_0001.jpg`–`f_0004.jpg` (the dialog centred over the setup screen and nav rail).
 - [ ] T3: Add the tablet layout to `ConnectTest`: the tabs, the device list on the right, and the Buttons, single-output Switcher, Terminal and Web page tabs — files: src/app-ui/ConnectTest.tsx, src/Root.tsx
   - From `layout/menu_connections.xml`, `driver_connection.xml`, `remotes_test.xml`, `av_sw_remote_nx1.xml`. Reference frames: `f_0016.jpg`–`f_0018.jpg`.
