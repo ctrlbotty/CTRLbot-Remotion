@@ -8,7 +8,7 @@
 // titles and hints (`CTRLbot-Mirror/src/renderer/src/components/panels/SetupPanel.tsx`),
 // and the rest follows its README.
 
-import type {Region, Shot} from '../../camera/Camera';
+import type {Region} from '../../camera/Camera';
 import {MIRROR_VIEWPORT, mirrorRegions} from '../../app-ui/mirror/mirrorData';
 import type {Step} from '../WalkthroughCopy';
 import {cueFrame, type WalkthroughBeat} from '../WalkthroughShell';
@@ -332,6 +332,3 @@ export const WALKTHROUGH_BEATS: WalkthroughBeat[] = [
     },
   },
 ];
-
-/** @deprecated Removed for WalkthroughShell. Preserved as empty stub until T10. */
-export const beatShots = (): Shot[] => [];

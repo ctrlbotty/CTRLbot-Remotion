@@ -400,7 +400,7 @@ After approval, close out per `AGENTS.md`: archive this brief as
   - `setupStepAt` moves to cue frames: step 2 at install-adb "manage", step 4 at authorize "authorize", step 5 at ready "mirroring", all ticked once the stage is live.
   - `beatShots()` and `SUBJECT` are removed.
   - Verify: `npm run check`; `npm run video:frames -- mirror-walkthrough validate`.
-- [ ] T10: Rebuild both W01 compositions on `WalkthroughShell` at 4080 frames, with every chapter beat rendering its revision-1 state until T11–T14 — files: src/marketing/mirror-walkthrough/MirrorWalkthrough.tsx, src/Root.tsx
+- [x] T10: Rebuild both W01 compositions on `WalkthroughShell` at 4080 frames, with every chapter beat rendering its revision-1 state until T11–T14 — files: src/marketing/mirror-walkthrough/MirrorWalkthrough.tsx, src/Root.tsx
   - Pass `MIRROR_WALKTHROUGH_EDIT` from the generated file and keep `<PromoPreload />`. `NarrationTrack` and `captionsFromClips` leave this cut.
   - `proof` and `again` fall back to the open and close renderers.
   - Verify: the per-task check on `--beat=poster`, `open`, `setup` and `close` in both shapes. `opens-composed` holds.

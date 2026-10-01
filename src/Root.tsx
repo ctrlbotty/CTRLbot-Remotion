@@ -36,7 +36,6 @@ import {
 import {
   MirrorWalkthrough,
   MirrorWalkthroughPortrait,
-  mirrorWalkthroughDuration,
 } from './marketing/mirror-walkthrough/MirrorWalkthrough';
 import {
   TerminatorWalkthrough,
@@ -230,7 +229,7 @@ export const RemotionRoot = () => (
       <Composition
         id="mirror-walkthrough"
         component={MirrorWalkthrough}
-        durationInFrames={mirrorWalkthroughDuration}
+        durationInFrames={4080}
         fps={30}
         width={1920}
         height={1080}
@@ -238,7 +237,7 @@ export const RemotionRoot = () => (
       <Composition
         id="mirror-walkthrough-portrait"
         component={MirrorWalkthroughPortrait}
-        durationInFrames={mirrorWalkthroughDuration}
+        durationInFrames={4080}
         fps={30}
         width={1080}
         height={1920}

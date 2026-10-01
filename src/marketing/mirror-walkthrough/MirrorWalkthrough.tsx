@@ -1,192 +1,202 @@
 // CTRLbot Mirror walkthrough — narrated, in two shapes from one set of beats.
 //
 // Built from Nathan's recording (video input/CTRLbot Mirror Tutorial.mp4,
-// ingest/mirror-walkthrough/transcript.md). The brief is videos/archive/2026-09-30-mirror-walkthrough.md.
+// ingest/mirror-walkthrough/transcript.md). The brief is videos/mirror-walkthrough.md.
 //
-//   mirror-walkthrough           1920x1080, copy left, Mirror in a Stage panel right.
-//                                YouTube. Captions ship as an .srt (npm run narration:srt).
-//   mirror-walkthrough-portrait  1080x1920, copy on top, Mirror in a panel, captions under
-//                                it. TikTok, YouTube Shorts, LinkedIn and X.
-//
-// There is no silent cut. The feeds autoplay muted, so the step text carries the video on
-// its own, and the portrait cut burns its captions in as well.
+//   mirror-walkthrough           1920x1080, YouTube. Captions ship as an .srt.
+//   mirror-walkthrough-portrait  1080x1920, captions burned in. The cut for the feeds.
 
-import {useMemo} from 'react';
-import {AbsoluteFill, Easing, interpolate, Sequence, useCurrentFrame} from 'remotion';
+import React from 'react';
 import {MIRROR_VIEWPORT} from '../../app-ui/mirror/mirrorData';
-import {round} from '../../app-ui/mirror/mirrorTheme';
-import {captionsFromClips} from '../../audio/narrationCaptions';
-import {NarrationTrack} from '../../audio/NarrationTrack';
-import {background} from '../../design/theme';
-import captionWords from '../../../ingest/mirror-walkthrough/captions.json';
 import {PromoPreload} from '../eui-promo/PromoPreload';
-import {NarrationCaptions} from '../NarrationCaptions';
-import {PORTRAIT, PortraitStage, portraitLayout} from '../PortraitStage';
-import {STAGE, Stage} from '../Stage';
-import {WalkthroughCopy, type CopyFormat} from '../WalkthroughCopy';
-import {BEAT_RENDERERS, OpenBeat} from './MirrorBeats';
+import {WalkthroughShell, type WalkthroughFormat} from '../WalkthroughShell';
 import {
-  MIRROR_WALKTHROUGH_NARRATION_CLIPS,
-  MIRROR_WALKTHROUGH_NARRATION_SOURCE,
-} from './mirrorWalkthroughNarration';
+  AppsBeat,
+  CaptureBeat,
+  CloseBeat,
+  ConnectBeat,
+  DebuggingBeat,
+  FilesBeat,
+  FrameBeat,
+  OpenBeat,
+  PasteBeat,
+  SetupBeat,
+  ToolsBeat,
+} from './MirrorBeats';
+import {MIRROR_WALKTHROUGH_EDIT} from './mirrorWalkthroughNarration.generated';
 import {
   BEATS,
-  BEAT_NAMES,
+  BEAT_REGIONS,
   COPY,
   MIRROR_WALKTHROUGH_FRAMES,
-  SETUP_BEATS,
-  SETUP_STEPS,
-  beatShots,
-  setupStepAt,
-  type BeatName,
 } from './walkthroughData';
 
 export const mirrorWalkthroughDuration = MIRROR_WALKTHROUGH_FRAMES;
 
-/** The copy block's height: the Stage panel's in landscape, so its top edge meets the panel's. */
-const copyHeight = (format: CopyFormat) =>
-  format === 'landscape' ? STAGE.panelHeight : portraitLayout(MIRROR_VIEWPORT).text.height;
+export const MIRROR_WALKTHROUGH_BEATS = [
+  {
+    id: 'open',
+    from: BEATS.open.from,
+    duration: BEATS.open.duration,
+    layout: 'card' as const,
+    card: {
+      lockup: 'CTRLbot Mirror',
+      eyebrow: 'For Windows and Android',
+      line: 'Control your Android phone or tablet from your Windows PC.',
+    },
+  },
+  {
+    id: 'proof',
+    from: BEATS.proof.from,
+    duration: BEATS.proof.duration,
+    layout: 'stage' as const,
+    copy: COPY.proof,
+    regions: BEAT_REGIONS.proof,
+    render: ({frame, frames}: {frame: number; frames: number}) => (
+      <OpenBeat frame={frame} frames={frames} />
+    ),
+  },
+  {
+    id: 'setup',
+    from: BEATS.setup.from,
+    duration: BEATS.setup.duration,
+    layout: 'chapter' as const,
+    copy: COPY.setup,
+    calloutSide: 'right' as const,
+    regions: BEAT_REGIONS.setup,
+    render: ({frame, frames}: {frame: number; frames: number}) => (
+      <SetupBeat frame={frame} frames={frames} />
+    ),
+  },
+  {
+    id: 'debugging',
+    from: BEATS.debugging.from,
+    duration: BEATS.debugging.duration,
+    layout: 'chapter' as const,
+    copy: COPY.debugging,
+    calloutSide: 'right' as const,
+    regions: BEAT_REGIONS.debugging,
+    render: ({frame, frames}: {frame: number; frames: number}) => (
+      <DebuggingBeat frame={frame} frames={frames} />
+    ),
+  },
+  {
+    id: 'connect',
+    from: BEATS.connect.from,
+    duration: BEATS.connect.duration,
+    layout: 'chapter' as const,
+    copy: COPY.connect,
+    calloutSide: 'right' as const,
+    regions: BEAT_REGIONS.connect,
+    render: ({frame, frames}: {frame: number; frames: number}) => (
+      <ConnectBeat frame={frame} frames={frames} />
+    ),
+  },
+  {
+    id: 'frame',
+    from: BEATS.frame.from,
+    duration: BEATS.frame.duration,
+    layout: 'chapter' as const,
+    copy: COPY.frame,
+    calloutSide: 'right' as const,
+    regions: BEAT_REGIONS.frame,
+    render: ({frame, frames}: {frame: number; frames: number}) => (
+      <FrameBeat frame={frame} frames={frames} />
+    ),
+  },
+  {
+    id: 'paste',
+    from: BEATS.paste.from,
+    duration: BEATS.paste.duration,
+    layout: 'chapter' as const,
+    copy: COPY.paste,
+    calloutSide: 'left' as const,
+    regions: BEAT_REGIONS.paste,
+    render: ({frame, frames}: {frame: number; frames: number}) => (
+      <PasteBeat frame={frame} frames={frames} />
+    ),
+  },
+  {
+    id: 'capture',
+    from: BEATS.capture.from,
+    duration: BEATS.capture.duration,
+    layout: 'chapter' as const,
+    copy: COPY.capture,
+    calloutSide: 'left' as const,
+    regions: BEAT_REGIONS.capture,
+    render: ({frame, frames}: {frame: number; frames: number}) => (
+      <CaptureBeat frame={frame} frames={frames} />
+    ),
+  },
+  {
+    id: 'apps',
+    from: BEATS.apps.from,
+    duration: BEATS.apps.duration,
+    layout: 'chapter' as const,
+    copy: COPY.apps,
+    calloutSide: 'right' as const,
+    regions: BEAT_REGIONS.apps,
+    render: ({frame, frames}: {frame: number; frames: number}) => (
+      <AppsBeat frame={frame} frames={frames} />
+    ),
+  },
+  {
+    id: 'files',
+    from: BEATS.files.from,
+    duration: BEATS.files.duration,
+    layout: 'chapter' as const,
+    copy: COPY.files,
+    calloutSide: 'right' as const,
+    regions: BEAT_REGIONS.files,
+    render: ({frame, frames}: {frame: number; frames: number}) => (
+      <FilesBeat frame={frame} frames={frames} />
+    ),
+  },
+  {
+    id: 'tools',
+    from: BEATS.tools.from,
+    duration: BEATS.tools.duration,
+    layout: 'chapter' as const,
+    copy: COPY.tools,
+    calloutSide: 'right' as const,
+    regions: BEAT_REGIONS.tools,
+    render: ({frame, frames}: {frame: number; frames: number}) => (
+      <ToolsBeat frame={frame} frames={frames} />
+    ),
+  },
+  {
+    id: 'again',
+    from: BEATS.again.from,
+    duration: BEATS.again.duration,
+    layout: 'chapter' as const,
+    copy: COPY.again,
+    calloutSide: 'right' as const,
+    regions: BEAT_REGIONS.again,
+    render: ({frame, frames}: {frame: number; frames: number}) => (
+      <CloseBeat frame={frame} frames={frames} />
+    ),
+  },
+  {
+    id: 'close',
+    from: BEATS.close.from,
+    duration: BEATS.close.duration,
+    layout: 'card' as const,
+    card: {
+      lockup: 'CTRLbot Mirror',
+      line: 'Your phone or tablet, from your PC.',
+    },
+  },
+];
 
-/** Background glow that drifts gently behind the stage over the whole cut. */
-const mirrorBg = (t: number) =>
-  background.promo(
-    interpolate(t, [0, 1], [72, 60], {
-      easing: Easing.bezier(0.4, 0, 0.6, 1),
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
-    }),
-    interpolate(t, [0, 1], [48, 54], {
-      easing: Easing.bezier(0.4, 0, 0.6, 1),
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
-    }),
-  );
-
-const resolveBeat = (name: BeatName, frame: number, frames: number) => {
-  const Component = BEAT_RENDERERS[name] ?? OpenBeat;
-  return <Component frame={frame} frames={frames} />;
-};
-
-const isSetupBeat = (name: BeatName): name is (typeof SETUP_BEATS)[number] =>
-  (SETUP_BEATS as readonly BeatName[]).includes(name);
-
-/** Setup's checklist, up across all three Setup beats and ticking with the panel. */
-const SetupCopy = ({format, until}: {format: CopyFormat; until: number}) => {
-  const frame = useCurrentFrame();
-  const {step, since} = setupStepAt(BEATS.setup.from + frame);
-  return (
-    <WalkthroughCopy
-      format={format}
-      height={copyHeight(format)}
-      eyebrow={`Setup · step ${Math.min(step, SETUP_STEPS.length)} of ${SETUP_STEPS.length}`}
-      checklist={{steps: SETUP_STEPS, active: step, since: since - BEATS.setup.from}}
-      at={4}
-      until={until}
-    />
-  );
-};
-
-/** The copy, one Sequence per beat — and one across the three Setup beats. */
-const CopyTrack = ({format}: {format: CopyFormat}) => {
-  const setupFrom = BEATS[SETUP_BEATS[0]].from;
-  const last = BEATS[SETUP_BEATS[SETUP_BEATS.length - 1]];
-  const setupFrames = last.from + last.duration - setupFrom;
-  return (
-    <>
-      {BEAT_NAMES.map((name) => {
-        if (isSetupBeat(name)) return null;
-        const beat = BEATS[name];
-        const copy = COPY[name];
-        return (
-          <Sequence key={name} from={beat.from} durationInFrames={beat.duration} layout="none" name={`Copy — ${name}`}>
-            <WalkthroughCopy
-              format={format}
-              height={copyHeight(format)}
-              eyebrow={copy.eyebrow}
-              headline={copy.headline}
-              title={copy.title}
-              body={copy.body}
-              // The open is the poster frame: composed at frame 0, not arriving into it.
-              at={name === 'open' ? -40 : 4}
-              until={beat.duration}
-            />
-          </Sequence>
-        );
-      })}
-      <Sequence from={setupFrom} durationInFrames={setupFrames} layout="none" name="Copy — setup checklist">
-        <SetupCopy format={format} until={setupFrames} />
-      </Sequence>
-    </>
-  );
-};
-
-/** The live Mirror window, in whichever beat the frame is in. */
-const SurfaceTrack = () => {
-  const frame = useCurrentFrame();
-  const currentBeat =
-    BEAT_NAMES.find(
-      (name) =>
-        frame >= BEATS[name].from &&
-        frame < BEATS[name].from + BEATS[name].duration,
-    ) ?? 'open';
-  const beatConfig = BEATS[currentBeat];
-
-  return (
-    <div style={{width: MIRROR_VIEWPORT.width, height: MIRROR_VIEWPORT.height}}>
-      {resolveBeat(currentBeat, frame - beatConfig.from, beatConfig.duration)}
-    </div>
-  );
-};
-
-const Walkthrough = ({format}: {format: CopyFormat}) => {
-  const frame = useCurrentFrame();
-  const shots = useMemo(() => beatShots(), []);
-  const bg = mirrorBg(frame / (MIRROR_WALKTHROUGH_FRAMES - 1));
-  const captions = useMemo(
-    () => captionsFromClips(MIRROR_WALKTHROUGH_NARRATION_CLIPS, captionWords),
-    [],
-  );
-
-  return (
-    <AbsoluteFill>
-      <PromoPreload />
-      {format === 'landscape' ? (
-        <Stage
-          contentSize={MIRROR_VIEWPORT}
-          shots={shots}
-          panelHeight={STAGE.panelHeight}
-          panelAspect={MIRROR_VIEWPORT.width / MIRROR_VIEWPORT.height}
-          panelRadius={round.xl}
-          background={bg}
-          copy={<CopyTrack format="landscape" />}
-        >
-          <SurfaceTrack />
-        </Stage>
-      ) : (
-        <PortraitStage
-          contentSize={MIRROR_VIEWPORT}
-          shots={shots}
-          panelRadius={round.xl}
-          background={bg}
-          copy={<CopyTrack format="portrait" />}
-          captions={
-            <NarrationCaptions
-              captions={captions}
-              box={portraitLayout(MIRROR_VIEWPORT).captions}
-              size={PORTRAIT.captions.size}
-            />
-          }
-        >
-          <SurfaceTrack />
-        </PortraitStage>
-      )}
-      <NarrationTrack
-        src={MIRROR_WALKTHROUGH_NARRATION_SOURCE}
-        clips={MIRROR_WALKTHROUGH_NARRATION_CLIPS}
-      />
-    </AbsoluteFill>
-  );
-};
+const Walkthrough = ({format}: {format: WalkthroughFormat}) => (
+  <WalkthroughShell
+    format={format}
+    contentSize={MIRROR_VIEWPORT}
+    beats={MIRROR_WALKTHROUGH_BEATS}
+    edit={MIRROR_WALKTHROUGH_EDIT}
+    preload={<PromoPreload />}
+  />
+);
 
 /** 1920x1080, narrated. The YouTube cut. */
 export const MirrorWalkthrough = () => <Walkthrough format="landscape" />;
