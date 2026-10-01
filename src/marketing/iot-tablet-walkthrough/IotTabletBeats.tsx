@@ -2,7 +2,8 @@ import React from 'react';
 import {Easing, interpolate} from 'remotion';
 import {AppIcon} from '../../app-ui/AppIcon';
 import {TABLET_VIEWPORT} from '../../app-ui/viewports';
-import {TabletEuiManyToOne} from '../../app-ui/TabletEui';
+import {TabletEui, TabletEuiManyToOne} from '../../app-ui/TabletEui';
+import type {EuiInput, EuiOutput} from '../../app-ui/PhoneEui';
 import {FirstRunEducation} from '../../app-ui/FirstRunEducation';
 import {AI_QUESTIONS, CtrlbotAi} from '../../app-ui/CtrlbotAi';
 import {DriverCatalog, SETUP_BACKGROUND, type DriverEntry} from '../../app-ui/DriverCatalog';
@@ -19,15 +20,24 @@ import {
   type DeviceCommand,
   type TerminalLine,
 } from '../../app-ui/ConnectionPanel';
-import {ConnectTest, type ConnectTestSubTab} from '../../app-ui/ConnectTest';
+import {
+  ConnectTest,
+  DEFAULT_MATROX_INPUTS,
+  type ConnectTestSubTab,
+} from '../../app-ui/ConnectTest';
 import {
   ActivitiesPresets,
   DEFAULT_COMMAND_STEPS,
 } from '../../app-ui/ActivitiesPresets';
-import {ActivitiesSwitch} from '../../app-ui/ActivitiesSwitch';
+import {
+  ActivitiesSwitch,
+  DEFAULT_AVOIP_DECODERS,
+  DEFAULT_AVOIP_ENCODERS,
+} from '../../app-ui/ActivitiesSwitch';
 import {ActivitiesAudio} from '../../app-ui/ActivitiesAudio';
 import {EuiPowerCapture} from '../../app-ui/EuiPower';
 import {DiscoverDevices} from '../../app-ui/DiscoverDevices';
+import {SettingsSupport} from '../../app-ui/SettingsSupport';
 import {appColors} from '../../design/tokens.generated';
 import {font} from '../../design/theme';
 import type {BeatName} from './iotTabletWalkthroughData';
@@ -541,8 +551,211 @@ export const DiscoveryBeat: React.FC<{frame: number; frames: number}> = ({frame}
   );
 };
 
-export const BEAT_RENDERERS: Partial<
-  Record<BeatName, React.FC<{frame: number; frames: number}>>
+/**
+ * Matrox-Add beat (30.5s = 915 frames):
+ * Matrox ConvertIP rows are added one after another; each ends Added.
+ */
+export const MatroxAddBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const addedDeviceIds: string[] = [];
+  if (frame >= 260) {
+    addedDeviceIds.push('d7');
+  }
+  if (frame >= 500) {
+    addedDeviceIds.push('d8');
+  }
+  if (frame >= 740) {
+    addedDeviceIds.push('d9');
+  }
+
+  const scrollOffset = interpolate(frame, [0, 320], [0, 180], {
+    easing: Easing.bezier(0.45, 0, 0.55, 1),
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+
+  return (
+    <DiscoverDevices
+      device="tablet"
+      foundCount={16}
+      stillLooking={false}
+      scanningProgress={100}
+      addedDeviceIds={addedDeviceIds}
+      initialScrollOffset={scrollOffset}
+      toast={frame >= 780 ? 'Device added to connections' : undefined}
+    />
+  );
+};
+
+/**
+ * Matrox-Test beat (7s = 210 frames):
+ * The Matrox system in the switcher: encoders on the left, four decoders;
+ * one decoder takes an encoder.
+ */
+export const MatroxTestBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const selectedOutput = frame < 60 ? undefined : 0;
+  const selectedInput = frame < 100 ? undefined : 0;
+  const outputs = [
+    {name: 'CONVERTIP RX 1', ip: '239.100.45.1', routed: frame >= 100 ? 'CONVERTIP TX 1' : null},
+    {name: 'CONVERTIP RX 2', ip: '239.100.46.1', routed: null},
+    {name: 'CONVERTIP RX 3', ip: '239.100.47.1', routed: null},
+    {name: 'CONVERTIP RX 4', ip: '239.100.48.1', routed: null},
+  ];
+
+  return (
+    <ConnectTest
+      device="tablet"
+      topTab="test"
+      testTab="switcher"
+      deviceName="MATROX ConvertIP (8)"
+      multiOutput
+      outputs={outputs}
+      inputs={DEFAULT_MATROX_INPUTS}
+      selectedOutput={selectedOutput}
+      selectedInput={selectedInput}
+      connected
+    />
+  );
+};
+
+/**
+ * Matrox-Switch beat (23.5s = 705 frames):
+ * Switch type goes to AVoIP Encoders/Decoders; the ConvertIP encoder and decoder lists fill.
+ */
+export const MatroxSwitchBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const isAvoip = frame >= 200;
+  const pickerOpen = frame >= 70 && frame < 200;
+
+  return (
+    <ActivitiesSwitch
+      device="tablet"
+      activeTab="switch"
+      switchType={isAvoip ? 'avoip' : 'many_to_one'}
+      switchTypePickerOpen={pickerOpen}
+      deviceName="MATROX ConvertIP (8)"
+      encoders={DEFAULT_AVOIP_ENCODERS}
+      decoders={DEFAULT_AVOIP_DECODERS}
+    />
+  );
+};
+
+/**
+ * M2M beat (24.5s = 735 frames):
+ * Four displays: a source tapped then a display; a source dragged onto a display;
+ * All sends one source to every display.
+ */
+export const M2mBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  let selectedInput: number | null = null;
+  let drag: {inputIndex: number; x: number; y: number; opacity?: number; scale?: number} | null = null;
+  let outputs: EuiOutput[] = [
+    {label: 'Display 1', source: 'ConvertIP TX 1'},
+    {label: 'Display 2', source: null},
+    {label: 'Display 3', source: null},
+    {label: 'Display 4', source: null},
+  ];
+
+  if (frame < 240) {
+    if (frame >= 70 && frame < 150) {
+      selectedInput = 1; // ConvertIP TX 2 selected
+    } else if (frame >= 150) {
+      selectedInput = 1;
+      outputs[1] = {label: 'Display 2', source: 'ConvertIP TX 2', highlight: 'blue'};
+    }
+  } else if (frame < 490) {
+    selectedInput = null;
+    outputs[1] = {label: 'Display 2', source: 'ConvertIP TX 2'};
+
+    // Drag TX 3 onto Display 3
+    if (frame >= 280 && frame < 410) {
+      const dragProgress = interpolate(frame, [280, 400], [0, 1], {
+        easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+        extrapolateLeft: 'clamp',
+        extrapolateRight: 'clamp',
+      });
+      const startX = 200;
+      const startY = 380;
+      const targetX = 670;
+      const targetY = 480;
+      drag = {
+        inputIndex: 2,
+        x: startX + (targetX - startX) * dragProgress,
+        y: startY + (targetY - startY) * dragProgress,
+        opacity: 0.92,
+        scale: 1.05,
+      };
+    } else if (frame >= 410) {
+      outputs[2] = {label: 'Display 3', source: 'ConvertIP TX 3', highlight: 'yellow'};
+    }
+  } else {
+    // All sends TX 1 to every display
+    selectedInput = 0;
+    outputs = [
+      {label: 'Display 1', source: 'ConvertIP TX 1', highlight: 'blue'},
+      {label: 'Display 2', source: 'ConvertIP TX 1', highlight: 'blue'},
+      {label: 'Display 3', source: 'ConvertIP TX 1', highlight: 'blue'},
+      {label: 'Display 4', source: 'ConvertIP TX 1', highlight: 'blue'},
+    ];
+  }
+
+  const inputs: EuiInput[] = [
+    {label: 'ConvertIP TX 1'},
+    {label: 'ConvertIP TX 2'},
+    {label: 'ConvertIP TX 3'},
+    {label: 'ConvertIP TX 4'},
+  ];
+
+  return (
+    <TabletEui
+      outputs={outputs}
+      inputs={inputs}
+      selectedInput={selectedInput}
+      volume={0.72}
+      drag={drag}
+    />
+  );
+};
+
+/**
+ * Settings beat (21s = 630 frames):
+ * Settings → Support: User Manual, Quick Start, Factory Reset and Database Management.
+ */
+export const SettingsBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const resetButtonState =
+    frame >= 300 && frame < 450
+      ? 'pressed'
+      : frame >= 450
+        ? 'restored'
+        : 'idle';
+
+  return (
+    <SettingsSupport
+      device="tablet"
+      resetButtonState={resetButtonState}
+      showDocumentationHighlight={frame < 300}
+    />
+  );
+};
+
+/**
+ * Close beat (5s = 150 frames):
+ * The EUI at rest; the copy shows the CTRLbot IoT headline.
+ */
+export const CloseBeat: React.FC<{frame: number; frames: number}> = () => (
+  <TabletEuiManyToOne
+    inputs={[
+      {label: 'Input 1'},
+      {label: 'Input 2'},
+      {label: 'HDMI 1'},
+      {label: 'HDMI 2'},
+    ]}
+    selectedInput={null}
+    volume={0.42}
+    outputLabel="Display 1"
+  />
+);
+
+export const BEAT_RENDERERS: Record<
+  BeatName,
+  React.FC<{frame: number; frames: number}>
 > = {
   open: OpenBeat,
   'first-run': FirstRunBeat,
@@ -557,4 +770,10 @@ export const BEAT_RENDERERS: Partial<
   eui: EuiBeat,
   exit: ExitBeat,
   discovery: DiscoveryBeat,
+  'matrox-add': MatroxAddBeat,
+  'matrox-test': MatroxTestBeat,
+  'matrox-switch': MatroxSwitchBeat,
+  m2m: M2mBeat,
+  settings: SettingsBeat,
+  close: CloseBeat,
 };
