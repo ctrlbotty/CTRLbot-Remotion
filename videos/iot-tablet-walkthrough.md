@@ -219,7 +219,7 @@ branch, no worktree.
 
 ### Shared
 
-- [ ] T1: Correct `ingest/iot-tablet-walkthrough/transcript.md` against `ingest/iot-tablet-walkthrough/contact.html` and mark it `Status: corrected 2026-09-30` — files: ingest/iot-tablet-walkthrough/transcript.md
+- [x] T1: Correct `ingest/iot-tablet-walkthrough/transcript.md` against `ingest/iot-tablet-walkthrough/contact.html` and mark it `Status: corrected 2026-09-30` — files: ingest/iot-tablet-walkthrough/transcript.md
   - Terms only: "controlbot .ai" → CTRLbot AI, "RS -232" → RS-232, "convert IP" → ConvertIP, "Matrox", "IPMX", "Epson PowerLite", and anything else the stills contradict. Keep filler and false starts; change no timestamp; never edit the JSON files.
 
 ### Tablet layouts of W03's surfaces

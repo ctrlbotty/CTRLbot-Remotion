@@ -1,6 +1,6 @@
 # CTRLbot-IoT Walkthough v1.09: transcript
 
-**Status: DRAFT.** Machine transcript from `faster-whisper 1.2.1` `medium.en`, not yet
+**Status: corrected 2026-09-30.** Machine transcript from `faster-whisper 1.2.1` `medium.en`, not yet
 checked against the recording. Correct it by hand against the frames in
 `ingest/iot-tablet-walkthrough/contact.html`, then change this line to `Status: corrected <date>`.
 Once corrected it is the script of record, and a re-run of `npm run ingest:recording`
@@ -24,7 +24,7 @@ a polished read.
 | 0:01.5 | Welcome to CTRLbot. This will be a walkthrough of the CTRLbot IoT app that's available for Android, for phone, tablet, and Chromebook. Let's get started. |
 | 0:14.8 | When you first open up the app, you'll have a nice little walkthrough. You can close this out or review it. If you ever want to get back to it, you can go into settings here and click on the quick start. |
 | 0:28.2 | The first thing you'll see when you open up the app is our |
-| 0:32.5 | CTRLbot.ai. And this is |
+| 0:32.5 | CTRLbot AI. And this is |
 | 0:35.8 | going to help you figure out and troubleshoot things and also |
 | 0:40.0 | is a living manual. So anything, |
 | 0:44.2 | any questions you have about the application or how to set it up, you |
@@ -95,7 +95,7 @@ a polished read.
 | 5:38.4 | All right, let's go back over to activities. |
 | 5:42.4 | So now we'll want to change the switcher |
 | 5:47.2 | over to encoders and decoders. |
-| 5:50.0 | And you can see here our convert IP, |
+| 5:50.0 | And you can see here our ConvertIP, |
 | 5:53.8 | Matrox encoders and decoders all set up, ready to go. |
 | 5:58.6 | And we'll leave the audio for the display |
 | 6:01.1 | and the power already set up for the display. |
