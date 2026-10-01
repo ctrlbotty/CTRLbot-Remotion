@@ -51,10 +51,28 @@ import {
 } from 'lucide-react';
 import type {CSSProperties, ReactNode} from 'react';
 import {Img, staticFile} from 'remotion';
-import {MIRROR_APPS, MIRROR_DEVICE, MIRROR_FILES, MIRROR_LOGCAT, MIRROR_STREAM, MIRROR_STUDIO, MIRROR_VIEWPORT, type LogPriority, type MirrorLogLine} from './mirrorData';
+import {
+  FILES_DROP_HEIGHT,
+  MIRROR_APPS,
+  MIRROR_DEVICE,
+  MIRROR_FILES,
+  MIRROR_LOGCAT,
+  MIRROR_STREAM,
+  MIRROR_STUDIO,
+  MIRROR_VIEWPORT,
+  RAIL_WIDTH,
+  SIDE_PANEL_WIDTH,
+  STAGE_MARGIN,
+  STUDIO_FRAMES_HEIGHT,
+  TITLE_BAR_HEIGHT,
+  TOOLBAR_HEIGHT,
+  type LogPriority,
+  type MirrorLogLine,
+  type MirrorPanel,
+} from './mirrorData';
 import {alert, beam, FRAME_SPECS, ink, mirrorFont, mist, mix, round, signal, sp, stageBackground, tabletFrame, text, warn, type FrameSpec, type FrameStyle} from './mirrorTheme';
 
-export type MirrorPanel = 'setup' | 'devices' | 'studio' | 'apps' | 'files' | 'shell' | 'logcat' | 'settings';
+export type {MirrorPanel};
 
 const border = (colour: string) => `1px solid ${colour}`;
 
@@ -285,7 +303,7 @@ const NavButton = ({icon: Icon, active, disabled}: {icon: LucideIcon; active: bo
 );
 
 const TitleBar = ({status}: {status: string}) => (
-  <div style={{height: 32, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: sp(3), borderBottom: border(ink[800]), backgroundColor: mix(ink[950], 80)}}>
+  <div style={{height: TITLE_BAR_HEIGHT, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: sp(3), borderBottom: border(ink[800]), backgroundColor: mix(ink[950], 80)}}>
     <div style={{display: 'flex', alignItems: 'center', gap: 10, fontSize: 11}}>
       <span style={{display: 'flex', alignItems: 'center', gap: sp(2)}}>
         <Img src={staticFile('app-assets/mirror/icon.png')} style={{width: 16, height: 16}} />
@@ -301,7 +319,7 @@ const TitleBar = ({status}: {status: string}) => (
       {status.startsWith('Mirroring') ? <Badge tone="good">Live</Badge> : null}
       <div style={{display: 'flex', color: mist[300]}}>
         {[Minus, Square, X].map((Icon, index) => (
-          <div key={index} style={{width: 44, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+          <div key={index} style={{width: 44, height: TITLE_BAR_HEIGHT, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
             <Icon size={index === 1 ? 11 : 13} />
           </div>
         ))}
@@ -311,7 +329,7 @@ const TitleBar = ({status}: {status: string}) => (
 );
 
 const Sidebar = ({panel, hasDevice}: {panel: MirrorPanel; hasDevice: boolean}) => (
-  <div style={{width: 64, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, padding: `${sp(3)}px 0`, borderRight: border(ink[800]), backgroundColor: mix(ink[950], 60)}}>
+  <div style={{width: RAIL_WIDTH, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, padding: `${sp(3)}px 0`, borderRight: border(ink[800]), backgroundColor: mix(ink[950], 60)}}>
     {NAV.map((item) => (
       <NavButton key={item.id} icon={item.icon} active={panel === item.id} disabled={Boolean(item.device && !hasDevice)} />
     ))}
@@ -444,7 +462,7 @@ export const MirrorApp = ({
     <TitleBar status={status} />
     <div style={{flex: 1, minHeight: 0, display: 'flex'}}>
       <Sidebar panel={panel} hasDevice={hasDevice} />
-      <div style={{width: 340, flexShrink: 0, borderRight: border(ink[800]), backgroundColor: ink[900]}}>{side}</div>
+      <div style={{width: SIDE_PANEL_WIDTH, flexShrink: 0, borderRight: border(ink[800]), backgroundColor: ink[900]}}>{side}</div>
       {stage}
     </div>
     {toast ? <MirrorToastNotification toast={toast} /> : null}
@@ -452,9 +470,6 @@ export const MirrorApp = ({
 );
 
 // ── Stage ──────────────────────────────────────────────────────────────────────────
-
-const STAGE_MARGIN = 28;
-const TOOLBAR = 56;
 
 /** The mirrored screen's natural size, and what it shows. */
 export type Mirrored = {width: number; height: number; screen: ReactNode};
@@ -477,8 +492,8 @@ export const MirrorStage = ({
   recording?: string;
   frameStyle?: FrameStyle | FrameSpec;
 }) => {
-  const stageWidth = MIRROR_VIEWPORT.width - 64 - 340;
-  const stageHeight = MIRROR_VIEWPORT.height - 32 - TOOLBAR;
+  const stageWidth = MIRROR_VIEWPORT.width - RAIL_WIDTH - SIDE_PANEL_WIDTH;
+  const stageHeight = MIRROR_VIEWPORT.height - TITLE_BAR_HEIGHT - TOOLBAR_HEIGHT;
   let frame: ReactNode = null;
   if (mirrored) {
     const spec: FrameSpec | null =
@@ -604,7 +619,7 @@ export const MirrorStage = ({
 };
 
 const StageToolbar = ({live, recording}: {live: boolean; recording?: string}) => (
-  <div style={{height: TOOLBAR, flexShrink: 0, display: 'flex', alignItems: 'center', gap: 4, padding: `0 ${sp(3)}px`, borderTop: border(ink[800]), backgroundColor: mix(ink[950], 70)}}>
+  <div style={{height: TOOLBAR_HEIGHT, flexShrink: 0, display: 'flex', alignItems: 'center', gap: 4, padding: `0 ${sp(3)}px`, borderTop: border(ink[800]), backgroundColor: mix(ink[950], 70)}}>
     <div style={{display: 'flex', gap: 2, opacity: live ? 1 : 0.55}}>
       <IconButton icon={ChevronLeft} size={18} />
       <IconButton icon={Home} size={17} />
@@ -679,7 +694,15 @@ const Step = ({index, state, title, children, last}: {index: number; state: Step
 );
 
 /** Setup's five steps. `step` is the one in progress, 1..5; earlier ones are done. */
-export const SetupPanel = ({step, downloaded}: {step: number; downloaded?: number}) => {
+export const SetupPanel = ({
+  step,
+  downloaded,
+  installPressed,
+}: {
+  step: number;
+  downloaded?: number;
+  installPressed?: boolean;
+}) => {
   const state = (index: number): StepState => (index < step ? 'done' : index === step ? 'active' : 'todo');
   return (
     <Panel title="Setup" subtitle="Get a device talking to this PC">
@@ -687,10 +710,18 @@ export const SetupPanel = ({step, downloaded}: {step: number; downloaded?: numbe
         {step === 1 ? (
           <>
             CTRLbot Mirror needs Google's adb.exe. It downloads the official bundle from dl.google.com into this app's own folder.
-            <div style={{marginTop: 8, height: 4, borderRadius: 999, backgroundColor: ink[700]}}>
-              <div style={{height: '100%', width: `${(downloaded ?? 0) * 100}%`, borderRadius: 999, backgroundColor: beam[500]}} />
-            </div>
-            <div style={{marginTop: 4, fontFamily: mirrorFont.mono, fontSize: 10}}>{((downloaded ?? 0) * 7.7).toFixed(1)} MB / 7.7 MB</div>
+            {downloaded === undefined ? (
+              <div style={{marginTop: 8}}>
+                <Button label="Install now" variant="primary" pressed={installPressed} />
+              </div>
+            ) : (
+              <>
+                <div style={{marginTop: 8, height: 4, borderRadius: 999, backgroundColor: ink[700]}}>
+                  <div style={{height: '100%', width: `${(downloaded ?? 0) * 100}%`, borderRadius: 999, backgroundColor: beam[500]}} />
+                </div>
+                <div style={{marginTop: 4, fontFamily: mirrorFont.mono, fontSize: 10}}>{((downloaded ?? 0) * 7.7).toFixed(1)} MB / 7.7 MB</div>
+              </>
+            )}
           </>
         ) : null}
       </Step>
