@@ -2,7 +2,12 @@ import React from 'react';
 import {Easing, interpolate} from 'remotion';
 import {AppIcon} from '../../app-ui/AppIcon';
 import {PHONE_VIEWPORT} from '../../app-ui/viewports';
-import {PhoneEuiManyToOne} from '../../app-ui/PhoneEui';
+import {
+  PhoneEui,
+  PhoneEuiManyToOne,
+  type EuiInput,
+  type EuiOutput,
+} from '../../app-ui/PhoneEui';
 import {FirstRunEducation} from '../../app-ui/FirstRunEducation';
 import {AI_QUESTIONS, CtrlbotAi} from '../../app-ui/CtrlbotAi';
 import {DriverCatalog, type DriverEntry} from '../../app-ui/DriverCatalog';
@@ -12,13 +17,22 @@ import {
   type DeviceCommand,
   type TerminalLine,
 } from '../../app-ui/ConnectionPanel';
-import {ConnectTest} from '../../app-ui/ConnectTest';
+import {
+  ConnectTest,
+  DEFAULT_MATROX_INPUTS,
+} from '../../app-ui/ConnectTest';
 import {
   ActivitiesPresets,
   DEFAULT_COMMAND_STEPS,
 } from '../../app-ui/ActivitiesPresets';
-import {ActivitiesSwitch} from '../../app-ui/ActivitiesSwitch';
+import {
+  ActivitiesSwitch,
+  DEFAULT_AVOIP_DECODERS,
+  DEFAULT_AVOIP_ENCODERS,
+} from '../../app-ui/ActivitiesSwitch';
 import {ActivitiesAudio} from '../../app-ui/ActivitiesAudio';
+import {DiscoverDevices} from '../../app-ui/DiscoverDevices';
+import {SettingsSupport} from '../../app-ui/SettingsSupport';
 import {EuiPowerCapture} from '../../app-ui/EuiPower';
 import {PhoneNavMenu} from '../../app-ui/PhoneNavMenu';
 import {appColors, appDimens} from '../../design/tokens.generated';
@@ -647,6 +661,233 @@ export const ExitBeat: React.FC<{frame: number; frames: number}> = ({frame}) => 
   );
 };
 
+/**
+ * Discovery beat (18.5s = 555 frames):
+ * Discover Devices counts up as devices are found; each row shows its driver match or Add driver.
+ */
+export const DiscoveryBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const foundCount = Math.floor(
+    interpolate(frame, [0, 480], [3, 16], {
+      extrapolateLeft: 'clamp',
+      extrapolateRight: 'clamp',
+    }),
+  );
+  const scanningProgress = interpolate(frame, [0, 555], [10, 85], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+
+  return (
+    <DiscoverDevices
+      device="phone"
+      foundCount={foundCount}
+      stillLooking
+      scanningProgress={scanningProgress}
+    />
+  );
+};
+
+/**
+ * Matrox-Add beat (28.5s = 855 frames):
+ * Matrox ConvertIP rows are added one after another; each ends Added.
+ */
+export const MatroxAddBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const addedDeviceIds: string[] = [];
+  if (frame >= 250) {
+    addedDeviceIds.push('d7');
+  }
+  if (frame >= 480) {
+    addedDeviceIds.push('d8');
+  }
+  if (frame >= 700) {
+    addedDeviceIds.push('d9');
+  }
+
+  const scrollOffset = interpolate(frame, [0, 300], [0, 180], {
+    easing: Easing.bezier(0.45, 0, 0.55, 1),
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+
+  return (
+    <DiscoverDevices
+      device="phone"
+      foundCount={16}
+      stillLooking={false}
+      scanningProgress={100}
+      addedDeviceIds={addedDeviceIds}
+      initialScrollOffset={scrollOffset}
+      toast={frame >= 740 ? 'Device added to connections' : undefined}
+    />
+  );
+};
+
+/**
+ * Matrox-Test beat (18.5s = 555 frames):
+ * The Matrox system is selected: four decoders over four encoders; a decoder takes an encoder.
+ */
+export const MatroxTestBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const selectedOutput = frame < 150 ? undefined : 0;
+  const selectedInput = frame < 280 ? undefined : 0;
+  const outputs = [
+    {name: 'CONVERTIP RX 1', ip: '239.100.45.1', routed: frame >= 280 ? 'CONVERTIP TX 1' : null},
+    {name: 'CONVERTIP RX 2', ip: '239.100.46.1', routed: null},
+    {name: 'CONVERTIP RX 3', ip: '239.100.47.1', routed: null},
+    {name: 'CONVERTIP RX 4', ip: '239.100.48.1', routed: null},
+  ];
+
+  return (
+    <ConnectTest
+      device="phone"
+      topTab="test"
+      testTab="switcher"
+      deviceName="MATROX ConvertIP (8)"
+      multiOutput
+      outputs={outputs}
+      inputs={DEFAULT_MATROX_INPUTS}
+      selectedOutput={selectedOutput}
+      selectedInput={selectedInput}
+      connected
+    />
+  );
+};
+
+/**
+ * Matrox-Switch beat (17s = 510 frames):
+ * Switch type goes to AVoIP Encoders/Decoders; the encoder and decoder lists fill.
+ */
+export const MatroxSwitchBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const isAvoip = frame >= 180;
+  const pickerOpen = frame >= 60 && frame < 180;
+
+  return (
+    <ActivitiesSwitch
+      device="phone"
+      activeTab="switch"
+      switchType={isAvoip ? 'avoip' : 'many_to_one'}
+      switchTypePickerOpen={pickerOpen}
+      deviceName="MATROX ConvertIP (8)"
+      encoders={DEFAULT_AVOIP_ENCODERS}
+      decoders={DEFAULT_AVOIP_DECODERS}
+    />
+  );
+};
+
+/**
+ * M2M beat (26.5s = 795 frames):
+ * Four displays: a source tapped then a display; a source dragged onto a display;
+ * All sends one source to every display.
+ */
+export const M2mBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  let selectedInput: number | null = null;
+  let drag: {inputIndex: number; x: number; y: number; opacity?: number; scale?: number} | null = null;
+  let outputs: EuiOutput[] = [
+    {label: 'Display 1', source: 'ConvertIP TX 1'},
+    {label: 'Display 2', source: null},
+    {label: 'Display 3', source: null},
+    {label: 'Display 4', source: null},
+  ];
+
+  if (frame < 260) {
+    if (frame >= 80 && frame < 160) {
+      selectedInput = 1; // ConvertIP TX 2 selected
+    } else if (frame >= 160) {
+      selectedInput = 1;
+      outputs[1] = {label: 'Display 2', source: 'ConvertIP TX 2', highlight: 'blue'};
+    }
+  } else if (frame < 520) {
+    selectedInput = null;
+    outputs[1] = {label: 'Display 2', source: 'ConvertIP TX 2'};
+
+    // Drag TX 3 onto Display 3
+    if (frame >= 300 && frame < 440) {
+      const dragProgress = interpolate(frame, [300, 430], [0, 1], {
+        easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+        extrapolateLeft: 'clamp',
+        extrapolateRight: 'clamp',
+      });
+      const startX = 180;
+      const startY = 600;
+      const targetX = 80;
+      const targetY = 220;
+      drag = {
+        inputIndex: 2,
+        x: startX + (targetX - startX) * dragProgress,
+        y: startY + (targetY - startY) * dragProgress,
+        opacity: 0.9,
+        scale: 1.05,
+      };
+    } else if (frame >= 440) {
+      outputs[2] = {label: 'Display 3', source: 'ConvertIP TX 3', highlight: 'yellow'};
+    }
+  } else {
+    // All sends TX 1 to every display
+    selectedInput = 0;
+    outputs = [
+      {label: 'Display 1', source: 'ConvertIP TX 1', highlight: 'blue'},
+      {label: 'Display 2', source: 'ConvertIP TX 1', highlight: 'blue'},
+      {label: 'Display 3', source: 'ConvertIP TX 1', highlight: 'blue'},
+      {label: 'Display 4', source: 'ConvertIP TX 1', highlight: 'blue'},
+    ];
+  }
+
+  const inputs: EuiInput[] = [
+    {label: 'ConvertIP TX 1'},
+    {label: 'ConvertIP TX 2'},
+    {label: 'ConvertIP TX 3'},
+    {label: 'ConvertIP TX 4'},
+  ];
+
+  return (
+    <PhoneEui
+      outputs={outputs}
+      inputs={inputs}
+      selectedInput={selectedInput}
+      volume={0.72}
+      drag={drag}
+    />
+  );
+};
+
+/**
+ * Settings beat (15s = 450 frames):
+ * Settings → Support: User Manual, Quick Start, Factory Reset.
+ */
+export const SettingsBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const resetButtonState =
+    frame >= 240 && frame < 360
+      ? 'pressed'
+      : frame >= 360
+        ? 'restored'
+        : 'idle';
+
+  return (
+    <SettingsSupport
+      device="phone"
+      resetButtonState={resetButtonState}
+      showDocumentationHighlight={frame < 240}
+    />
+  );
+};
+
+/**
+ * Close beat (6s = 180 frames):
+ * The EUI at rest; the copy shows the CTRLbot IoT headline.
+ */
+export const CloseBeat: React.FC<{frame: number; frames: number}> = () => (
+  <PhoneEuiManyToOne
+    inputs={[
+      {label: 'Input 1'},
+      {label: 'Input 2'},
+      {label: 'HDMI 1'},
+      {label: 'HDMI 2'},
+    ]}
+    selectedInput={null}
+    volume={0.42}
+    outputLabel="DISPLAY 1"
+  />
+);
+
 export const BEAT_RENDERERS: Partial<
   Record<BeatName, React.FC<{frame: number; frames: number}>>
 > = {
@@ -662,4 +903,11 @@ export const BEAT_RENDERERS: Partial<
   'switch-audio': SwitchAudioBeat,
   eui: EuiBeat,
   exit: ExitBeat,
+  discovery: DiscoveryBeat,
+  'matrox-add': MatroxAddBeat,
+  'matrox-test': MatroxTestBeat,
+  'matrox-switch': MatroxSwitchBeat,
+  m2m: M2mBeat,
+  settings: SettingsBeat,
+  close: CloseBeat,
 };
