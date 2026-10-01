@@ -17,6 +17,7 @@ import {AppIcon} from './AppIcon';
 import {appColors, appDimens, appTextStyles} from '../design/tokens.generated';
 import {TABLET_VIEWPORT} from './viewports';
 import type {EuiInput, EuiOutput} from './PhoneEui';
+import {font} from '../design/theme';
 
 export {TABLET_VIEWPORT} from './viewports';
 
@@ -293,11 +294,13 @@ const SourceRow = ({
   input,
   selected,
   pressed = false,
+  selectedColor = appColors.blue,
 }: {
   input: EuiInput;
   selected: boolean;
   /** Under a finger. `source_button_selector.xml` maps state_pressed to solid pri_yellow. */
   pressed?: boolean;
+  selectedColor?: string;
 }) => (
   <div
     style={{
@@ -314,7 +317,7 @@ const SourceRow = ({
       backgroundColor: pressed
         ? appColors.priYellow
         : selected
-          ? appColors.blue
+          ? selectedColor
           : appColors.black,
     }}
   >
@@ -430,15 +433,7 @@ export const TabletVolumeBar = ({
  *
  * 30% source buttons, 10% route-all column, 60% 2x2 output grid.
  */
-export const TabletEui = ({
-  outputs,
-  inputs,
-  selectedInput,
-  volume,
-  speakerMuted = false,
-  pressed = null,
-  chrome,
-}: {
+export type TabletEuiProps = {
   outputs: EuiOutput[];
   inputs: EuiInput[];
   /** Index into `inputs`, or null for the cold state — nothing selected yet. */
@@ -452,12 +447,35 @@ export const TabletEui = ({
    */
   pressed?: string | null;
   chrome?: EuiChrome;
-}) => {
+  showExitHint?: boolean;
+  selectedInputColor?: 'blue' | 'yellow';
+  drag?: {
+    inputIndex: number;
+    x: number;
+    y: number;
+    opacity?: number;
+    scale?: number;
+  } | null;
+};
+
+export const TabletEui = ({
+  outputs,
+  inputs,
+  selectedInput,
+  volume,
+  speakerMuted = false,
+  pressed = null,
+  chrome,
+  showExitHint = false,
+  selectedInputColor = 'blue',
+  drag,
+}: TabletEuiProps) => {
   const {top: topOpacity, audio: audioOpacity, backplate} = resolveChrome(chrome);
 
   return (
     <div
       style={{
+        position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         width: TABLET_VIEWPORT.width,
@@ -466,6 +484,46 @@ export const TabletEui = ({
         backgroundColor: backplate ? appColors.black : 'transparent',
       }}
     >
+      {/* Dragged source row overlay */}
+      {drag ? (
+        <div
+          style={{
+            position: 'absolute',
+            left: drag.x,
+            top: drag.y,
+            width: 334,
+            height: SOURCE_HEIGHT,
+            zIndex: 100,
+            pointerEvents: 'none',
+            transform: `translate(-50%, -50%) scale(${drag.scale ?? 1.05})`,
+            opacity: drag.opacity ?? 0.95,
+            boxShadow: '0 12px 32px rgba(0, 0, 0, 0.7)',
+            borderRadius: 6,
+            backgroundColor: appColors.blue,
+            paddingLeft: 20,
+            paddingRight: 20,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            boxSizing: 'border-box',
+          }}
+        >
+          <AppIcon name="ic_hdmi_icon_sm" size={48} tint={appColors.white} />
+          <span
+            style={{
+              fontFamily: font.ui,
+              fontWeight: 400,
+              fontSize: 26,
+              letterSpacing: 0.8,
+              textTransform: 'uppercase',
+              color: appColors.white,
+            }}
+          >
+            {inputs[drag.inputIndex]?.label ?? ''}
+          </span>
+        </div>
+      ) : null}
+
       {/* Top bar — exit control left, system power right */}
       <div
         style={{
@@ -480,7 +538,22 @@ export const TabletEui = ({
           backgroundColor: appColors.black,
         }}
       >
-        <AppIcon name="ic_settings2" size={52} tint={appColors.white} />
+        <div style={{display: 'flex', alignItems: 'center'}}>
+          <AppIcon name="ic_settings2" size={52} tint={appColors.white} />
+          {showExitHint ? (
+            <span
+              style={{
+                marginLeft: 14,
+                fontFamily: font.ui,
+                fontSize: 20,
+                color: appColors.white,
+                letterSpacing: 0.2,
+              }}
+            >
+              Keep holding to return to Setup
+            </span>
+          ) : null}
+        </div>
         <AppIcon name="ic_power" size={54} />
       </div>
 
@@ -513,6 +586,7 @@ export const TabletEui = ({
               input={input}
               selected={index === selectedInput}
               pressed={pressed === `input-${index + 1}`}
+              selectedColor={selectedInputColor === 'yellow' ? appColors.priYellow : appColors.blue}
             />
           ))}
         </div>
@@ -628,16 +702,7 @@ const Nx1SourceRow = ({
   </div>
 );
 
-/** Landscape Many-to-One EUI, from res/layout/av_switch_nx1.xml. */
-export const TabletEuiManyToOne = ({
-  inputs,
-  selectedInput,
-  volume,
-  speakerMuted = false,
-  outputLabel = 'Display 1',
-  pressed = null,
-  chrome,
-}: {
+export type TabletEuiManyToOneProps = {
   inputs: EuiInput[];
   /** Index into `inputs`, or null for the cold state — nothing routed yet. */
   selectedInput: number | null;
@@ -648,7 +713,19 @@ export const TabletEuiManyToOne = ({
   /** The source row under a finger, 1-based: `input-1`..`input-4`. See `TabletEui`. */
   pressed?: string | null;
   chrome?: EuiChrome;
-}) => {
+  showExitHint?: boolean;
+};
+
+export const TabletEuiManyToOne = ({
+  inputs,
+  selectedInput,
+  volume,
+  speakerMuted = false,
+  outputLabel = 'Display 1',
+  pressed = null,
+  chrome,
+  showExitHint = false,
+}: TabletEuiManyToOneProps) => {
   const selectedSource = selectedInput === null ? undefined : inputs[selectedInput];
   const routed = selectedSource !== undefined;
   const {top: topOpacity, audio: audioOpacity, backplate} = resolveChrome(chrome);
@@ -677,7 +754,22 @@ export const TabletEuiManyToOne = ({
           backgroundColor: appColors.black,
         }}
       >
-        <AppIcon name="ic_settings2" size={52} tint={appColors.white} />
+        <div style={{display: 'flex', alignItems: 'center'}}>
+          <AppIcon name="ic_settings2" size={52} tint={appColors.white} />
+          {showExitHint ? (
+            <span
+              style={{
+                marginLeft: 14,
+                fontFamily: font.ui,
+                fontSize: 20,
+                color: appColors.white,
+                letterSpacing: 0.2,
+              }}
+            >
+              Keep holding to return to Setup
+            </span>
+          ) : null}
+        </div>
         <AppIcon name="ic_power" size={54} />
       </div>
 
