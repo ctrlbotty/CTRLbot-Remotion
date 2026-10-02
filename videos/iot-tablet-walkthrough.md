@@ -342,7 +342,7 @@ displays together. The subject is never in the right 140 px column.
   - Nathan, 2026-10-02: `add` 15.5→16s and `terminal` 6→5.5s; `matrox-test` 7→8s and `matrox-add` 31.5→30.5s (total 343.5s unchanged). The first build left `add` with a 0.60s hold and `matrox-test` with 0.48s.
   - Two builds at most to set the `at`s. A beat that cannot keep its 1.0s hold inside its Sec is `[!]` with the measured lengths.
   - Then `npm run narration:verify` on `edit.m4a` (W02's T17). Fix each real edge leak with `notBefore` / `notAfter` or a tighter `sourceEnd` (the contract's "Clip edges leak"), at most two more builds. A leak that remains goes in the Review notes with its clip and level.
-- [ ] T20: Migrate W04's coupled beat data and both shell compositions at 10305 frames, with the revision 2 copy, layouts, regions and cue frames — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts, src/marketing/iot-tablet-walkthrough/IotTabletWalkthrough.tsx, src/Root.tsx
+- [x] T20: Migrate W04's coupled beat data and both shell compositions at 10305 frames, with the revision 2 copy, layouts, regions and cue frames — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts, src/marketing/iot-tablet-walkthrough/IotTabletWalkthrough.tsx, src/Root.tsx
   - Coupled with the former T21 (2026-10-02), as W02's T11 was. The worked example is W02's migration, commit `9114a3d`.
   - 10305 frames in total. `DriverCatalog` callers opt into the app's blue wash. `beatShots()` and `SUBJECT` are removed. In `src/Root.tsx`, only W04's two registrations change.
   - Every region change the Shot list ties to a word is a `shots` entry with `at` from `cueFrame`, relative to the beat. Use `regions` arrays only for untimed changes, because they split the beat evenly. Add no hold keyframes: the shell drifts.
@@ -375,6 +375,8 @@ displays together. The subject is never in the right 140 px column.
 - **Blocked:** no known implementation blocker; task dependencies still apply.
 
 ## Review notes
+
+- T20, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy in lane B, with the patch applied to main. In a clean worktree: check, lint and validate pass (20 beats, 343.5s), and the `Root.tsx` diff is limited to W04's two durations. Stills at 0/260/1500/6000/10200, both shapes: poster card, proof stage, database chapter, EUI and close card (CTRLbot IoT, no URL) render. Notes for T22–T26: the landscape proof's EUI panel runs off the stage's right edge, and the landscape database callout covers part of the catalog. Gemini put the `click` cue in matrox-add-these rather than matrox-one-click; check it in T25.
 
 - T19, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy in the lane B worktree: 2 placement builds, 2 edge builds, and 1 more placement build after Nathan's timing transfer (add 16s, terminal 5.5s, matrox-add 30.5s, matrox-test 8s). 343.5s; independently measured holds are all at least 1.10s (add). The coordinator's own `narration:verify` passed with 0 edge defects and 19 notes. term-commands and switch-projector leaks are fixed with hard edges. Notes for listening and for W03's T32 (voice.mjs tails): `act-next` ends at -17.5 dB into silence (possible clipped tail); `matrox-ipmx` cuts mid-flow, where the brief removes the aside.
 
