@@ -366,7 +366,7 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
   - Chapters show their revision 1 state until T26–T30.
 - [x] T25: Merged into T24 (2026-10-02) — files: videos/iot-phone-walkthrough.md
 - [x] T26: Build the proof, first-run, ai and database beats to the Shot list — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
-- [ ] T27: Build the epson, add, terminal and test beats to the Shot list — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
+- [x] T27: Build the epson, add, terminal and test beats to the Shot list — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [ ] T28: Build the activities, switch-audio, eui and exit beats to the Shot list, the power state continuous from eui into exit — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [ ] T29: Build the discovery, matrox-add, matrox-test and matrox-switch beats to the Shot list — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [ ] T30: Build the m2m and settings beats to the Shot list — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
@@ -392,6 +392,8 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
 - **Blocked:** none. Nathan resolved the T23 settings hold on 2026-10-02 (settings 15.5s, close 5.5s); the four speech-edge repairs remain. Partial edits are preserved and uncommitted.
 
 ## Review notes
+
+- T27, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy, 410s. Check and lint pass in a clean worktree. Twelve cue stills; portrait reads in step with the captions: Epson detail on "Epson"; the link opens the web view on "link"; the panel on "plus"; the IP typed on "IP"; Disconnect on "connected"; Power On lands on "buttons"; the terminal is ringed on "terminal"; a typed message on "message"; the Buttons, Switcher, Terminal and Web page tabs each on their word, with the web page under 2s. Landscape framing is in T33.
 
 - T26, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy, 317s. Check and lint pass in a clean worktree. Stills at 185/420/615/930/1045/1190/1490/1745, both shapes: proof "app" fills the display; the tour steps on "walkthrough" and closes on "X"; the question list, tapped question and answer arrive on "AI", "troubleshooter" and "issues"; the catalog scrolls on "database" and the filter opens on "endpoint". Portrait reads correctly throughout. Landscape database is framed far too tight, so the opened menu is cut off under the callout (new T33, data framing).
 

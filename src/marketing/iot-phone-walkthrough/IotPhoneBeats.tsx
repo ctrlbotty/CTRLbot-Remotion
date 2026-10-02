@@ -17,17 +17,21 @@ import {AI_QUESTIONS, CtrlbotAi, aiRegions} from '../../app-ui/CtrlbotAi';
 import {
   DriverCatalog,
   SETUP_BACKGROUND,
+  catalogRegions,
   type DriverEntry,
 } from '../../app-ui/DriverCatalog';
 import {ProductWebView} from '../../app-ui/ProductWebView';
 import {
   ConnectionPanel,
+  connectionRegions,
   type DeviceCommand,
   type TerminalLine,
 } from '../../app-ui/ConnectionPanel';
 import {
   ConnectTest,
+  connectTestRegions,
   DEFAULT_MATROX_INPUTS,
+  type ConnectTestSubTab,
 } from '../../app-ui/ConnectTest';
 import {
   ActivitiesPresets,
@@ -355,16 +359,183 @@ export const DatabaseBeat: React.FC<{frame: number; frames: number}> = ({frame})
 };
 
 /**
- * Epson beat (15s = 450 frames):
- * Epson PowerLite's page: device info, specs, setup, support; the product-page link
- * is ringed, then the app's web view opens on the manufacturer page loading.
+ * Epson PowerLite driver detail view sheet.
  */
-export const EpsonBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const showWebView = frame >= 240;
-  const ringActive = frame >= 120 && frame < 240;
+const EpsonDetailView: React.FC = () => (
+  <PhoneScreen
+    bg={appColors.gray10}
+    fontFamily={font.ui}
+    display="flex"
+    flexDirection="column"
+  >
+    {/* Top Header */}
+    <div
+      style={{
+        height: appDimens.headerHeight,
+        display: 'flex',
+        alignItems: 'center',
+        paddingLeft: 12,
+        paddingRight: 12,
+        gap: 12,
+        backgroundColor: appColors.black,
+        flex: '0 0 auto',
+      }}
+    >
+      <AppIcon
+        name="ic_arrow_forward_24"
+        size={24}
+        tint={appColors.white}
+        style={{rotate: '180deg'}}
+      />
+      <span
+        style={{
+          fontFamily: font.ui,
+          fontWeight: 400,
+          fontSize: 18,
+          color: appColors.white,
+          flex: 1,
+        }}
+      >
+        EPSON Projectors
+      </span>
+      <div
+        style={{
+          width: 38,
+          height: 38,
+          borderRadius: 999,
+          backgroundColor: appColors.gray,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <AppIcon name="ic_add_24" size={22} tint={appColors.white} />
+      </div>
+    </div>
 
-  if (showWebView) {
-    const progress = interpolate(frame, [240, 450], [15, 75], {
+    {/* Detail Content */}
+    <div
+      style={{
+        flex: 1,
+        padding: '16px 14px',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 14,
+      }}
+    >
+      {/* Model row with Product Page link */}
+      <div>
+        <div style={{fontSize: 11, color: appColors.white50, marginBottom: 4}}>Model</div>
+        <div style={{display: 'flex', gap: 8, height: 42}}>
+          <div
+            style={{
+              flex: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingLeft: 12,
+              paddingRight: 10,
+              backgroundColor: appColors.gray20,
+              borderRadius: 4,
+              color: appColors.white,
+              fontSize: 14,
+            }}
+          >
+            PowerLite
+            <div
+              style={{
+                width: 0,
+                height: 0,
+                borderLeft: '5px solid transparent',
+                borderRight: '5px solid transparent',
+                borderTop: `6px solid ${appColors.white}`,
+              }}
+            />
+          </div>
+          <div
+            style={{
+              flex: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 6,
+              backgroundColor: appColors.gray20,
+              borderRadius: 4,
+              color: appColors.white,
+              fontSize: 13,
+            }}
+          >
+            Product Page
+            <svg width="13" height="13" viewBox="0 0 24 24" fill={appColors.white}>
+              <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* Device Info */}
+      <div>
+        <div style={{fontSize: 14, fontWeight: 700, color: appColors.white, marginBottom: 4}}>
+          Device Info
+        </div>
+        <div style={{fontSize: 11, color: appColors.white50, marginBottom: 2}}>
+          Description
+        </div>
+        <div style={{fontSize: 12, lineHeight: 1.4, color: appColors.white75}}>
+          The Epson PowerLite Presenter HD is a portable projector with an integrated DVD
+          player and speakers, suitable for presentations and video playback. The Epson
+          PowerLite Pro Cinema 800 is a home theater projector designed for high-quality
+          image projection in a home environment.
+        </div>
+      </div>
+
+      {/* Accordions */}
+      {['Specs', 'Setup', 'Support'].map((section) => (
+        <div
+          key={section}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '10px 12px',
+            backgroundColor: appColors.gray15,
+            borderRadius: 4,
+            fontSize: 13,
+            fontWeight: 600,
+            color: appColors.white,
+          }}
+        >
+          {section}
+          <div
+            style={{
+              width: 0,
+              height: 0,
+              borderLeft: '5px solid transparent',
+              borderRight: '5px solid transparent',
+              borderTop: `6px solid ${appColors.white50}`,
+            }}
+          />
+        </div>
+      ))}
+    </div>
+
+    <PhoneNavMenu expanded={false} active="device" />
+  </PhoneScreen>
+);
+
+/**
+ * Epson beat (15s = 450 frames):
+ * Epson PowerLite's page; the product-page link is ringed and tapped;
+ * the web view's address bar shows the page loading, held under two seconds.
+ * Cues: epson "Epson", link "link".
+ */
+export const EpsonBeat: React.FC<{frame: number; frames: number}> = ({frame, frames}) => {
+  const epsonCue = CUE_FRAMES.epson - BEATS.epson.from;
+  const linkCue = CUE_FRAMES.link - BEATS.epson.from;
+
+  if (frame >= linkCue) {
+    const progress = interpolate(frame, [linkCue, frames], [15, 65], {
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
     });
@@ -378,189 +549,93 @@ export const EpsonBeat: React.FC<{frame: number; frames: number}> = ({frame}) =>
     );
   }
 
-  return (
-    <PhoneScreen
-      bg={appColors.gray10}
-      fontFamily={font.ui}
-      display="flex"
-      flexDirection="column"
-    >
-      {/* Top Header */}
-      <div
-        style={{
-          height: appDimens.headerHeight,
-          display: 'flex',
-          alignItems: 'center',
-          paddingLeft: 12,
-          paddingRight: 12,
-          gap: 12,
-          backgroundColor: appColors.black,
-          flex: '0 0 auto',
-        }}
-      >
-        <AppIcon
-          name="ic_arrow_forward_24"
-          size={24}
-          tint={appColors.white}
-          style={{rotate: '180deg'}}
+  if (frame < epsonCue + 8) {
+    const catalogReg = catalogRegions('phone');
+    const epsonCard = {
+      ...catalogReg.card(7),
+      y: catalogReg.card(7).y - 240,
+    };
+    return (
+      <PhoneScreen>
+        <DriverCatalog
+          device="phone"
+          drivers={CATALOG_DRIVERS}
+          listScroll={240}
+          background={SETUP_BACKGROUND}
         />
-        <span
-          style={{
-            fontFamily: font.ui,
-            fontWeight: 400,
-            fontSize: 18,
-            color: appColors.white,
-            flex: 1,
-          }}
-        >
-          EPSON Projectors
-        </span>
-        <div
-          style={{
-            width: 38,
-            height: 38,
-            borderRadius: 999,
-            backgroundColor: appColors.gray,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <AppIcon name="ic_add_24" size={22} tint={appColors.white} />
-        </div>
-      </div>
+        <TapIndicator
+          x={centerOf(epsonCard).x}
+          y={centerOf(epsonCard).y}
+          at={epsonCue}
+          name="Epson card tap"
+        />
+        <PhoneNavMenu expanded={false} active="device" />
+      </PhoneScreen>
+    );
+  }
 
-      {/* Detail Content */}
-      <div
-        style={{
-          flex: 1,
-          padding: '16px 14px',
-          overflow: 'hidden',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 14,
-        }}
-      >
-        {/* Model row with Product Page link */}
-        <div>
-          <div style={{fontSize: 11, color: appColors.white50, marginBottom: 4}}>Model</div>
-          <div style={{display: 'flex', gap: 8, height: 42}}>
-            <div
-              style={{
-                flex: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingLeft: 12,
-                paddingRight: 10,
-                backgroundColor: appColors.gray20,
-                borderRadius: 4,
-                color: appColors.white,
-                fontSize: 14,
-              }}
-            >
-              PowerLite
-              <div
-                style={{
-                  width: 0,
-                  height: 0,
-                  borderLeft: '5px solid transparent',
-                  borderRight: '5px solid transparent',
-                  borderTop: `6px solid ${appColors.white}`,
-                }}
-              />
-            </div>
-            <div
-              style={{
-                flex: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 6,
-                backgroundColor: appColors.gray20,
-                borderRadius: 4,
-                color: appColors.white,
-                fontSize: 13,
-                outline: ringActive ? `2px solid ${appColors.blue}` : 'none',
-                boxShadow: ringActive ? `0 0 12px ${appColors.blue}` : 'none',
-                transition: 'outline 0.2s',
-              }}
-            >
-              Product Page
-              <svg width="13" height="13" viewBox="0 0 24 24" fill={appColors.white}>
-                <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z" />
-              </svg>
-            </div>
-          </div>
-        </div>
+  const productPageBtn = {x: 184, y: 87, width: 162, height: 42};
+  const ringStart = Math.max(epsonCue + 30, linkCue - 45);
 
-        {/* Device Info */}
-        <div>
-          <div style={{fontSize: 14, fontWeight: 700, color: appColors.white, marginBottom: 4}}>
-            Device Info
-          </div>
-          <div style={{fontSize: 11, color: appColors.white50, marginBottom: 2}}>
-            Description
-          </div>
-          <div style={{fontSize: 12, lineHeight: 1.4, color: appColors.white75}}>
-            The Epson PowerLite Presenter HD is a portable projector with an integrated DVD
-            player and speakers, suitable for presentations and video playback. The Epson
-            PowerLite Pro Cinema 800 is a home theater projector designed for high-quality
-            image projection in a home environment.
-          </div>
-        </div>
-
-        {/* Accordions */}
-        {['Specs', 'Setup', 'Support'].map((section) => (
-          <div
-            key={section}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '10px 12px',
-              backgroundColor: appColors.gray15,
-              borderRadius: 4,
-              fontSize: 13,
-              fontWeight: 600,
-              color: appColors.white,
-            }}
-          >
-            {section}
-            <div
-              style={{
-                width: 0,
-                height: 0,
-                borderLeft: '5px solid transparent',
-                borderRight: '5px solid transparent',
-                borderTop: `6px solid ${appColors.white50}`,
-              }}
-            />
-          </div>
-        ))}
-      </div>
-
-      <PhoneNavMenu expanded={false} active="device" />
-    </PhoneScreen>
+  return (
+    <>
+      <EpsonDetailView />
+      <FocusRing
+        region={productPageBtn}
+        appearAt={ringStart}
+        radius={4}
+        name="Product page link ring"
+      />
+      <TapIndicator
+        x={centerOf(productPageBtn).x}
+        y={centerOf(productPageBtn).y}
+        at={linkCue}
+        name="Product page link tap"
+      />
+    </>
   );
 };
 
 /**
  * Add beat (9.5s = 285 frames):
- * + is pressed, the IP is entered, Connect goes to Disconnect and the connection
- * shows as saved.
+ * + is tapped and Configure Connection opens; the IP field is ringed and filled;
+ * Connect turns Disconnect and the saved line lands.
+ * Cues: plus "plus", ip "IP", connected "connected".
  */
 export const AddBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const plusCue = CUE_FRAMES.plus - BEATS.add.from;
+  const ipCue = CUE_FRAMES.ip - BEATS.add.from;
+  const connectedCue = CUE_FRAMES.connected - BEATS.add.from;
+
+  // Header circular add button: 38x38 centered in 56dp header, right padding 12 -> x: 310, y: 9
+  const addBtn = {x: 310, y: 9, width: 38, height: 38};
+
+  if (frame < plusCue + 8) {
+    return (
+      <>
+        <EpsonDetailView />
+        <TapIndicator
+          x={centerOf(addBtn).x}
+          y={centerOf(addBtn).y}
+          at={plusCue}
+          name="Add button tap"
+        />
+      </>
+    );
+  }
+
+  const connReg = connectionRegions('phone');
   const fullIp = '192.168.0.134';
+  const typeDuration = 24;
   const charsCount = Math.floor(
-    interpolate(frame, [20, 80], [0, fullIp.length], {
+    interpolate(frame, [ipCue, ipCue + typeDuration], [0, fullIp.length], {
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
     }),
   );
-  const host = fullIp.slice(0, charsCount);
-  const hostCaret = frame < 90;
-  const connected = frame >= 120;
+  const host = frame < ipCue ? '' : fullIp.slice(0, charsCount);
+  const hostCaret = frame >= ipCue && frame < connectedCue;
+  const connected = frame >= connectedCue;
 
   const terminal: TerminalLine[] = connected
     ? [
@@ -581,31 +656,45 @@ export const AddBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
         terminal={terminal}
         hostCaret={hostCaret}
       />
+      <FocusRing
+        region={connReg.hostField}
+        appearAt={ipCue}
+        radius={5}
+        name="Host IP field ring"
+      />
+      <TapIndicator
+        x={centerOf(connReg.connectAction).x}
+        y={centerOf(connReg.connectAction).y}
+        at={connectedCue}
+        name="Connect IP tap"
+      />
     </PhoneScreen>
   );
 };
 
 /**
  * Terminal beat (15.5s = 465 frames):
- * Power On and Power Off are sent and each lands in the terminal; a typed command is sent.
+ * Power On is tapped and lands in the terminal, readable; a typed command is sent.
+ * Cues: termButtons "buttons", terminal "terminal", message "message".
  */
 export const TerminalBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  let highlightedCommand: number | null = null;
+  const termButtonsCue = CUE_FRAMES.termButtons - BEATS.terminal.from;
+  const terminalCue = CUE_FRAMES.terminal - BEATS.terminal.from;
+  const messageCue = CUE_FRAMES.message - BEATS.terminal.from;
+
+  const connReg = connectionRegions('phone');
+  const highlightedCommand =
+    frame >= termButtonsCue && frame < termButtonsCue + 24 ? 0 : null;
+
   const terminal: TerminalLine[] = [
     {text: '[10:25:58] Connected to 192.168.0.134:3629', kind: 'status'},
+    {text: 'Connection saved', kind: 'status'},
   ];
 
-  if (frame < 140) {
-    highlightedCommand = 0; // Power On
+  if (frame >= termButtonsCue) {
     terminal.push({text: 'Sent: PWR ON [0D]', kind: 'sent'});
-  } else if (frame < 280) {
-    highlightedCommand = 1; // Power Off
-    terminal.push({text: 'Sent: PWR ON [0D]', kind: 'sent'});
-    terminal.push({text: 'Sent: PWR OFF [0D]', kind: 'sent'});
-  } else {
-    highlightedCommand = null;
-    terminal.push({text: 'Sent: PWR ON [0D]', kind: 'sent'});
-    terminal.push({text: 'Sent: PWR OFF [0D]', kind: 'sent'});
+  }
+  if (frame >= messageCue) {
     terminal.push({text: 'Sent: hellow [0D]', kind: 'sent'});
   }
 
@@ -621,33 +710,86 @@ export const TerminalBeat: React.FC<{frame: number; frames: number}> = ({frame})
         terminal={terminal}
         highlightedCommand={highlightedCommand}
       />
+      <TapIndicator
+        x={centerOf(connReg.sendButton(0)).x}
+        y={centerOf(connReg.sendButton(0)).y}
+        at={termButtonsCue}
+        name="Power On send tap"
+      />
+      <FocusRing
+        region={connReg.terminal}
+        appearAt={terminalCue}
+        radius={4}
+        name="Terminal focus ring"
+      />
     </PhoneScreen>
   );
 };
 
 /**
  * Test beat (20s = 600 frames):
- * Test Device Drivers: the tab bar walks Buttons (power, D-pad), Switcher
- * (Out 1 over the inputs), Terminal and Web page.
+ * Each tab is tapped on its spoken word: Buttons, Switcher, Terminal, Web page;
+ * the Web page tab held under 2s.
+ * Cues: testButtons "buttons", testSwitcher "switcher", testTerminal "terminal", testWebpage "webpage".
  */
 export const TestBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  let testTab: 'buttons' | 'switcher' | 'terminal' | 'web' = 'buttons';
-  if (frame >= 450) {
+  const testButtonsCue = CUE_FRAMES.testButtons - BEATS.test.from;
+  const testSwitcherCue = CUE_FRAMES.testSwitcher - BEATS.test.from;
+  const testTerminalCue = CUE_FRAMES.testTerminal - BEATS.test.from;
+  const testWebpageCue = CUE_FRAMES.testWebpage - BEATS.test.from;
+
+  let testTab: ConnectTestSubTab = 'buttons';
+  if (frame >= testWebpageCue && frame < testWebpageCue + 54) {
     testTab = 'web';
-  } else if (frame >= 300) {
+  } else if (frame >= testTerminalCue && frame < testWebpageCue) {
     testTab = 'terminal';
-  } else if (frame >= 150) {
+  } else if (frame >= testSwitcherCue && frame < testTerminalCue) {
     testTab = 'switcher';
+  } else {
+    testTab = 'buttons';
   }
 
+  const connectReg = connectTestRegions('phone');
+  const btnTab = connectReg.subTab('buttons');
+  const swTab = connectReg.subTab('switcher');
+  const termTab = connectReg.subTab('terminal');
+  const webTab = connectReg.subTab('web');
+
   return (
-    <ConnectTest
-      device="phone"
-      topTab="test"
-      testTab={testTab}
-      deviceName="EPSON PowerLite - New"
-      connected
-    />
+    <>
+      <ConnectTest
+        device="phone"
+        topTab="test"
+        testTab={testTab}
+        deviceName="EPSON PowerLite - New"
+        connected
+        statusColor="green"
+      />
+      <TapIndicator
+        x={centerOf(btnTab).x}
+        y={centerOf(btnTab).y}
+        at={testButtonsCue}
+        name="Buttons tab tap"
+      />
+      <TapIndicator
+        x={centerOf(swTab).x}
+        y={centerOf(swTab).y}
+        at={testSwitcherCue}
+        name="Switcher tab tap"
+      />
+      <TapIndicator
+        x={centerOf(termTab).x}
+        y={centerOf(termTab).y}
+        at={testTerminalCue}
+        name="Terminal tab tap"
+      />
+      <TapIndicator
+        x={centerOf(webTab).x}
+        y={centerOf(webTab).y}
+        at={testWebpageCue}
+        name="Web page tab tap"
+      />
+    </>
   );
 };
 
