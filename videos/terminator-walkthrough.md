@@ -290,7 +290,7 @@ Placement and holds follow W01's rule. Corrections stay `TERMINATOR_CAPTION_CORR
     - SSH: connect, type, output.
   - Unset props reproduce today's frames exactly.
   - Verify: stills of S02 at three frames and the `Proof-Term-*` stills look as before.
-- [ ] T9: Add the server/client `ServerDiagram` for the server chapter, and a `Proof-Term-ServerDiagram` still — files: src/marketing/terminator-walkthrough/ServerDiagram.tsx, src/Root.tsx
+- [x] T9: Add the server/client `ServerDiagram` for the server chapter, and a `Proof-Term-ServerDiagram` still — files: src/marketing/terminator-walkthrough/ServerDiagram.tsx, src/Root.tsx
   - Draw it on a 1280x800 plane so the shell's camera can frame it like a surface: the PC on the left, the tablet on the right, the labels from the copy above.
   - The arrows animate on a `progress` prop; colours only from `theme.ts`. No drawn window chrome: it is a diagram, not product UI.
   - Verify: the proof still at progress 0.5 and 1.
@@ -328,7 +328,7 @@ Placement and holds follow W01's rule. Corrections stay `TERMINATOR_CAPTION_CORR
 
 ## Handoff
 
-- **Pending revision:** T9, T10–T16.
+- **Pending revision:** T10–T16.
 - **Dependencies:** T17 runs first to unlock narration in every lane; T7–T9 are independent. T10 needs T17; T11 needs T7, T9 and T10; T12 follows T11; T13 needs T12 and T8; T14–T16 run in order.
 - **Dispatch:** one task at a time through Codex; independent verification and scoped commit release its owned files. Final rendering waits for the shared render slot.
 - **Blocked:** no known implementation blocker; task dependencies still apply.
@@ -369,3 +369,5 @@ Placement and holds follow W01's rule. Corrections stay `TERMINATOR_CAPTION_CORR
 | serial | ✅ | Connected to COM9 (38400 baud), command log |
 | ssh | ✅ | Connected to admin@192.168.0.3:22 (Luxul router), command log |
 | close | ✅ | CTRLbot Terminator wordmark and feature sign-off |
+
+- T9, 2026-10-02: Independent Claude verifier PASS WITH NOTES; frozen check/lint pass, progress0.5 and1 stills opened and inspected. Correct PC/server and tablet/client labels and arrow directions; existing registrations preserved. Small label size remains a note for later shell framing. Evidence: out/coordinator/t9-review.txt and t9-review/.

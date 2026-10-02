@@ -64,6 +64,7 @@ import {
   ProofWalkthroughShellLandscape,
   ProofWalkthroughShellPortrait,
 } from './app-ui/mirror/MirrorProofs';
+import {ServerDiagram} from './marketing/terminator-walkthrough/ServerDiagram';
 import {TermRawTcpProof, TermScanProof, TermSerialProof, TermServerProof, TermSshProof} from './app-ui/term/TermProofs';
 import {SHORTS, compositionId, frameSize, shortSeconds} from './shorts/shortsData';
 import {SHORT_EXAMPLE} from './shorts/example';
@@ -633,6 +634,7 @@ export const RemotionRoot = () => (
       <Still id="Proof-Term-RawTcp" component={TermRawTcpProof} width={1280} height={800} />
       <Still id="Proof-Term-Serial" component={TermSerialProof} width={1280} height={800} />
       <Still id="Proof-Term-Ssh" component={TermSshProof} width={1280} height={800} />
+      <Still id="Proof-Term-ServerDiagram" component={ServerDiagram} defaultProps={{progress: 1}} width={1280} height={800} />
       {/* CTRLbot Mirror, the Windows utility: CSS pixels, its own Tailwind palette. */}
       <Still id="Proof-Mirror-Setup" component={MirrorSetupProof} width={1600} height={940} />
       <Still id="Proof-Mirror-Devices" component={MirrorDevicesProof} width={1600} height={940} />
