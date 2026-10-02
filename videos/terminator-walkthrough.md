@@ -308,10 +308,10 @@ Placement and holds follow W01's rule. Corrections stay `TERMINATOR_CAPTION_CORR
 - [x] T10: Re-plan W02's edit with `narration:edit`, `pin` extended — files: src/marketing/terminator-walkthrough/terminatorWalkthroughNarration.ts, src/marketing/terminator-walkthrough/terminatorWalkthroughNarration.generated.ts, public/narration/terminator-walkthrough/edit.m4a
   - Two builds at most to set the `at`s. A beat that cannot keep its 1.0s hold inside its Sec is `[!]` with the measured lengths.
   - Then `npm run narration:verify` on `edit.m4a`. Fix each real edge leak with `notBefore` / `notAfter` or a tighter `sourceEnd` (the contract's "Clip edges leak"), at most two more builds. A leak that remains goes in the Review notes with its clip and level.
-- [ ] T11: Rewrite W02's beat data for the shell: beats and layouts from the Beats table, the revision 2 copy, regions and cue frames — files: src/marketing/terminator-walkthrough/terminatorWalkthroughData.ts
+- [ ] T11: Migrate W02's coupled beat data and both shell compositions at 4140 frames, with revision 2 copy, regions and cue frames — files: src/marketing/terminator-walkthrough/terminatorWalkthroughData.ts, src/marketing/terminator-walkthrough/TerminatorWalkthrough.tsx, src/Root.tsx
   - 4140 frames in total. `beatShots()` and `SUBJECT` are removed. Verify: `npm run check`; `validate`.
   - Every region change the Shot list ties to a word is a `shots` entry with `at` from `cueFrame`, relative to the beat. Use `regions` arrays only for untimed changes, because they split the beat evenly. Add no hold keyframes: the shell drifts.
-- [ ] T12: Rebuild both W02 compositions on `WalkthroughShell` at 4140 frames, chapters showing today's scenes until T13–T15 — files: src/marketing/terminator-walkthrough/TerminatorWalkthrough.tsx, src/Root.tsx
+- [ ] T12: Verify T11's coupled shell migration in both shapes, chapters showing today's scenes until T13–T15 — files: videos/terminator-walkthrough.md
   - Verify: the per-task check on `poster`, `open`, `scan` and `close`, in both shapes.
 - [ ] T13: Build the proof, scan and server beats in a new `TerminatorBeats.tsx` to the Shot list — files: src/marketing/terminator-walkthrough/TerminatorBeats.tsx, src/marketing/terminator-walkthrough/TerminatorWalkthrough.tsx
 - [ ] T14: Build the pin, raw-tcp and serial beats to the Shot list — files: src/marketing/terminator-walkthrough/TerminatorBeats.tsx
