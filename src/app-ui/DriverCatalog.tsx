@@ -41,7 +41,17 @@ export const SETUP_BACKGROUND =
   `radial-gradient(circle at 68% 32%, ${blueAt(0.45)} 0%, ${blueAt(0)} 90%), ` +
   appColors.black;
 
-export type DeviceType = 'display' | 'projector' | 'switcher' | 'endPoint';
+export type DeviceType = 'display' | 'projector' | 'switcher' | 'endPoint' | 'netSwitcher';
+
+/** SortMode.kt — the type filter's display names, in the recording's order. */
+export const CATALOG_TYPE_FILTERS = [
+  'Manufacturer', 'Projector', 'Display', 'Switchers', 'End Points', 'Net Switchers',
+] as const;
+
+const TYPE_FILTER_LABEL: Record<DeviceType, string> = {
+  projector: 'Projector', display: 'Display', switcher: 'Switchers',
+  endPoint: 'End Points', netSwitcher: 'Net Switchers',
+};
 
 export type DriverEntry = {
   manufacturer: string;
@@ -84,6 +94,13 @@ const DEVICE_TYPE: Record<
     card: appColors.endPointCardBg, // #383838
     emphasis: '#3E3442',
     label: 'End Points',
+  },
+  netSwitcher: {
+    // DriverListAdapter matches "switcher" for both AV and network switchers.
+    icon: 'ic_route2',
+    card: appColors.switcherCardBg,
+    emphasis: appColors.switcherCardBg,
+    label: 'Net Switchers',
   },
 };
 
@@ -339,6 +356,7 @@ export const DriverCatalog = ({
   searchText = '',
   category = 'IP_RS232',
   sort = 'Manufacturer',
+  typeFilter,
   emphasizeTypes = false,
   listScroll = 0,
   openMenu,
@@ -353,12 +371,16 @@ export const DriverCatalog = ({
   searchText?: string;
   category?: string;
   sort?: string;
+  /** Opt-in device-type filtering; unset preserves the caller's supplied list. */
+  typeFilter?: DeviceType;
   /** Widen the gaps between the device-type card colours. Video only. */
   emphasizeTypes?: boolean;
   /** dp the driver list is scrolled by. The header and filters do not move. */
   listScroll?: number;
   /** Which split control is showing its list, and what is in it. */
-  openMenu?: {control: 'category' | 'sort'; items: readonly string[]};
+  openMenu?:
+    | {control: 'category'; items: readonly string[]}
+    | {control: 'sort'; items?: readonly string[]};
   /** Tablet only. Fills the detail pane; without it the pane is the empty outline. */
   detail?: ReactNode;
   /** Defaults to `gray_10`. Pass `SETUP_BACKGROUND` for the app's real setup wash. */
@@ -456,11 +478,11 @@ export const DriverCatalog = ({
             menu={openMenu?.control === 'category' ? openMenu.items : undefined}
           />
           <SplitControl
-            label={sort}
+            label={typeFilter ? TYPE_FILTER_LABEL[typeFilter] : sort}
             icon="ic_sort"
             scale={scale}
             flex={isTablet ? 1 : undefined}
-            menu={openMenu?.control === 'sort' ? openMenu.items : undefined}
+            menu={openMenu?.control === 'sort' ? openMenu.items ?? CATALOG_TYPE_FILTERS : undefined}
           />
         </div>
 
@@ -469,7 +491,7 @@ export const DriverCatalog = ({
             RecyclerView under a fixed header does. */}
         <div style={{marginTop: LIST_GAP * scale, overflow: 'hidden'}}>
           <div style={{translate: `0px ${-listScroll * scale}px`}}>
-            {drivers.map((driver, index) => (
+            {drivers.map((driver, index) => !typeFilter || driver.deviceType === typeFilter ? (
               <DriverCard
                 key={`${driver.manufacturer}-${driver.model}`}
                 driver={driver}
@@ -477,7 +499,7 @@ export const DriverCatalog = ({
                 scale={scale}
                 emphasizeTypes={emphasizeTypes}
               />
-            ))}
+            ) : null)}
           </div>
         </div>
       </div>

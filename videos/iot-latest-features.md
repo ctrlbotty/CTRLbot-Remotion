@@ -241,7 +241,7 @@ The authoritative task dependencies above replace Roadmap-order waits. Codex hol
 
 ### Surface states (optional props, default unchanged)
 
-- [ ] T3: Add a `netSwitcher` device type to `DriverCatalog`, listed as Net Switchers in the type filter, with a `Proof-Tablet-Catalog-NetSwitchers` still — files: src/app-ui/DriverCatalog.tsx, src/Root.tsx
+- [x] T3: Add a `netSwitcher` device type to `DriverCatalog`, listed as Net Switchers in the type filter, with a `Proof-Tablet-Catalog-NetSwitchers` still — files: src/app-ui/DriverCatalog.tsx, src/Root.tsx
   - Stills `f_0004`–`f_0007`: the filter list Manufacturer, Projector, Display, Switchers, End Points, Net Switchers; the End Points list. Icon from the app's drawables via `public/app-assets/`; no new colour.
 - [ ] T4: Give `DriverDetail` an open Model dropdown listing a driver's models, with `Proof-Tablet-Detail-Models` and `Proof-Tablet-Detail-Pusr` stills — files: src/app-ui/DriverDatabase.tsx, src/Root.tsx
   - Stills `f_0008`–`f_0011`. Model names exactly as `f_0008`/`f_0009` show them; PUSR's description from the app's driver data, as `f_0011`.
@@ -287,6 +287,8 @@ The authoritative task dependencies above replace Roadmap-order waits. Codex hol
 ## Review notes
 
 > Appended on PASS WITH NOTES. Not blockers; check these during the review.
+
+- T3, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES, verified in a clean worktree at HEAD plus the two task files. Check and lint pass. `Proof-Phone-Catalog` and `Proof-Tablet-Catalog` are byte-identical before and after. `Proof-Tablet-Catalog-NetSwitchers` matches `f_0005`: the six-type filter list and a Luxul AMS-1208P Net Switchers card. Notes: the recording's "15 devices found" header button is absent (pre-existing catalog layout, not this task). The End Points list (`f_0007`) is covered by the same `typeFilter`, but no still shows it. The commit also drops two stray CRs that HEAD's `Root.tsx` carried from the W02 encoding repair.
 
 ## Contact sheet
 

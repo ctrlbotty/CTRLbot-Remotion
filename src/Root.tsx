@@ -7,6 +7,7 @@ import {EuiHandoff} from './scenes/EuiHandoff';
 import {CtrlbotIntro} from './scenes/CtrlbotIntro';
 import {DeviceSetup} from './scenes/DeviceSetup';
 import {StageProof} from './marketing/StageProof';
+import {DriverCatalog, SETUP_BACKGROUND} from './app-ui/DriverCatalog';
 import {PlayStorePromo, promoDuration} from './marketing/play-store-promo-v1/PlayStorePromo';
 import {SCENE_FRAMES} from './scenes/shared';
 import {
@@ -605,6 +606,19 @@ export const RemotionRoot = () => (
       <Still id="Proof-Tablet-EUI" component={TabletEuiProof} width={1280} height={800} />
       <Still id="Proof-Phone-Catalog" component={PhoneCatalogProof} width={360} height={780} />
       <Still id="Proof-Tablet-Catalog" component={TabletCatalogProof} width={1280} height={800} />
+      <Still
+        id="Proof-Tablet-Catalog-NetSwitchers"
+        component={DriverCatalog}
+        width={1280}
+        height={800}
+        defaultProps={{
+          device: 'tablet',
+          drivers: [{manufacturer: 'LUXUL', model: 'AMS-1208P', deviceType: 'netSwitcher'}],
+          typeFilter: 'netSwitcher',
+          openMenu: {control: 'sort'},
+          background: SETUP_BACKGROUND,
+        }}
+      />
       <Still id="Proof-Phone-Connection" component={PhoneConnectionProof} width={360} height={780} />
       <Still id="Proof-Tablet-Connection" component={TabletConnectionProof} width={1280} height={800} />
       <Still id="Proof-Phone-Capture" component={PhoneCaptureProof} width={360} height={780} />
