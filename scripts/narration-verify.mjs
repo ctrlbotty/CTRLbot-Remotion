@@ -9,7 +9,7 @@
 // Exit 1 only when an extra edge word measures above -50 dB, or a missing edge
 // word's span measures below -50 dB. All else exits 0.
 
-import {existsSync, readFileSync, readdirSync, unlinkSync, writeFileSync} from 'node:fs';
+import {existsSync, readFileSync, readdirSync, statSync, unlinkSync, writeFileSync} from 'node:fs';
 import {spawnSync} from 'node:child_process';
 import {dirname, join, resolve} from 'node:path';
 import {tmpdir} from 'node:os';
@@ -79,48 +79,79 @@ export const lcs = (a, b) => {
   return {matchesA, matchesB};
 };
 
-/** Measure audio RMS level in dB over [startSec, endSec] using ffmpeg astats. */
-export const measureRms = (mediaPath, startSec, endSec) => {
-  const duration = Math.max(0.01, endSec - startSec);
-  const result = spawnSync(
-    ffmpeg,
-    [
-      '-hide_banner',
-      '-nostats',
-      '-ss',
-      startSec.toFixed(3),
-      '-t',
-      duration.toFixed(3),
-      '-i',
-      mediaPath,
-      '-af',
-      'astats',
-      '-f',
-      'null',
-      '-',
-    ],
-    {encoding: 'utf8', maxBuffer: 16 * 1024 * 1024},
-  );
-  if (result.error) {
-    throw new Error(`FFmpeg execution failed: ${result.error.message}`);
+const RMS_SAMPLE_RATE = 48000;
+const RMS_PCM_LIMIT = 64 * 1024 * 1024;
+const rmsPcmCache = new Map();
+let rmsCachedBytes = 0;
+const pcmIdentity = (path) => {
+  const info = statSync(path, {bigint: true});
+  return `${info.size}:${info.mtimeNs}:${info.ctimeNs}`;
+};
+
+const decodeRmsPcm = (mediaPath) => {
+  const path = resolve(mediaPath);
+  const identity = pcmIdentity(path);
+  const cached = rmsPcmCache.get(path);
+  if (cached) {
+    rmsPcmCache.delete(path);
+    if (cached.identity === identity) {
+      rmsPcmCache.set(path, cached);
+      return cached.pcm;
+    }
+    rmsCachedBytes -= cached.pcm.length;
   }
-  const output = (result.stderr || '') + (result.stdout || '');
+  const result = spawnSync(ffmpeg, [
+    '-hide_banner', '-nostats', '-loglevel', 'error', '-i', path,
+    '-vn', '-ac', '1', '-ar', String(RMS_SAMPLE_RATE), '-f', 's16le', '-',
+  ], {maxBuffer: RMS_PCM_LIMIT, timeout: 120000});
+  if (result.error) throw new Error(`FFmpeg execution failed: ${result.error.message}`);
   if (result.status !== 0) {
-    throw new Error(`FFmpeg failed with exit code ${result.status} on ${mediaPath}: ${output.trim()}`);
+    throw new Error(`FFmpeg failed with exit code ${result.status} on ${mediaPath}: ${(result.stderr || '').toString().trim()}`);
   }
-  const match =
-    output.match(/Overall[\s\S]*?RMS level dB:\s*([-\d.inf]+)/i) ??
-    output.match(/RMS level dB:\s*([-\d.inf]+)/i);
-  if (!match) {
-    throw new Error(`FFmpeg astats failed to report RMS level on ${mediaPath}: ${output.trim()}`);
+  const pcm = result.stdout;
+  if (!pcm.length || pcm.length % 2 !== 0) throw new Error(`FFmpeg decoded incomplete PCM on ${mediaPath}`);
+  if (pcmIdentity(path) !== identity) throw new Error(`Media changed during PCM decode: ${mediaPath}`);
+  // LRU cache bounded to 64 MiB; decoding also has a 64 MiB output limit.
+  while (rmsCachedBytes + pcm.length > RMS_PCM_LIMIT) {
+    const oldest = rmsPcmCache.keys().next().value;
+    rmsCachedBytes -= rmsPcmCache.get(oldest).pcm.length;
+    rmsPcmCache.delete(oldest);
   }
-  const val = match[1].toLowerCase();
-  if (val.includes('-inf')) return -Infinity;
-  const num = parseFloat(match[1]);
-  if (Number.isNaN(num)) {
-    throw new Error(`FFmpeg astats returned invalid RMS level '${match[1]}' on ${mediaPath}`);
+  rmsPcmCache.set(path, {identity, pcm});
+  rmsCachedBytes += pcm.length;
+  return pcm;
+};
+
+/**
+ * Measure audio RMS level in dB over exactly [startSec, endSec).
+ *
+ * Decode the complete mono 48 kHz s16 timeline once, then slice absolute sample indices.
+ * Compressed-media seeking can shift that timeline, so no contextual seek is used.
+ * The span is never widened. Missing, undecodable or out-of-range media throws.
+ */
+export const measureRms = (mediaPath, startSec, endSec) => {
+  if (!Number.isFinite(startSec) || !Number.isFinite(endSec) || startSec < 0 || endSec <= startSec) {
+    throw new Error(`Invalid RMS span: ${startSec}-${endSec}`);
   }
-  return num;
+  const offset = Math.round(startSec * RMS_SAMPLE_RATE);
+  const last = Math.round(endSec * RMS_SAMPLE_RATE);
+  if (!Number.isSafeInteger(offset) || !Number.isSafeInteger(last) || last <= offset) {
+    throw new Error(`RMS span has no valid sample range: ${startSec}-${endSec}`);
+  }
+  const pcm = decodeRmsPcm(mediaPath);
+  const total = Math.floor(pcm.length / 2);
+  if (last > total) {
+    throw new Error(
+      `Requested PCM span ${offset}..${last} unavailable on ${mediaPath} (${total} samples decoded)`,
+    );
+  }
+  let sum = 0;
+  for (let i = offset; i < last; i++) {
+    const v = pcm.readInt16LE(i * 2) / 32768;
+    sum += v * v;
+  }
+  const rms = Math.sqrt(sum / (last - offset));
+  return rms === 0 ? -Infinity : 20 * Math.log10(rms);
 };
 
 /** Run transcription via transcribe.py. */
@@ -227,6 +258,8 @@ const checkExtraEdge = ({
   mediaPath,
   measureRmsFn,
   getIsolatedTranscript,
+  gapStart = -Infinity,
+  gapEnd = Infinity,
 }) => {
   const span = [word.start, word.end];
   const rms = measureRmsFn(mediaPath, span[0], span[1]);
@@ -260,9 +293,13 @@ const checkExtraEdge = ({
     };
   }
 
+  // Adjudicate only the real gap between clips: speech from the neighbouring clip is not leakage.
   const outsideSpan =
-    type === 'extra-first' ? [word.start, clipStart] : [clipEnd, word.end];
-  const outsideRms = measureRmsFn(mediaPath, outsideSpan[0], outsideSpan[1]);
+    type === 'extra-first'
+      ? [Math.max(word.start, gapStart), clipStart]
+      : [clipEnd, Math.min(word.end, gapEnd)];
+  const outsideRms =
+    outsideSpan[1] > outsideSpan[0] ? measureRmsFn(mediaPath, outsideSpan[0], outsideSpan[1]) : -Infinity;
 
   if (outsideRms > -50) {
     return {
@@ -390,6 +427,11 @@ export const verifyNarration = (
     const leftLimit = prev ? (prev.at + prev.seconds + clipStart) / 2 : 0;
     const rightLimit = next ? (clipEnd + next.at) / 2 : Infinity;
 
+    const gap = {
+      gapStart: prev ? prev.at + prev.seconds : -Infinity,
+      gapEnd: next ? next.at : Infinity,
+    };
+
     const winStart = Math.max(clipStart - 0.3, leftLimit);
     const winEnd = Math.min(clipEnd + 0.3, rightLimit);
 
@@ -475,6 +517,7 @@ export const verifyNarration = (
           mediaPath,
           measureRmsFn,
           getIsolatedTranscript,
+          ...gap,
         });
         if (check.isDefect) defectCount++;
         clipReport.edgeChecks.push(check);
@@ -489,6 +532,7 @@ export const verifyNarration = (
           mediaPath,
           measureRmsFn,
           getIsolatedTranscript,
+          ...gap,
         });
         if (check.isDefect) defectCount++;
         clipReport.edgeChecks.push(check);
@@ -527,6 +571,7 @@ export const verifyNarration = (
           mediaPath,
           measureRmsFn,
           getIsolatedTranscript,
+          ...gap,
         });
         if (check.isDefect) defectCount++;
         clipReport.edgeChecks.push(check);
@@ -560,6 +605,7 @@ export const verifyNarration = (
           mediaPath,
           measureRmsFn,
           getIsolatedTranscript,
+          ...gap,
         });
         if (check.isDefect) defectCount++;
         clipReport.edgeChecks.push(check);
@@ -873,6 +919,188 @@ const runSelfTest = () => {
     );
     if (w01ResFail.defectCount !== 1) {
       console.error('FAIL: w01 shell counterexample failed to detect defect with audible outside gap');
+      process.exit(1);
+    }
+  }
+
+  // Real PCM fixtures: 3s mono 48 kHz WAV, 0.1-amplitude 440 Hz tone on [1.0s, 2.0s), digital silence elsewhere.
+  {
+    const sr = 48000;
+    const samples = new Int16Array(sr * 3);
+    for (let i = sr; i < sr * 2; i++) samples[i] = Math.round(0.1 * 32767 * Math.sin((2 * Math.PI * 440 * i) / sr));
+    const header = Buffer.alloc(44);
+    header.write('RIFF', 0);
+    header.writeUInt32LE(36 + samples.length * 2, 4);
+    header.write('WAVEfmt ', 8);
+    header.writeUInt32LE(16, 16);
+    header.writeUInt16LE(1, 20);
+    header.writeUInt16LE(1, 22);
+    header.writeUInt32LE(sr, 24);
+    header.writeUInt32LE(sr * 2, 28);
+    header.writeUInt16LE(2, 32);
+    header.writeUInt16LE(16, 34);
+    header.write('data', 36);
+    header.writeUInt32LE(samples.length * 2, 40);
+    const wav = join(tmpdir(), `narration-verify-selftest-${process.pid}.wav`);
+    const aac = join(tmpdir(), `narration-verify-selftest-${process.pid}.m4a`);
+    writeFileSync(wav, Buffer.concat([header, Buffer.from(samples.buffer)]));
+    try {
+      const fail = (msg) => {
+        console.error(`FAIL: ${msg}`);
+        process.exit(1);
+      };
+      // Case M: 10 ms span inside silence decodes and reports -inf instead of throwing
+      if (measureRms(wav, 0.5, 0.51) !== -Infinity) fail('10 ms silent span did not measure -inf');
+      if (measureRms(wav, 0, 0.01) !== -Infinity) fail('10 ms silent span at t=0 did not measure -inf');
+      // Case N: exact span, no widening into adjacent speech (silence ends exactly at 1.0s)
+      if (measureRms(wav, 0.99, 1.0) !== -Infinity) fail('silent span ending at speech start was widened into speech');
+      if (measureRms(wav, 2.0, 2.01) !== -Infinity) fail('silent span starting at speech end was widened into speech');
+      // Case O: short and full-word spans over speech report the tone level (~ -23 dB)
+      for (const [s0, s1] of [[1.5, 1.51], [1.0, 2.0]]) {
+        const db = measureRms(wav, s0, s1);
+        if (!(db > -24 && db < -22)) fail(`speech span ${s0}-${s1} measured ${db} dB, expected ~ -23 dB`);
+      }
+      // Case P: span beyond the media still throws
+      let beyondThrew = false;
+      try {
+        measureRms(wav, 5, 5.01);
+      } catch {
+        beyondThrew = true;
+      }
+      if (!beyondThrew) fail('measureRms did not throw for a span beyond the media');
+      let partialThrew = false;
+      try {
+        measureRms(wav, 2.99, 3.02);
+      } catch {
+        partialThrew = true;
+      }
+      if (!partialThrew) fail('partially beyond-EOF PCM span was silently truncated');
+
+      // Compressed 10 ms windows must match an independent complete decode sample for sample.
+      const encoded = spawnSync(ffmpeg, ['-y', '-loglevel', 'error', '-i', wav, '-c:a', 'aac', aac]);
+      if (encoded.error || encoded.status !== 0) fail(`AAC fixture encoding failed: ${encoded.error || encoded.stderr}`);
+      const decoded = spawnSync(ffmpeg, ['-loglevel', 'error', '-i', aac, '-vn', '-ac', '1', '-ar', '48000', '-f', 's16le', '-'], {maxBuffer: RMS_PCM_LIMIT});
+      if (decoded.error || decoded.status !== 0) fail(`AAC fixture decoding failed: ${decoded.error || decoded.stderr}`);
+      for (const [s0, s1] of [[0.1, 0.11], [0.99, 1.0], [1.6, 1.61], [2.0, 2.01], [2.9, 2.91]]) {
+        const first = Math.round(s0 * sr);
+        const last = Math.round(s1 * sr);
+        let sum = 0;
+        for (let i = first; i < last; i++) sum += (decoded.stdout.readInt16LE(i * 2) / 32768) ** 2;
+        const expected = sum ? 20 * Math.log10(Math.sqrt(sum / (last - first))) : -Infinity;
+        if (measureRms(aac, s0, s1) !== expected) fail(`AAC exact-sample RMS mismatch at ${s0}-${s1}`);
+      }
+
+      // Case Q: end-to-end with real PCM, silent-edge 10 ms outside gap at a clip boundary is not a throw
+      const pcmEdit = {clips: [{id: 'pcm', at: 1.0, seconds: 1.0}], words: [{text: 'tone', startMs: 1000, endMs: 2000}]};
+      const pcmRes = verifyNarration(
+        pcmEdit,
+        {segments: [{words: [{text: 'and', start: 0.99, end: 1.2}, {text: 'tone', start: 1.2, end: 2.0}]}]},
+        wav,
+        measureRms,
+        () => ({segments: [{words: [{text: 'tone', start: 0, end: 1}]}]}),
+      );
+      if (pcmRes.defectCount !== 0) fail('real PCM 10 ms outside gap was not adjudicated as a note');
+      // A same-path replacement must invalidate the decoded PCM cache.
+      samples.fill(3277);
+      writeFileSync(wav, Buffer.concat([header, Buffer.from(samples.buffer)]));
+      const replacedLevel = measureRms(wav, 0.5, 0.51);
+      if (!(replacedLevel > -21 && replacedLevel < -19)) fail('same-path media replacement reused stale PCM');
+    } finally {
+      for (const fixture of [wav, aac]) {
+        try {
+          unlinkSync(fixture);
+        } catch {
+          // best effort
+        }
+      }
+    }
+  }
+
+  // Case R: extra last word running through the NEXT clip's speech; only the inter-clip gap is adjudicated
+  {
+    const twoClips = {
+      clips: [
+        {id: 'a', at: 10.0, seconds: 2.0},
+        {id: 'b', at: 12.5, seconds: 2.0},
+      ],
+      words: [
+        {text: 'hello', startMs: 10000, endMs: 11000},
+        {text: 'world', startMs: 11000, endMs: 12000},
+      ],
+    };
+    const heardThrough = {
+      segments: [
+        {
+          words: [
+            {text: 'hello', start: 10.0, end: 11.0},
+            {text: 'world', start: 11.0, end: 12.0},
+            {text: 'you', start: 11.9, end: 12.59},
+          ],
+        },
+      ],
+    };
+    const isolatedHW = {segments: [{words: [{text: 'hello', start: 0, end: 1}, {text: 'world', start: 1, end: 2}]}]};
+    const gapRms = (gapLevel) => (_m, s, e) => (s >= 11.99 && e <= 12.5001 ? gapLevel : -20.0);
+    const clamped = [];
+    const resNext = verifyNarration(twoClips, heardThrough, 'dummy', (m, s, e) => {
+      clamped.push([s, e]);
+      return gapRms(-65.0)(m, s, e);
+    }, () => isolatedHW);
+    const outside = resNext.results[0]?.edgeChecks.find((c) => c.type === 'extra-last')?.outsideSpan;
+    if (resNext.defectCount !== 0 || !outside || Math.abs(outside[0] - 12.0) > 1e-9 || Math.abs(outside[1] - 12.5) > 1e-9) {
+      console.error(`FAIL: extra last word through next clip not clamped to inter-clip gap (outside=${outside})`);
+      process.exit(1);
+    }
+    // audible gap still fails
+    const resNextAudible = verifyNarration(twoClips, heardThrough, 'dummy', gapRms(-22.0), () => isolatedHW);
+    if (resNextAudible.defectCount !== 1) {
+      console.error('FAIL: audible inter-clip gap did not fail after clamping');
+      process.exit(1);
+    }
+    // abutting clips: no gap to adjudicate, empty outside span, never measured
+    const abutting = {...twoClips, clips: [twoClips.clips[0], {id: 'b', at: 12.0, seconds: 2.0}]};
+    const heardAbut = {
+      segments: [{words: [{text: 'hello', start: 10.0, end: 11.0}, {text: 'world', start: 11.0, end: 12.0}, {text: 'you', start: 11.8, end: 12.1}]}],
+    };
+    let emptySpanMeasured = false;
+    const resAbut = verifyNarration(abutting, heardAbut, 'dummy', (_m, s, e) => {
+      if (e <= s) emptySpanMeasured = true;
+      return -20.0;
+    }, () => isolatedHW);
+    if (resAbut.defectCount !== 0 || emptySpanMeasured) {
+      console.error('FAIL: abutting clips were not handled as an empty outside gap');
+      process.exit(1);
+    }
+    // same clamp on the leading edge: extra first word starting inside the PREVIOUS clip
+    const leading = {
+      clips: [
+        {id: 'a', at: 1.0, seconds: 2.0},
+        {id: 'b', at: 3.5, seconds: 2.0},
+      ],
+      words: [
+        {text: 'hello', startMs: 1000, endMs: 2000},
+        {text: 'world', startMs: 2000, endMs: 3000},
+        {text: 'again', startMs: 3500, endMs: 4500},
+        {text: 'now', startMs: 4500, endMs: 5500},
+      ],
+    };
+    const heardLead = {
+      segments: [
+        {
+          words: [
+            {text: 'hello', start: 1.0, end: 2.0},
+            {text: 'world', start: 2.0, end: 3.0},
+            {text: 'oh', start: 2.9, end: 3.7},
+            {text: 'again', start: 3.5, end: 4.5},
+            {text: 'now', start: 4.5, end: 5.5},
+          ],
+        },
+      ],
+    };
+    const isolatedAN = {segments: [{words: [{text: 'again', start: 0, end: 1}, {text: 'now', start: 1, end: 2}]}]};
+    const leadOutside = verifyNarration(leading, heardLead, 'dummy', (_m, s, e) => (s >= 2.99 && e <= 3.5001 ? -65.0 : -20.0), () => isolatedAN);
+    if (leadOutside.defectCount !== 0) {
+      console.error('FAIL: leading extra word through previous clip not clamped to inter-clip gap');
       process.exit(1);
     }
   }
