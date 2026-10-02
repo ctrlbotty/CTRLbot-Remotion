@@ -179,6 +179,50 @@ Finally, watch the complete narrated render with headphones and speakers. Confir
 - the original recording still exists;
 - no private data from the source recording appears in the rebuilt surface.
 
+## What W01's revision 2 taught
+
+Found by measurement while finishing `videos/archive/2026-10-02-mirror-walkthrough-r2.md` T15. Each one cost a
+render to discover.
+
+**Clip edges leak, and hard edges stop it.** Whisper stretches a clip's first or last word
+across the pause, and the letter alignment then claims sound from the phrase beside it: a
+"…right?" before "If you wanted", a false start "So, a little" before "you can", a "Bye"
+after "problems.". A clip in the edit list takes optional `notBefore` and `notAfter`, in
+source seconds: sound wholly outside them is never the clip's. To find the right value,
+read the letter timings in `ingest/<slug>/heard.json` (`text` and `times`) around the edge.
+`said` gives each phrase's real start and end. Set the edge in the gap between phrases, then
+rebuild. A clip whose captions end on a word that is not heard ("…your time and") needs its
+`sourceEnd` pulled inside that word's Whisper span instead.
+
+**Check the edit before the picture is built on it.** `npm run narration:verify` (W02's T17)
+transcribes `edit.m4a` and lists, clip by clip, where the heard words differ from the edit's.
+Fix leaks then, because every cue frame moves with the edit.
+
+**Whisper's voice check over-reports.** On the final render it reported missing first words
+("If", "Thank", "you") that were there, and words in gaps that were digital silence. A
+difference is a defect only when the audio agrees: speech measures about -18 to -25 dB RMS,
+a gap between clips about -120 dB. `narration:verify` prints that level beside each
+difference. Spelling ("gonna"), a mis-timed word and a hallucinated phrase inside a clip are
+notes, never `[!]`.
+
+**The shell drifts; do not add holds.** `WalkthroughShell` drifts every held chapter shot
+8% (pulling back, so the subject stays whole) and moves into the next region over 20
+frames. Locked holds measured 73% inert in portrait; with the drift W01 measured 25%
+landscape and 29% portrait. If a cut still fails `inert-fraction`, measure it per beat
+(VIDEO_WORKFLOW.md) before changing anything.
+
+**`regions: [a, b, c]` splits the beat evenly; it is not cue-timed.** A region change the
+Shot list ties to a spoken word goes in the beat's `shots`, with `at` from `cueFrame`
+relative to the beat's start. Use `regions` only where the timing does not matter.
+
+**Portrait letterboxes a wide surface.** A desktop window (Mirror, Terminator) fills about
+72% of a 9:16 frame, and `content-area` warns. That warning is expected for those surfaces
+and is not a defect.
+
+**Rebuilding the shorts changes `public/shorts/*/build.json`.** Its `spec` is a hash of the
+voice code. A regression check of the shorts compares `src/shorts/shorts.generated.ts` and
+each `narration.m4a`, then restores `build.json` with `git checkout`.
+
 ## For the next walkthrough
 
 Nathan only needs to provide the new narrated app recording and identify the intended

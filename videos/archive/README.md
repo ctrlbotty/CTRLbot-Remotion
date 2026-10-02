@@ -11,6 +11,7 @@ is finished. Copy `../_TEMPLATE.md` instead.
 
 | Brief | Produced | Outcome |
 |---|---|---|
+| `2026-10-02-mirror-walkthrough-r2.md` | `mirror-walkthrough`, `mirror-walkthrough-portrait` | W01 approved revision 2, 2:16; landscape 25% inert, portrait 29%, both narration checks passed. Shared walkthrough shell and hard clip edges. Recording retained for S01. |
 | `2026-08-02-play-store-promo.md` | `V1-Play-Store-Promo` — `src/marketing/play-store-promo-v1/` | 26s, 1920×1080, EUI only. 42% inert against a 60% ceiling; lint clean; poster frame composed. |
 | `2026-08-03-playStore_promo2.md` | `Play-Store-EUI-Promo`, `src/marketing/eui-promo/` | 60s EUI promo; all 12 tasks verified. Its beat-state screenshots, once `videos/play store promo/`, are `2026-08-03-playStore_promo2-reference/` beside it. |
 | `2026-08-03-playStore_promo2_30.md` | `Play-Store-EUI-Promo-30` | The 30s cut of the promo above. |

@@ -28,29 +28,35 @@ Scan the network, run a test server, and talk to devices over TCP, serial and SS
   as `out/terminator-walkthrough.srt` — YouTube
 - Portrait: `terminator-walkthrough-portrait`, 1080x1920, captions burned in →
   `out/terminator-walkthrough-portrait.mp4` — TikTok, YouTube Shorts, LinkedIn, X
+- Planned edit (revision 2): `public/narration/terminator-walkthrough/edit.m4a` and
+  `src/marketing/terminator-walkthrough/terminatorWalkthroughNarration.generated.ts`, from
+  `npm run narration:edit` (never hand-edited)
 
 ## Beats
 
-| id | Claim | Surface | Evidence | Sec |
-|----|-------|---------|----------|-----|
-| open | One PC app for the tools you test devices with | `TermApp` | Terminator at rest on Scan; the nav highlight walks down Scan, TCP Server, Raw TCP (Telnet), Serial (COM) and SSH Client one at a time; the copy shows the CTRLbot Terminator headline and what it does | 16.5 |
-| scan | A scan names every device, its maker and its MAC | `TermScan` | Scan is pressed, the host counter climbs, and rows fill top to bottom with host name, device, manufacturer, IP, MAC and web-page links | 17.5 |
-| server | Run a server on your PC and test CTRLbot IoT against it | `TermTcpServer` | Server starts listening on port 23, a client connects from `192.168.0.24`, `hello world` arrives and a reply is sent | 19 |
-| pin | Pin a connection and it is there next time | `TermTcpServer` | The server tab's pin goes from outline to pinned while the session stays live | 10.5 |
-| raw-tcp | Send commands straight to a device's control port | `TermTcpClient` | Raw TCP connects to `192.168.0.135:1515`, `power on` is typed and sent, and a reply lands in the received column | 17.5 |
-| serial | Open a COM port and talk over serial | `TermSerial` | COM9 opens at 38400 8-N-1, `hello world` is sent and a reply arrives from the port wired to it | 16.5 |
-| ssh | Log in to a device's command line over SSH | `TermSsh` | SSH connects to `admin@192.168.0.3:22`, `help` is typed and the switch's command list scrolls in | 14.5 |
-| close | The name, once, at the end | `TermApp` | The nav highlight walks the five tools once more; the copy shows the CTRLbot Terminator headline | 15.5 |
+Revision 2 (2026-10-01): the hybrid format, as W01's revision 2
+(`videos/archive/2026-10-02-mirror-walkthrough-r2.md`). Layout: `card`, `stage` or `chapter`.
+
+| id | Layout | Claim | Surface | Evidence | Sec |
+|----|--------|-------|---------|----------|-----|
+| open | card | CTRLbot Terminator: the tools you test devices with, in one PC app | `MasterControlCard` | The tricon and the CTRLbot Terminator lockup are on screen at frame 0; the promise line streams in beneath them | 6.5 |
+| proof | stage | Every tool in one window | `TermApp` | The nav steps through Scan, TCP Server, Raw TCP, Serial and SSH, each tool's pane appearing in turn | 10 |
+| scan | chapter | A scan names every device, its maker and its MAC | `TermScan` | Scan is pressed and rows fill at a readable size; the MAC column is ringed on "MAC" and a web link on "links" | 17.5 |
+| server | chapter | Run a server on your PC and test CTRLbot IoT against it | `ServerDiagram` + `TermTcpServer` | A diagram shows the PC as the server and CTRLbot IoT as the client, a command going over and a reply coming back; then the real server: a client connects from `192.168.0.24`, `hello world` arrives and a reply is sent | 23 |
+| pin | chapter | Pin a connection and it is there next time | `TermTcpServer` | The tab strip is close: the pin is ringed, the pointer clicks it, and it turns pinned while the session stays live | 16 |
+| raw-tcp | chapter | Send commands straight to a device's control port | `TermTcpClient` | Raw TCP connects to `192.168.0.135:1515`, `power on` is typed and sent, and the reply lands, command and reply readable in one crop | 17.5 |
+| serial | chapter | Open a COM port and talk over serial | `TermSerial` | COM9 opens at 38400 8-N-1 with the parameters ringed, `hello world` is sent and a reply arrives | 16.5 |
+| ssh | chapter | Log in to a device's command line over SSH | `TermSsh` | SSH connects to `admin@192.168.0.3:22`, `help` is typed and the switch's command list scrolls in | 14.5 |
+| recap | stage | Scan, serve and connect | `TermApp` | The nav lights each tool as the voice names it | 13 |
+| close | card | The name, once, at the end | `MasterControlCard` | The CTRLbot Terminator lockup and its line; no URL and no download | 3.5 |
 
 ## Anything unusual
 
-- **Built exactly like W01.** `videos/archive/2026-09-30-mirror-walkthrough.md` and
-  `src/marketing/mirror-walkthrough/` are the worked example: two shapes from one set of
-  beats, `WalkthroughCopy`, `PortraitStage`, `NarrationCaptions`, `captionsFromClips`,
-  `beatShots`, `narration:srt`. Copy their structure; do not import from another video's
-  folder, and do not change the shared pieces beyond T3.
-- **127.5 seconds, under 2:20.** The recording's phrases total 138s; the clips below keep
-  115s of them. X refuses anything over 2:20 without Premium.
+- **Revision 2 is built on W01's revision 2** (`videos/archive/2026-10-02-mirror-walkthrough-r2.md`):
+  `WalkthroughShell`, `narration:edit`, `PointerClick` and `MasterControlCard`'s `lockup`.
+  Use them as they are; do not import from another video's folder. The revision 1 notes
+  below still hold where they do not mention the camera or `NarrationTrack`.
+- **138 seconds, under 2:20.** X refuses anything over 2:20 without Premium.
 - **Every surface is the live Terminator rebuild in `src/app-ui/term/`**, a class-by-class
   copy of `C:\0-Repo\Utilities\CTRLbot Term\src` at `TERM_VIEWPORT` (1280x800). Five beats
   play the existing `TermScenes.tsx` scenes unchanged, each inside a `<Sequence>` so the
@@ -67,10 +73,9 @@ Scan the network, run a test server, and talk to devices over TCP, serial and SS
   (92.3s), `com` → `COM` (510.1s). CTRLbot is already right in `captions.json` (T3).
 - **Network data is the recording's own private range** (`192.168.0.x`), shipped in S02.
   No password, no public address.
-- **Camera: `beatShots()`, a push on every beat, wide at every cut.** Measured on W01: one
-  slow drift across the cut was 89% inert; a per-beat push to 0.88 was 25–28%. Here `open`
-  and `close` push toward the nav column, `pin` toward the tab strip, the rest toward the
-  session. The portrait panel is 1008x630, the same shape, so both formats share the shots.
+- **Camera (revision 2): chapters are full frame on `termRegions`, with actions on the
+  spoken cue**, as W01's Shot list. `beatShots()` and its push-and-return cycle are retired.
+  Command and reply always share one readable crop.
 - **No `<PromoPreload />`.** Terminator draws no CSS images; its one image is an `<Img>`.
 
 ---
@@ -142,37 +147,18 @@ in the 127.5-second cut; every clip ends inside its beat.
 
 ## Executor instructions
 
-**Paste this to the executor:** *Run `videos/terminator-walkthrough.md` in this checkout,
-following its "Executor instructions" section.*
+**Executor: Gemini 3.8 Flash, High reasoning.** Codex coordinates the approved W02–W05 run and takes over a worker only when Gemini is unavailable. Run one assigned pending task per fresh context in this checkout. Pending revision: T7, T8, T9, T17, T10–T16; never redo checked tasks.
 
-**Executor: Gemini 3.8 Flash, High reasoning.** Work in the current checkout on `main`; no
-branch, no worktree.
+1. Read `AGENTS.md`, `docs/VIDEO_WORKFLOW.md`, `docs/NARRATED-WALKTHROUGH.md`, this brief, and the relevant installed Remotion skill before composition code. W01's current source in `src/marketing/mirror-walkthrough/` and `src/marketing/WalkthroughShell.tsx` are the worked example.
+2. **Dependencies:** T17 runs first to unlock narration in every lane; T7–T9 are independent. T10 needs T17; T11 needs T7, T9 and T10; T12 follows T11; T13 needs T12 and T8; T14–T16 run in order.
+3. **Ownership:** obtain the coordinator's assignment before editing. Own only the task's named files. Preserve unrelated changes, including other briefs, `Roadmap.md` and `.claude/settings.local.json`. `src/Root.tsx`, shared surfaces, audio helpers and `package.json` have one writer at a time. Wait for ownership rather than waiting for another whole video. Do not branch, stash, reset or stage unrelated files.
+4. Implement the brief's exact copy, clips and cues. Run the named per-task checks. The coordinator assigns an independent `.claude/agents/beat-verifier.md` to run gates and look at the still. Workers do not commit or mark `[x]`; the coordinator does so only after independent PASS, staging exactly the task paths and brief.
+5. Two repair rounds, then report evidence and stop the affected task. No nested subagents. Return compact results, never full logs or diffs. Bound retries to two and stop repeated near-verbatim attempts. A still taking over two minutes is blocked. Acquire the coordinator's render slot before a render, contact sheet, GPU transcription or frame check.
+6. Final acceptance is this revision's final task: both shapes, destination lint, contact sheets, renders, frame and narration checks, landscape SRT, and the task's regressions. No approval pauses before those deliverables; do not publish or close out until Nathan reviews. Report paths, results and remaining notes, then stop testing.
 
-1. **Read first:** `AGENTS.md`, `docs/VIDEO_WORKFLOW.md`, `docs/NARRATED-WALKTHROUGH.md`,
-   `.claude/commands/video-run.md`, and this whole brief. Then the worked example, W01:
-   `videos/archive/2026-09-30-mirror-walkthrough.md` and
-   `src/marketing/mirror-walkthrough/` (`walkthroughData.ts`,
-   `mirrorWalkthroughNarration.ts`, `MirrorWalkthrough.tsx`). Copy its structure; never
-   import from its folder.
-2. **Run T1 to T6 in order.** For each: resume any uncommitted work first; implement exactly
-   the task in its named files, with this brief's copy, clips and corrections verbatim;
-   run the per-task check and look at every still; on PASS mark `[x]`, stage only the
-   task's files plus this brief, and commit `Tn: <summary>` with the repository's
-   Co-Authored-By line before reading the next task. FAIL only for a lint error, a broken
-   check, or a still that plainly is not its evidence line; anything else is a Review note.
-3. **No approval stops** between tasks or before the renders.
-4. **Acceptance:** T1–T6 `[x]`, one commit each; `out/terminator-walkthrough.mp4` and
-   `out/terminator-walkthrough-portrait.mp4` pass `video:frames … check` under 60% and
-   `narration:check`; `out/terminator-walkthrough.srt` has no `Luxall`, no lowercase
-   `com ports` and no one-word captions; `video:lint` 0 errors for both destinations;
-   W01's .srt unchanged after T3; the `Proof-Term-*` stills look as before. Then stop
-   testing.
-5. **Limits:** two repair rounds per task, then `[!]` with the evidence under
-   `## Blocked notes` and stop. No nested subagents. Never paste a full build log or diff —
-   the failing lines only. Any retry or poll at most twice. A still over two minutes is
-   blocked. Renders run one at a time. Stop if you are about to repeat an earlier turn.
-6. **Report:** commits, gate results, Review notes, and the paths to both renders, the
-   .srt and both contact sheets. Do not mark the video done and do not publish.
+## Concurrency
+
+The authoritative task dependencies above replace Roadmap-order waits. Codex holds assignments and integration state in `docs/WALKTHROUGH-QUEUE.md`. There may be two implementation workers plus one independent verifier. Different files can overlap; a file and the render/GPU slot each have one owner. The coordinator freezes source during whole-project checks and integrations. Stop and checkpoint on quota exhaustion; resumption starts at the first unverified task.
 
 ## Tasks
 
@@ -217,19 +203,134 @@ branch, no worktree.
   - Regression: the five `Proof-Term-*` stills look as before T2.
   - Runs straight after T5 with no approval stop. Does not mark the video done: Nathan reviews both renders, and his notes come back as new tasks.
 
+### Revision 2 · 2026-10-01 — the hybrid format
+
+From the 2026-10-01 review (`out/REVIEW-2026-10-01.md`).
+
+What the review found in revision 1:
+- Seven of 17 clip edges stop while the voice is still sounding.
+- The server lesson shows no client.
+- Network rows and terminal text are too small to read.
+- No spotlight, ring or pointer anywhere.
+
+**Needs:** `videos/archive/2026-10-02-mirror-walkthrough-r2.md` T1–T7 `[x]` (the shared pieces), and Nathan's
+review of W01's T15 renders. Both met 2026-10-01: W01 is done and approved.
+
+**Read before any revision 2 task:** "What W01's revision 2 taught" in
+`docs/NARRATED-WALKTHROUGH.md`. It covers clip hard edges, the voice check's false alarms,
+the shell's drift, and cue-timed `shots` rather than `regions`.
+
+**Scope.**
+- **Outcome:** both W02 renders rebuilt on the shared pieces. The server chapter shows both
+  sides, and every command and reply is readable.
+- **In scope:** Terminator's region map, cue props on `TermScenes`, the server diagram, the
+  re-planned edit, beat data, both compositions, the beats, the renders.
+- **Out of scope:**
+  - Anything S02 would notice: `TermScenes` defaults must keep it identical.
+  - A download claim or URL.
+  - Footage of the IoT side.
+- **Must preserve:**
+  - S02 and the five `Proof-Term-*` stills.
+  - W01.
+  - `video input/` and the ingest's JSON.
+  - Gate thresholds.
+
+**Copy (revision 2).** These replace the Copy table above. In chapters the copy is a step
+label.
+
+| beat | eyebrow | title | body |
+|------|---------|-------|------|
+| open (card) | For Windows | lockup **CTRLbot Terminator** | line: Scan the network, run a test server, and talk to devices from one PC app. |
+| proof (stage) | One app | Every tool in one window | Scan, TCP server, raw TCP, serial and SSH. |
+| scan | Scan | Find what's on the network | — |
+| server | TCP server | Test against a server on your PC | — |
+| pin | Saved | Pin a connection | — |
+| raw-tcp | Raw TCP (Telnet) | Talk to a device directly | — |
+| serial | Serial (COM) | Open a COM port | Baud from 9600 to 115200, 7 or 8 data bits, parity and flow control. |
+| ssh | SSH | Log in over SSH | Here, a Luxul switch. |
+| recap (stage) | — | Scan, serve and connect | — |
+| close (card) | — | lockup **CTRLbot Terminator** | line: Scan, serve and connect from one PC app. |
+
+The diagram uses Space Mono labels only:
+- PC side: `Your PC · CTRLbot Terminator · TCP server :23`.
+- Tablet side: `CTRLbot IoT · client`.
+- Arrows: `hello world →` and `← reply`.
+
+**Narration (revision 2).** The clips in the Narration clips table, with these changes:
+- `pin` becomes 223.9–239.2: "…available for the next time, so that you can have various
+  ports that you might need to connect to."
+- `welcome` runs from `open` into `proof`; the cut lands on "called CTRLbot Terminator".
+- `recap` is its own beat.
+
+Placement and holds follow W01's rule. Corrections stay `TERMINATOR_CAPTION_CORRECTIONS`.
+
+**Shot list (revision 2).** The regions come from `termRegions` (T7), and the cues are
+`cueFrame` words.
+
+| beat | region(s) | cue → action → result |
+|------|-----------|-----------------------|
+| proof | `nav`, then `session` | terminal-app "terminal" → the nav steps through the five tools |
+| scan | `results` (host, device, manufacturer, IP, MAC columns) | scan-info "host" → rows fill · scan-info "MAC" → ring the MAC column · scan-links "links" → ring a web link |
+| server | diagram, then `serverClients` and `serverLog` | server-test "CTRLbot" → the diagram's arrows run · server-connected "connected" → ring the client row · server-connected "commands" → ring the arriving line |
+| pin | `tabs` | pin "pin" (first) → ring the pin · pin "pin" (second) → PointerClick → it turns pinned |
+| raw-tcp | `connectFields`, then `exchange` | raw-tcp "raw" → ring host and port · the command and its reply land inside one crop |
+| serial | `serialParams`, then `exchange` | parameters "parameters" → ring baud, bits, parity and flow |
+| ssh | `exchange` | ssh-help "help" → the command and its output |
+| recap | `nav` | recap "scan", "server", "Telnet", "SSH", "serial" → Scan, TCP Server, Raw TCP, SSH and Serial each light on their word |
+
+- [ ] T7: Export Terminator's window geometry and derive `termRegions` from it, with `Terminator.tsx` laying out from the same constants — files: src/app-ui/term/termData.ts, src/app-ui/term/Terminator.tsx
+  - Regions in window pixels: `nav`, `navItem(tool)`, `tabs`, `session`, `results`, `serverClients`, `serverLog`, `connectFields`, `serialParams` and `exchange`. Rows laid out by flow get fixed heights from named constants.
+  - Verify: `npm run check`; the five `Proof-Term-*` stills look exactly as before.
+- [ ] T8: Give the five `TermScenes` optional event frames, defaulting to today's timing — files: src/app-ui/term/TermScenes.tsx
+  - Events per scene:
+    - Scan: start.
+    - Server: client connect, message arrive, reply.
+    - Raw TCP: connect, send, reply.
+    - Serial: open, send, reply.
+    - SSH: connect, type, output.
+  - Unset props reproduce today's frames exactly.
+  - Verify: stills of S02 at three frames and the `Proof-Term-*` stills look as before.
+- [ ] T9: Add the server/client `ServerDiagram` for the server chapter, and a `Proof-Term-ServerDiagram` still — files: src/marketing/terminator-walkthrough/ServerDiagram.tsx, src/Root.tsx
+  - Draw it on a 1280x800 plane so the shell's camera can frame it like a surface: the PC on the left, the tablet on the right, the labels from the copy above.
+  - The arrows animate on a `progress` prop; colours only from `theme.ts`. No drawn window chrome: it is a diagram, not product UI.
+  - Verify: the proof still at progress 0.5 and 1.
+- [ ] T17: Add `npm run narration:verify`, which transcribes a narration edit's track or a render and lists, clip by clip, where the heard words differ from the planned edit's, with the audio level at each difference — files: scripts/narration-verify.mjs, package.json
+  - Runs before T10 (out of numeric order: it was added after W01's T15).
+  - Usage: `npm run narration:verify -- <generated.ts> <edit.m4a | render.mp4>`. Transcribe with `scripts/lib/transcribe.py`. Compare each clip's edit words (`startMs` inside the clip's `at` to `at + seconds`) with the heard words in the same window ±0.3s, normalized to lowercase letters and digits.
+  - For each differing clip, print both word lists. For a missing or extra word at the first or last position, also print the RMS level in dB over that word's span (`ffmpeg -af astats`).
+  - Exit 1 only when an extra edge word measures above -50 dB, or a missing edge word's span measures below -50 dB. All else exits 0.
+  - Verify: run it on `public/narration/mirror-walkthrough/edit.m4a` and on `out/mirror-walkthrough.mp4`. Both exit 0, and the output names the differences recorded in W01's T15 Review note.
+- [ ] T10: Re-plan W02's edit with `narration:edit`, `pin` extended — files: src/marketing/terminator-walkthrough/terminatorWalkthroughNarration.ts, src/marketing/terminator-walkthrough/terminatorWalkthroughNarration.generated.ts, public/narration/terminator-walkthrough/edit.m4a
+  - Two builds at most to set the `at`s. A beat that cannot keep its 1.0s hold inside its Sec is `[!]` with the measured lengths.
+  - Then `npm run narration:verify` on `edit.m4a`. Fix each real edge leak with `notBefore` / `notAfter` or a tighter `sourceEnd` (the contract's "Clip edges leak"), at most two more builds. A leak that remains goes in the Review notes with its clip and level.
+- [ ] T11: Rewrite W02's beat data for the shell: beats and layouts from the Beats table, the revision 2 copy, regions and cue frames — files: src/marketing/terminator-walkthrough/terminatorWalkthroughData.ts
+  - 4140 frames in total. `beatShots()` and `SUBJECT` are removed. Verify: `npm run check`; `validate`.
+  - Every region change the Shot list ties to a word is a `shots` entry with `at` from `cueFrame`, relative to the beat. Use `regions` arrays only for untimed changes, because they split the beat evenly. Add no hold keyframes: the shell drifts.
+- [ ] T12: Rebuild both W02 compositions on `WalkthroughShell` at 4140 frames, chapters showing today's scenes until T13–T15 — files: src/marketing/terminator-walkthrough/TerminatorWalkthrough.tsx, src/Root.tsx
+  - Verify: the per-task check on `poster`, `open`, `scan` and `close`, in both shapes.
+- [ ] T13: Build the proof, scan and server beats in a new `TerminatorBeats.tsx` to the Shot list — files: src/marketing/terminator-walkthrough/TerminatorBeats.tsx, src/marketing/terminator-walkthrough/TerminatorWalkthrough.tsx
+- [ ] T14: Build the pin, raw-tcp and serial beats to the Shot list — files: src/marketing/terminator-walkthrough/TerminatorBeats.tsx
+- [ ] T15: Build the ssh and recap beats to the Shot list — files: src/marketing/terminator-walkthrough/TerminatorBeats.tsx
+- [ ] T16: Run the feature gates on both shapes, render both, write the .srt from the edit, check the voice, and record the results here — files: videos/terminator-walkthrough.md
+  - As W01's T15, with `--corrections=TERMINATOR_CAPTION_CORRECTIONS`. The .srt has no `Luxall` and no lowercase `com ports`.
+  - The voice check is `npm run narration:verify` on the landscape render. It is `[!]` only when it exits 1; every other difference is a Review note (the contract's "Whisper's voice check over-reports").
+  - Portrait `content-area` warns for Terminator's window. That is expected, not a defect. If `inert-fraction` fails, measure it per beat before changing anything.
+  - Regression: S02 and the `Proof-Term-*` stills look as before.
+
 ## Deferred
 
 - The IoT-side split of the server demonstration, if a later cut wants the round trip.
 - A download line, once Terminator's public release is verified.
-- A shared walkthrough shell. W01 and W02 each carry their own composition; when W03
-  starts, lift the common part out of both rather than copying it a third time.
+
 - Close-out (archive the brief, `RELEASE-NOTES.md`, `Roadmap.md`) after Nathan's review. The
   recording moves to `video input/archive/` then: S02 and W02 are its only cuts.
 
 ## Handoff
 
-- T1–T6 are done. Both renders and contact sheets are with Nathan for review.
-- **Blocked:** nothing.
+- **Pending revision:** T7, T8, T9, T17, T10–T16.
+- **Dependencies:** T17 runs first to unlock narration in every lane; T7–T9 are independent. T10 needs T17; T11 needs T7, T9 and T10; T12 follows T11; T13 needs T12 and T8; T14–T16 run in order.
+- **Dispatch:** one task at a time through Codex; independent verification and scoped commit release its owned files. Final rendering waits for the shared render slot.
+- **Blocked:** no known implementation blocker; task dependencies still apply.
 
 ## Review notes
 

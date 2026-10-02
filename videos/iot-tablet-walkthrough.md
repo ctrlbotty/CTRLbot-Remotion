@@ -27,40 +27,48 @@ Set up and run a whole room from an Android tablet: no processor, no laptop, no 
   captions as `out/iot-tablet-walkthrough.srt` — YouTube
 - Portrait: `iot-tablet-walkthrough-portrait`, 1080x1920, captions burned in →
   `out/iot-tablet-walkthrough-portrait.mp4` — TikTok, LinkedIn, YouTube
+- Planned edit (revision 2): `public/narration/iot-tablet-walkthrough/edit.m4a` and
+  `src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughNarration.generated.ts`, from
+  `npm run narration:edit` (never hand-edited)
 
 ## Beats
 
-| id | Claim | Surface | Evidence | Sec |
-|----|-------|---------|----------|-----|
-| open | Room control from the tablet | `TabletEui` | The tablet EUI at rest, sources down the left and the display on the right; the copy shows the CTRLbot IoT headline | 11 |
-| first-run | A short tour opens the first time | `FirstRunEducation` | The first-run walkthrough over the setup screen steps forward, then its ✕ closes it | 13.5 |
-| ai | CTRLbot AI is a living manual | `CtrlbotAi` | CTRLbot AI's question list fills; a question is picked and its answer lands | 20.5 |
-| database | Everything starts with a driver | `DriverCatalog` | The catalog scrolls; the category filter opens on Projector, Display, Switchers, End Points | 23 |
-| epson | Every driver carries its device's details | `DriverDetail` | Epson PowerLite in the detail pane: device info, specs, setup, support; the manufacturer link is ringed and the app's web view opens loading; back on the pane, control info | 23.5 |
-| add | Add it, enter the IP, and it saves itself | `ConnectionPanel` | + opens Configure Connection, the IP is entered, Connect goes to Disconnect, with no save button pressed | 15.5 |
-| terminal | Test the commands | `ConnectionPanel` | Power On and Power Off are sent and land in the terminal | 6 |
-| test | Test it as a remote | `ConnectTest` | Test Device Drivers: the device list on the right; Switcher routes an input to Out 1, then Terminal, then Web page loading | 28 |
-| activities | The room builds itself | `ActivitiesPresets` | Presets lists Power On and Power Off; Power On opens with the Epson's power-on command already in it | 19 |
-| switch-audio | Switching and audio are already set | `ActivitiesSwitch` + `ActivitiesAudio` | Switch shows the Epson as the switcher; Audio shows its volume up, down and set mapped | 16 |
-| eui | The end user gets the room, not the settings | `TabletEui` + `EuiPower` | A source is picked for the display, the volume moves and mutes, then Powering Off and Welcome | 24.5 |
-| exit | Press and hold to get back to setup | `TabletEui` | The setup button is held; "Keep holding to return to Setup" shows; the setup menu returns | 8 |
-| discovery | Find Devices scans the network | `DiscoverDevices` | Discover Devices counts up as devices are found; each row shows its driver match or Add driver | 20 |
-| matrox-add | Add a whole AV-over-IP system in one go | `DiscoverDevices` | Matrox ConvertIP rows are added one after another; each ends Added | 30.5 |
-| matrox-test | Test each encoder and decoder | `ConnectTest` | The Matrox system in the switcher: encoders on the left, four decoders; one decoder takes an encoder | 7 |
-| matrox-switch | Encoders and decoders, set up for the room | `ActivitiesSwitch` | Switch type goes to AVoIP Encoders/Decoders; the ConvertIP encoder and decoder lists fill | 23.5 |
-| m2m | Many to many, by tap, drag or All | `TabletEui` | Four displays: a source tapped then a display; a source dragged onto a display; All sends one source to every display | 24.5 |
-| settings | Help is built in | `SettingsSupport` | Settings → Support: User Manual, Quick Start, Factory Reset and Database Management | 21 |
-| close | The name, once, at the end | `TabletEui` | The EUI at rest; the copy shows the CTRLbot IoT headline | 5 |
+Revision 2 (2026-10-01): the hybrid format, as W01's revision 2
+(`videos/archive/2026-10-02-mirror-walkthrough-r2.md`), with the tablet full frame. Layout: `card`, `stage` or
+`chapter`.
+
+| id | Layout | Claim | Surface | Evidence | Sec |
+|----|--------|-------|---------|----------|-----|
+| open | card | CTRLbot IoT runs the room from a tablet | `MasterControlCard` | The tricon and the CTRLbot IoT lockup are on screen at frame 0; the promise line streams in beneath them | 5 |
+| proof | stage | One tap, and it is there | `TabletEui` | The tablet EUI; a source is tapped and the display fills with it in the same moment, ringed | 6 |
+| first-run | chapter | A short tour opens the first time | `FirstRunEducation` | The first-run walkthrough over the setup screen steps forward, then its ✕ is tapped and it closes | 13.5 |
+| ai | chapter | CTRLbot AI is a living manual | `CtrlbotAi` | The question list; a question is tapped and its answer lands, readable | 22 |
+| database | chapter | Everything starts with a driver | `DriverCatalog` | The catalog, on the app's blue wash, scrolls; the sort filter is tapped and opens on Projector, Display, Switchers, End Points | 23 |
+| epson | chapter | Every driver carries its device's details | `DriverDetail` + `ProductWebView` | Epson PowerLite in the detail pane; the manufacturer link is ringed and tapped, and the web view's address bar loads for under two seconds; back on the pane, the connection info is ringed | 23.5 |
+| add | chapter | Add it, enter the IP, and it saves itself | `ConnectionPanel` | + is tapped and Configure Connection opens; the IP is entered on "IP"; Connect is tapped on "connect" and turns Disconnect; the saved line is ringed | 15.5 |
+| terminal | chapter | Test the commands | `ConnectionPanel` | Power On and Power Off are tapped and land in the terminal, readable | 6 |
+| test | chapter | Test it as a remote | `ConnectTest` | The device list is ringed on "listed"; Switcher, Terminal and Web page are each tapped on their word; the Web page is held under two seconds | 28 |
+| activities | chapter | The room builds itself | `ActivitiesPresets` | Presets lists Power On and Power Off; Power On is tapped and its command ringed | 19 |
+| switch-audio | chapter | Switching and audio are already set | `ActivitiesSwitch` + `ActivitiesAudio` | The Epson as the switcher, ringed; then Audio's volume up, down and set, ringed | 16.5 |
+| eui | chapter | The end user gets the room, not the settings | `TabletEui` + `EuiPower` | A source is picked for the display, the volume moves, mute turns on, then Powering Off and Welcome, each on its spoken word | 25 |
+| exit | chapter | Press and hold to get back to setup | `TabletEui` | On Welcome, the setup button is held: a hold ring fills over two seconds, Keep holding shows, and the setup menu returns | 8 |
+| discovery | chapter | Find Devices scans the network | `DiscoverDevices` | The discovery icon is ringed and tapped; the count climbs; a driver match is ringed | 20 |
+| matrox-add | chapter | Add a whole AV-over-IP system in one go | `DiscoverDevices` | Matrox ConvertIP rows are added one after another, each ending Added, readable | 31.5 |
+| matrox-test | chapter | Test each encoder and decoder | `ConnectTest` | The Matrox system with encoders and decoders side by side; a decoder takes an encoder on "switch" | 7 |
+| matrox-switch | chapter | Encoders and decoders, set up for the room | `ActivitiesSwitch` | The switch type goes to AVoIP Encoders/Decoders on "encoders"; the ConvertIP lists fill and are ringed | 23.5 |
+| m2m | chapter | Many to many, by tap, drag or All | `TabletEui` | Four displays with sources and displays in one frame: a source tapped then a display; a source dragged onto a display; All tapped, and every display takes it | 24.5 |
+| settings | chapter | Help is built in | `SettingsSupport` | Settings → Support: User Manual, Quick Start, Factory Reset and Database Management ringed on their words | 21 |
+| close | card | The name, once, at the end | `MasterControlCard` | The CTRLbot IoT lockup and its outcome line; no URL | 5 |
 
 ## Anything unusual
 
 - **W03's twin.** `videos/iot-phone-walkthrough.md` is the same story on the phone. W04
   reuses every surface W03 built, adding each one's tablet layout, and follows W03's
   composition pattern (and W01's before it). Never import from another video's folder.
-- **Start only after W03 is finished.** T2–T11 extend files W03 creates, and both touch
-  `src/Root.tsx`. If `videos/iot-phone-walkthrough.md` still has a `- [ ]` task, stop and
-  report blocked.
-- **5:40, everything condensed**, as W03: over X's 2:20 and a Short's 3:00 on purpose;
+- **Shared files have one owner.** Revision 1's tablet surfaces already exist. Revision 2
+  needs W03's T20–T22 maps before T20; other pending W03 tasks do not block this lane.
+  The coordinator serializes `src/Root.tsx` changes and integration checks.
+- **5:43.5, everything condensed (revision 2)**, as W03: over X's 2:20 and a Short's 3:00 on purpose;
   `social-walkthrough` allows 360s since W03's T2. Trimmed cuts come later.
 - **Tablet layouts are their own.** Most screens have a `layout/` (tablet) and a
   `layout-port/` (phone) version in `../../1 - CTRLbot.av/CTRLbot-IoT/app/src/main/res/`;
@@ -80,9 +88,10 @@ Set up and run a whole room from an Android tablet: no processor, no laptop, no 
   the stumbles; nothing that needs a filler removed is kept.
 - **Captions need fixes**, applied at render time: `controlbot` + `.ai.` → `CTRLbot AI.`;
   `RS` + `-232` → `RS-232`; `convert` + `IP,` → `ConvertIP,`.
-- **A 1280x800 surface lays out like Terminator's**: the landscape `<Stage>` at its default
-  panel, the portrait panel 1008x630. Each beat opens wide (1.04) and pushes to 0.8 on its
-  subject, then returns.
+- **Revision 2: the tablet is full frame.** Landscape renders it at 1.5 px/dp, as First-Run
+  tablet does, pushing to small controls. Portrait shows crops of the region being taught
+  (no wider than 720 dp); the subject stays out of the feeds' right 140 px column. The
+  push-and-return cycle is retired. Built on W01's revision 2 (`videos/archive/2026-10-02-mirror-walkthrough-r2.md`).
 
 ---
 <!-- /video-prep writes below this line. Nothing above it is an agent's to edit. -->
@@ -163,37 +172,18 @@ we organize these is, is interesting"), the IPMX "universal control protocol" as
 
 ## Executor instructions
 
-**Paste this to the executor:** *Run `videos/iot-tablet-walkthrough.md` in this checkout,
-following its "Executor instructions" section.*
+**Executor: Gemini 3.8 Flash, High reasoning.** Codex coordinates the approved W02–W05 run and takes over a worker only when Gemini is unavailable. Run one assigned pending task per fresh context in this checkout. Pending revision: T19–T27; never redo checked tasks.
 
-**Executor: Gemini 3.8 Flash, High reasoning.** Work in the current checkout on `main`; no
-branch, no worktree.
+1. Read `AGENTS.md`, `docs/VIDEO_WORKFLOW.md`, `docs/NARRATED-WALKTHROUGH.md`, this brief, and the relevant installed Remotion skill before composition code. W01's current source in `src/marketing/mirror-walkthrough/` and `src/marketing/WalkthroughShell.tsx` are the worked example.
+2. **Dependencies:** T19 needs W02 T17. T20 needs T19 and W03 T20–T22 integrated; T21–T27 run in order. W03 final renders are not a dependency.
+3. **Ownership:** obtain the coordinator's assignment before editing. Own only the task's named files. Preserve unrelated changes, including other briefs, `Roadmap.md` and `.claude/settings.local.json`. `src/Root.tsx`, shared surfaces, audio helpers and `package.json` have one writer at a time. Wait for ownership rather than waiting for another whole video. Do not branch, stash, reset or stage unrelated files.
+4. Implement the brief's exact copy, clips and cues. Run the named per-task checks. The coordinator assigns an independent `.claude/agents/beat-verifier.md` to run gates and look at the still. Workers do not commit or mark `[x]`; the coordinator does so only after independent PASS, staging exactly the task paths and brief.
+5. Two repair rounds, then report evidence and stop the affected task. No nested subagents. Return compact results, never full logs or diffs. Bound retries to two and stop repeated near-verbatim attempts. A still taking over two minutes is blocked. Acquire the coordinator's render slot before a render, contact sheet, GPU transcription or frame check.
+6. Final acceptance is this revision's final task: both shapes, destination lint, contact sheets, renders, frame and narration checks, landscape SRT, and the task's regressions. No approval pauses before those deliverables; do not publish or close out until Nathan reviews. Report paths, results and remaining notes, then stop testing.
 
-0. **Gate:** if `videos/iot-phone-walkthrough.md` has any `- [ ]` task left, stop and report
-   that W04 waits on W03.
-1. **Read first:** `AGENTS.md`, `docs/VIDEO_WORKFLOW.md`, `docs/NARRATED-WALKTHROUGH.md`,
-   `.claude/commands/video-run.md`, and this whole brief. Then the worked example it
-   mirrors: `videos/iot-phone-walkthrough.md` and `src/marketing/iot-phone-walkthrough/`,
-   and, for a surface task, the surface file it extends.
-2. **Run T1 to T18 in order.** For each: resume any uncommitted work first; implement
-   exactly the task in its named files, with this brief's copy and clips verbatim; run the
-   per-task check and look at every still; on PASS mark `[x]`, stage only the task's files
-   plus this brief, and commit `Tn: <summary>` with the repository's Co-Authored-By line
-   before reading the next task. FAIL only for a lint error, a broken check, or a still
-   that plainly is not its evidence line or its reference frame; anything else is a Review
-   note.
-3. **No approval stops** between tasks or before the renders.
-4. **Acceptance:** T1–T18 `[x]`, one commit each; both renders exist and pass
-   `video:frames … check` under 60% and `narration:check`; the .srt has no `controlbot`,
-   no `.ai.`, no `RS -232`, no `convert IP` and no one-word captions; `video:lint` 0 errors;
-   every phone surface and every `Proof-*` still that existed before looks as before; W01,
-   W02 and W03's .srt unchanged. Then stop testing.
-5. **Limits:** two repair rounds per task, then `[!]` with the evidence under
-   `## Blocked notes` and stop. No nested subagents. Never paste a full build log or diff —
-   the failing lines only. Any retry or poll at most twice. A still over two minutes is
-   blocked. Renders run one at a time. Stop if you are about to repeat an earlier turn.
-6. **Report:** commits, gate results, Review notes, and the paths to both renders, the
-   .srt and both contact sheets. Do not mark the video done and do not publish.
+## Concurrency
+
+The authoritative task dependencies above replace Roadmap-order waits. Codex holds assignments and integration state in `docs/WALKTHROUGH-QUEUE.md`. There may be two implementation workers plus one independent verifier. Different files can overlap; a file and the render/GPU slot each have one owner. The coordinator freezes source during whole-project checks and integrations. Stop and checkpoint on quota exhaustion; resumption starts at the first unverified task.
 
 ## Tasks
 
@@ -261,19 +251,125 @@ branch, no worktree.
   - `npm run check`; `npm run video:lint -- --destination=social-walkthrough`; render `iot-tablet-walkthrough` → `out/iot-tablet-walkthrough.mp4` and `iot-tablet-walkthrough-portrait` → `out/iot-tablet-walkthrough-portrait.mp4` (`--codec=h264 --crf=20`, never `--muted`), one at a time; `video:frames … check` on both; `npm run narration:check` on both; `npm run narration:srt -- src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughNarration.ts IOT_TABLET_NARRATION_CLIPS iot-tablet-walkthrough out/iot-tablet-walkthrough.srt --corrections=IOT_TABLET_CAPTION_CORRECTIONS`, then confirm the corrections took and no caption is one word. Confirm every file exists.
   - Runs straight after T17 with no approval stop. Does not mark the video done: Nathan reviews both renders, and his notes come back as new tasks.
 
+### Revision 2 · 2026-10-01 — the hybrid format, tablet full frame
+
+From the 2026-10-01 review (`out/REVIEW-2026-10-01.md`).
+
+What the review found in revision 1:
+- 24 of 52 clip ends stop while the voice is still sounding. Audible: "a living" at 0:37,
+  "right? Y—" at 2:39, "end user in—" at 2:55, "mute i—" at 3:18, "these use I—" at 3:56,
+  "user manu— —al" at 5:18 and "right he—" at 5:22. A 70 ms repeat at 1:47.
+- Connected before the IP is spoken (1:36).
+- The Test tabs run ahead of the voice (2:02–2:16), and the Web view is a blank white panel.
+- The room powers off during "volume" and "mute" (3:13–3:18), then comes back on with no
+  power-on.
+- The portrait tablet sits under the feeds' button column.
+- No reuse of the approved First-Run tablet scenes.
+
+**Needs:** `videos/archive/2026-10-02-mirror-walkthrough-r2.md` T1–T7 `[x]`, Nathan's review of W01's revision 2,
+W02 T17 before T19, and `videos/iot-phone-walkthrough.md` T20–T22 `[x]` before T20 (the region maps
+both cuts share).
+
+**Read before any revision 2 task:** "What W01's revision 2 taught" in
+`docs/NARRATED-WALKTHROUGH.md`. It covers clip hard edges, the voice check's false alarms,
+the shell's drift, and cue-timed `shots` rather than `regions`.
+
+**Scope.**
+- **Outcome:** both W04 renders rebuilt on the shared pieces, with the tablet full frame. The
+  approved First-Run tablet framing is reused where the app has not changed. Every Test and
+  power-off screen changes on its spoken cue, and every clipped word is fixed.
+- **In scope:** the re-planned edit, beat data, both compositions, 20 beats, the renders.
+- **Out of scope:** surface changes beyond what a beat strictly needs (as optional props),
+  the First-Run cuts, a trimmed cut, footage, diagrams.
+- **Must preserve:**
+  - Every surface's default render and every `Proof-*` still.
+  - `First-Run-*`, W01, W02 and W03.
+  - `video input/` and the ingest's JSON.
+  - Gate thresholds.
+
+**Copy (revision 2).**
+- The cards: `open` is lockup **CTRLbot IoT** with line "Set up and run a whole room from an
+  Android tablet." `close` is lockup **CTRLbot IoT** with line "Set up the room, then hand
+  it over."
+- `proof` (stage): eyebrow "End user interface", title "One tap, and it is there".
+- Every chapter keeps the eyebrow and title from the Copy table above, as a step label with
+  no body. Only `database` keeps its body.
+
+**Narration (revision 2).** The Narration clips table and the edit list's ids, with these
+changes:
+- `welcome` runs from `open` into `proof`; the cut lands on "CTRLbot IoT".
+- `ai-manual` ends 43.2 (after "manual.").
+- `act-presets` ends 187.8, which drops the dangling "You".
+- `switch-eui` ends 205.6 (after "interface.").
+- `eui-volume-mute` ends 228.75 (after "it,").
+- `matrox-ipmx` ends 276.8 (after "IPMX,"; the "universal control protocol" aside stays cut).
+- `term-commands` starts 132.45, which ends the overlap.
+- `settings-start-over` is 399.43–403.1 ("…start over or you need help"), and
+  `settings-manual` is 404.5–408.05 ("Full user manual, it can be found right here.").
+
+Corrections stay `IOT_TABLET_CAPTION_CORRECTIONS`. Placement and holds follow W01's rule.
+
+**Shot list (revision 2).** Regions come from the surfaces' region maps (W03's T20–T22, and
+the existing tablet maps). Cues are `cueFrame` words. Where a row names a First-Run scene,
+port that scene's tablet shots and annotation choices, retimed to the cues.
+
+Portrait shows the tablet as crops of the region being taught, at least 1.5 px/dp: a region
+no wider than 720 dp. Only `m2m` and `proof` show the whole relationship, sources and
+displays together. The subject is never in the right 140 px column.
+
+| beat | First-Run source | cue → action → result |
+|------|------------------|-----------------------|
+| proof | `EuiHandoff` (switch one display) | welcome "app" → a source tapped, the display fills |
+| first-run | `CtrlbotIntro` | first-run "walkthrough" → the tour steps · "close" → ✕ tapped, the tour closes |
+| ai | `CtrlbotIntro` | ai-intro "AI" → the question list · ai-manual "troubleshoot" → a question tapped · "manual" → the answer lands |
+| database | `DeviceSetup` | db-devices "library" → the catalog scrolls · db-sorting "sorting" → the filter opens |
+| epson | — | epson-info "projector" → Epson tapped, the detail pane · epson-webpage "manufacturer" → link ringed and tapped, the web view loads for at most 2s · epson-connection "connection" → the connection info ringed |
+| add | `DeviceSetup` (+), `ConnectAndTest` (address, connect) | add-ip "plus" → + tapped · "IP" → the address entered · add-saved "connect" → Connect tapped, Disconnect · "save" → the saved line ringed |
+| terminal | `ConnectAndTest` (send a safe command) | term-commands "commands" → Power On and Power Off tapped, their lines land |
+| test | — | test-device "listed" → the device list ringed · test-switcher "switcher" → the Switcher tab · test-terminal "terminal" → the Terminal tab · test-webpage "webpage" → the Web page tab, held under 2s |
+| activities | `BuildRoom` | act-next "activities" → Activities · act-presets "power" → Power On tapped, its command ringed |
+| switch-audio | `BuildRoom` | switch-assign "switcher" → Switch ringed · "audio" → Audio ringed |
+| eui | `EuiHandoff` | eui-setup "interface" → the EUI opens · eui-technician "switching" → a source picked for the display · eui-volume-mute "volume" → the volume moves · "mute" → muted · eui-power "down" → Powering Off, then Welcome |
+| exit | `EuiHandoff` (press and hold) | exit-hold "hold" → the hold ring fills over 2s on Welcome · "back" (second) → setup returns |
+| discovery | — | discovery-scan "discovery" → the icon ringed and tapped · "scans" → the count climbs · "database" → a match ringed |
+| matrox-add | — | matrox-endpoints "Matrox" → the rows · matrox-add-these "add" → Add tapped · matrox-one-click "click" → Added. No certificate dialog is shown |
+| matrox-test | — | matrox-test-individual "individual" → a decoder tapped · matrox-test-switch "switch" → it takes an encoder |
+| matrox-switch | `BuildRoom` | matrox-switch-back "activities" → Activities · matrox-switch-change "encoders" → the switch type changes · matrox-switch-convertip "convert" → the lists ringed |
+| m2m | `EuiHandoff` (route across displays) | m2m-press-click "press" → a source tapped · "click" → a display tapped · m2m-drag-drop "drag" → a drag onto a display · m2m-send-all "all" → All tapped |
+| settings | — | settings-manual "manual" → User Manual ringed · settings-quick-start "quick" → Quick Start ringed · settings-reset "factory" → Factory Reset ringed · "database" → Database Management ringed |
+
+- [ ] T19: Re-plan W04's edit with `narration:edit` and the changes above — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughNarration.ts, src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughNarration.generated.ts, public/narration/iot-tablet-walkthrough/edit.m4a
+  - Two builds at most to set the `at`s. A beat that cannot keep its 1.0s hold inside its Sec is `[!]` with the measured lengths.
+  - Then `npm run narration:verify` on `edit.m4a` (W02's T17). Fix each real edge leak with `notBefore` / `notAfter` or a tighter `sourceEnd` (the contract's "Clip edges leak"), at most two more builds. A leak that remains goes in the Review notes with its clip and level.
+- [ ] T20: Rewrite W04's beat data for the shell: beats and layouts, the revision 2 copy, regions and cue frames — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts
+  - 10305 frames in total. `DriverCatalog` callers opt into the app's blue wash. `beatShots()` and `SUBJECT` are removed.
+  - Every region change the Shot list ties to a word is a `shots` entry with `at` from `cueFrame`, relative to the beat. Use `regions` arrays only for untimed changes, because they split the beat evenly. Add no hold keyframes: the shell drifts.
+- [ ] T21: Rebuild both W04 compositions on `WalkthroughShell` at 10305 frames, chapters showing their revision 1 state until T22–T26 — files: src/marketing/iot-tablet-walkthrough/IotTabletWalkthrough.tsx, src/Root.tsx
+- [ ] T22: Build the proof, first-run, ai and database beats to the Shot list — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
+- [ ] T23: Build the epson, add, terminal and test beats to the Shot list, each screen changing on its cue — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
+- [ ] T24: Build the activities, switch-audio, eui and exit beats to the Shot list, the power state continuous from eui into exit — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
+- [ ] T25: Build the discovery, matrox-add, matrox-test and matrox-switch beats to the Shot list — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
+- [ ] T26: Build the m2m and settings beats to the Shot list — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
+- [ ] T27: Run the feature gates on both shapes, render both, write the .srt from the edit, check the voice, and record the results here — files: videos/iot-tablet-walkthrough.md
+  - As W01's T15, with `--corrections=IOT_TABLET_CAPTION_CORRECTIONS` and `--destination=social-walkthrough`.
+  - The voice check is `npm run narration:verify` on the landscape render. It is `[!]` only when it exits 1; every other difference is a Review note. The words named in the next line are checked in its output, and against the audio level when Whisper misses one.
+  - The voice check must hear "manual", "interface", "it", "IPMX" and "here" whole, and "user manual" once in the settings beat.
+  - Picture: a portrait still at every Test and EUI cue shows the named tab or state.
+  - Regression: `First-Run-Tablet` and the `Proof-*` stills look as before.
+
 ## Deferred
 
 - Trimmed cuts for X (2:20) and YouTube Shorts (3:00), from these beats.
-- A shared walkthrough shell for W01–W04's compositions.
 - The factory-reset confirmation dialog the recording opens at 6:58 — shown only if a later
   cut needs it.
 - The First-Run quick-start cuts, moved to v1.1.
 
 ## Handoff
 
-- **Ready after W03 is finished:** T1, then T2–T11 (T3 before T4), T12 and T13.
-- **Ready later:** T14–T16 after T2–T13; T17 after T14–T16; T18 last.
-- **Blocked:** until `videos/iot-phone-walkthrough.md` has no `- [ ]` task.
+- **Pending revision:** T19–T27.
+- **Dependencies:** T19 needs W02 T17. T20 needs T19 and W03 T20–T22 integrated; T21–T27 run in order. W03 final renders are not a dependency.
+- **Dispatch:** one task at a time through Codex; independent verification and scoped commit release its owned files. Final rendering waits for the shared render slot.
+- **Blocked:** no known implementation blocker; task dependencies still apply.
 
 ## Review notes
 

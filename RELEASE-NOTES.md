@@ -5,6 +5,12 @@
 A cut is delivered when its render is in `out/` and its brief is archived in
 `videos/archive/`. Publishing is a separate step and is not tracked here.
 
+## 2026-10-02: W01 CTRLbot Mirror revision 2 approved
+
+- Approved narrated hybrid cuts, 2:16: `out/mirror-walkthrough.mp4` and `out/mirror-walkthrough-portrait.mp4`, with landscape captions in `out/mirror-walkthrough.srt` and contact sheets in each cut's output folder.
+- Continuous chapter camera drift brought landscape inert fraction to 25% and portrait to 29%; both passed the unchanged 60% gate. Narration on both measured -16.10 LUFS and -4.37 dBTP. Three real clip-edge leaks were repaired using optional hard start/end limits; shorts remain unchanged.
+- Brief: `videos/archive/2026-10-02-mirror-walkthrough-r2.md`. The recording stays in `video input/` until S01 is delivered. Publishing is separate.
+
 ## 2026-09-30: W01 CTRLbot Mirror, and long videos in two shapes
 
 - **W01 CTRLbot Mirror**, 2:13, narrated: `out/mirror-walkthrough.mp4` (1920x1080, YouTube,
