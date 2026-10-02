@@ -17,6 +17,7 @@
     "narration:check": "node scripts/narration.mjs check",
     "narration:edit": "node scripts/narration-edit.mjs",
     "narration:srt": "node scripts/narration-srt.mjs",
+    "narration:verify": "node scripts/narration-verify.mjs",
     "video:lint": "node scripts/video-lint.mjs",
     "video:lint:selftest": "node scripts/video-lint.mjs --selftest",
     "video:frames": "node scripts/video-frames.mjs",

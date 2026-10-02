@@ -294,7 +294,7 @@ Placement and holds follow W01's rule. Corrections stay `TERMINATOR_CAPTION_CORR
   - Draw it on a 1280x800 plane so the shell's camera can frame it like a surface: the PC on the left, the tablet on the right, the labels from the copy above.
   - The arrows animate on a `progress` prop; colours only from `theme.ts`. No drawn window chrome: it is a diagram, not product UI.
   - Verify: the proof still at progress 0.5 and 1.
-- [ ] T17: Add `npm run narration:verify`, which transcribes a narration edit's track or a render and lists, clip by clip, where the heard words differ from the planned edit's, with the audio level at each difference — files: scripts/narration-verify.mjs, package.json
+- [x] T17: Add `npm run narration:verify`, which transcribes a narration edit's track or a render and lists, clip by clip, where the heard words differ from the planned edit's, with the audio level at each difference — files: scripts/narration-verify.mjs, package.json
   - Runs before T10 (out of numeric order: it was added after W01's T15).
   - Usage: `npm run narration:verify -- <generated.ts> <edit.m4a | render.mp4>`. Transcribe with `scripts/lib/transcribe.py`. Compare each clip's edit words (`startMs` inside the clip's `at` to `at + seconds`) with the heard words in the same window ±0.3s, normalized to lowercase letters and digits.
   - For each differing clip, print both word lists. For a missing or extra word at the first or last position, also print the RMS level in dB over that word's span (`ffmpeg -af astats`).
@@ -334,6 +334,8 @@ Placement and holds follow W01's rule. Corrections stay `TERMINATOR_CAPTION_CORR
 - **Blocked:** no known implementation blocker; task dependencies still apply.
 
 ## Review notes
+
+- T17, 2026-10-02: Independent final PASS WITH NOTES after two repairs. Frozen check/lint, selftest and real PCM fixtures pass. W01 edit/render exit 0 with seven ASR notes; isolated transcription confirms the silent boundary overlap without changing full-span RMS or thresholds. Leak, missing-edge and missing-media fixtures still fail. Evidence: out/coordinator/t17-final-*.log.
 
 > Appended on PASS WITH NOTES. Not blockers; check these during the review.
 
