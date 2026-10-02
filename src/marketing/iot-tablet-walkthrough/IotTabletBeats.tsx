@@ -1,11 +1,12 @@
 import React from 'react';
-import {Easing, interpolate} from 'remotion';
+import {Easing, interpolate, Sequence} from 'remotion';
 import {AppIcon} from '../../app-ui/AppIcon';
 import {TABLET_VIEWPORT} from '../../app-ui/viewports';
 import {
   TabletEui,
   TabletEuiManyToOne,
   TABLET_EUI_MANY_TO_ONE_REGIONS,
+  TABLET_EUI_REGIONS,
 } from '../../app-ui/TabletEui';
 import type {EuiInput, EuiOutput} from '../../app-ui/PhoneEui';
 import {FirstRunEducation, firstRunEducationRegions} from '../../app-ui/FirstRunEducation';
@@ -41,17 +42,21 @@ import {
 import {
   ActivitiesPresets,
   DEFAULT_COMMAND_STEPS,
+  activitiesPresetsRegions,
 } from '../../app-ui/ActivitiesPresets';
 import {
   ActivitiesSwitch,
   DEFAULT_AVOIP_DECODERS,
   DEFAULT_AVOIP_ENCODERS,
+  activitiesSwitchRegions,
 } from '../../app-ui/ActivitiesSwitch';
-import {ActivitiesAudio} from '../../app-ui/ActivitiesAudio';
+import {ActivitiesAudio, activitiesAudioRegions} from '../../app-ui/ActivitiesAudio';
 import {EuiPowerCapture} from '../../app-ui/EuiPower';
 import {DiscoverDevices} from '../../app-ui/DiscoverDevices';
 import {SettingsSupport} from '../../app-ui/SettingsSupport';
 import {FocusRing, TapIndicator} from '../../camera/Annotations';
+import {centerOf} from '../../camera/Camera';
+import {tabletNavRegions} from '../../app-ui/TabletNavRail';
 import {appColors} from '../../design/tokens.generated';
 import {font} from '../../design/theme';
 import {BEATS, CUE_FRAMES, type BeatName} from './iotTabletWalkthroughData';
@@ -860,110 +865,369 @@ export const TestBeat: React.FC<{frame: number; frames: number}> = ({frame}) => 
 
 /**
  * Activities beat (19s = 570 frames):
- * Presets lists Power On and Power Off; Power On opens with the Epson's
- * power-on command already in it.
+ * Presets lists Power On and Power Off; Power On is tapped and its command ringed.
+ * Cues: act-next "activities" (abs 4343, rel 68) · act-presets "power" (abs 4718, rel 443).
  */
 export const ActivitiesBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const isEdit = frame >= 210;
+  const cueActivities = CUE_FRAMES.actActivities - BEATS.activities.from;
+  const cuePower = CUE_FRAMES.actPower - BEATS.activities.from;
 
-  return (
-    <ActivitiesPresets
-      device="tablet"
-      activeTab="presets"
-      mode={isEdit ? 'edit' : 'list'}
-      editPresetName="Power On"
-      editPresetIconColor={appColors.green}
-      commandSteps={isEdit ? DEFAULT_COMMAND_STEPS : []}
-    />
-  );
-};
+  const presetsRegs = activitiesPresetsRegions('tablet');
+  const isEdit = frame >= cuePower;
 
-/**
- * Switch-Audio beat (16s = 480 frames):
- * Switch shows the Epson as the switcher; Audio shows its volume
- * up, down and set mapped.
- */
-export const SwitchAudioBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const showAudio = frame >= 240;
-
-  if (showAudio) {
+  if (isEdit) {
+    const editRegs = activitiesPresetsRegions('tablet', {mode: 'edit'});
+    const cmdRegion = editRegs.commandStepCommand(0);
     return (
-      <ActivitiesAudio
-        device="tablet"
-        activeTab="audio"
-        deviceName="EPSON PowerLite - New"
-      />
+      <>
+        <ActivitiesPresets
+          device="tablet"
+          activeTab="presets"
+          mode="edit"
+          editPresetName="Power On"
+          editPresetIconColor={appColors.green}
+          commandSteps={DEFAULT_COMMAND_STEPS}
+        />
+        <FocusRing
+          region={cmdRegion}
+          appearAt={cuePower}
+          radius={4}
+          name="Power On command ring"
+        />
+      </>
     );
   }
 
+  const presetsTab = presetsRegs.presetsTab;
+  const tabCenter = centerOf(presetsTab);
+  const card0 = presetsRegs.presetCard(0);
+  const card0Center = centerOf(card0);
+
   return (
-    <ActivitiesSwitch
-      device="tablet"
-      activeTab="switch"
-      switchType="many_to_one"
-      deviceName="EPSON PowerLite - New"
-    />
+    <>
+      <ActivitiesPresets
+        device="tablet"
+        activeTab="presets"
+        mode="list"
+      />
+      {frame >= cueActivities ? (
+        <FocusRing
+          region={presetsTab}
+          appearAt={cueActivities}
+          radius={4}
+          name="Presets tab ring"
+        />
+      ) : null}
+      <TapIndicator
+        x={tabCenter.x}
+        y={tabCenter.y}
+        at={cueActivities}
+        name="Presets tab tap"
+      />
+      <TapIndicator
+        x={card0Center.x}
+        y={card0Center.y}
+        at={cuePower}
+        name="Power On card tap"
+      />
+    </>
   );
 };
 
 /**
- * EUI beat (24.5s = 735 frames):
- * A source is picked for the display, the volume moves and mutes,
- * then Powering Off and Welcome.
+ * Switch-Audio beat (16.5s = 495 frames):
+ * The Epson as the switcher, ringed; then Audio's volume up, down and set, ringed.
+ * Cues: switch-assign "switcher" (abs 4982, rel 137) · "audio" (abs 5147, rel 302).
+ */
+export const SwitchAudioBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const cueSwitcher = CUE_FRAMES.switchSwitcher - BEATS['switch-audio'].from;
+  const cueAudio = CUE_FRAMES.switchAudio - BEATS['switch-audio'].from;
+
+  const showAudio = frame >= cueAudio;
+
+  if (showAudio) {
+    const audioRegs = activitiesAudioRegions('tablet');
+    const card0 = audioRegs.mappingCard(0);
+    const card2 = audioRegs.mappingCard(2);
+    const audioMappingsRegion = {
+      x: card0.x,
+      y: card0.y,
+      width: card0.width,
+      height: card2.y + card2.height - card0.y,
+    };
+    const audioTab = audioRegs.audioTab;
+
+    return (
+      <>
+        <ActivitiesAudio
+          device="tablet"
+          activeTab="audio"
+          deviceName="EPSON PowerLite - New"
+        />
+        <FocusRing
+          region={audioMappingsRegion}
+          appearAt={cueAudio}
+          radius={6}
+          name="Audio mappings ring"
+        />
+        <FocusRing
+          region={audioTab}
+          appearAt={cueAudio}
+          radius={4}
+          name="Audio tab ring"
+        />
+      </>
+    );
+  }
+
+  const switchRegs = activitiesSwitchRegions('tablet');
+  const audioTabCenter = centerOf(switchRegs.audioTab);
+
+  return (
+    <>
+      <ActivitiesSwitch
+        device="tablet"
+        activeTab="switch"
+        switchType="many_to_one"
+        deviceName="EPSON PowerLite - New"
+      />
+      {frame >= cueSwitcher ? (
+        <>
+          <FocusRing
+            region={switchRegs.switchDeviceSelector}
+            appearAt={cueSwitcher}
+            radius={4}
+            name="Epson switcher selector ring"
+          />
+          <FocusRing
+            region={switchRegs.switchTab}
+            appearAt={cueSwitcher}
+            radius={4}
+            name="Switch tab ring"
+          />
+        </>
+      ) : null}
+      <TapIndicator
+        x={audioTabCenter.x}
+        y={audioTabCenter.y}
+        at={cueAudio}
+        name="Audio tab tap"
+      />
+    </>
+  );
+};
+
+/**
+ * EUI beat (25s = 750 frames):
+ * The end user gets the room, not the settings:
+ * EUI launcher tapped on "interface" -> EUI opens;
+ * source picked on "switching"; volume moves on "volume"; muted on "mute";
+ * Powering Off on "down", then Welcome.
+ * Cues: eui-setup "interface" (abs 5429, rel 89) · eui-technician "switching" (abs 5756, rel 416)
+ *       · eui-volume-mute "volume" (abs 5830, rel 490) · "mute" (abs 5901, rel 561)
+ *       · eui-power "down" (abs 5962, rel 622).
  */
 export const EuiBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  if (frame >= 620) {
-    // Welcome screen with power button
+  const cueInterface = CUE_FRAMES.euiInterface - BEATS.eui.from;
+  const cueSwitching = CUE_FRAMES.euiSwitching - BEATS.eui.from;
+  const cueVolume = CUE_FRAMES.euiVolume - BEATS.eui.from;
+  const cueMute = CUE_FRAMES.euiMute - BEATS.eui.from;
+  const cuePower = CUE_FRAMES.euiPower - BEATS.eui.from;
+
+  // Phase 1: Before EUI opens, show setup screen with EUI launcher ringed and tapped on "interface"
+  if (frame < cueInterface) {
+    const launcherCenter = centerOf(tabletNavRegions.eui);
+    return (
+      <>
+        <ActivitiesAudio
+          device="tablet"
+          activeTab="audio"
+          deviceName="EPSON PowerLite - New"
+        />
+        <FocusRing
+          region={tabletNavRegions.eui}
+          appearAt={0}
+          radius={8}
+          name="EUI launcher ring"
+        />
+        <TapIndicator
+          x={launcherCenter.x}
+          y={launcherCenter.y}
+          at={cueInterface}
+          name="EUI launcher tap"
+        />
+      </>
+    );
+  }
+
+  // Phase 4: Welcome screen with power off (frame >= 685, 65 frames to beat end)
+  const POWER_OFF_TRANSITION = cuePower + 63; // 685
+  if (frame >= POWER_OFF_TRANSITION) {
     return <EuiPowerCapture device="tablet" state="off" />;
   }
 
-  if (frame >= 480) {
-    // Powering off state
+  // Phase 3: Powering off progress dialog (from cuePower to POWER_OFF_TRANSITION)
+  if (frame >= cuePower) {
     return (
-      <EuiPowerCapture
-        device="tablet"
-        state="powering-off"
-        durationInFrames={140}
-        volume={0.72}
-        speakerMuted
-      />
+      <Sequence
+        from={cuePower}
+        durationInFrames={63}
+        layout="none"
+        name="Powering off progress"
+      >
+        <EuiPowerCapture
+          device="tablet"
+          state="powering-off"
+          durationInFrames={63}
+          volume={0.72}
+          speakerMuted
+        />
+      </Sequence>
     );
   }
 
-  // Active room control: source picked, volume moves, then mutes
-  const selectedInput = frame < 120 ? null : 0;
+  // Phase 2: Active EUI control (cueInterface <= frame < cuePower)
+  const selectedInput = frame < cueSwitching ? null : 0;
+  const pressed = frame >= cueSwitching && frame < cueSwitching + 10 ? 'input-1' : null;
+
   const volume =
-    frame < 220
+    frame < cueVolume
       ? 0.42
-      : interpolate(frame, [220, 340], [0.42, 0.72], {
+      : interpolate(frame, [cueVolume, cueVolume + 40], [0.42, 0.72], {
+          easing: Easing.bezier(0.16, 1, 0.3, 1),
           extrapolateLeft: 'clamp',
           extrapolateRight: 'clamp',
         });
-  const speakerMuted = frame >= 380;
+  const speakerMuted = frame >= cueMute;
+
+  const row0 = TABLET_EUI_MANY_TO_ONE_REGIONS.sourceRow(0);
+  const row0Center = centerOf(row0);
+  const speakerCenter = centerOf(TABLET_EUI_REGIONS.speakerControl);
+  const powerBtnCenter = centerOf(TABLET_EUI_MANY_TO_ONE_REGIONS.powerControl);
 
   return (
-    <TabletEuiManyToOne
-      inputs={[
-        {label: 'Input 1'},
-        {label: 'Input 2'},
-        {label: 'HDMI 1'},
-        {label: 'HDMI 2'},
-      ]}
-      selectedInput={selectedInput}
-      volume={volume}
-      speakerMuted={speakerMuted}
-      outputLabel="Display 1"
-    />
+    <>
+      <TabletEuiManyToOne
+        inputs={PROOF_INPUTS}
+        selectedInput={selectedInput}
+        volume={volume}
+        speakerMuted={speakerMuted}
+        outputLabel="Display 1"
+        pressed={pressed}
+      />
+
+      {/* Cue 2: Source picked on "switching" */}
+      <TapIndicator
+        x={row0Center.x}
+        y={row0Center.y}
+        at={cueSwitching}
+        name="Source tap"
+      />
+      {frame >= cueSwitching && frame < cueVolume ? (
+        <FocusRing
+          region={TABLET_EUI_MANY_TO_ONE_REGIONS.displayPanel}
+          appearAt={cueSwitching}
+          radius={0}
+          name="Display panel ring"
+        />
+      ) : null}
+
+      {/* Cue 3: Volume moves on "volume" */}
+      {frame >= cueVolume && frame < cueMute ? (
+        <FocusRing
+          region={TABLET_EUI_REGIONS.volumeSlider}
+          appearAt={cueVolume}
+          radius={0}
+          name="Volume slider ring"
+        />
+      ) : null}
+
+      {/* Cue 4: Mute on "mute" */}
+      <TapIndicator
+        x={speakerCenter.x}
+        y={speakerCenter.y}
+        at={cueMute}
+        name="Speaker mute tap"
+      />
+      {frame >= cueMute ? (
+        <FocusRing
+          region={TABLET_EUI_REGIONS.speakerControl}
+          appearAt={cueMute}
+          radius={4}
+          name="Speaker mute ring"
+        />
+      ) : null}
+
+      {/* Cue 5: Power down tap on "down" */}
+      <TapIndicator
+        x={powerBtnCenter.x}
+        y={powerBtnCenter.y}
+        at={cuePower}
+        name="Power button tap"
+      />
+    </>
+  );
+};
+
+const HOLD_FRAMES = 60; // The app's two-second press-and-hold, at 30fps
+
+const HoldIndicator: React.FC<{
+  x: number;
+  y: number;
+  progress: number;
+}> = ({x, y, progress}) => {
+  const radius = 34;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference * (1 - progress);
+
+  return (
+    <svg
+      width={radius * 2 + 12}
+      height={radius * 2 + 12}
+      style={{
+        position: 'absolute',
+        left: x - radius - 6,
+        top: y - radius - 6,
+        pointerEvents: 'none',
+      }}
+    >
+      <circle
+        cx={radius + 6}
+        cy={radius + 6}
+        r={radius}
+        fill="none"
+        stroke="rgba(255, 255, 255, 0.18)"
+        strokeWidth={4}
+      />
+      <circle
+        cx={radius + 6}
+        cy={radius + 6}
+        r={radius}
+        fill="none"
+        stroke={appColors.blue}
+        strokeWidth={4}
+        strokeLinecap="round"
+        strokeDasharray={circumference}
+        strokeDashoffset={strokeDashoffset}
+        transform={`rotate(-90 ${radius + 6} ${radius + 6})`}
+      />
+    </svg>
   );
 };
 
 /**
  * Exit beat (8s = 240 frames):
- * The setup button is held; "Keep holding to return to Setup" shows;
- * the setup menu returns.
+ * Continuous from EUI: opens on Welcome with power off;
+ * a quick tap does nothing; the setup button is held for two seconds on "hold",
+ * the hold ring fills, "Keep holding to return to Setup" shows,
+ * and setup returns on second "back".
+ * Cues: exit-hold "hold" (abs 6193, rel 103) · exit-hold "back" (2nd, abs 6274, rel 184).
  */
 export const ExitBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const returnedToSetup = frame >= 130;
+  const cueHold = CUE_FRAMES.exitHold - BEATS.exit.from;
+  const cueBack = CUE_FRAMES.exitBack - BEATS.exit.from;
+
+  const returnedToSetup = frame >= cueBack;
 
   if (returnedToSetup) {
     return (
@@ -976,19 +1240,71 @@ export const ExitBeat: React.FC<{frame: number; frames: number}> = ({frame}) => 
     );
   }
 
+  const exitControl = TABLET_EUI_MANY_TO_ONE_REGIONS.exitControl;
+  const exitCenter = centerOf(exitControl);
+
+  const holdProgress = interpolate(
+    frame,
+    [cueHold, cueHold + HOLD_FRAMES],
+    [0, 1],
+    {
+      easing: Easing.linear,
+      extrapolateLeft: 'clamp',
+      extrapolateRight: 'clamp',
+    },
+  );
+
+  const hintOpacity = interpolate(
+    frame,
+    [cueHold, cueHold + 8],
+    [0, 1],
+    {
+      easing: Easing.bezier(0.16, 1, 0.3, 1),
+      extrapolateLeft: 'clamp',
+      extrapolateRight: 'clamp',
+    },
+  );
+
   return (
-    <TabletEuiManyToOne
-      inputs={[
-        {label: 'Input 1'},
-        {label: 'Input 2'},
-        {label: 'HDMI 1'},
-        {label: 'HDMI 2'},
-      ]}
-      selectedInput={0}
-      volume={0.72}
-      outputLabel="Display 1"
-      showExitHint
-    />
+    <>
+      <EuiPowerCapture device="tablet" state="off" />
+
+      {/* Quick tap at frame 40: ignored, does nothing */}
+      <TapIndicator
+        x={exitCenter.x}
+        y={exitCenter.y}
+        at={40}
+        name="Quick tap (ignored)"
+      />
+
+      {/* Press and hold on "hold": 2s ring fills */}
+      {frame >= cueHold ? (
+        <>
+          <HoldIndicator
+            x={exitCenter.x}
+            y={exitCenter.y}
+            progress={holdProgress}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              left: 90,
+              top: 34,
+              fontFamily: font.ui,
+              fontWeight: 400,
+              fontSize: 20,
+              color: appColors.white,
+              letterSpacing: 0.2,
+              opacity: hintOpacity,
+              pointerEvents: 'none',
+              textShadow: '0 2px 8px rgba(0, 0, 0, 0.8)',
+            }}
+          >
+            Keep holding to return to Setup
+          </div>
+        </>
+      ) : null}
+    </>
   );
 };
 

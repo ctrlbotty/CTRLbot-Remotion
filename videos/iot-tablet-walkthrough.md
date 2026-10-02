@@ -350,10 +350,10 @@ displays together. The subject is never in the right 140 px column.
 - [x] T21: Merged into T20 (2026-10-02) — files: videos/iot-tablet-walkthrough.md
 - [x] T22: Build the proof, first-run, ai and database beats to the Shot list — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [x] T23: Build the epson, add, terminal and test beats to the Shot list, each screen changing on its cue — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
-- [ ] T24: Build the activities, switch-audio, eui and exit beats to the Shot list, the power state continuous from eui into exit — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
+- [x] T24: Build the activities, switch-audio, eui and exit beats to the Shot list, the power state continuous from eui into exit — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [ ] T25: Build the discovery, matrox-add, matrox-test and matrox-switch beats to the Shot list — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [ ] T26: Build the m2m and settings beats to the Shot list — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
-- [ ] T28: Rebalance W04's chapter shots where a region is blown up or the cued result is off camera: `add` frames DISCONNECT at about 4x, and the saved line ringed on "save" is out of shot — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts
+- [ ] T28: Rebalance W04's chapter shots where a region is blown up or the cued result is off camera: `add` frames DISCONNECT at about 4x, the saved line ringed on "save" is out of shot, and `exit` frames the hold ring at about 4x — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts
   - Found in T23's review. Re-check every chapter's stills after T26, and fix them together before T27.
 - [ ] T27: Run the feature gates on both shapes, render both, write the .srt from the edit, check the voice, and record the results here — files: videos/iot-tablet-walkthrough.md
   - As W01's T15, with `--corrections=IOT_TABLET_CAPTION_CORRECTIONS` and `--destination=social-walkthrough`.
@@ -377,6 +377,8 @@ displays together. The subject is never in the right 140 px column.
 - **Blocked:** no known implementation blocker; task dependencies still apply.
 
 ## Review notes
+
+- T24, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy in lane B, 355s. Check and lint pass in a clean worktree. Twelve cue stills: Presets, then Edit Preset with POWER ON on "power"; Switch on "switcher" and Audio mappings on "audio"; the EUI powers on, takes a source, moves the volume, mutes and powers off, each on its word, with the power state continuous into exit; exit's hold ring fills over 2s with "Keep holding", and setup returns on the second "back". Notes: the exit hold ring is framed about 4x (added to T28).
 
 - T23, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy in lane B, 346s. Check and lint pass in a clean worktree. Twelve cue stills, landscape: Epson detail on "projector"; the manufacturer page under 2s on "manufacturer"; Control Info ringed on "connection"; Configure Connection on "plus"; the IP typed on "IP"; Disconnect on "connect"; Power On/Off land in the terminal on "commands"; the device list, Switcher, Terminal and Web page tabs each on their word. Notes (camera data, new T28): DISCONNECT is framed about 4x, and the saved-line ring on "save" is out of shot.
 
