@@ -5,7 +5,9 @@ import {
   termRegions,
 } from '../../app-ui/term/termData';
 import {round, sp, text} from '../../app-ui/term/termTheme';
-import {TermRawTcpScene, TermScanScene, TermSerialScene, TermServerScene} from '../../app-ui/term/TermScenes';
+import {
+  TermRawTcpScene, TermScanScene, TermSerialScene, TermServerScene, TermSshScene,
+} from '../../app-ui/term/TermScenes';
 import {TermApp, TermScan, TermSerial, TermSsh, TermTcpClient, TermTcpServer, type TermTab} from '../../app-ui/term/Terminator';
 import {FocusRing, PointerClick, Spotlight} from '../../camera/Annotations';
 import {padRegion} from '../../camera/Camera';
@@ -185,3 +187,57 @@ export const SerialBeat = ({frames}: BeatProps) => {
     </>
   );
 };
+
+export const SshBeat = ({frames}: BeatProps) => {
+  const help = CUE_FRAMES.help - BEATS.ssh.from;
+  // Connect early in the beat (frame 95) so the button press starts at frames * 0.08 (~35)
+  // and finishes before typing starts on "help" (frame 244). Output follows typing (+45 frames).
+  return (
+    <TermSshScene
+      frames={frames}
+      connectFrame={95}
+      typeFrame={help}
+      outputFrame={help + 45}
+    />
+  );
+};
+
+export const RecapBeat = ({frame}: BeatProps) => {
+  const scan = CUE_FRAMES.recapScan - BEATS.recap.from;
+  const server = CUE_FRAMES.recapServer - BEATS.recap.from;
+  const telnet = CUE_FRAMES.recapTelnet - BEATS.recap.from;
+  const ssh = CUE_FRAMES.recapSsh - BEATS.recap.from;
+  const serial = CUE_FRAMES.recapSerial - BEATS.recap.from;
+
+  let tool: TermTab = 'scan';
+  let appearAt = scan;
+  if (frame >= serial) {
+    tool = 'serial';
+    appearAt = serial;
+  } else if (frame >= ssh) {
+    tool = 'ssh';
+    appearAt = ssh;
+  } else if (frame >= telnet) {
+    tool = 'tcp-client';
+    appearAt = telnet;
+  } else if (frame >= server) {
+    tool = 'tcp-server';
+    appearAt = server;
+  }
+
+  return (
+    <>
+      <TermApp tab={tool} highlight={frame >= scan ? tool : undefined}>
+        {toolPane(tool)}
+      </TermApp>
+      <FocusRing
+        key={tool}
+        region={termRegions.navItem(tool)}
+        appearAt={appearAt}
+        radius={round.lg}
+        name={`Recap ${tool}`}
+      />
+    </>
+  );
+};
+
