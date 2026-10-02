@@ -1,16 +1,16 @@
 # W02–W05 coordinated run
 
-Approved by Nathan on 2026-10-02. Codex coordinates; Gemini 3.8 Flash High implements. Codex may resume a checkpoint if Gemini becomes unavailable. Publishing is outside this run.
+Approved by Nathan on 2026-10-02. Restarted the same afternoon with a new coordinator: Claude (desktop Code session) coordinates, verifies and commits; Gemini 3.8 Flash High implements through Antigravity's CLI, one fresh headless conversation per task (`agy -p ... --model gemini-3.8-flash-high --output-format json --print-timeout 25m`). Prompts, results and token use are in `out/coordinator/agy/`. Publishing is outside this run.
 
-## Current status — PAUSED at Nathan's request
+## Current status — RUNNING (updated 2026-10-02)
 
-All workers stopped; no render/audio jobs remain. The heartbeat is PAUSED. Historical checkpoints below do not authorize new work while paused.
+- **W02:** T13 committed `d7759e8` (PASS WITH NOTES). T14 dispatched to Gemini (lane A). T20 (server diagram arrows run the wrong way) added; then T15, then T16 renders by the coordinator.
+- **W05:** T3 committed `3582d82` (PASS WITH NOTES); remaining tasks wait until W02–W04 renders, because they change surfaces those cuts show.
+- **W04:** T19 opens lane B once T14 passes, in its own git worktree.
+- **W03:** Nathan chose the timing transfer (settings 15 → 15.5s, close 6 → 5.5s). T23 is unblocked for edge repairs; its partial narration files are preserved.
+- **Heavy slot:** coordinator-held; Gemini renders only its beat's contact stills.
+- **Lessons:** [COORDINATION-ASSESSMENT-2026-10-02.md](COORDINATION-ASSESSMENT-2026-10-02.md). The heartbeat stays off; dispatch is event-driven.
 
-- W02 draft exists: `out/terminator-walkthrough-preview.mp4` (138s, narration, 960x540). It predates T13 and is not final.
-- W02 T13 source ready, check/lint passed; eight stills at frames 394/692/1280/1462 across both shapes finished rendering. Independent visual review is unfinished; T13 stays unchecked and uncommitted.
-- Next on explicit resume: review `out/coordinator/t13-*.png` against T13 evidence, commit owned paths if accepted, then fresh T14 and T15 tasks. Finish T16 both shapes before other lanes.
-- W03 T23 remains blocked pending Nathan's timing-transfer answer. W04 inactive. W05 T3 stopped/unverified; preserve its Root.tsx and DriverCatalog.tsx changes.
-- Lessons and restart rules: [COORDINATOR-RETROSPECTIVE-2026-10-02.md](COORDINATOR-RETROSPECTIVE-2026-10-02.md).
 ## Dispatch rules
 
 - On resume, one implementation worker; independent verification only when ready. Each worker receives one atomic task and its exact owned paths; no nested agents.
@@ -30,7 +30,7 @@ All workers stopped; no render/audio jobs remain. The heartbeat is PAUSED. Histo
 | W04 | T19 after W02 T17 | T20 after T19 and W03 maps | T21–T27 in order |
 | W05 | T1 transcript, T2 captions; T3–T5 and T7 with shared-file ownership | T6 after W03 T21; T8 after T1, T2 and W02 T17 | T9 after T8, W03 T20 and T3–T7; T10 after T9; T11–T14 in order |
 
-## Current assignments
+## Current assignments (Codex run, superseded — history only)
 
 | Owner | Task | Owned files | State |
 |---|---|---|---|
@@ -40,7 +40,7 @@ All workers stopped; no render/audio jobs remain. The heartbeat is PAUSED. Histo
 | W03 checkpoint | T23 | Three partial narration files preserved | Independently FAIL; marked blocked, timing decision pending; worker stopped |
 | Codex coordinator | Scheduling and W01 approved close-out | Four active briefs, this queue, `Roadmap.md`, archive and `RELEASE-NOTES.md` | Independently reviewed and committed as `e0aafb5` |
 
-## Checkpoints
+## Checkpoints (Codex run — history only)
 
 - 2026-10-02: Baseline has existing plan edits and W05 ingest/narration assets. `.claude/settings.local.json` is unrelated and must remain unstaged. No source changes preceded this run.
 - W01 approved baseline: commit `d20993e`; 136 seconds, landscape 25% inert, portrait 29%; both narration checks passed. Keep its recording until S01 is delivered.

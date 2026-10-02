@@ -57,8 +57,8 @@ Revision 2 (2026-10-01): the hybrid format, as W01's revision 2
 | matrox-test | chapter | Test the whole Matrox system as one switcher | `ConnectTest` | The Matrox system: four decoders over four encoders; a decoder is tapped, then an encoder, and it takes it | 18.5 |
 | matrox-switch | chapter | Encoders and decoders, set up for the room | `ActivitiesSwitch` | Switch type goes to AVoIP Encoders/Decoders; the lists fill; the icon and label control is ringed | 17 |
 | m2m | chapter | Many to many, by tap, drag or All | `PhoneEui` | Four displays: a source tapped then a display; a source dragged onto a display; All tapped, and every display takes one source | 26.5 |
-| settings | chapter | Help is built in | `SettingsSupport` | Settings → Support: User Manual, Quick Start and Factory Reset ringed on their words | 15 |
-| close | card | The name, once, at the end | `MasterControlCard` | The CTRLbot IoT lockup and its outcome line; no URL | 6 |
+| settings | chapter | Help is built in | `SettingsSupport` | Settings → Support: User Manual, Quick Start and Factory Reset ringed on their words | 15.5 |
+| close | card | The name, once, at the end | `MasterControlCard` | The CTRLbot IoT lockup and its outcome line; no URL | 5.5 |
 
 ## Anything unusual
 
@@ -353,7 +353,8 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
   - Verify: `npm run check`; their `Proof-*` stills look as before.
 - [x] T21: Add region maps for `ActivitiesPresets`, `ActivitiesSwitch` and `ActivitiesAudio`, phone and tablet — files: src/app-ui/ActivitiesPresets.tsx, src/app-ui/ActivitiesSwitch.tsx, src/app-ui/ActivitiesAudio.tsx
 - [x] T22: Add region maps for `FirstRunEducation` and `SettingsSupport`, phone and tablet — files: src/app-ui/FirstRunEducation.tsx, src/app-ui/SettingsSupport.tsx
-- [!] T23: Re-plan W03's edit with `narration:edit` and the changes above — files: src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughNarration.ts, src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughNarration.generated.ts, public/narration/iot-phone-walkthrough/edit.m4a
+- [ ] T23: Re-plan W03's edit with `narration:edit` and the changes above — files: src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughNarration.ts, src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughNarration.generated.ts, public/narration/iot-phone-walkthrough/edit.m4a
+  - Nathan, 2026-10-02: 0.5s moves from `close` to `settings` (15.5s and 5.5s; total 336s unchanged). Resume from the preserved partial edit — do not rebuild placements that already hold. Set the `at`s for the new table, then repair only the real edges named in `out/coordinator/t23-review.txt` (clipped "button" in settings-setup, split "Let's" at labels/m2m-intro, clipped "connection" in test-saves, the repeated tail across eui-screen/eui-power), within the task's build limits.
   - Two builds at most to set the `at`s. A beat that cannot keep its 1.0s hold inside its Sec is `[!]` with the measured lengths.
   - Then `npm run narration:verify` on `edit.m4a` (W02's T17). Fix each real edge leak with `notBefore` / `notAfter` or a tighter `sourceEnd` (the contract's "Clip edges leak"), at most two more builds. A leak that remains goes in the Review notes with its clip and level.
 - [ ] T24: Rewrite W03's beat data for the shell: beats and layouts, the revision 2 copy, regions and cue frames — files: src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughData.ts
@@ -382,7 +383,7 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
 - **Pending revision:** T23–T31.
 - **Dependencies:** T20–T22 are independent and ready now. T23 needs W02 T17. T24 needs T20–T23; T25–T31 run in order.
 - **Dispatch:** one task at a time through Codex; independent verification and scoped commit release its owned files. Final rendering waits for the shared render slot.
-- **Blocked:** T23 settings hold is 0.817s instead of 1.0s; timing decision pending. Independent review also found four speech-edge defects. Partial edits are preserved and uncommitted.
+- **Blocked:** none. Nathan resolved the T23 settings hold on 2026-10-02 (settings 15.5s, close 5.5s); the four speech-edge repairs remain. Partial edits are preserved and uncommitted.
 
 ## Review notes
 
