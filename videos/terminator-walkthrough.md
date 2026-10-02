@@ -254,7 +254,8 @@ label.
 The diagram uses Space Mono labels only:
 - PC side: `Your PC · CTRLbot Terminator · TCP server :23`.
 - Tablet side: `CTRLbot IoT · client`.
-- Arrows: `hello world →` and `← reply`.
+- Arrows: `← hello world` from the client to the server, then `reply →` back to the client
+  (corrected 2026-10-02, T20: the app sends the command; the server receives it).
 
 **Narration (revision 2).** The clips in the Narration clips table, with these changes:
 - `pin` becomes 223.9–239.2: "…available for the next time, so that you can have various
@@ -313,9 +314,13 @@ Placement and holds follow W01's rule. Corrections stay `TERMINATOR_CAPTION_CORR
   - Every region change the Shot list ties to a word is a `shots` entry with `at` from `cueFrame`, relative to the beat. Use `regions` arrays only for untimed changes, because they split the beat evenly. Add no hold keyframes: the shell drifts.
 - [x] T12: Verify T11's coupled shell migration in both shapes, chapters showing today's scenes until T13–T15 — files: videos/terminator-walkthrough.md
   - Verify: the per-task check on `poster`, `open`, `scan` and `close`, in both shapes.
-- [ ] T13: Build the proof, scan and server beats to the Shot list with readable stage framing — files: src/marketing/terminator-walkthrough/TerminatorBeats.tsx, src/marketing/terminator-walkthrough/TerminatorWalkthrough.tsx, src/marketing/terminator-walkthrough/terminatorWalkthroughData.ts
+- [x] T13: Build the proof, scan and server beats to the Shot list with readable stage framing — files: src/marketing/terminator-walkthrough/TerminatorBeats.tsx, src/marketing/terminator-walkthrough/TerminatorWalkthrough.tsx, src/marketing/terminator-walkthrough/terminatorWalkthroughData.ts
 - [ ] T14: Build the pin, raw-tcp and serial beats to the Shot list — files: src/marketing/terminator-walkthrough/TerminatorBeats.tsx
+  - Also from T13's review: pad the server's arriving-line `FocusRing` so it no longer sits on the first glyph of `hello world<CR>`.
 - [ ] T15: Build the ssh and recap beats to the Shot list — files: src/marketing/terminator-walkthrough/TerminatorBeats.tsx
+- [ ] T20: Reverse `ServerDiagram`'s arrows so `hello world` travels from the CTRLbot IoT client to the PC's server and `reply` returns to the client, and break the PC label after `CTRLbot Terminator` — files: src/marketing/terminator-walkthrough/ServerDiagram.tsx
+  - Found in T13's review. The narration says "I can send commands over to it, and they show up over here", and the server's Received Data shows `hello world`; the diagram drew the command from the PC to the tablet. Labels unchanged otherwise.
+  - Verify: `Proof-Term-ServerDiagram` at progress 0.5 and 1, and the server beat at frame 1280 in both shapes.
 - [ ] T16: Run the feature gates on both shapes, render both, write the .srt from the edit, check the voice, and record the results here — files: videos/terminator-walkthrough.md
   - As W01's T15, with `--corrections=TERMINATOR_CAPTION_CORRECTIONS`. The .srt has no `Luxall` and no lowercase `com ports`.
   - The voice check is `npm run narration:verify` on the landscape render. It is `[!]` only when it exits 1; every other difference is a Review note (the contract's "Whisper's voice check over-reports").
@@ -381,5 +386,7 @@ Placement and holds follow W01's rule. Corrections stay `TERMINATOR_CAPTION_CORR
 - T19/T10, 2026-10-02: Independent T19 PASS and T10 PASS WITH NOTES. Original cached edit transcription and saved isolated evidence:0edge defects/7ASRnotes. Independent actual138s duration, all holds>=1.064s and required complete tails confirmed; no audio edge rebuild needed. Zero timestamp only noted with measured silentgap/expectededge speech/isolated confirmation; audible/unconfirmed negatives fail. Evidence: out/coordinator/t19-review.txt and t10-review.txt.
 
 - T11/T12, 2026-10-02: Independent coordinator non-author PASS WITH NOTES. Check/lint/validate pass; ten stills at0/90/350/900/4080 across bothshapes inspected, cards/copy/captions/chapter frame visible,138s sharededit. One Root encoding preservation repair completed; baseline differs only in W02import/durations. Proofnav is cropped by current stage shot and remains a concrete T13 framing correction; cue actions still intentionally pendingT13–15. Evidence out/coordinator/w02-shell-*.png. Partial W05Root hunks excluded from staging.
+
+- T13, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. `npm run check` and `video:lint` pass (0 errors, 0 warnings) on the unchanged worker source. The eight cue stills at 394/692/1280/1462 in both shapes (`out/coordinator/t13-*.png`) were inspected in place of default contact frames: the proof nav steps with the whole window in shot; scan rows fill with the MAC column ringed; the diagram runs; the client row, then the arriving line, are ringed. Notes: the arriving-line ring covers the first glyph (carried into T14); the diagram's arrows run the wrong way (new T20).
 
 - Wrap-up at Nathan's request, 2026-10-02: T13 worker STOP READY; check/lint passed and eight cue stills rendered at394/692/1280/1462 in both shapes. Independent visual acceptance remains unfinished; T13 stays unchecked/uncommitted. All workers stopped and heartbeat paused. Preview predates T13. Resume from these stills, not from a new build or transcription. See docs/COORDINATOR-RETROSPECTIVE-2026-10-02.md.

@@ -66,10 +66,9 @@ export const BEAT_REGIONS: Partial<Record<BeatName, Region>> = {
   recap: termRegions.nav,
 };
 
-// Stage framing stays wider than 94% of the window; emphasis is supplied by beat overlays.
-const stageSession = {x: 76.8, y: 24, width: 1203.2, height: 752};
+// The proof needs the complete navigation and each pane; overlays supply emphasis.
 export const BEAT_SHOTS: Partial<Record<BeatName, Shot[]>> = {
-  proof: [{at: 0, region: fullFrame(TERM_VIEWPORT)}, {at: CUE_FRAMES.terminal - BEATS.proof.from, region: stageSession}],
+  proof: [{at: 0, region: fullFrame(TERM_VIEWPORT)}, {at: CUE_FRAMES.terminal - BEATS.proof.from, region: fullFrame(TERM_VIEWPORT)}],
   scan: [{at: 0, region: termRegions.results}],
   server: [
     {at: 0, region: fullFrame(TERM_VIEWPORT)},

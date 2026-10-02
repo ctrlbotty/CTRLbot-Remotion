@@ -1,8 +1,8 @@
-// Revision 2 shell migration. Cue-driven chapter actions are the following beat tasks.
+// Revision 2: cue-driven proof, scan and server; later beat tasks retain their scenes.
 import {useCurrentFrame} from 'remotion';
 import {TERM_ADAPTER, TERM_SERVER, TERM_VIEWPORT} from '../../app-ui/term/termData';
 import {
-  TermScanScene, TermServerScene, TermRawTcpScene, TermSerialScene, TermSshScene,
+  TermRawTcpScene, TermSerialScene, TermSshScene,
 } from '../../app-ui/term/TermScenes';
 import {TermApp, TermScan, TermTcpServer, type TermTab} from '../../app-ui/term/Terminator';
 import {PromoPreload} from '../eui-promo/PromoPreload';
@@ -10,6 +10,7 @@ import {WalkthroughShell, type WalkthroughBeat, type WalkthroughFormat} from '..
 import {TERMINATOR_CAPTION_CORRECTIONS} from './terminatorWalkthroughNarration';
 import {TERMINATOR_WALKTHROUGH_EDIT} from './terminatorWalkthroughNarration.generated';
 import {TERMINATOR_WALKTHROUGH_FRAMES, WALKTHROUGH_BEATS} from './terminatorWalkthroughData';
+import {ProofBeat, ScanBeat, ServerBeat} from './TerminatorBeats';
 
 export const terminatorWalkthroughDuration = TERMINATOR_WALKTHROUGH_FRAMES;
 const NAV_TABS: TermTab[] = ['scan', 'tcp-server', 'tcp-client', 'serial', 'ssh'];
@@ -38,12 +39,12 @@ const PinBeat = ({frames}: {frames: number}) => {
 
 export const TERMINATOR_WALKTHROUGH_BEATS: WalkthroughBeat[] = WALKTHROUGH_BEATS.map((beat) => ({
   ...beat,
-  render: ({frames}) => {
+  render: ({frame, frames, format}) => {
     switch (beat.id) {
-      case 'proof':
+      case 'proof': return <ProofBeat frame={frame} frames={frames} format={format} />;
       case 'recap': return <ToolOverview frames={frames} />;
-      case 'scan': return <TermScanScene frames={frames} />;
-      case 'server': return <TermServerScene frames={frames} />;
+      case 'scan': return <ScanBeat frame={frame} frames={frames} format={format} />;
+      case 'server': return <ServerBeat frame={frame} frames={frames} format={format} />;
       case 'pin': return <PinBeat frames={frames} />;
       case 'raw-tcp': return <TermRawTcpScene frames={frames} />;
       case 'serial': return <TermSerialScene frames={frames} />;
