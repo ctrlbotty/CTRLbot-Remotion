@@ -147,7 +147,7 @@ in the 127.5-second cut; every clip ends inside its beat.
 
 ## Executor instructions
 
-**Executor: Gemini 3.8 Flash, High reasoning.** Codex coordinates the approved W02–W05 run and takes over a worker only when Gemini is unavailable. Run one assigned pending task per fresh context in this checkout. Pending revision: T7, T8, T9, T10–T16; never redo checked tasks.
+**Executor: Gemini 3.8 Flash, High reasoning.** Codex coordinates the approved W02–W05 run and takes over a worker only when Gemini is unavailable. Run one assigned pending task per fresh context in this checkout. Pending revision: T8, T9, T10–T16; never redo checked tasks.
 
 1. Read `AGENTS.md`, `docs/VIDEO_WORKFLOW.md`, `docs/NARRATED-WALKTHROUGH.md`, this brief, and the relevant installed Remotion skill before composition code. W01's current source in `src/marketing/mirror-walkthrough/` and `src/marketing/WalkthroughShell.tsx` are the worked example.
 2. **Dependencies:** T17 runs first to unlock narration in every lane; T7–T9 are independent. T10 needs T17; T11 needs T7, T9 and T10; T12 follows T11; T13 needs T12 and T8; T14–T16 run in order.
@@ -278,7 +278,7 @@ Placement and holds follow W01's rule. Corrections stay `TERMINATOR_CAPTION_CORR
 | ssh | `exchange` | ssh-help "help" → the command and its output |
 | recap | `nav` | recap "scan", "server", "Telnet", "SSH", "serial" → Scan, TCP Server, Raw TCP, SSH and Serial each light on their word |
 
-- [ ] T7: Export Terminator's window geometry and derive `termRegions` from it, with `Terminator.tsx` laying out from the same constants — files: src/app-ui/term/termData.ts, src/app-ui/term/Terminator.tsx
+- [x] T7: Export Terminator's window geometry and derive `termRegions` from it, with `Terminator.tsx` laying out from the same constants — files: src/app-ui/term/termData.ts, src/app-ui/term/Terminator.tsx
   - Regions in window pixels: `nav`, `navItem(tool)`, `tabs`, `session`, `results`, `serverClients`, `serverLog`, `connectFields`, `serialParams` and `exchange`. Rows laid out by flow get fixed heights from named constants.
   - Verify: `npm run check`; the five `Proof-Term-*` stills look exactly as before.
 - [ ] T8: Give the five `TermScenes` optional event frames, defaulting to today's timing — files: src/app-ui/term/TermScenes.tsx
@@ -328,12 +328,14 @@ Placement and holds follow W01's rule. Corrections stay `TERMINATOR_CAPTION_CORR
 
 ## Handoff
 
-- **Pending revision:** T7, T8, T9, T10–T16.
+- **Pending revision:** T8, T9, T10–T16.
 - **Dependencies:** T17 runs first to unlock narration in every lane; T7–T9 are independent. T10 needs T17; T11 needs T7, T9 and T10; T12 follows T11; T13 needs T12 and T8; T14–T16 run in order.
 - **Dispatch:** one task at a time through Codex; independent verification and scoped commit release its owned files. Final rendering waits for the shared render slot.
 - **Blocked:** no known implementation blocker; task dependencies still apply.
 
 ## Review notes
+
+- T7, 2026-10-02: Independent coordinator takeover PASS after two repairs and Gemini verifier quota failure. Frozen check/lint pass; all five final PNGs SHA256-identical to original baselines and visually inspected. Nav region now y141–176; shared tabs38.75/control70.5 preserve natural flow. Broad exchange/log regions are a note. Evidence: out/coordinator/t7-final/ and takeover-check/lint.log.
 
 - T17, 2026-10-02: Independent final PASS WITH NOTES after two repairs. Frozen check/lint, selftest and real PCM fixtures pass. W01 edit/render exit 0 with seven ASR notes; isolated transcription confirms the silent boundary overlap without changing full-span RMS or thresholds. Leak, missing-edge and missing-media fixtures still fail. Evidence: out/coordinator/t17-final-*.log.
 

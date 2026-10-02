@@ -7,8 +7,80 @@
 // 4:23, and the Luxul switch's CLI over SSH at 8:12. Edit these for another video; keep
 // them things the app has actually shown.
 
+export type Rect = {x: number; y: number; width: number; height: number};
+export type Region = Rect;
+
 /** CSS pixels the app is laid out at. 16:10, wide enough for the scan table's 980px. */
 export const TERM_VIEWPORT = {width: 1280, height: 800} as const;
+
+export type TermTab = 'scan' | 'tcp-server' | 'tcp-client' | 'serial' | 'ssh';
+export const TERM_TOOLS: TermTab[] = ['scan', 'tcp-server', 'tcp-client', 'serial', 'ssh'];
+
+/** Sidebar navigation geometry in CSS pixels. */
+export const TERM_NAV_WIDTH = 224;
+export const TERM_NAV_PADDING = 14;
+export const TERM_NAV_HEADER_HEIGHT = 64;
+export const TERM_NAV_HEADER_MARGIN_BOTTOM = 21;
+export const TERM_NAV_ITEM_HEIGHT = 35;
+export const TERM_NAV_ITEM_GAP = 7;
+
+/** Session content pane geometry. */
+export const TERM_SESSION_WIDTH = TERM_VIEWPORT.width - TERM_NAV_WIDTH; // 1056
+export const TERM_SCREEN_PADDING = 14;
+export const TERM_SCREEN_CONTENT_WIDTH = TERM_SESSION_WIDTH - TERM_SCREEN_PADDING * 2; // 1028
+export const TERM_SCREEN_CONTENT_X = TERM_NAV_WIDTH + TERM_SCREEN_PADDING; // 238
+
+/** Shared flow-row fixed heights in CSS pixels. */
+export const TERM_TABS_HEIGHT = 38.75;
+export const TERM_CONTROL_ROW_HEIGHT = 70.5;
+export const TERM_SERIAL_CONTROL_ROW_HEIGHT = 67;
+export const TERM_CONTROL_ROW_MARGIN_BOTTOM = 14;
+export const TERM_SEND_BAR_HEIGHT = 51;
+export const TERM_SEND_BAR_MARGIN_TOP = 14;
+
+/** Scan screen layout. */
+export const TERM_SCAN_PADDING = 21;
+export const TERM_SCAN_RESULTS_X = TERM_NAV_WIDTH + TERM_SCAN_PADDING; // 245
+export const TERM_SCAN_RESULTS_Y = 215;
+export const TERM_SCAN_RESULTS_WIDTH = TERM_SESSION_WIDTH - TERM_SCAN_PADDING * 2; // 1014
+export const TERM_SCAN_RESULTS_HEIGHT = 564;
+
+const regionsObject = {
+  nav: {x: 0, y: 0, width: TERM_NAV_WIDTH, height: TERM_VIEWPORT.height},
+  navItem: (tool: TermTab): Region => {
+    const index = TERM_TOOLS.indexOf(tool);
+    const itemIndex = index >= 0 ? index : 0;
+    return {
+      x: TERM_NAV_PADDING,
+      y: TERM_NAV_PADDING + TERM_NAV_HEADER_HEIGHT + TERM_NAV_HEADER_MARGIN_BOTTOM + itemIndex * (TERM_NAV_ITEM_HEIGHT + TERM_NAV_ITEM_GAP),
+      width: TERM_NAV_WIDTH - TERM_NAV_PADDING * 2,
+      height: TERM_NAV_ITEM_HEIGHT,
+    };
+  },
+  tabs: {x: TERM_NAV_WIDTH, y: 0, width: TERM_SESSION_WIDTH, height: TERM_TABS_HEIGHT},
+  session: {x: TERM_NAV_WIDTH, y: 0, width: TERM_SESSION_WIDTH, height: TERM_VIEWPORT.height},
+  results: {x: TERM_SCAN_RESULTS_X, y: TERM_SCAN_RESULTS_Y, width: TERM_SCAN_RESULTS_WIDTH, height: TERM_SCAN_RESULTS_HEIGHT},
+  serverClients: {x: TERM_SCREEN_CONTENT_X + 196, y: TERM_TABS_HEIGHT + TERM_SCREEN_PADDING + 23, width: 160, height: 38},
+  serverLog: {
+    x: TERM_SCREEN_CONTENT_X,
+    y: TERM_TABS_HEIGHT + TERM_SCREEN_PADDING + TERM_CONTROL_ROW_HEIGHT + TERM_CONTROL_ROW_MARGIN_BOTTOM,
+    width: TERM_SCREEN_CONTENT_WIDTH,
+    height:
+      TERM_VIEWPORT.height -
+      (TERM_TABS_HEIGHT + TERM_SCREEN_PADDING + TERM_CONTROL_ROW_HEIGHT + TERM_CONTROL_ROW_MARGIN_BOTTOM) -
+      (TERM_SEND_BAR_HEIGHT + TERM_SEND_BAR_MARGIN_TOP + TERM_SCREEN_PADDING),
+  },
+  connectFields: {x: TERM_SCREEN_CONTENT_X + 10, y: TERM_TABS_HEIGHT + TERM_SCREEN_PADDING + 9, width: 242, height: 50},
+  serialParams: {x: TERM_SCREEN_CONTENT_X + 10, y: TERM_TABS_HEIGHT + TERM_SCREEN_PADDING + 9, width: 500, height: 50},
+  exchange: {
+    x: TERM_SCREEN_CONTENT_X,
+    y: TERM_TABS_HEIGHT + TERM_SCREEN_PADDING + TERM_CONTROL_ROW_HEIGHT + TERM_CONTROL_ROW_MARGIN_BOTTOM,
+    width: TERM_SCREEN_CONTENT_WIDTH,
+    height: TERM_VIEWPORT.height - (TERM_TABS_HEIGHT + TERM_SCREEN_PADDING + TERM_CONTROL_ROW_HEIGHT + TERM_CONTROL_ROW_MARGIN_BOTTOM) - TERM_SCREEN_PADDING,
+  },
+};
+
+export const termRegions = Object.assign(() => regionsObject, regionsObject);
 
 export type TermDevice = {
   host: string | null;

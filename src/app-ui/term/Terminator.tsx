@@ -13,10 +13,28 @@
 
 import type {CSSProperties, ReactNode} from 'react';
 import {Img, staticFile} from 'remotion';
-import {TERM_VIEWPORT, type TermDevice} from './termData';
+import {
+  TERM_CONTROL_ROW_HEIGHT,
+  TERM_CONTROL_ROW_MARGIN_BOTTOM,
+  TERM_NAV_HEADER_HEIGHT,
+  TERM_NAV_HEADER_MARGIN_BOTTOM,
+  TERM_NAV_ITEM_GAP,
+  TERM_NAV_ITEM_HEIGHT,
+  TERM_NAV_PADDING,
+  TERM_NAV_WIDTH,
+  TERM_SCAN_PADDING,
+  TERM_SCREEN_PADDING,
+  TERM_SEND_BAR_HEIGHT,
+  TERM_SEND_BAR_MARGIN_TOP,
+  TERM_SERIAL_CONTROL_ROW_HEIGHT,
+  TERM_TABS_HEIGHT,
+  TERM_VIEWPORT,
+  type TermDevice,
+  type TermTab,
+} from './termData';
 import {brand, mix, round, sp, termFont, text, tw} from './termTheme';
 
-export type TermTab = 'scan' | 'tcp-server' | 'tcp-client' | 'serial' | 'ssh';
+export type {TermTab};
 
 const NAV: {id: TermTab; label: string}[] = [
   {id: 'scan', label: 'Scan'},
@@ -148,6 +166,8 @@ const Pin = ({colour, pinned}: {colour: string; pinned?: boolean}) => (
 const InstanceTabs = ({label, live, pinned}: {label: string; live: boolean; pinned?: boolean}) => (
   <div
     style={{
+      height: TERM_TABS_HEIGHT,
+      boxSizing: 'border-box',
       display: 'flex',
       alignItems: 'center',
       gap: sp(1.5),
@@ -258,7 +278,18 @@ const LogPane = ({
 
 /** `mt-4 flex items-center space-x-3 bg-gray-900 p-3 rounded-lg`: type and send. */
 const SendBar = ({placeholder, value, lineEnding, disabled}: {placeholder: string; value?: string; lineEnding?: string; disabled?: boolean}) => (
-  <div style={{...card({padding: sp(3)}), marginTop: sp(4), display: 'flex', alignItems: 'center', gap: sp(3), flexShrink: 0}}>
+  <div
+    style={{
+      ...card({padding: sp(3)}),
+      height: TERM_SEND_BAR_HEIGHT,
+      boxSizing: 'border-box',
+      marginTop: TERM_SEND_BAR_MARGIN_TOP,
+      display: 'flex',
+      alignItems: 'center',
+      gap: sp(3),
+      flexShrink: 0,
+    }}
+  >
     <div style={{...text.sm, flex: 1, fontFamily: termFont.mono, color: value ? tw.white : tw.gray500, opacity: disabled ? 0.5 : 1}}>
       {value || placeholder}
     </div>
@@ -271,14 +302,25 @@ const SendBar = ({placeholder, value, lineEnding, disabled}: {placeholder: strin
 );
 
 /** The header controls row every connection screen opens with. */
-const ControlRow = ({children}: {children: ReactNode}) => (
-  <div style={{...card({padding: sp(3)}), marginBottom: sp(4), display: 'flex', alignItems: 'flex-end', gap: sp(4), flexShrink: 0}}>
+const ControlRow = ({children, height = TERM_CONTROL_ROW_HEIGHT}: {children: ReactNode; height?: number}) => (
+  <div
+    style={{
+      ...card({padding: sp(3)}),
+      height,
+      boxSizing: 'border-box',
+      marginBottom: TERM_CONTROL_ROW_MARGIN_BOTTOM,
+      display: 'flex',
+      alignItems: 'flex-end',
+      gap: sp(4),
+      flexShrink: 0,
+    }}
+  >
     {children}
   </div>
 );
 
 const Screen = ({children}: {children: ReactNode}) => (
-  <div style={{flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', padding: sp(4), overflow: 'hidden'}}>{children}</div>
+  <div style={{flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', padding: TERM_SCREEN_PADDING, overflow: 'hidden'}}>{children}</div>
 );
 
 // ── Shell ───────────────────────────────────────────────────────────────────────────
@@ -330,10 +372,10 @@ export const TermApp = ({tab, ip = '192.168.0.74', highlight, children}: {tab: T
   >
     <div
       style={{
-        width: sp(64),
+        width: TERM_NAV_WIDTH,
         flexShrink: 0,
         boxSizing: 'border-box',
-        padding: sp(4),
+        padding: TERM_NAV_PADDING,
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: tw.gray900,
@@ -341,11 +383,22 @@ export const TermApp = ({tab, ip = '192.168.0.74', highlight, children}: {tab: T
         boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)',
       }}
     >
-      <div style={{display: 'flex', alignItems: 'center', gap: sp(3), marginBottom: sp(6), paddingBottom: sp(4), borderBottom: border(tw.gray800)}}>
+      <div
+        style={{
+          height: TERM_NAV_HEADER_HEIGHT,
+          boxSizing: 'border-box',
+          display: 'flex',
+          alignItems: 'center',
+          gap: sp(3),
+          marginBottom: TERM_NAV_HEADER_MARGIN_BOTTOM,
+          paddingBottom: sp(4),
+          borderBottom: border(tw.gray800),
+        }}
+      >
         <Img src={staticFile('app-assets/term/ic_ctrlbot_head.svg')} style={{width: sp(8), height: sp(8), flexShrink: 0}} />
         <div style={{...text.lg, fontFamily: termFont.brand, fontWeight: 700, letterSpacing: '0.03em', color: tw.white}}>CTRLbot Terminator</div>
       </div>
-      <div style={{display: 'flex', flexDirection: 'column', gap: sp(2)}}>
+      <div style={{display: 'flex', flexDirection: 'column', gap: TERM_NAV_ITEM_GAP}}>
         {NAV.map((item) => {
           const active = item.id === tab;
           const hot = !active && item.id === highlight;
@@ -354,6 +407,8 @@ export const TermApp = ({tab, ip = '192.168.0.74', highlight, children}: {tab: T
               key={item.id}
               style={{
                 ...text.sm,
+                height: TERM_NAV_ITEM_HEIGHT,
+                boxSizing: 'border-box',
                 padding: `${sp(2.5)}px ${sp(4)}px`,
                 borderRadius: round.md,
                 fontWeight: active ? 600 : 400,
@@ -422,7 +477,7 @@ export const TermScan = ({state, adapter}: {state: TermScanState; adapter: {name
   const label = running ? 'Scanning…' : state.status === 'complete' ? 'Scan complete' : 'Ready to scan';
   const progress = Math.round((state.checked / adapter.hosts) * 100);
   return (
-    <div style={{flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', gap: sp(5), padding: sp(6)}}>
+    <div style={{flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', gap: sp(5), padding: TERM_SCAN_PADDING}}>
       <div>
         <div style={{...text.xl2, fontWeight: 700}}>Scan</div>
         <div style={{...text.sm, marginTop: sp(1), color: tw.gray400}}>Find devices on your local network and open their web interfaces.</div>
@@ -639,7 +694,7 @@ export const TermSerial = ({port, baud, dataBits, parity, handshake, open, recei
   <>
     <InstanceTabs label={`${port} (${baud})`} live={open} />
     <Screen>
-      <ControlRow>
+      <ControlRow height={TERM_SERIAL_CONTROL_ROW_HEIGHT}>
         <div>
           <Label>Port</Label>
           <div style={{display: 'flex', gap: sp(2)}}>
