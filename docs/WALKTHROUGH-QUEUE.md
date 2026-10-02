@@ -25,8 +25,8 @@ Approved by Nathan on 2026-10-02. Codex coordinates; Gemini 3.8 Flash High imple
 
 | Owner | Task | Owned files | State |
 |---|---|---|---|
-| Gemini worker B | W03 T21 | ActivitiesPresets.tsx, ActivitiesSwitch.tsx, ActivitiesAudio.tsx | Initial verification FAIL on Audio geometry; fresh repair round 1 dispatched |
-| Gemini worker A | W02 T7 | `src/app-ui/term/termData.ts`, `src/app-ui/term/Terminator.tsx` | Initial verification FAIL on navigation geometry; fresh repair round 1 dispatched |
+| Gemini worker B | W03 T21 | ActivitiesPresets.tsx, ActivitiesSwitch.tsx, ActivitiesAudio.tsx | Repair round 1 stopped READY; source frozen for independent recheck |
+| Gemini worker A | W02 T7 | `src/app-ui/term/termData.ts`, `src/app-ui/term/Terminator.tsx` | Repair round 1 stopped READY; source frozen for independent recheck |
 | Codex coordinator | Scheduling and W01 approved close-out | Four active briefs, this queue, `Roadmap.md`, archive and `RELEASE-NOTES.md` | Independently reviewed and committed as `e0aafb5` |
 
 ## Checkpoints
@@ -60,3 +60,4 @@ Approved by Nathan on 2026-10-02. Codex coordinates; Gemini 3.8 Flash High imple
 - 2026-10-02 08:55 MDT: Initial independent T7/T21 verdicts FAIL; check/lint pass and all eleven default proofs are byte-identical. T7 navItem targets y120 instead of actual y141; header/flow constants must share real markup dimensions. T21 Audio regions drift downward and miss Volume Set; repair actual shared mapped/unmapped flow metrics. Evidence out/coordinator/t7-t21-review.txt. Render slot released, old workers stopped. Fresh first repairs dispatched; no third worker or GPU work.
 - T7 repair round 1: Terminator UI Geometry Repair, conversation 2333db11-fbc9-4043-a056-837e5b9e1a45, observed working. Owns only termData.ts and Terminator.tsx.
 - T21 repair round 1: T21 Audio Layout Repair, conversation 79563183-0160-4fde-83cb-39f0409a42e4, observed working. Owns only the three Activities surfaces; no render/GPU authorization.
+- 2026-10-02 09:10 MDT: Both first repair workers observed STOP READY (T7 09:02, T21 09:03), zero background tasks and no renders. T7 now shares actual header64/nav35 and fixed flow constants; T21 corrects audio card rhythm and Switch offset. verify_t7_t21 resumed independent checks on frozen source, owns heavy slot. One repair used per task; final round2 remains only if meaningful defects persist.
