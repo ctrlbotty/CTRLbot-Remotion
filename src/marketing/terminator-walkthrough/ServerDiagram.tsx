@@ -1,9 +1,9 @@
 // The server chapter's diagram: CTRLbot Terminator on the PC is the TCP server, CTRLbot IoT
-// on the tablet is the client. A command goes over, a reply comes back.
+// on the tablet is the client. The client sends a command, the server replies.
 //
 // Laid out on a 1280x800 plane so the walkthrough shell's camera frames it like a surface.
 // It is a diagram, not product UI: no window chrome, and no claim beyond the two labels.
-// `progress` 0 -> 0.5 draws the command arrow, 0.5 -> 1 draws the reply.
+// `progress` 0 -> 0.5 draws the command arrow (client -> server), 0.5 -> 1 draws the reply (server -> client).
 
 import {AbsoluteFill, Easing, Interactive, interpolate} from 'remotion';
 import {color, font} from '../../design/theme';
@@ -27,6 +27,7 @@ const nodeStyle = {
   height: NODE_HEIGHT,
   boxSizing: 'border-box',
   display: 'flex',
+  flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
   padding: 32,
@@ -51,7 +52,8 @@ export const ServerDiagram: React.FC<ServerDiagramProps> = ({progress}) => {
           opacity: interpolate(progress, [0, 0.08], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}),
         }}
       >
-        Your PC · CTRLbot Terminator · TCP server :23
+        <div>Your PC · CTRLbot Terminator</div>
+        <div>TCP server :23</div>
       </Interactive.Div>
 
       <Interactive.Div
@@ -78,20 +80,20 @@ export const ServerDiagram: React.FC<ServerDiagramProps> = ({progress}) => {
             width: ARROW_WIDTH,
             height: 2,
             backgroundColor: color.accent,
-            transformOrigin: 'left center',
+            transformOrigin: 'right center',
             scale: `${interpolate(progress, [0.08, 0.4], [0, 1], {easing: Easing.out(Easing.cubic), extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} 1`,
           }}
         />
         <div
           style={{
             position: 'absolute',
-            right: -2,
+            left: -2,
             top: -8,
             width: 0,
             height: 0,
             borderTop: '8px solid transparent',
             borderBottom: '8px solid transparent',
-            borderLeft: `14px solid ${color.accent}`,
+            borderRight: `14px solid ${color.accent}`,
             opacity: interpolate(progress, [0.36, 0.42], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}),
           }}
         />
@@ -109,7 +111,7 @@ export const ServerDiagram: React.FC<ServerDiagramProps> = ({progress}) => {
             translate: `0 ${interpolate(progress, [0.2, 0.4], [6, 0], {easing: Easing.out(Easing.cubic), extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}px`,
           }}
         >
-          hello world →
+          ← hello world
         </div>
       </Interactive.Div>
 
@@ -125,20 +127,20 @@ export const ServerDiagram: React.FC<ServerDiagramProps> = ({progress}) => {
             width: ARROW_WIDTH,
             height: 2,
             backgroundColor: color.success,
-            transformOrigin: 'right center',
+            transformOrigin: 'left center',
             scale: `${interpolate(progress, [0.5, 0.9], [0, 1], {easing: Easing.out(Easing.cubic), extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} 1`,
           }}
         />
         <div
           style={{
             position: 'absolute',
-            left: -2,
+            right: -2,
             top: -8,
             width: 0,
             height: 0,
             borderTop: '8px solid transparent',
             borderBottom: '8px solid transparent',
-            borderRight: `14px solid ${color.success}`,
+            borderLeft: `14px solid ${color.success}`,
             opacity: interpolate(progress, [0.86, 0.92], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}),
           }}
         />
@@ -156,7 +158,7 @@ export const ServerDiagram: React.FC<ServerDiagramProps> = ({progress}) => {
             translate: `0 ${interpolate(progress, [0.7, 0.9], [-6, 0], {easing: Easing.out(Easing.cubic), extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}px`,
           }}
         >
-          ← reply
+          reply →
         </div>
       </Interactive.Div>
     </AbsoluteFill>
