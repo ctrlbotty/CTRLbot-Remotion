@@ -6,7 +6,7 @@ import {WalkthroughShell, type WalkthroughBeat, type WalkthroughFormat} from '..
 import {IOT_TABLET_CAPTION_CORRECTIONS} from './iotTabletWalkthroughNarration';
 import {NARRATION_EDIT} from './iotTabletWalkthroughNarration.generated';
 import {IOT_TABLET_WALKTHROUGH_FRAMES, WALKTHROUGH_BEATS} from './iotTabletWalkthroughData';
-import {BEAT_RENDERERS, OpenBeat} from './IotTabletBeats';
+import {BEAT_RENDERERS, ProofBeat} from './IotTabletBeats';
 
 export const iotTabletWalkthroughDuration = IOT_TABLET_WALKTHROUGH_FRAMES;
 
@@ -14,7 +14,7 @@ export const IOT_TABLET_WALKTHROUGH_BEATS: WalkthroughBeat[] = WALKTHROUGH_BEATS
   ...beat,
   render: ({frame, frames}) => {
     if (beat.id === 'proof') {
-      return <OpenBeat frame={frame} frames={frames} />;
+      return <ProofBeat frame={frame} frames={frames} />;
     }
     const Component = (BEAT_RENDERERS as Record<string, React.FC<{frame: number; frames: number}>>)[beat.id];
     return Component ? <Component frame={frame} frames={frames} /> : null;

@@ -348,7 +348,7 @@ displays together. The subject is never in the right 140 px column.
   - Every region change the Shot list ties to a word is a `shots` entry with `at` from `cueFrame`, relative to the beat. Use `regions` arrays only for untimed changes, because they split the beat evenly. Add no hold keyframes: the shell drifts.
   - Chapters show their revision 1 state until T22–T26.
 - [x] T21: Merged into T20 (2026-10-02) — files: videos/iot-tablet-walkthrough.md
-- [ ] T22: Build the proof, first-run, ai and database beats to the Shot list — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
+- [x] T22: Build the proof, first-run, ai and database beats to the Shot list — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [ ] T23: Build the epson, add, terminal and test beats to the Shot list, each screen changing on its cue — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [ ] T24: Build the activities, switch-audio, eui and exit beats to the Shot list, the power state continuous from eui into exit — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [ ] T25: Build the discovery, matrox-add, matrox-test and matrox-switch beats to the Shot list — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
@@ -375,6 +375,8 @@ displays together. The subject is never in the right 140 px column.
 - **Blocked:** no known implementation blocker; task dependencies still apply.
 
 ## Review notes
+
+- T22, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy in lane B, 309s. Check and lint pass in a clean worktree. Stills at 170/400/470/900/1010/1110/1560/1945, both shapes, match the Shot list: proof "app" taps a source and the display fills; the tour steps on "walkthrough" and ✕ closes it on "close"; the question list arrives on "AI", a question is tapped on "troubleshoot" and the answer lands on "manual"; the catalog scrolls on "library" and the filter opens on "sorting". Notes (T20 camera and callouts, for review): landscape chapters are framed tight (the tour card's top is cut, the answer text touches the left edge), and the callouts cover a list row in landscape.
 
 - T20, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy in lane B, with the patch applied to main. In a clean worktree: check, lint and validate pass (20 beats, 343.5s), and the `Root.tsx` diff is limited to W04's two durations. Stills at 0/260/1500/6000/10200, both shapes: poster card, proof stage, database chapter, EUI and close card (CTRLbot IoT, no URL) render. Notes for T22–T26: the landscape proof's EUI panel runs off the stage's right edge, and the landscape database callout covers part of the catalog. Gemini put the `click` cue in matrox-add-these rather than matrox-one-click; check it in T25.
 

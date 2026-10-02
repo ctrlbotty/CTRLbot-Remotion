@@ -2,11 +2,20 @@ import React from 'react';
 import {Easing, interpolate} from 'remotion';
 import {AppIcon} from '../../app-ui/AppIcon';
 import {TABLET_VIEWPORT} from '../../app-ui/viewports';
-import {TabletEui, TabletEuiManyToOne} from '../../app-ui/TabletEui';
+import {
+  TabletEui,
+  TabletEuiManyToOne,
+  TABLET_EUI_MANY_TO_ONE_REGIONS,
+} from '../../app-ui/TabletEui';
 import type {EuiInput, EuiOutput} from '../../app-ui/PhoneEui';
-import {FirstRunEducation} from '../../app-ui/FirstRunEducation';
-import {AI_QUESTIONS, CtrlbotAi} from '../../app-ui/CtrlbotAi';
-import {DriverCatalog, SETUP_BACKGROUND, type DriverEntry} from '../../app-ui/DriverCatalog';
+import {FirstRunEducation, firstRunEducationRegions} from '../../app-ui/FirstRunEducation';
+import {AI_QUESTIONS, CtrlbotAi, aiRegions} from '../../app-ui/CtrlbotAi';
+import {
+  DriverCatalog,
+  SETUP_BACKGROUND,
+  type DriverEntry,
+  catalogRegions,
+} from '../../app-ui/DriverCatalog';
 import {
   DriverDetail,
   ModelRow,
@@ -38,9 +47,10 @@ import {ActivitiesAudio} from '../../app-ui/ActivitiesAudio';
 import {EuiPowerCapture} from '../../app-ui/EuiPower';
 import {DiscoverDevices} from '../../app-ui/DiscoverDevices';
 import {SettingsSupport} from '../../app-ui/SettingsSupport';
+import {FocusRing, TapIndicator} from '../../camera/Annotations';
 import {appColors} from '../../design/tokens.generated';
 import {font} from '../../design/theme';
-import type {BeatName} from './iotTabletWalkthroughData';
+import {BEATS, CUE_FRAMES, type BeatName} from './iotTabletWalkthroughData';
 
 const CATALOG_DRIVERS: DriverEntry[] = [
   {manufacturer: 'ACER', model: 'XL2320P', deviceType: 'projector'},
@@ -62,6 +72,47 @@ const EPSON_COMMANDS: DeviceCommand[] = [
   {label: 'SOURCE HDMI 2', reference: 'SOURCE A0\\r'},
 ];
 
+const PROOF_INPUTS: EuiInput[] = [
+  {label: 'Input 1'},
+  {label: 'Input 2'},
+  {label: 'HDMI 1'},
+  {label: 'HDMI 2'},
+];
+
+/**
+ * Proof beat (6s = 180 frames):
+ * The tablet EUI; a source is tapped and the display fills with it in the same moment, ringed.
+ * Cue: welcome "app" (abs frame 149; "app" sounds across cut into proof; tap lands at beat frame 8 / abs 158).
+ */
+export const ProofBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const cueApp = Math.max(8, CUE_FRAMES.welcomeApp - BEATS.proof.from + 9);
+  const row0 = TABLET_EUI_MANY_TO_ONE_REGIONS.sourceRow(0);
+  const tapX = row0.x + row0.width / 2;
+  const tapY = row0.y + row0.height / 2;
+
+  const selectedInput = frame < cueApp ? null : 0;
+  const pressed = frame >= cueApp && frame < cueApp + 10 ? 'input-1' : null;
+
+  return (
+    <>
+      <TabletEuiManyToOne
+        inputs={PROOF_INPUTS}
+        selectedInput={selectedInput}
+        volume={0.42}
+        outputLabel="Display 1"
+        pressed={pressed}
+      />
+      <TapIndicator x={tapX} y={tapY} at={cueApp} name="Source tap" />
+      <FocusRing
+        region={TABLET_EUI_MANY_TO_ONE_REGIONS.displayPanel}
+        appearAt={cueApp}
+        radius={0}
+        name="Display panel ring"
+      />
+    </>
+  );
+};
+
 /**
  * Open beat (11s = 330 frames):
  * The tablet EUI at rest, sources down the left and the display on the right;
@@ -69,12 +120,7 @@ const EPSON_COMMANDS: DeviceCommand[] = [
  */
 export const OpenBeat: React.FC<{frame: number; frames: number}> = () => (
   <TabletEuiManyToOne
-    inputs={[
-      {label: 'Input 1'},
-      {label: 'Input 2'},
-      {label: 'HDMI 1'},
-      {label: 'HDMI 2'},
-    ]}
+    inputs={PROOF_INPUTS}
     selectedInput={null}
     volume={0.42}
     outputLabel="Display 1"
@@ -84,45 +130,71 @@ export const OpenBeat: React.FC<{frame: number; frames: number}> = () => (
 /**
  * First-run beat (13.5s = 405 frames):
  * The first-run walkthrough over the setup screen steps forward, then its ✕ closes it.
+ * Cues: first-run "walkthrough" (tour steps forward) · "close" (✕ tapped, tour closes).
  */
 export const FirstRunBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const step = frame < 200 ? 1 : 2;
+  const cueTour = CUE_FRAMES.firstRunTour - BEATS['first-run'].from;
+  const cueClose = CUE_FRAMES.firstRunClose - BEATS['first-run'].from;
+
+  const regions = firstRunEducationRegions('tablet');
+  const closeReg = regions.closeButton;
+  const closeX = closeReg.x + closeReg.width / 2;
+  const closeY = closeReg.y + closeReg.height / 2;
+
+  const nextBtn = regions.nextButton;
+  const nextX = nextBtn.x + nextBtn.width / 2;
+  const nextY = nextBtn.y + nextBtn.height / 2;
+
+  const step = frame < cueTour ? 1 : 2;
   const cardOpacity =
-    frame < 330
+    frame < cueClose
       ? 1
-      : interpolate(frame, [330, 365], [1, 0], {
+      : interpolate(frame, [cueClose, cueClose + 15], [1, 0], {
+          easing: Easing.bezier(0.16, 1, 0.3, 1),
           extrapolateLeft: 'clamp',
           extrapolateRight: 'clamp',
         });
 
   return (
-    <FirstRunEducation
-      device="tablet"
-      step={step}
-      cardOpacity={cardOpacity}
-    />
+    <>
+      <FirstRunEducation
+        device="tablet"
+        step={step}
+        cardOpacity={cardOpacity}
+        showClose={cardOpacity > 0}
+      />
+      <TapIndicator x={nextX} y={nextY} at={cueTour} name="Tour step tap" />
+      <TapIndicator x={closeX} y={closeY} at={cueClose} name="Close ✕ tap" />
+    </>
   );
 };
 
 /**
- * AI beat (20.5s = 615 frames):
- * CTRLbot AI's question list fills; a question is picked and its answer lands.
+ * AI beat (22s = 660 frames):
+ * CTRLbot AI is a living manual: the question list reveals on "AI"; a question is tapped
+ * on "troubleshoot", and its answer lands readable on "manual".
+ * Cues: ai-intro "AI" · ai-manual "troubleshoot" · "manual".
  */
 export const AiBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const visibleQuestions = Math.min(
-    AI_QUESTIONS.length,
-    Math.max(
-      1,
-      Math.floor(
-        interpolate(frame, [15, 120], [1, 5], {
-          extrapolateLeft: 'clamp',
-          extrapolateRight: 'clamp',
-        }),
-      ),
-    ),
-  );
-  const isQuestionPicked = frame >= 180;
-  const answerProgress = interpolate(frame, [220, 260], [0, 1], {
+  const cueIntro = CUE_FRAMES.aiIntro - BEATS.ai.from;
+  const cueTroubleshoot = CUE_FRAMES.aiTroubleshoot - BEATS.ai.from;
+  const cueManual = CUE_FRAMES.aiManual - BEATS.ai.from;
+
+  const visibleQuestions =
+    frame < cueIntro
+      ? 1
+      : Math.min(
+          AI_QUESTIONS.length,
+          1 + Math.floor((frame - cueIntro) / 10),
+        );
+
+  const isQuestionPicked = frame >= cueTroubleshoot;
+
+  const q1 = aiRegions('tablet').question(1);
+  const q1CenterX = q1.x + q1.width / 2;
+  const q1CenterY = q1.y + q1.height / 2;
+
+  const answerProgress = interpolate(frame, [cueManual, cueManual + 15], [0, 1], {
     easing: Easing.bezier(0.16, 1, 0.3, 1),
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
@@ -144,7 +216,22 @@ export const AiBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
         promptFocused={isQuestionPicked}
       />
 
-      {/* When a question is picked, an answer card lands */}
+      <TapIndicator
+        x={q1CenterX}
+        y={q1CenterY}
+        at={cueTroubleshoot}
+        name="Question 1 tap"
+      />
+      {frame < cueManual + 10 ? (
+        <FocusRing
+          region={q1}
+          appearAt={cueTroubleshoot - 10}
+          radius={6}
+          name="Question 1 ring"
+        />
+      ) : null}
+
+      {/* When manual lands, answer card lands and stays readable */}
       {answerProgress > 0 ? (
         <div
           style={{
@@ -198,31 +285,67 @@ export const AiBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
 
 /**
  * Database beat (23s = 690 frames):
- * The catalog scrolls; the category filter opens on Projector, Display, Switchers, End Points.
+ * The catalog on the app's blue wash scrolls on "library"; the sort filter is tapped
+ * and opens on "sorting" showing Projector, Display, Switchers, End Points.
+ * Cues: db-devices "library" · db-sorting "sorting".
  */
 export const DatabaseBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const listScroll = interpolate(frame, [30, 240], [0, 200], {
-    easing: Easing.bezier(0.45, 0, 0.55, 1),
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  const cueLibrary = CUE_FRAMES.dbLibrary - BEATS.database.from;
+  const cueSorting = CUE_FRAMES.dbSorting - BEATS.database.from;
 
-  const menuOpen = frame >= 270 && frame < 580;
-  const openMenu = menuOpen
-    ? {
-        control: 'category' as const,
-        items: ['Projector', 'Display', 'Switchers', 'End Points'] as const,
-      }
-    : undefined;
+  const listScroll = interpolate(
+    frame,
+    [cueLibrary, cueLibrary + 140],
+    [0, 200],
+    {
+      easing: Easing.bezier(0.45, 0, 0.55, 1),
+      extrapolateLeft: 'clamp',
+      extrapolateRight: 'clamp',
+    },
+  );
+
+  // The sort filter button inside catalogRegions('tablet').filters:
+  // filters.x = 212, filters.y = 104, filters.width = 406. Two flex:1 buttons with 12px gap.
+  // Sort button starts at x = 212 + 197 + 12 = 421, y = 104, width = 197, height = 50.
+  const sortButtonRegion = {
+    x: 421,
+    y: 104,
+    width: 197,
+    height: 50,
+  };
+  const sortCenterX = sortButtonRegion.x + sortButtonRegion.width / 2;
+  const sortCenterY = sortButtonRegion.y + sortButtonRegion.height / 2;
+
+  const openMenu =
+    frame >= cueSorting
+      ? {
+          control: 'sort' as const,
+          items: ['Projector', 'Display', 'Switchers', 'End Points'] as const,
+        }
+      : undefined;
 
   return (
-    <DriverCatalog
-      device="tablet"
-      drivers={CATALOG_DRIVERS}
-      background={SETUP_BACKGROUND}
-      listScroll={listScroll}
-      openMenu={openMenu}
-    />
+    <>
+      <DriverCatalog
+        device="tablet"
+        drivers={CATALOG_DRIVERS}
+        background={SETUP_BACKGROUND}
+        listScroll={listScroll}
+        openMenu={openMenu}
+      />
+      <TapIndicator
+        x={sortCenterX}
+        y={sortCenterY}
+        at={cueSorting}
+        name="Sort filter tap"
+      />
+      <FocusRing
+        region={sortButtonRegion}
+        appearAt={cueSorting}
+        radius={5}
+        name="Sort filter ring"
+      />
+    </>
   );
 };
 
