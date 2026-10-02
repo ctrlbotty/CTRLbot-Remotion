@@ -365,11 +365,13 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
   - Every region change the Shot list ties to a word is a `shots` entry with `at` from `cueFrame`, relative to the beat. Use `regions` arrays only for untimed changes, because they split the beat evenly. Add no hold keyframes: the shell drifts.
   - Chapters show their revision 1 state until T26–T30.
 - [x] T25: Merged into T24 (2026-10-02) — files: videos/iot-phone-walkthrough.md
-- [ ] T26: Build the proof, first-run, ai and database beats to the Shot list — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
+- [x] T26: Build the proof, first-run, ai and database beats to the Shot list — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [ ] T27: Build the epson, add, terminal and test beats to the Shot list — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [ ] T28: Build the activities, switch-audio, eui and exit beats to the Shot list, the power state continuous from eui into exit — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [ ] T29: Build the discovery, matrox-add, matrox-test and matrox-switch beats to the Shot list — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [ ] T30: Build the m2m and settings beats to the Shot list — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
+- [ ] T33: Loosen W03's landscape chapter shots where a phone region is blown up past readable framing, starting with database (the opened filter menu is cut off and sits under the callout at 1745) — files: src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughData.ts
+  - Found in T26's review. Portrait reads correctly; landscape `expand` framing of narrow phone regions zooms about 3x. Re-check every chapter's landscape stills after T30, and fix them together before T31.
 - [ ] T31: Run the feature gates on both shapes, render both, write the .srt from the edit, check the voice, and record the results here — files: videos/iot-phone-walkthrough.md
   - As W01's T15, with `--corrections=IOT_PHONE_CAPTION_CORRECTIONS` and `--destination=social-walkthrough`.
   - The voice check is `npm run narration:verify` on the landscape render. It is `[!]` only when it exits 1; every other difference is a Review note. The words named in the next line are checked in its output, and against the audio level when Whisper misses one.
@@ -390,6 +392,8 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
 - **Blocked:** none. Nathan resolved the T23 settings hold on 2026-10-02 (settings 15.5s, close 5.5s); the four speech-edge repairs remain. Partial edits are preserved and uncommitted.
 
 ## Review notes
+
+- T26, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy, 317s. Check and lint pass in a clean worktree. Stills at 185/420/615/930/1045/1190/1490/1745, both shapes: proof "app" fills the display; the tour steps on "walkthrough" and closes on "X"; the question list, tapped question and answer arrive on "AI", "troubleshooter" and "issues"; the catalog scrolls on "database" and the filter opens on "endpoint". Portrait reads correctly throughout. Landscape database is framed far too tight, so the opened menu is cut off under the callout (new T33, data framing).
 
 - T24, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy. In a clean worktree: check, lint and validate pass (20 beats, 336s), and the `Root.tsx` diff is limited to W03's two durations. Stills at 0/260/1500/6000/9990, both shapes: the poster card is composed; proof stage, the database chapter with its callout, and the close card (CTRLbot IoT lockup, outcome line, no URL) all render. Notes for T26–T30: chapters still show revision 1 framing, including an over-zoomed exit at 6000 in landscape, and the landscape database callout overlaps a catalog row.
 

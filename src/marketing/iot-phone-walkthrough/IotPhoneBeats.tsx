@@ -3,14 +3,22 @@ import {Easing, interpolate} from 'remotion';
 import {AppIcon} from '../../app-ui/AppIcon';
 import {PHONE_VIEWPORT} from '../../app-ui/viewports';
 import {
+  PHONE_EUI_MANY_TO_ONE_REGIONS,
   PhoneEui,
   PhoneEuiManyToOne,
   type EuiInput,
   type EuiOutput,
 } from '../../app-ui/PhoneEui';
-import {FirstRunEducation} from '../../app-ui/FirstRunEducation';
-import {AI_QUESTIONS, CtrlbotAi} from '../../app-ui/CtrlbotAi';
-import {DriverCatalog, type DriverEntry} from '../../app-ui/DriverCatalog';
+import {
+  FirstRunEducation,
+  firstRunEducationRegions,
+} from '../../app-ui/FirstRunEducation';
+import {AI_QUESTIONS, CtrlbotAi, aiRegions} from '../../app-ui/CtrlbotAi';
+import {
+  DriverCatalog,
+  SETUP_BACKGROUND,
+  type DriverEntry,
+} from '../../app-ui/DriverCatalog';
 import {ProductWebView} from '../../app-ui/ProductWebView';
 import {
   ConnectionPanel,
@@ -35,9 +43,11 @@ import {DiscoverDevices} from '../../app-ui/DiscoverDevices';
 import {SettingsSupport} from '../../app-ui/SettingsSupport';
 import {EuiPowerCapture} from '../../app-ui/EuiPower';
 import {PhoneNavMenu} from '../../app-ui/PhoneNavMenu';
+import {centerOf} from '../../camera/Camera';
+import {FocusRing, TapIndicator} from '../../camera/Annotations';
 import {appColors, appDimens} from '../../design/tokens.generated';
 import {font} from '../../design/theme';
-import type {BeatName} from './iotPhoneWalkthroughData';
+import {BEATS, CUE_FRAMES, type BeatName} from './iotPhoneWalkthroughData';
 
 const CATALOG_DRIVERS: DriverEntry[] = [
   {manufacturer: 'ACER', model: 'XL2320P', deviceType: 'projector'},
@@ -90,7 +100,7 @@ const PhoneScreen: React.FC<{
 );
 
 /**
- * Open beat (11s = 330 frames):
+ * Open beat (5s = 150 frames):
  * The phone EUI at rest, one projector output and its sources.
  */
 export const OpenBeat: React.FC<{frame: number; frames: number}> = () => (
@@ -108,44 +118,123 @@ export const OpenBeat: React.FC<{frame: number; frames: number}> = () => (
 );
 
 /**
+ * Proof beat (6s = 180 frames):
+ * The phone EUI; a source is tapped and the display fills with it in the same moment, ringed.
+ * Cue: welcome "app".
+ */
+export const ProofBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const appCue = CUE_FRAMES.app - BEATS.proof.from;
+  const isRouted = frame >= appCue;
+  const sourceTile = PHONE_EUI_MANY_TO_ONE_REGIONS.inputTile(0);
+  const displayPanel = PHONE_EUI_MANY_TO_ONE_REGIONS.displayPanel;
+
+  return (
+    <>
+      <PhoneEuiManyToOne
+        inputs={[
+          {label: 'Input 1'},
+          {label: 'Input 2'},
+          {label: 'HDMI 1'},
+          {label: 'HDMI 2'},
+        ]}
+        selectedInput={isRouted ? 0 : null}
+        volume={0.42}
+        outputLabel="DISPLAY 1"
+      />
+      <TapIndicator
+        x={centerOf(sourceTile).x}
+        y={centerOf(sourceTile).y}
+        at={appCue}
+        name="Proof source tap"
+      />
+      <FocusRing
+        region={displayPanel}
+        appearAt={appCue}
+        radius={0}
+        name="Proof display ring"
+      />
+    </>
+  );
+};
+
+/**
  * First-run beat (16.5s = 495 frames):
- * The first-run walkthrough card steps forward, then its ✕ closes it,
- * revealing the underlying setup screen.
+ * Full frame: the first-run walkthrough over the setup screen steps forward,
+ * then its ✕ is tapped and it closes, revealing the underlying setup screen.
+ * Cues: walkthrough "walkthrough", x "X".
  */
 export const FirstRunBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const step = frame < 220 ? 1 : 2;
+  const walkthroughCue = CUE_FRAMES.walkthrough - BEATS['first-run'].from;
+  const xCue = CUE_FRAMES.x - BEATS['first-run'].from;
+
+  const step = frame < walkthroughCue ? 1 : 2;
   const cardOpacity =
-    frame < 400
+    frame < xCue
       ? 1
-      : interpolate(frame, [400, 435], [1, 0], {
+      : interpolate(frame, [xCue, xCue + 15], [1, 0], {
+          easing: Easing.bezier(0.16, 1, 0.3, 1),
           extrapolateLeft: 'clamp',
           extrapolateRight: 'clamp',
         });
 
+  const closeBtn = firstRunEducationRegions('phone').closeButton;
+
   return (
-    <FirstRunEducation
-      device="phone"
-      step={step}
-      cardOpacity={cardOpacity}
-    />
+    <>
+      <FirstRunEducation
+        device="phone"
+        step={step}
+        cardOpacity={cardOpacity}
+        showClose={frame < xCue + 15}
+      />
+      <TapIndicator
+        x={centerOf(closeBtn).x}
+        y={centerOf(closeBtn).y}
+        at={xCue}
+        name="First-run close tap"
+      />
+    </>
   );
 };
 
 /**
  * AI beat (18.5s = 555 frames):
- * CTRLbot AI's question list; one question is picked and its answer lands.
+ * The question list fills the frame; a question is tapped and its answer lands, readable.
+ * Cues: ai "AI", troubleshooter "troubleshooter", issues "issues".
  */
 export const AiBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const isQuestionPicked = frame >= 150;
-  const answerProgress = interpolate(frame, [190, 230], [0, 1], {
+  const aiCue = CUE_FRAMES.ai - BEATS.ai.from;
+  const troubleshooterCue = CUE_FRAMES.troubleshooter - BEATS.ai.from;
+  const issuesCue = CUE_FRAMES.issues - BEATS.ai.from;
+
+  const isQuestionPicked = frame >= troubleshooterCue;
+  const answerProgress = interpolate(frame, [issuesCue, issuesCue + 16], [0, 1], {
     easing: Easing.bezier(0.16, 1, 0.3, 1),
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
+  const question1Region = aiRegions('phone').question(1);
+
   return (
     <PhoneScreen fontFamily={font.ui}>
       <CtrlbotAi device="phone" promptFocused={isQuestionPicked} />
+
+      <TapIndicator
+        x={centerOf(question1Region).x}
+        y={centerOf(question1Region).y}
+        at={troubleshooterCue}
+        name="Question tap"
+      />
+
+      {frame < issuesCue + 10 ? (
+        <FocusRing
+          region={question1Region}
+          appearAt={troubleshooterCue}
+          radius={6}
+          name="Question focus ring"
+        />
+      ) : null}
 
       {/* When a question is picked, an answer card lands */}
       {answerProgress > 0 ? (
@@ -196,29 +285,43 @@ export const AiBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
         </div>
       ) : null}
 
-      <PhoneNavMenu expanded active="ctrlbot" />
+      <PhoneNavMenu expanded={frame < aiCue} active="ctrlbot" />
     </PhoneScreen>
   );
 };
 
 /**
  * Database beat (25s = 750 frames):
- * The catalog scrolls; the category filter opens on Projector, Display, Switchers, End Points.
+ * The catalog, on the app's blue wash, scrolls; the category filter is tapped
+ * and opens on Projector, Display, Switchers, End Points.
+ * Cues: database "database", endpoint "endpoint".
  */
 export const DatabaseBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const listScroll = interpolate(frame, [30, 240], [0, 160], {
-    easing: Easing.bezier(0.45, 0, 0.55, 1),
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  const databaseCue = CUE_FRAMES.database - BEATS.database.from;
+  const endpointCue = CUE_FRAMES.endpoint - BEATS.database.from;
 
-  const menuOpen = frame >= 270 && frame < 650;
+  const scrollEnd = Math.min(databaseCue + 180, endpointCue - 20);
+  const listScroll = interpolate(
+    frame,
+    [databaseCue, scrollEnd],
+    [0, 160],
+    {
+      easing: Easing.bezier(0.45, 0, 0.55, 1),
+      extrapolateLeft: 'clamp',
+      extrapolateRight: 'clamp',
+    },
+  );
+
+  const menuOpen = frame >= endpointCue;
   const openMenu = menuOpen
     ? {
         control: 'category' as const,
         items: ['Projector', 'Display', 'Switchers', 'End Points'] as const,
       }
     : undefined;
+
+  // The category filter button is the first row of filters on phone (top: 104, height: 50).
+  const categoryFilterRegion = {x: 12, y: 104, width: PHONE_VIEWPORT.width - 24, height: 50};
 
   return (
     <PhoneScreen>
@@ -227,7 +330,25 @@ export const DatabaseBeat: React.FC<{frame: number; frames: number}> = ({frame})
         drivers={CATALOG_DRIVERS}
         listScroll={listScroll}
         openMenu={openMenu}
+        background={SETUP_BACKGROUND}
       />
+
+      <TapIndicator
+        x={centerOf(categoryFilterRegion).x}
+        y={centerOf(categoryFilterRegion).y}
+        at={endpointCue}
+        name="Category filter tap"
+      />
+
+      {menuOpen ? (
+        <FocusRing
+          region={categoryFilterRegion}
+          appearAt={endpointCue}
+          radius={5}
+          name="Category filter ring"
+        />
+      ) : null}
+
       <PhoneNavMenu expanded={false} active="device" />
     </PhoneScreen>
   );
@@ -892,6 +1013,7 @@ export const BEAT_RENDERERS: Partial<
   Record<BeatName, React.FC<{frame: number; frames: number}>>
 > = {
   open: OpenBeat,
+  proof: ProofBeat,
   'first-run': FirstRunBeat,
   ai: AiBeat,
   database: DatabaseBeat,

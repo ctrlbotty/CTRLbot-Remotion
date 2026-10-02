@@ -24,7 +24,7 @@ export const IOT_PHONE_WALKTHROUGH_BEATS: WalkthroughBeat[] = WALKTHROUGH_BEATS.
   ...beat,
   render: ({frame, frames}) => {
     if (beat.id === 'open' || beat.id === 'close') return null;
-    const Component = beat.id === 'proof' ? OpenBeat : (BEAT_RENDERERS[beat.id as BeatName] ?? OpenBeat);
+    const Component = BEAT_RENDERERS[beat.id as BeatName] ?? OpenBeat;
     return <Component frame={frame} frames={frames} />;
   },
 }));
