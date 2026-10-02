@@ -25,8 +25,8 @@ Approved by Nathan on 2026-10-02. Codex coordinates; Gemini 3.8 Flash High imple
 
 | Owner | Task | Owned files | State |
 |---|---|---|---|
-| Gemini worker B | W03 T21 | ActivitiesPresets.tsx, ActivitiesSwitch.tsx, ActivitiesAudio.tsx | Stopped READY 08:43; source frozen for independent verification |
-| Gemini worker A | W02 T7 | `src/app-ui/term/termData.ts`, `src/app-ui/term/Terminator.tsx` | Stopped READY 08:43, zero background jobs; source frozen for verification |
+| Gemini worker B | W03 T21 | ActivitiesPresets.tsx, ActivitiesSwitch.tsx, ActivitiesAudio.tsx | Initial verification FAIL on Audio geometry; fresh repair round 1 dispatched |
+| Gemini worker A | W02 T7 | `src/app-ui/term/termData.ts`, `src/app-ui/term/Terminator.tsx` | Initial verification FAIL on navigation geometry; fresh repair round 1 dispatched |
 | Codex coordinator | Scheduling and W01 approved close-out | Four active briefs, this queue, `Roadmap.md`, archive and `RELEASE-NOTES.md` | Independently reviewed and committed as `e0aafb5` |
 
 ## Checkpoints
@@ -57,3 +57,6 @@ Approved by Nathan on 2026-10-02. Codex coordinates; Gemini 3.8 Flash High imple
 - 2026-10-02 08:34 MDT: Independent final PASS WITH NOTES for T17 and T20. Committed T17 as b6a9910 and T20 as c1fcc73, including their briefs. Global check/lint and targeted audio/visual checks pass. Five original Terminator baselines captured in out/coordinator/term-baseline/; render slot released. Existing T7 worker resumed and fresh W03 T21 dispatched with disjoint ownership. Six Activities baselines copied into out/coordinator/t21-baseline/. Narration dependencies are now released; await implementation slots before dispatching them.
 - Active W03 T21 worker: W03 T21 Remotion Implementation, conversation 3198d764-7e3e-4ae6-a6e2-6c35037628c3; observed working on its bounded source task. T7 remains conversation 762b8555-31d4-4f94-b118-b0bc508f726d and was observed running after release. Both must stop before independent frozen checks.
 - 2026-10-02 08:43 MDT: Both T7 and T21 observed stopped READY. T7 had started an unassigned source-mutating test-change render job; coordinator stopped only that job and corrected the worker, which restored its own experimental changes, finalized source and confirmed zero background jobs. Independent verify_t7_t21 now owns the heavy slot and frozen source for five Terminator and six Activities baseline comparisons plus state/region checks. Neither task is verified or committed; repair count zero.
+- 2026-10-02 08:55 MDT: Initial independent T7/T21 verdicts FAIL; check/lint pass and all eleven default proofs are byte-identical. T7 navItem targets y120 instead of actual y141; header/flow constants must share real markup dimensions. T21 Audio regions drift downward and miss Volume Set; repair actual shared mapped/unmapped flow metrics. Evidence out/coordinator/t7-t21-review.txt. Render slot released, old workers stopped. Fresh first repairs dispatched; no third worker or GPU work.
+- T7 repair round 1: Terminator UI Geometry Repair, conversation 2333db11-fbc9-4043-a056-837e5b9e1a45, observed working. Owns only termData.ts and Terminator.tsx.
+- T21 repair round 1: T21 Audio Layout Repair, conversation 79563183-0160-4fde-83cb-39f0409a42e4, observed working. Owns only the three Activities surfaces; no render/GPU authorization.
