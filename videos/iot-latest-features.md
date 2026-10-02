@@ -236,7 +236,7 @@ The authoritative task dependencies above replace Roadmap-order waits. Codex hol
 
 - [ ] T1: Correct `ingest/iot-latest-features/transcript.md` against `ingest/iot-latest-features/contact.html` and mark it `Status: corrected <date>` — files: ingest/iot-latest-features/transcript.md
   - Terms only: "Pooser" → PUSR, "all research" → Hall Research, "Luxel" → Luxul, "Global Cache" → Global Caché, "RS -232" → RS-232, "MGX", "Acer", "advice like this" → "a device like this" if the recording says so. Listen at 114–116s and write what is said ("RS-485" or "RS-45"). Keep filler and false starts; change no timestamp; never edit the JSON.
-- [ ] T2: Let a caption correction key be two words, so `all research` becomes Hall Research without touching "send to all" — files: src/audio/narrationCaptions.ts
+- [x] T2: Let a caption correction key be two words, so `all research` becomes Hall Research without touching "send to all" — files: src/audio/narrationCaptions.ts
   - One-word keys behave exactly as today. Verify: `npm run check`; `narration:srt` for W01 and W04 writes byte-identical .srt files before and after (to a scratch path, never over `out/`).
 
 ### Surface states (optional props, default unchanged)
@@ -296,3 +296,5 @@ The authoritative task dependencies above replace Roadmap-order waits. Codex hol
 
 | Beat | Reads correctly with the sound off? | Notes |
 |------|-------------------------------------|-------|
+
+- T2, 2026-10-02: Independent coordinator takeover PASS WITH NOTES. Frozen check/lint pass; independently regenerated W01/W04 scratch SRT hashes equal baseline/result, and focused Hall Research/send to all/punctuation/one-word/timing examples pass. Replacement supports more cases than needed, a note. No existing deliverables overwritten.

@@ -11,9 +11,11 @@ import type {NarrationClip} from './NarrationTrack';
 
 const capitalise = (text: string) => text.replace(/^(\s*)(\S)/, (_, space: string, first: string) => space + first.toUpperCase());
 
+const matchWord = (text: string) => text.match(/^(\s*)(.*?)(\W*)$/);
+
 const correctWord = (text: string, corrections?: Record<string, string>): string | null => {
   if (!corrections) return text;
-  const match = text.match(/^(\s*)(.*?)(\W*)$/);
+  const match = matchWord(text);
   if (!match) return text;
   const [, lead, core, trail] = match;
   if (Object.prototype.hasOwnProperty.call(corrections, core)) {
@@ -26,6 +28,8 @@ const correctWord = (text: string, corrections?: Record<string, string>): string
 /**
  * Applies optional word spelling corrections to an array of CaptionWords.
  * If a correction maps a word to empty string, that word is dropped.
+ * Two-word keys (e.g. 'all research': 'Hall Research') match two consecutive words
+ * and preserve caption timing and grouping by splitting the replacement across both words.
  */
 export const correctCaptions = (
   words: readonly CaptionWord[],
@@ -35,11 +39,73 @@ export const correctCaptions = (
     return [...words];
   }
   const result: CaptionWord[] = [];
-  for (const word of words) {
-    const text = correctWord(word.text, corrections);
-    if (text !== null) {
-      result.push({...word, text});
+  let i = 0;
+  while (i < words.length) {
+    const word1 = words[i];
+    if (i + 1 < words.length) {
+      const word2 = words[i + 1];
+      const match1 = matchWord(word1.text);
+      const match2 = matchWord(word2.text);
+      if (match1 && match2) {
+        const [, lead1, core1, trail1] = match1;
+        const [, lead2, core2, trail2] = match2;
+        if (trail1 === '') {
+          const twoWordKey = `${core1} ${core2}`;
+          let replacement: string | undefined;
+          if (Object.prototype.hasOwnProperty.call(corrections, twoWordKey)) {
+            replacement = corrections[twoWordKey];
+          } else {
+            const lowerKey = twoWordKey.toLowerCase();
+            for (const [key, val] of Object.entries(corrections)) {
+              if (key.includes(' ') && key.toLowerCase() === lowerKey) {
+                replacement = val;
+                break;
+              }
+            }
+          }
+          if (replacement !== undefined) {
+            if (replacement === '') {
+              i += 2;
+              continue;
+            }
+            const repParts = replacement.trim().split(/\s+/);
+            if (repParts.length === 2) {
+              result.push({
+                ...word1,
+                text: lead1 + repParts[0] + trail1,
+              });
+              result.push({
+                ...word2,
+                text: (lead2 || ' ') + repParts[1] + trail2,
+              });
+            } else if (repParts.length === 1) {
+              result.push({
+                ...word1,
+                text: lead1 + repParts[0] + trail2,
+                endMs: word2.endMs,
+              });
+            } else {
+              result.push({
+                ...word1,
+                text: lead1 + repParts[0] + trail1,
+              });
+              result.push({
+                ...word2,
+                text: (lead2 || ' ') + repParts.slice(1).join(' ') + trail2,
+              });
+            }
+            i += 2;
+            continue;
+          }
+        }
+      }
     }
+
+    const text = correctWord(word1.text, corrections);
+    if (text !== null) {
+      result.push({...word1, text});
+    }
+    i += 1;
   }
   return result;
 };
@@ -69,20 +135,18 @@ export const captionsFromClips = (
         const middle = (word.startMs + word.endMs) / 2000;
         return middle >= clip.sourceStart && middle <= clip.sourceEnd;
       });
-      const kept: Array<CaptionWord & {first: boolean}> = [];
-      for (const word of clipWords) {
-        const text = correctWord(word.text, corrections);
-        if (text === null) continue;
-        kept.push({
-          first: kept.length === 0,
-          text,
-          startMs: Math.max(clipStartMs, place(word.startMs)),
-          endMs: Math.min(clipEndMs, place(word.endMs)),
-          timestampMs: word.timestampMs === null ? null : place(word.timestampMs),
-          confidence: word.confidence,
-        });
-      }
-      return kept;
+      const placed: CaptionWord[] = clipWords.map((word) => ({
+        text: word.text,
+        startMs: Math.max(clipStartMs, place(word.startMs)),
+        endMs: Math.min(clipEndMs, place(word.endMs)),
+        timestampMs: word.timestampMs === null ? null : place(word.timestampMs),
+        confidence: word.confidence,
+      }));
+      const corrected = correctCaptions(placed, corrections);
+      return corrected.map((word, index) => ({
+        ...word,
+        first: index === 0,
+      }));
     })
     .map(({first, ...word}, index, all) =>
       first && (index === 0 || ENDS_SENTENCE.test(all[index - 1].text.trim()))
