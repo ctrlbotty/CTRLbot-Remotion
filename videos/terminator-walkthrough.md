@@ -147,7 +147,7 @@ in the 127.5-second cut; every clip ends inside its beat.
 
 ## Executor instructions
 
-**Executor: Gemini 3.8 Flash, High reasoning.** Codex coordinates the approved W02–W05 run and takes over a worker only when Gemini is unavailable. Run one assigned pending task per fresh context in this checkout. Pending revision: T7, T8, T9, T17, T10–T16; never redo checked tasks.
+**Executor: Gemini 3.8 Flash, High reasoning.** Codex coordinates the approved W02–W05 run and takes over a worker only when Gemini is unavailable. Run one assigned pending task per fresh context in this checkout. Pending revision: T7, T8, T9, T10–T16; never redo checked tasks.
 
 1. Read `AGENTS.md`, `docs/VIDEO_WORKFLOW.md`, `docs/NARRATED-WALKTHROUGH.md`, this brief, and the relevant installed Remotion skill before composition code. W01's current source in `src/marketing/mirror-walkthrough/` and `src/marketing/WalkthroughShell.tsx` are the worked example.
 2. **Dependencies:** T17 runs first to unlock narration in every lane; T7–T9 are independent. T10 needs T17; T11 needs T7, T9 and T10; T12 follows T11; T13 needs T12 and T8; T14–T16 run in order.
@@ -328,7 +328,7 @@ Placement and holds follow W01's rule. Corrections stay `TERMINATOR_CAPTION_CORR
 
 ## Handoff
 
-- **Pending revision:** T7, T8, T9, T17, T10–T16.
+- **Pending revision:** T7, T8, T9, T10–T16.
 - **Dependencies:** T17 runs first to unlock narration in every lane; T7–T9 are independent. T10 needs T17; T11 needs T7, T9 and T10; T12 follows T11; T13 needs T12 and T8; T14–T16 run in order.
 - **Dispatch:** one task at a time through Codex; independent verification and scoped commit release its owned files. Final rendering waits for the shared render slot.
 - **Blocked:** no known implementation blocker; task dependencies still apply.

@@ -178,7 +178,7 @@ always come back in here and edit the connections" (155–159s).
 
 ## Executor instructions
 
-**Executor: Gemini 3.8 Flash, High reasoning.** Codex coordinates the approved W02–W05 run and takes over a worker only when Gemini is unavailable. Run one assigned pending task per fresh context in this checkout. Pending revision: T20–T31; never redo checked tasks.
+**Executor: Gemini 3.8 Flash, High reasoning.** Codex coordinates the approved W02–W05 run and takes over a worker only when Gemini is unavailable. Run one assigned pending task per fresh context in this checkout. Pending revision: T21–T31; never redo checked tasks.
 
 1. Read `AGENTS.md`, `docs/VIDEO_WORKFLOW.md`, `docs/NARRATED-WALKTHROUGH.md`, this brief, and the relevant installed Remotion skill before composition code. W01's current source in `src/marketing/mirror-walkthrough/` and `src/marketing/WalkthroughShell.tsx` are the worked example.
 2. **Dependencies:** T20–T22 are independent and ready now. T23 needs W02 T17. T24 needs T20–T23; T25–T31 run in order.
@@ -379,7 +379,7 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
 
 ## Handoff
 
-- **Pending revision:** T20–T31.
+- **Pending revision:** T21–T31.
 - **Dependencies:** T20–T22 are independent and ready now. T23 needs W02 T17. T24 needs T20–T23; T25–T31 run in order.
 - **Dispatch:** one task at a time through Codex; independent verification and scoped commit release its owned files. Final rendering waits for the shared render slot.
 - **Blocked:** no known implementation blocker; task dependencies still apply.
