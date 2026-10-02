@@ -353,7 +353,7 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
   - Verify: `npm run check`; their `Proof-*` stills look as before.
 - [x] T21: Add region maps for `ActivitiesPresets`, `ActivitiesSwitch` and `ActivitiesAudio`, phone and tablet — files: src/app-ui/ActivitiesPresets.tsx, src/app-ui/ActivitiesSwitch.tsx, src/app-ui/ActivitiesAudio.tsx
 - [x] T22: Add region maps for `FirstRunEducation` and `SettingsSupport`, phone and tablet — files: src/app-ui/FirstRunEducation.tsx, src/app-ui/SettingsSupport.tsx
-- [ ] T23: Re-plan W03's edit with `narration:edit` and the changes above — files: src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughNarration.ts, src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughNarration.generated.ts, public/narration/iot-phone-walkthrough/edit.m4a
+- [!] T23: Re-plan W03's edit with `narration:edit` and the changes above — files: src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughNarration.ts, src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughNarration.generated.ts, public/narration/iot-phone-walkthrough/edit.m4a
   - Two builds at most to set the `at`s. A beat that cannot keep its 1.0s hold inside its Sec is `[!]` with the measured lengths.
   - Then `npm run narration:verify` on `edit.m4a` (W02's T17). Fix each real edge leak with `notBefore` / `notAfter` or a tighter `sourceEnd` (the contract's "Clip edges leak"), at most two more builds. A leak that remains goes in the Review notes with its clip and level.
 - [ ] T24: Rewrite W03's beat data for the shell: beats and layouts, the revision 2 copy, regions and cue frames — files: src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughData.ts
@@ -382,9 +382,11 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
 - **Pending revision:** T23–T31.
 - **Dependencies:** T20–T22 are independent and ready now. T23 needs W02 T17. T24 needs T20–T23; T25–T31 run in order.
 - **Dispatch:** one task at a time through Codex; independent verification and scoped commit release its owned files. Final rendering waits for the shared render slot.
-- **Blocked:** no known implementation blocker; task dependencies still apply.
+- **Blocked:** T23 settings hold is 0.817s instead of 1.0s; timing decision pending. Independent review also found four speech-edge defects. Partial edits are preserved and uncommitted.
 
 ## Review notes
+
+- T23, 2026-10-02: Independent FAIL. Settings uses 0.25 + 4.010 + 0.20 + 9.723 = 14.183s of its 15s beat, hold0.817s, shortage0.183s; repairing clipped "button" adds about0.14s. Preserve timing table pending Nathan's decision. Additional edges: split "Let's" at labels/m2m-intro, clipped "connection" in test-saves, repeated screen tail across eui-screen/eui-power. Stock verifier's10ms RMS crash and adjacent-clip false positive independently reproduced; separate utility repair underway. Evidence: out/coordinator/t23-review.txt. No T23 acceptance or source commit.
 
 - T22, 2026-10-02: Independent Claude verifier PASS WITH NOTES after first repair. Frozen check/lint pass, four defaults SHA256-identical; phone/tablet tour steps/offset, Settings scroll/restored and tablet reset-dialog targets visually aligned. Notes: tablet documentation highlight width is slightly narrow; phone dialog/toast/snackbar not exercised. Evidence: out/coordinator/t22-round1-review.txt and t22-round1/.
 
