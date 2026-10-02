@@ -273,6 +273,19 @@ to three people, plus non-profits and evaluation. Larger for-profit organization
 a company license. Confirm before commercial production:
 <https://github.com/remotion-dev/remotion/blob/main/LICENSE.md>
 
+## Persistent coordination memory
+
+The 2026-10-02 W02–W05 run spent too much capacity on verifier repair and coordination before delivering a watchable cut. Before coordinating another run, read `docs/COORDINATION-ASSESSMENT-2026-10-02.md` and the current status at the top of `docs/WALKTHROUGH-QUEUE.md`.
+
+- Prioritize a playable artifact and one finished lane. Start with one implementation worker; add parallel lanes only after delivery momentum and disjoint ownership are established. Independent review starts when implementation is ready.
+- Reuse passing checks and cached transcription for unchanged inputs. Keep required gates; add investigation only for a reproduced defect, with bounded acceptance and at most two repair rounds. A new task ID does not reset stop-loss for the same unresolved bottleneck.
+- Release accepted dependencies in the active run. Heartbeats recover/checkpoint; they must not leave ready work waiting for the next interval.
+- Use fresh concise worker contexts, one writer per file and one render/audio/GPU slot. Keep current status separate from history. Preserve mixed shared-file edits with explicit UTF-8 and scoped staging.
+- Report missing deliverables and blocked progress early. At approximately 20% remaining quota, checkpoint before dispatching long work. On explicit wrap-up, stop workers, preserve unverified changes and pause the heartbeat.
+- Do not claim a preview is final, infer unanswered approval, or restart a paused run without Nathan's instruction.
+
+These rules refine coordination; the execution profile below still defines required checks and acceptance.
+
 ## Execution profile
 
 Machine-read by `$architect` / `/architect` and `$executable-handoff` / `/executable-handoff`.
