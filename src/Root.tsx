@@ -45,7 +45,6 @@ import {
 import {
   IotPhoneWalkthrough,
   IotPhoneWalkthroughPortrait,
-  iotPhoneWalkthroughDuration,
 } from './marketing/iot-phone-walkthrough/IotPhoneWalkthrough';
 import {
   IotTabletWalkthrough,
@@ -268,7 +267,7 @@ export const RemotionRoot = () => (
       <Composition
         id="iot-phone-walkthrough"
         component={IotPhoneWalkthrough}
-        durationInFrames={iotPhoneWalkthroughDuration}
+        durationInFrames={10080}
         fps={30}
         width={1920}
         height={1080}
@@ -276,7 +275,7 @@ export const RemotionRoot = () => (
       <Composition
         id="iot-phone-walkthrough-portrait"
         component={IotPhoneWalkthroughPortrait}
-        durationInFrames={iotPhoneWalkthroughDuration}
+        durationInFrames={10080}
         fps={30}
         width={1080}
         height={1920}

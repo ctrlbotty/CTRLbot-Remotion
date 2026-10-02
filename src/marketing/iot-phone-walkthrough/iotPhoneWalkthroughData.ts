@@ -1,63 +1,75 @@
-// Beat timings, copy, camera and subjects for the CTRLbot IoT phone walkthrough.
+// Beat timings, copy, camera regions and cue frames for the CTRLbot IoT phone walkthrough.
 //
-// Source: `videos/iot-phone-walkthrough.md`, built from Nathan's recording
-// `video input/CTRLbot-IoT Phone Walkthrough v1.0.9.mp4` (6:58). One set of beats drives both shapes,
-// landscape and portrait, so both cuts say the same thing at the same moment.
+// Source: `videos/iot-phone-walkthrough.md` (Roadmap W03, revision 2).
+// Migrated to WalkthroughShell: 10080 frames (336s) across landscape and portrait shapes.
 
-import type {Shot} from '../../camera/Camera';
+import {fullFrame, type Region, type Shot} from '../../camera/Camera';
 import {PHONE_VIEWPORT} from '../../app-ui/viewports';
+import {cueFrame, type BeatCopy, type WalkthroughBeat} from '../WalkthroughShell';
+import {NARRATION_EDIT} from './iotPhoneWalkthroughNarration.generated';
+import {PHONE_EUI_MANY_TO_ONE_REGIONS, EUI_REGIONS} from '../../app-ui/PhoneEui';
+import {firstRunEducationRegions} from '../../app-ui/FirstRunEducation';
+import {aiRegions} from '../../app-ui/CtrlbotAi';
+import {catalogRegions} from '../../app-ui/DriverCatalog';
+import {productWebRegions} from '../../app-ui/ProductWebView';
+import {connectionRegions} from '../../app-ui/ConnectionPanel';
+import {connectTestRegions} from '../../app-ui/ConnectTest';
+import {activitiesPresetsRegions} from '../../app-ui/ActivitiesPresets';
+import {activitiesSwitchRegions} from '../../app-ui/ActivitiesSwitch';
+import {activitiesAudioRegions} from '../../app-ui/ActivitiesAudio';
+import {discoverDevicesRegions} from '../../app-ui/DiscoverDevices';
+import {settingsSupportRegions} from '../../app-ui/SettingsSupport';
 
 /**
- * 30fps. Beat boundaries in frames. Total: 333s = 9990 frames.
+ * 30fps. Beat boundaries in frames. Total: 336s = 10080 frames.
  *
- * Each beat is sized to the narration it carries (iotPhoneWalkthroughNarration.ts), plus
- * room to read its copy.
+ * Sized to the edited narration (iotPhoneWalkthroughNarration.ts), with Nathan's
+ * 2026-10-02 allocation: settings 15.5s (465 frames) and close 5.5s (165 frames).
  */
 export const BEATS = {
-  open: {from: 0, duration: 330},
-  'first-run': {from: 330, duration: 495},
-  ai: {from: 825, duration: 555},
-  database: {from: 1380, duration: 750},
-  epson: {from: 2130, duration: 450},
-  add: {from: 2580, duration: 285},
-  terminal: {from: 2865, duration: 465},
-  test: {from: 3330, duration: 600},
-  activities: {from: 3930, duration: 600},
-  'switch-audio': {from: 4530, duration: 525},
-  eui: {from: 5055, duration: 765},
-  exit: {from: 5820, duration: 270},
-  discovery: {from: 6090, duration: 555},
-  'matrox-add': {from: 6645, duration: 855},
-  'matrox-test': {from: 7500, duration: 555},
-  'matrox-switch': {from: 8055, duration: 510},
-  m2m: {from: 8565, duration: 795},
-  settings: {from: 9360, duration: 450},
-  close: {from: 9810, duration: 180},
+  open: {from: 0, duration: 150, layout: 'card'},
+  proof: {from: 150, duration: 180, layout: 'stage'},
+  'first-run': {from: 330, duration: 495, layout: 'chapter'},
+  ai: {from: 825, duration: 555, layout: 'chapter'},
+  database: {from: 1380, duration: 750, layout: 'chapter'},
+  epson: {from: 2130, duration: 450, layout: 'chapter'},
+  add: {from: 2580, duration: 285, layout: 'chapter'},
+  terminal: {from: 2865, duration: 465, layout: 'chapter'},
+  test: {from: 3330, duration: 600, layout: 'chapter'},
+  activities: {from: 3930, duration: 630, layout: 'chapter'},
+  'switch-audio': {from: 4560, duration: 525, layout: 'chapter'},
+  eui: {from: 5085, duration: 765, layout: 'chapter'},
+  exit: {from: 5850, duration: 300, layout: 'chapter'},
+  discovery: {from: 6150, duration: 585, layout: 'chapter'},
+  'matrox-add': {from: 6735, duration: 855, layout: 'chapter'},
+  'matrox-test': {from: 7590, duration: 555, layout: 'chapter'},
+  'matrox-switch': {from: 8145, duration: 510, layout: 'chapter'},
+  m2m: {from: 8655, duration: 795, layout: 'chapter'},
+  settings: {from: 9450, duration: 465, layout: 'chapter'},
+  close: {from: 9915, duration: 165, layout: 'card'},
 } as const;
 
 export type BeatName = keyof typeof BEATS;
-
 export const BEAT_NAMES = Object.keys(BEATS) as BeatName[];
+export const IOT_PHONE_WALKTHROUGH_FRAMES = 10080;
 
-export const IOT_PHONE_WALKTHROUGH_FRAMES = 9990;
-
-export type BeatCopy = {eyebrow?: string; headline?: string; title?: string; body: string};
-
-/** Copy for each beat from the brief's Copy table. */
+/** Copy for each beat from the brief's Revision 2 Copy table. */
 export const COPY: Record<BeatName, BeatCopy> = {
   open: {
     headline: 'CTRLbot IoT',
-    body: 'Room control from an Android phone or tablet. No processor, no laptop, no extra software.',
+    body: 'Set up and run a whole room from an Android phone.',
+  },
+  proof: {
+    eyebrow: 'End user interface',
+    title: 'One tap, and it is there',
   },
   'first-run': {
     eyebrow: 'First run',
     title: 'A short tour to start',
-    body: 'The app opens with a walkthrough of setup. Close it any time, and open it again from Settings.',
   },
   ai: {
     eyebrow: 'CTRLbot AI',
     title: 'A manual that answers back',
-    body: 'Ask about setup, control or a problem in the room, and it walks you through it.',
   },
   database: {
     eyebrow: 'Device',
@@ -67,72 +79,58 @@ export const COPY: Record<BeatName, BeatCopy> = {
   epson: {
     eyebrow: 'Device',
     title: 'Everything about the device',
-    body: 'Pick a model to see its information, specs, setup and support, with links to the product and manufacturer pages.',
   },
   add: {
     eyebrow: 'Connect',
     title: 'Add it and connect',
-    body: 'Press + to add the device, enter its IP address and connect. The connection saves itself.',
   },
   terminal: {
     eyebrow: 'Connect',
     title: 'Test every command',
-    body: 'Send any command and the terminal shows what went out and what came back. Or type your own.',
   },
   test: {
     eyebrow: 'Connect',
     title: 'Test it as a remote',
-    body: "Buttons, switcher, terminal and the device's own web page, all from the connection you just made.",
   },
   activities: {
     eyebrow: 'Activities',
     title: 'The room builds itself',
-    body: "Activities set what the end user sees. Power On already holds the Epson's power-on command.",
   },
   'switch-audio': {
     eyebrow: 'Activities',
     title: 'Switching and audio, done for you',
-    body: 'With no other switcher added, the Epson is the switcher, and audio follows. Customise it, or go straight to the room.',
   },
   eui: {
     eyebrow: 'End user interface',
     title: 'The room, for whoever walks in',
-    body: 'Turn it on, pick a source for the screen, set the volume, and power it all off again.',
   },
   exit: {
     eyebrow: 'End user interface',
     title: 'Hold to get back to setup',
-    body: 'Press and hold the setup button for two seconds. A tap does nothing, so nobody leaves setup open by accident.',
   },
   discovery: {
     eyebrow: 'Find Devices',
     title: "Find what's on the network",
-    body: "Find Devices scans the network and matches each device it finds to a driver in the library.",
   },
   'matrox-add': {
     eyebrow: 'Find Devices',
     title: 'Add a whole system at once',
-    body: 'Add Matrox IPMX encoders and decoders and the app connects, verifies and saves each one. It asks if a device needs a certificate approved or a login.',
   },
   'matrox-test': {
     eyebrow: 'Connect',
     title: 'Test the whole system',
-    body: 'Select the Matrox system to test it as one switcher, or pick any single encoder or decoder.',
   },
   'matrox-switch': {
     eyebrow: 'Activities',
     title: 'Encoders and decoders',
-    body: 'Set the switch type to AV-over-IP encoders and decoders. Change any icon or label here.',
   },
   m2m: {
     eyebrow: 'End user interface',
     title: 'Many to many',
-    body: 'Pick a source, then a display. Or drag a source onto a display. All sends one source to every display.',
   },
   settings: {
     eyebrow: 'Settings',
     title: 'Help is built in',
-    body: 'The user manual, the quick start and a factory reset, all on the Settings page.',
   },
   close: {
     headline: 'CTRLbot IoT',
@@ -140,71 +138,199 @@ export const COPY: Record<BeatName, BeatCopy> = {
   },
 };
 
-export type PhoneSubject = 'top' | 'middle' | 'bottom';
-
-/** Where each beat pushes: top, middle, or bottom third of the phone. */
-export const SUBJECT: Record<BeatName, PhoneSubject> = {
-  open: 'middle',
-  'first-run': 'middle',
-  ai: 'middle',
-  database: 'top',
-  epson: 'top',
-  add: 'middle',
-  terminal: 'middle',
-  test: 'top',
-  activities: 'middle',
-  'switch-audio': 'middle',
-  eui: 'middle',
-  exit: 'top',
-  discovery: 'top',
-  'matrox-add': 'middle',
-  'matrox-test': 'middle',
-  'matrox-switch': 'top',
-  m2m: 'middle',
-  settings: 'top',
-  close: 'middle',
+/** Absolute composition frames for words in the narration edit. */
+export const CUE_FRAMES = {
+  app: cueFrame(NARRATION_EDIT, 'welcome', 'app'),
+  walkthrough: cueFrame(NARRATION_EDIT, 'first-run-intro', 'walkthrough'),
+  x: cueFrame(NARRATION_EDIT, 'first-run-tour', 'X'),
+  ai: cueFrame(NARRATION_EDIT, 'ai-intro', 'AI'),
+  troubleshooter: cueFrame(NARRATION_EDIT, 'ai-troubleshooter', 'troubleshooter'),
+  issues: cueFrame(NARRATION_EDIT, 'ai-help', 'issues'),
+  database: cueFrame(NARRATION_EDIT, 'db-intro', 'database'),
+  endpoint: cueFrame(NARRATION_EDIT, 'db-endpoints', 'endpoint'),
+  epson: cueFrame(NARRATION_EDIT, 'epson-specs', 'Epson'),
+  link: cueFrame(NARRATION_EDIT, 'epson-product-page', 'link'),
+  plus: cueFrame(NARRATION_EDIT, 'add-ip', 'plus'),
+  ip: cueFrame(NARRATION_EDIT, 'add-ip', 'IP'),
+  connected: cueFrame(NARRATION_EDIT, 'add-saved', 'connected'),
+  termButtons: cueFrame(NARRATION_EDIT, 'term-testing', 'buttons'),
+  terminal: cueFrame(NARRATION_EDIT, 'term-testing', 'terminal'),
+  message: cueFrame(NARRATION_EDIT, 'term-message', 'message'),
+  testButtons: cueFrame(NARRATION_EDIT, 'test-webpage', 'buttons'),
+  testSwitcher: cueFrame(NARRATION_EDIT, 'test-webpage', 'switcher'),
+  testTerminal: cueFrame(NARRATION_EDIT, 'test-webpage', 'terminal'),
+  testWebpage: cueFrame(NARRATION_EDIT, 'test-webpage', 'webpage'),
+  activities: cueFrame(NARRATION_EDIT, 'act-intro', 'activities'),
+  builds: cueFrame(NARRATION_EDIT, 'act-power-on', 'builds'),
+  command: cueFrame(NARRATION_EDIT, 'act-power-on', 'command'),
+  switchAudioSwitcher: cueFrame(NARRATION_EDIT, 'switch-audio-setup', 'switcher'),
+  audio: cueFrame(NARRATION_EDIT, 'switch-audio-setup', 'audio'),
+  turn: cueFrame(NARRATION_EDIT, 'eui-screen', 'turn'),
+  sources: cueFrame(NARRATION_EDIT, 'eui-screen', 'sources'),
+  euiAudio: cueFrame(NARRATION_EDIT, 'eui-power', 'audio'),
+  off: cueFrame(NARRATION_EDIT, 'eui-power', 'off'),
+  hold: cueFrame(NARRATION_EDIT, 'exit-hold', 'hold'),
+  setupSecond: cueFrame(NARRATION_EDIT, 'exit-hold', 'setup', 2),
+  discovery: cueFrame(NARRATION_EDIT, 'discovery-intro', 'discovery'),
+  scans: cueFrame(NARRATION_EDIT, 'discovery-scan', 'scans'),
+  library: cueFrame(NARRATION_EDIT, 'discovery-scan', 'library'),
+  matrox: cueFrame(NARRATION_EDIT, 'matrox-add-intro', 'Matrox'),
+  adding: cueFrame(NARRATION_EDIT, 'matrox-add-saving', 'adding'),
+  saving: cueFrame(NARRATION_EDIT, 'matrox-add-saving', 'saving'),
+  connect: cueFrame(NARRATION_EDIT, 'matrox-test-menu', 'connect'),
+  matroxTestMatrox: cueFrame(NARRATION_EDIT, 'matrox-test-switcher', 'Matrox'),
+  individual: cueFrame(NARRATION_EDIT, 'matrox-test-single', 'individual'),
+  switchActivities: cueFrame(NARRATION_EDIT, 'matrox-switch-menu', 'activities'),
+  encoders: cueFrame(NARRATION_EDIT, 'matrox-switch-menu', 'encoders'),
+  label: cueFrame(NARRATION_EDIT, 'matrox-switch-labels', 'label'),
+  many: cueFrame(NARRATION_EDIT, 'm2m-displays', 'many'),
+  source: cueFrame(NARRATION_EDIT, 'm2m-drag', 'source'),
+  display: cueFrame(NARRATION_EDIT, 'm2m-drag', 'display'),
+  drag: cueFrame(NARRATION_EDIT, 'm2m-drop', 'drag'),
+  all: cueFrame(NARRATION_EDIT, 'm2m-all', 'all'),
+  settingsSetup: cueFrame(NARRATION_EDIT, 'settings-setup', 'Setup'),
+  manual: cueFrame(NARRATION_EDIT, 'settings-support', 'Manual'),
+  quick: cueFrame(NARRATION_EDIT, 'settings-support', 'Quick'),
+  factory: cueFrame(NARRATION_EDIT, 'settings-support', 'factory'),
 };
 
-/**
- * The camera: every beat opens on the whole phone, pushes in to its subject by mid-beat,
- * and is back on the whole phone as the beat ends, so every cut lands wide.
- */
-export const beatShots = (push = 0.62, viewport = PHONE_VIEWPORT): Shot[] => {
-  const wide = 1.04;
-  const w = viewport.width * push;
-  const h = viewport.height * push;
-  const region = (subject: PhoneSubject) => {
-    let y = (viewport.height - h) / 2;
-    if (subject === 'top') {
-      y = 0;
-    } else if (subject === 'bottom') {
-      y = viewport.height - h;
-    }
-    return {
-      x: (viewport.width - w) / 2,
-      y,
-      width: w,
-      height: h,
-    };
-  };
-  const whole = {
-    x: (viewport.width * (1 - wide)) / 2,
-    y: (viewport.height * (1 - wide)) / 2,
-    width: viewport.width * wide,
-    height: viewport.height * wide,
-  };
-  return BEAT_NAMES.flatMap((name) => {
-    const {from, duration} = BEATS[name];
-    if (name === 'open') {
-      return [
-        {at: from, region: whole},
-        {at: from + duration - 1, region: whole},
-      ];
-    }
-    return [
-      {at: from, region: whole},
-      {at: from + Math.round(duration / 2), region: region(SUBJECT[name])},
-      {at: from + duration - 1, region: whole},
-    ];
-  });
+const phoneFull = fullFrame(PHONE_VIEWPORT);
+const euiReg = PHONE_EUI_MANY_TO_ONE_REGIONS;
+const m2mReg = EUI_REGIONS;
+const firstRunReg = firstRunEducationRegions('phone');
+const aiReg = aiRegions('phone');
+const catalogReg = catalogRegions('phone');
+const productWebReg = productWebRegions('phone');
+const connReg = connectionRegions('phone');
+const connectTestReg = connectTestRegions('phone');
+const presetsReg = activitiesPresetsRegions('phone');
+const switchReg = activitiesSwitchRegions('phone');
+const audioReg = activitiesAudioRegions('phone');
+const discoverReg = discoverDevicesRegions('phone');
+const settingsReg = settingsSupportRegions('phone');
+
+export const BEAT_REGIONS: Partial<Record<BeatName, Region>> = {
+  proof: euiReg.displayPanel,
+  'first-run': firstRunReg.card,
+  ai: aiReg.questions,
+  database: catalogReg.filters,
+  epson: productWebReg.addressBar,
+  add: connReg.hostField,
+  terminal: connReg.terminal,
+  test: connectTestReg.subTabs,
+  activities: presetsReg.tabPill,
+  'switch-audio': switchReg.switchTab,
+  eui: euiReg.displayPanel,
+  exit: m2mReg.exitControl,
+  discovery: discoverReg.topBar,
+  'matrox-add': discoverReg.list,
+  'matrox-test': connectTestReg.switcherOutputs,
+  'matrox-switch': switchReg.encoderIconAndLabel(0),
+  m2m: m2mReg.outputGrid,
+  settings: settingsReg.userManual,
 };
+
+export const BEAT_SHOTS: Partial<Record<BeatName, Shot[]>> = {
+  proof: [
+    {at: 0, region: phoneFull},
+    {at: CUE_FRAMES.app - BEATS.proof.from, region: euiReg.displayPanel},
+  ],
+  'first-run': [
+    {at: 0, region: firstRunReg.card},
+    {at: CUE_FRAMES.x - BEATS['first-run'].from, region: phoneFull},
+  ],
+  ai: [
+    {at: 0, region: phoneFull},
+    {at: CUE_FRAMES.ai - BEATS.ai.from, region: aiReg.questions},
+  ],
+  database: [
+    {at: 0, region: catalogReg.card(0)},
+    {at: CUE_FRAMES.endpoint - BEATS.database.from, region: catalogReg.filters},
+  ],
+  epson: [
+    {at: 0, region: phoneFull},
+    {at: CUE_FRAMES.link - BEATS.epson.from, region: productWebReg.addressBar},
+  ],
+  add: [
+    {at: 0, region: phoneFull},
+    {at: CUE_FRAMES.ip - BEATS.add.from, region: connReg.hostField},
+    {at: CUE_FRAMES.connected - BEATS.add.from, region: connReg.connectAction},
+  ],
+  terminal: [
+    {at: 0, region: connReg.commandRow(0)},
+    {at: CUE_FRAMES.terminal - BEATS.terminal.from, region: connReg.terminal},
+  ],
+  test: [
+    {at: 0, region: connectTestReg.subTabs},
+  ],
+  activities: [
+    {at: 0, region: presetsReg.tabPill},
+    {at: CUE_FRAMES.builds - BEATS.activities.from, region: presetsReg.presetCard(0)},
+    {at: CUE_FRAMES.command - BEATS.activities.from, region: presetsReg.commandStep(0)},
+  ],
+  'switch-audio': [
+    {at: 0, region: switchReg.switchTab},
+    {at: CUE_FRAMES.audio - BEATS['switch-audio'].from, region: audioReg.audioTab},
+  ],
+  eui: [
+    {at: 0, region: phoneFull},
+    {at: CUE_FRAMES.turn - BEATS.eui.from, region: m2mReg.powerControl},
+    {at: CUE_FRAMES.sources - BEATS.eui.from, region: euiReg.inputStrip},
+    {at: CUE_FRAMES.euiAudio - BEATS.eui.from, region: m2mReg.volumeSlider},
+    {at: CUE_FRAMES.off - BEATS.eui.from, region: m2mReg.powerControl},
+  ],
+  exit: [
+    {at: 0, region: m2mReg.exitControl},
+    {at: CUE_FRAMES.setupSecond - BEATS.exit.from, region: phoneFull},
+  ],
+  discovery: [
+    {at: 0, region: discoverReg.topBar},
+    {at: CUE_FRAMES.scans - BEATS.discovery.from, region: discoverReg.status},
+    {at: CUE_FRAMES.library - BEATS.discovery.from, region: discoverReg.card(0)},
+  ],
+  'matrox-add': [
+    {at: 0, region: discoverReg.list},
+    {at: CUE_FRAMES.adding - BEATS['matrox-add'].from, region: discoverReg.addButton(0)},
+  ],
+  'matrox-test': [
+    {at: 0, region: connectTestReg.topToggle},
+    {at: CUE_FRAMES.matroxTestMatrox - BEATS['matrox-test'].from, region: connectTestReg.switcherOutputs},
+    {at: CUE_FRAMES.individual - BEATS['matrox-test'].from, region: connectTestReg.switcherOutput(0)},
+  ],
+  'matrox-switch': [
+    {at: 0, region: switchReg.tabPill},
+    {at: CUE_FRAMES.encoders - BEATS['matrox-switch'].from, region: switchReg.switchTypeSelector},
+    {at: CUE_FRAMES.label - BEATS['matrox-switch'].from, region: switchReg.encoderIconAndLabel(0)},
+  ],
+  m2m: [
+    {at: 0, region: m2mReg.outputGrid},
+    {at: CUE_FRAMES.source - BEATS.m2m.from, region: m2mReg.inputStrip},
+    {at: CUE_FRAMES.all - BEATS.m2m.from, region: m2mReg.routeAll},
+  ],
+  settings: [
+    {at: 0, region: settingsReg.setupButton},
+    {at: CUE_FRAMES.manual - BEATS.settings.from, region: settingsReg.userManual},
+    {at: CUE_FRAMES.quick - BEATS.settings.from, region: settingsReg.quickStart},
+    {at: CUE_FRAMES.factory - BEATS.settings.from, region: settingsReg.factoryReset},
+  ],
+};
+
+export const WALKTHROUGH_BEATS: WalkthroughBeat[] = BEAT_NAMES.map((id) => ({
+  id,
+  ...BEATS[id],
+  copy: COPY[id],
+  regions: BEAT_REGIONS[id],
+  shots: BEAT_SHOTS[id],
+  calloutSide: 'left',
+  ...(id === 'open' || id === 'close'
+    ? {
+        card: {
+          lockup: 'CTRLbot IoT',
+          line:
+            id === 'open'
+              ? 'Set up and run a whole room from an Android phone.'
+              : 'Set up the room, then hand it over.',
+        },
+      }
+    : {}),
+}));
