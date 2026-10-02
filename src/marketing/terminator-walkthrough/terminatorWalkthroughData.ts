@@ -1,124 +1,108 @@
-// Beat timings, copy, camera and subjects for the CTRLbot Terminator walkthrough.
-//
-// Source: `videos/terminator-walkthrough.md`, built from Nathan's recording
-// `video input/CTRLbot Terminatior Tutorial.mp4` (8:39). One set of beats drives both shapes,
-// landscape and portrait, so both cuts say the same thing at the same moment.
-//
-// Every line of copy is checked against Terminator itself and its README.
+// Revision 2: one 138-second timeline for both shapes, timed to the edited narration.
+import {fullFrame, padRegion, type Region, type Shot} from '../../camera/Camera';
+import {TERM_VIEWPORT, termRegions} from '../../app-ui/term/termData';
+import {cueFrame, type BeatCopy, type WalkthroughBeat} from '../WalkthroughShell';
+import {TERMINATOR_WALKTHROUGH_EDIT} from './terminatorWalkthroughNarration.generated';
 
-import type {Shot} from '../../camera/Camera';
-import {TERM_VIEWPORT} from '../../app-ui/term/termData';
-
-/**
- * 30fps. Beat boundaries in frames. Total: 127.5s = 3825 frames, inside X's 2:20.
- *
- * Each beat is sized to the narration it carries (terminatorWalkthroughNarration.ts), plus
- * room to read its copy.
- */
 export const BEATS = {
-  open: {from: 0, duration: 495},
-  scan: {from: 495, duration: 525},
-  server: {from: 1020, duration: 570},
-  pin: {from: 1590, duration: 315},
-  'raw-tcp': {from: 1905, duration: 525},
-  serial: {from: 2430, duration: 495},
-  ssh: {from: 2925, duration: 435},
-  close: {from: 3360, duration: 465},
+  open: {from: 0, duration: 195, layout: 'card'},
+  proof: {from: 195, duration: 300, layout: 'stage'},
+  scan: {from: 495, duration: 525, layout: 'chapter'},
+  server: {from: 1020, duration: 690, layout: 'chapter'},
+  pin: {from: 1710, duration: 480, layout: 'chapter'},
+  'raw-tcp': {from: 2190, duration: 525, layout: 'chapter'},
+  serial: {from: 2715, duration: 495, layout: 'chapter'},
+  ssh: {from: 3210, duration: 435, layout: 'chapter'},
+  recap: {from: 3645, duration: 390, layout: 'stage'},
+  close: {from: 4035, duration: 105, layout: 'card'},
 } as const;
-
 export type BeatName = keyof typeof BEATS;
-
 export const BEAT_NAMES = Object.keys(BEATS) as BeatName[];
+export const TERMINATOR_WALKTHROUGH_FRAMES = 4140;
 
-export const TERMINATOR_WALKTHROUGH_FRAMES = 3825;
-
-export type BeatCopy = {eyebrow?: string; headline?: string; title?: string; body: string};
-
-/** Copy for each beat from the brief's Copy table. */
 export const COPY: Record<BeatName, BeatCopy> = {
-  open: {
-    headline: 'CTRLbot Terminator',
-    body: 'Scan the network, run a test server, and talk to devices over TCP, serial and SSH, from one PC app.',
-  },
-  scan: {
-    eyebrow: 'Scan',
-    title: "Find what's on the network",
-    body: "Pick a network adapter and scan its subnet. Every device shows its host name, device name, manufacturer, IP and MAC, with links to any web page it serves.",
-  },
-  server: {
-    eyebrow: 'TCP server',
-    title: 'Test against a server on your PC',
-    body: 'Start a TCP server on any port. Point CTRLbot IoT at it, and every command it sends shows up here. You can answer back.',
-  },
-  pin: {
-    eyebrow: 'Saved',
-    title: 'Pin a connection',
-    body: 'Pinned tabs come back the next time you open Terminator.',
-  },
-  'raw-tcp': {
-    eyebrow: 'Raw TCP (Telnet)',
-    title: 'Talk to a device directly',
-    body: "Connect to a device's control port and send commands as text or hex. Verbose CRLF shows every line ending it sends back.",
-  },
-  serial: {
-    eyebrow: 'Serial (COM)',
-    title: 'Open a COM port',
-    body: 'Any COM port on the PC, USB adapters included. Baud from 9600 to 115200, 7 or 8 data bits, parity and flow control.',
-  },
-  ssh: {
-    eyebrow: 'SSH',
-    title: 'Log in over SSH',
-    body: "Open a device's command line from the same app. Here, a Luxul switch.",
-  },
-  close: {
-    headline: 'CTRLbot Terminator',
-    body: 'Scan, serve and connect from one PC app.',
-  },
+  open: {eyebrow: 'For Windows', headline: 'CTRLbot Terminator', body: 'Scan the network, run a test server, and talk to devices from one PC app.'},
+  proof: {eyebrow: 'One app', title: 'Every tool in one window', body: 'Scan, TCP server, raw TCP, serial and SSH.'},
+  scan: {eyebrow: 'Scan', title: "Find what's on the network"},
+  server: {eyebrow: 'TCP server', title: 'Test against a server on your PC'},
+  pin: {eyebrow: 'Saved', title: 'Pin a connection'},
+  'raw-tcp': {eyebrow: 'Raw TCP (Telnet)', title: 'Talk to a device directly'},
+  serial: {eyebrow: 'Serial (COM)', title: 'Open a COM port', body: 'Baud from 9600 to 115200, 7 or 8 data bits, parity and flow control.'},
+  ssh: {eyebrow: 'SSH', title: 'Log in over SSH', body: 'Here, a Luxul switch.'},
+  recap: {title: 'Scan, serve and connect'},
+  close: {headline: 'CTRLbot Terminator', body: 'Scan, serve and connect from one PC app.'},
 };
 
-export type TermSubject = 'nav' | 'tabs' | 'session';
-
-/** Where each beat pushes: nav (left), tabs (top-right), or session (right). */
-const SUBJECT: Record<BeatName, TermSubject> = {
-  open: 'nav',
-  scan: 'session',
-  server: 'session',
-  pin: 'tabs',
-  'raw-tcp': 'session',
-  serial: 'session',
-  ssh: 'session',
-  close: 'nav',
+// Absolute composition frames; beat shot times below subtract the beat's start.
+export const CUE_FRAMES = {
+  terminal: cueFrame(TERMINATOR_WALKTHROUGH_EDIT, 'terminal-app', 'terminal'),
+  host: cueFrame(TERMINATOR_WALKTHROUGH_EDIT, 'scan-info', 'host'),
+  mac: cueFrame(TERMINATOR_WALKTHROUGH_EDIT, 'scan-info', 'MAC'),
+  links: cueFrame(TERMINATOR_WALKTHROUGH_EDIT, 'scan-links', 'links'),
+  ctrlbot: cueFrame(TERMINATOR_WALKTHROUGH_EDIT, 'server-test', 'CTRLbot'),
+  connected: cueFrame(TERMINATOR_WALKTHROUGH_EDIT, 'server-connected', 'connected'),
+  commands: cueFrame(TERMINATOR_WALKTHROUGH_EDIT, 'server-connected', 'commands'),
+  pinFirst: cueFrame(TERMINATOR_WALKTHROUGH_EDIT, 'pin', 'pin', 1),
+  pinSecond: cueFrame(TERMINATOR_WALKTHROUGH_EDIT, 'pin', 'pin', 2),
+  raw: cueFrame(TERMINATOR_WALKTHROUGH_EDIT, 'raw-tcp', 'raw'),
+  telnet: cueFrame(TERMINATOR_WALKTHROUGH_EDIT, 'raw-tcp', 'Telnet'),
+  parameters: cueFrame(TERMINATOR_WALKTHROUGH_EDIT, 'parameters', 'parameters'),
+  help: cueFrame(TERMINATOR_WALKTHROUGH_EDIT, 'ssh-help', 'help'),
+  recapScan: cueFrame(TERMINATOR_WALKTHROUGH_EDIT, 'recap', 'scan'),
+  recapServer: cueFrame(TERMINATOR_WALKTHROUGH_EDIT, 'recap', 'server'),
+  recapTelnet: cueFrame(TERMINATOR_WALKTHROUGH_EDIT, 'recap', 'Telnet'),
+  recapSsh: cueFrame(TERMINATOR_WALKTHROUGH_EDIT, 'recap', 'SSH'),
+  recapSerial: cueFrame(TERMINATOR_WALKTHROUGH_EDIT, 'recap', 'serial'),
 };
 
-/**
- * The camera: every beat opens on the whole window, pushes in to its subject by mid-beat,
- * and is back on the whole window as the beat ends, so every cut lands wide.
- *
- * `open` and `close` push toward the nav column (left), `pin` toward the tab strip (top-right),
- * and the rest toward the session (right).
- */
-export const beatShots = (push = 0.88, viewport = TERM_VIEWPORT): Shot[] => {
-  const wide = 1.04;
-  const w = viewport.width * push;
-  const h = viewport.height * push;
-  const region = (subject: TermSubject) => ({
-    x: subject === 'nav' ? 0 : viewport.width - w,
-    y: subject === 'tabs' ? 0 : (viewport.height - h) / 2,
-    width: w,
-    height: h,
-  });
-  const whole = {
-    x: (viewport.width * (1 - wide)) / 2,
-    y: (viewport.height * (1 - wide)) / 2,
-    width: viewport.width * wide,
-    height: viewport.height * wide,
-  };
-  return BEAT_NAMES.flatMap((name) => {
-    const {from, duration} = BEATS[name];
-    return [
-      {at: from, region: whole},
-      {at: from + Math.round(duration / 2), region: region(SUBJECT[name])},
-      {at: from + duration - 1, region: whole},
-    ];
-  });
+export const BEAT_REGIONS: Partial<Record<BeatName, Region>> = {
+  proof: termRegions.nav,
+  scan: termRegions.results,
+  server: fullFrame(TERM_VIEWPORT),
+  pin: padRegion(termRegions.tabs, 28),
+  'raw-tcp': padRegion(termRegions.connectFields, 45),
+  serial: padRegion(termRegions.serialParams, 45),
+  ssh: termRegions.exchange,
+  recap: termRegions.nav,
 };
+
+// Stage framing stays wider than 94% of the window; emphasis is supplied by beat overlays.
+const stageSession = {x: 76.8, y: 24, width: 1203.2, height: 752};
+export const BEAT_SHOTS: Partial<Record<BeatName, Shot[]>> = {
+  proof: [{at: 0, region: fullFrame(TERM_VIEWPORT)}, {at: CUE_FRAMES.terminal - BEATS.proof.from, region: stageSession}],
+  scan: [{at: 0, region: termRegions.results}],
+  server: [
+    {at: 0, region: fullFrame(TERM_VIEWPORT)},
+    {at: CUE_FRAMES.connected - BEATS.server.from, region: padRegion(termRegions.serverClients, 100)},
+    {at: CUE_FRAMES.commands - BEATS.server.from, region: termRegions.serverLog},
+  ],
+  pin: [{at: 0, region: padRegion(termRegions.tabs, 28)}],
+  'raw-tcp': [
+    {at: 0, region: termRegions.session},
+    {at: CUE_FRAMES.raw - BEATS['raw-tcp'].from, region: padRegion(termRegions.connectFields, 45)},
+    {at: CUE_FRAMES.telnet - BEATS['raw-tcp'].from, region: termRegions.exchange},
+  ],
+  serial: [
+    {at: 0, region: termRegions.exchange},
+    {at: CUE_FRAMES.parameters - BEATS.serial.from, region: padRegion(termRegions.serialParams, 45)},
+  ],
+  ssh: [{at: 0, region: termRegions.exchange}],
+};
+
+export const WALKTHROUGH_BEATS: WalkthroughBeat[] = BEAT_NAMES.map((id) => ({
+  id,
+  ...BEATS[id],
+  copy: COPY[id],
+  regions: BEAT_REGIONS[id],
+  shots: BEAT_SHOTS[id],
+  calloutSide: 'left',
+  ...(id === 'open' || id === 'close' ? {
+    card: {
+      lockup: 'CTRLbot Terminator',
+      eyebrow: id === 'open' ? 'For Windows' : undefined,
+      line: id === 'open'
+        ? 'Scan the network, run a test server, and talk to devices from one PC app.'
+        : 'Scan, serve and connect from one PC app.',
+    },
+  } : {}),
+}));
