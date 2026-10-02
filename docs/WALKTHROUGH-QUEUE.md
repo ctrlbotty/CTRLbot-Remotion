@@ -25,8 +25,8 @@ Approved by Nathan on 2026-10-02. Codex coordinates; Gemini 3.8 Flash High imple
 
 | Owner | Task | Owned files | State |
 |---|---|---|---|
-| Claude worker B | W02 T8 | src/app-ui/term/TermScenes.tsx | Sonnet5.5 Medium; READY FOR VERIFICATION, zero background jobs |
-| Claude worker A | W03 T22 repair round 1 | FirstRunEducation.tsx, SettingsSupport.tsx | Independently PASS WITH NOTES, committed b08d853; ownership released |
+| Claude worker A | W02 T9 | src/marketing/terminator-walkthrough/ServerDiagram.tsx, src/Root.tsx | Sonnet5.5 Medium; STOP READY, no background jobs; independent still verification awaits heavy slot |
+| Claude worker B | W03 T23 | iotPhoneWalkthroughNarration.ts, iotPhoneWalkthroughNarration.generated.ts, public/narration/iot-phone-walkthrough/edit.m4a | Sonnet5.5 Medium; observed running; exclusive audio/GPU slot |
 | Codex coordinator | Scheduling and W01 approved close-out | Four active briefs, this queue, `Roadmap.md`, archive and `RELEASE-NOTES.md` | Independently reviewed and committed as `e0aafb5` |
 
 ## Checkpoints
@@ -74,3 +74,6 @@ Approved by Nathan on 2026-10-02. Codex coordinates; Gemini 3.8 Flash High imple
 - Independent T22 verifier: W03 T22 repair round1 verification, session local_7ae3d94b-097e-471f-94fd-353194d97a91, observed running. One atomic review in this fresh context; T8 waits for slot release.
 - 2026-10-02 10:26 MDT: T22 independent PASS WITH NOTES, all four baseline hashes identical and required tour/settings states aligned; committed source plus brief as b08d853. Known minor highlight-width/generous bounds recorded in review notes. T8 fresh independent Sonnet5.5 Medium verifier dispatched; only task T8, source frozen and single heavy slot owned. Reuse same-source passing gates, compare original defaults and supplied event transitions; report out/coordinator/t8-review.txt. No implementation dispatch until slot release.
 - T8 independent verifier: TermScenes.tsx verification W02 T8, session local_352358d1-9276-4573-94bd-19ee3698c4f5, observed running. Owns heavy slot; source freeze remains. Implementation worker B local_00a397f0-9c09-4622-9aa1-8dcb1fb26e2d stays stopped.
+- 2026-10-02 10:41 MDT: T8 independent PASS WITH NOTES; default sampled frames and five proof hashes match originals, event overrides tested. Verifier observed STOP with no background jobs and heavy slot released. Source plus brief committed 0d1feda; evidence out/coordinator/t8-review.txt. T13 must account for the documented fixed press onset on non-Scan scenes. No passing checks repeated.
+- Fresh Claude worker A: Server diagram Remotion component, session local_c72dc1a8-8a97-4ebc-8379-0027572e376c, W02T9 only. Observed STOP READY after check/lint, exact two owned files, no renders or background jobs. Source remains unverified; Root ownership reserved until independent verification. Two diagram states await heavy slot.
+- Fresh Claude worker B: W03 T23 IoT phone walkthrough narration, session local_59e48c51-fe99-4186-bb2a-517203ca1aa5, observed running. Owns only the three narration files and exclusive audio/GPU slot. Bounded brief build/edge-repair budgets, no video/still renders or helper changes. T9 visual review waits for slot release; do not dispatch duplicate work or modify T23 sources. Next checkpoint verifies first unverified T9/T23 after source freeze.
