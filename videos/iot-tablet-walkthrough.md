@@ -342,10 +342,12 @@ displays together. The subject is never in the right 140 px column.
   - Nathan, 2026-10-02: `add` 15.5→16s and `terminal` 6→5.5s; `matrox-test` 7→8s and `matrox-add` 31.5→30.5s (total 343.5s unchanged). The first build left `add` with a 0.60s hold and `matrox-test` with 0.48s.
   - Two builds at most to set the `at`s. A beat that cannot keep its 1.0s hold inside its Sec is `[!]` with the measured lengths.
   - Then `npm run narration:verify` on `edit.m4a` (W02's T17). Fix each real edge leak with `notBefore` / `notAfter` or a tighter `sourceEnd` (the contract's "Clip edges leak"), at most two more builds. A leak that remains goes in the Review notes with its clip and level.
-- [ ] T20: Rewrite W04's beat data for the shell: beats and layouts, the revision 2 copy, regions and cue frames — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts
-  - 10305 frames in total. `DriverCatalog` callers opt into the app's blue wash. `beatShots()` and `SUBJECT` are removed.
+- [ ] T20: Migrate W04's coupled beat data and both shell compositions at 10305 frames, with the revision 2 copy, layouts, regions and cue frames — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts, src/marketing/iot-tablet-walkthrough/IotTabletWalkthrough.tsx, src/Root.tsx
+  - Coupled with the former T21 (2026-10-02), as W02's T11 was. The worked example is W02's migration, commit `9114a3d`.
+  - 10305 frames in total. `DriverCatalog` callers opt into the app's blue wash. `beatShots()` and `SUBJECT` are removed. In `src/Root.tsx`, only W04's two registrations change.
   - Every region change the Shot list ties to a word is a `shots` entry with `at` from `cueFrame`, relative to the beat. Use `regions` arrays only for untimed changes, because they split the beat evenly. Add no hold keyframes: the shell drifts.
-- [ ] T21: Rebuild both W04 compositions on `WalkthroughShell` at 10305 frames, chapters showing their revision 1 state until T22–T26 — files: src/marketing/iot-tablet-walkthrough/IotTabletWalkthrough.tsx, src/Root.tsx
+  - Chapters show their revision 1 state until T22–T26.
+- [x] T21: Merged into T20 (2026-10-02) — files: videos/iot-tablet-walkthrough.md
 - [ ] T22: Build the proof, first-run, ai and database beats to the Shot list — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [ ] T23: Build the epson, add, terminal and test beats to the Shot list, each screen changing on its cue — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [ ] T24: Build the activities, switch-audio, eui and exit beats to the Shot list, the power state continuous from eui into exit — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
