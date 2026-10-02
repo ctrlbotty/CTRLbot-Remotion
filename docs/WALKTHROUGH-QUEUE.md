@@ -25,8 +25,8 @@ Approved by Nathan on 2026-10-02. Codex coordinates; Gemini 3.8 Flash High imple
 
 | Owner | Task | Owned files | State |
 |---|---|---|---|
-| Gemini worker B | W03 T22 | FirstRunEducation.tsx, SettingsSupport.tsx | Stopped READY09:37, frozen for independent Gemini verification |
-| Gemini worker A | W05 T2 | src/audio/narrationCaptions.ts | Stopped READY09:40, frozen for independent Gemini verification |
+| Verification | W02 T7 / W05 T2 | Read-only source/proofs/captions | PASS committed aa4b2df / 15581e7; heavy slot released |
+| Codex takeover | W03 T22 repair round 1 | FirstRunEducation.tsx, SettingsSupport.tsx | Original worker stopped; first repair authorized, independent review pending recovered capacity |
 | Codex coordinator | Scheduling and W01 approved close-out | Four active briefs, this queue, `Roadmap.md`, archive and `RELEASE-NOTES.md` | Independently reviewed and committed as `e0aafb5` |
 
 ## Checkpoints
