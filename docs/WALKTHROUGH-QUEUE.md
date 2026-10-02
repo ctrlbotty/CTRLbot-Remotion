@@ -25,8 +25,8 @@ Approved by Nathan on 2026-10-02. Codex coordinates; Gemini 3.8 Flash High imple
 
 | Owner | Task | Owned files | State |
 |---|---|---|---|
-| Gemini worker B | W03 T21 | ActivitiesPresets.tsx, ActivitiesSwitch.tsx, ActivitiesAudio.tsx | Repair round 1 stopped READY; source frozen for independent recheck |
-| Gemini worker A | W02 T7 | `src/app-ui/term/termData.ts`, `src/app-ui/term/Terminator.tsx` | Repair round 1 stopped READY; source frozen for independent recheck |
+| Gemini worker B | W03 T22 | FirstRunEducation.tsx, SettingsSupport.tsx | Fresh task dispatched after baseline capture |
+| Gemini worker A | W05 T2 | src/audio/narrationCaptions.ts | Fresh one-file task dispatched; verification waits for independent capacity |
 | Codex coordinator | Scheduling and W01 approved close-out | Four active briefs, this queue, `Roadmap.md`, archive and `RELEASE-NOTES.md` | Independently reviewed and committed as `e0aafb5` |
 
 ## Checkpoints
@@ -61,3 +61,7 @@ Approved by Nathan on 2026-10-02. Codex coordinates; Gemini 3.8 Flash High imple
 - T7 repair round 1: Terminator UI Geometry Repair, conversation 2333db11-fbc9-4043-a056-837e5b9e1a45, observed working. Owns only termData.ts and Terminator.tsx.
 - T21 repair round 1: T21 Audio Layout Repair, conversation 79563183-0160-4fde-83cb-39f0409a42e4, observed working. Owns only the three Activities surfaces; no render/GPU authorization.
 - 2026-10-02 09:10 MDT: Both first repair workers observed STOP READY (T7 09:02, T21 09:03), zero background tasks and no renders. T7 now shares actual header64/nav35 and fixed flow constants; T21 corrects audio card rhythm and Switch offset. verify_t7_t21 resumed independent checks on frozen source, owns heavy slot. One repair used per task; final round2 remains only if meaningful defects persist.
+- 2026-10-02 09:29 MDT: T21 independent PASS WITH NOTES committed27341f9; six defaults byte-identical and mixed audio states align. T7 first repair FAIL only exact-default subpixel preservation; final repair worker Terminal Layout Measurement Repair, conversation9477bf81-8113-4b85-a5b4-9d0a03eb375c, stopped READY09:29 after correcting tabs38.75/control70.5. T7 remains unverified; no further repair allowed.
+- Independent verifier hit Codex usage limit during T22 baseline capture; tool reports retry11:29AM. All four baseline PNGs were saved with correct dimensions before failure (360x780/1280x800); outputs out/coordinator/t22-baseline/. Do not repeat completed T21 checks. Resume first unverified T7 final repair and T22 verification when independent capacity returns; preserve source and do not mark complete meanwhile. Fresh Gemini T22 implementation dispatched with no GPU/render permission.
+- W03 T22 active: W03 T22 UI Implementation, conversation5aedb944-6eb2-4783-b936-7e892e57dd8f, observed working. All four original baseline PNGs validated as nonempty with correct dimensions; capture complete despite verifier error. W05 T2 dispatched in second implementation slot; scratch SRT work only, no GPU. T7 final repaired source stays untouched awaiting independent check.
+- W05 T2 active: W05 T2 Caption Correction, conversation7c74b464-fb26-44b5-bf3c-0425fd1c6653, observed working. Owns only narrationCaptions.ts. Next independent checks: T7 final repaired defaults/regions, T22 first implementation, T2 scratch caption regressions; do not rerun passing T17/T20/T21 acceptance.
