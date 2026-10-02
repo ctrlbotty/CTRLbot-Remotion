@@ -313,7 +313,7 @@ Placement and holds follow W01's rule. Corrections stay `TERMINATOR_CAPTION_CORR
   - Every region change the Shot list ties to a word is a `shots` entry with `at` from `cueFrame`, relative to the beat. Use `regions` arrays only for untimed changes, because they split the beat evenly. Add no hold keyframes: the shell drifts.
 - [x] T12: Verify T11's coupled shell migration in both shapes, chapters showing today's scenes until T13–T15 — files: videos/terminator-walkthrough.md
   - Verify: the per-task check on `poster`, `open`, `scan` and `close`, in both shapes.
-- [ ] T13: Build the proof, scan and server beats in a new `TerminatorBeats.tsx` to the Shot list — files: src/marketing/terminator-walkthrough/TerminatorBeats.tsx, src/marketing/terminator-walkthrough/TerminatorWalkthrough.tsx
+- [ ] T13: Build the proof, scan and server beats to the Shot list with readable stage framing — files: src/marketing/terminator-walkthrough/TerminatorBeats.tsx, src/marketing/terminator-walkthrough/TerminatorWalkthrough.tsx, src/marketing/terminator-walkthrough/terminatorWalkthroughData.ts
 - [ ] T14: Build the pin, raw-tcp and serial beats to the Shot list — files: src/marketing/terminator-walkthrough/TerminatorBeats.tsx
 - [ ] T15: Build the ssh and recap beats to the Shot list — files: src/marketing/terminator-walkthrough/TerminatorBeats.tsx
 - [ ] T16: Run the feature gates on both shapes, render both, write the .srt from the edit, check the voice, and record the results here — files: videos/terminator-walkthrough.md
