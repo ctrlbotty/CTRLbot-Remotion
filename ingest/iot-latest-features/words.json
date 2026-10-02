@@ -1,0 +1,5941 @@
+{
+ "tool": "faster-whisper 1.2.1",
+ "model": "medium.en",
+ "device": "cuda/float16",
+ "settings": "language=en beam_size=5 vad_filter word_timestamps condition_on_previous_text=False, product vocabulary as initial_prompt",
+ "source": "public/narration/iot-latest-features/source-normalized.m4a",
+ "duration": 418.77,
+ "seconds": 53.6,
+ "segments": [
+  {
+   "start": 0.94,
+   "end": 17.7,
+   "text": "Welcome to CTRLbot. This will be a short walkthrough of the latest features and benefits of the CTRLbot IoT app and the latest release. Let's get started.",
+   "words": [
+    {
+     "text": " Welcome",
+     "start": 0.94,
+     "end": 1.68,
+     "p": 0.783
+    },
+    {
+     "text": " to",
+     "start": 1.68,
+     "end": 2.04,
+     "p": 0.995
+    },
+    {
+     "text": " CTRLbot.",
+     "start": 2.04,
+     "end": 2.58,
+     "p": 0.19
+    },
+    {
+     "text": " This",
+     "start": 3.4,
+     "end": 4.28,
+     "p": 0.982
+    },
+    {
+     "text": " will",
+     "start": 4.28,
+     "end": 4.46,
+     "p": 0.988
+    },
+    {
+     "text": " be",
+     "start": 4.46,
+     "end": 4.86,
+     "p": 1.0
+    },
+    {
+     "text": " a",
+     "start": 4.86,
+     "end": 5.6,
+     "p": 0.998
+    },
+    {
+     "text": " short",
+     "start": 5.6,
+     "end": 5.96,
+     "p": 0.999
+    },
+    {
+     "text": " walkthrough",
+     "start": 5.96,
+     "end": 7.54,
+     "p": 0.905
+    },
+    {
+     "text": " of",
+     "start": 7.54,
+     "end": 8.08,
+     "p": 0.997
+    },
+    {
+     "text": " the",
+     "start": 8.08,
+     "end": 8.28,
+     "p": 0.999
+    },
+    {
+     "text": " latest",
+     "start": 8.28,
+     "end": 8.56,
+     "p": 0.999
+    },
+    {
+     "text": " features",
+     "start": 8.56,
+     "end": 9.14,
+     "p": 0.999
+    },
+    {
+     "text": " and",
+     "start": 9.14,
+     "end": 9.96,
+     "p": 0.98
+    },
+    {
+     "text": " benefits",
+     "start": 9.96,
+     "end": 10.7,
+     "p": 0.892
+    },
+    {
+     "text": " of",
+     "start": 10.7,
+     "end": 11.8,
+     "p": 0.995
+    },
+    {
+     "text": " the",
+     "start": 11.8,
+     "end": 12.7,
+     "p": 0.713
+    },
+    {
+     "text": " CTRLbot",
+     "start": 12.7,
+     "end": 13.26,
+     "p": 0.896
+    },
+    {
+     "text": " IoT",
+     "start": 13.26,
+     "end": 13.86,
+     "p": 0.847
+    },
+    {
+     "text": " app",
+     "start": 13.86,
+     "end": 14.26,
+     "p": 0.941
+    },
+    {
+     "text": " and",
+     "start": 14.26,
+     "end": 15.04,
+     "p": 0.889
+    },
+    {
+     "text": " the",
+     "start": 15.04,
+     "end": 15.24,
+     "p": 0.998
+    },
+    {
+     "text": " latest",
+     "start": 15.24,
+     "end": 15.44,
+     "p": 0.999
+    },
+    {
+     "text": " release.",
+     "start": 15.44,
+     "end": 15.98,
+     "p": 0.999
+    },
+    {
+     "text": " Let's",
+     "start": 16.92,
+     "end": 17.12,
+     "p": 0.99
+    },
+    {
+     "text": " get",
+     "start": 17.12,
+     "end": 17.26,
+     "p": 0.999
+    },
+    {
+     "text": " started.",
+     "start": 17.26,
+     "end": 17.7,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 22.15,
+   "end": 30.63,
+   "text": "We added a bunch of new devices and really increased our database.",
+   "words": [
+    {
+     "text": " We",
+     "start": 22.15,
+     "end": 23.17,
+     "p": 0.155
+    },
+    {
+     "text": " added",
+     "start": 23.17,
+     "end": 23.67,
+     "p": 0.961
+    },
+    {
+     "text": " a",
+     "start": 23.67,
+     "end": 24.25,
+     "p": 0.98
+    },
+    {
+     "text": " bunch",
+     "start": 24.25,
+     "end": 24.59,
+     "p": 0.912
+    },
+    {
+     "text": " of",
+     "start": 24.59,
+     "end": 24.81,
+     "p": 0.999
+    },
+    {
+     "text": " new",
+     "start": 24.81,
+     "end": 25.25,
+     "p": 0.998
+    },
+    {
+     "text": " devices",
+     "start": 25.25,
+     "end": 26.23,
+     "p": 0.925
+    },
+    {
+     "text": " and",
+     "start": 26.23,
+     "end": 27.57,
+     "p": 0.735
+    },
+    {
+     "text": " really",
+     "start": 27.57,
+     "end": 28.07,
+     "p": 0.938
+    },
+    {
+     "text": " increased",
+     "start": 28.07,
+     "end": 29.19,
+     "p": 0.826
+    },
+    {
+     "text": " our",
+     "start": 29.19,
+     "end": 29.79,
+     "p": 0.983
+    },
+    {
+     "text": " database.",
+     "start": 29.79,
+     "end": 30.63,
+     "p": 0.947
+    }
+   ]
+  },
+  {
+   "start": 31.49,
+   "end": 38.67,
+   "text": "It's already a really large database of hundreds of manufacturers, thousands of commands.",
+   "words": [
+    {
+     "text": " It's",
+     "start": 31.49,
+     "end": 32.25,
+     "p": 0.94
+    },
+    {
+     "text": " already",
+     "start": 32.25,
+     "end": 32.51,
+     "p": 0.987
+    },
+    {
+     "text": " a",
+     "start": 32.51,
+     "end": 32.89,
+     "p": 0.993
+    },
+    {
+     "text": " really",
+     "start": 32.89,
+     "end": 33.15,
+     "p": 0.99
+    },
+    {
+     "text": " large",
+     "start": 33.15,
+     "end": 33.69,
+     "p": 0.998
+    },
+    {
+     "text": " database",
+     "start": 33.69,
+     "end": 34.41,
+     "p": 0.957
+    },
+    {
+     "text": " of",
+     "start": 34.41,
+     "end": 34.71,
+     "p": 0.971
+    },
+    {
+     "text": " hundreds",
+     "start": 34.71,
+     "end": 34.93,
+     "p": 0.994
+    },
+    {
+     "text": " of",
+     "start": 34.93,
+     "end": 35.19,
+     "p": 0.996
+    },
+    {
+     "text": " manufacturers,",
+     "start": 35.19,
+     "end": 35.83,
+     "p": 0.995
+    },
+    {
+     "text": " thousands",
+     "start": 36.29,
+     "end": 36.51,
+     "p": 0.989
+    },
+    {
+     "text": " of",
+     "start": 36.51,
+     "end": 37.79,
+     "p": 0.991
+    },
+    {
+     "text": " commands.",
+     "start": 37.79,
+     "end": 38.67,
+     "p": 0.938
+    }
+   ]
+  },
+  {
+   "start": 39.63,
+   "end": 45.55,
+   "text": "And what we did was we added a new category called network switches.",
+   "words": [
+    {
+     "text": " And",
+     "start": 39.63,
+     "end": 39.77,
+     "p": 0.861
+    },
+    {
+     "text": " what",
+     "start": 39.77,
+     "end": 40.13,
+     "p": 0.875
+    },
+    {
+     "text": " we",
+     "start": 40.13,
+     "end": 40.49,
+     "p": 0.999
+    },
+    {
+     "text": " did",
+     "start": 40.49,
+     "end": 40.73,
+     "p": 0.967
+    },
+    {
+     "text": " was",
+     "start": 40.73,
+     "end": 40.95,
+     "p": 0.988
+    },
+    {
+     "text": " we",
+     "start": 40.95,
+     "end": 41.21,
+     "p": 0.977
+    },
+    {
+     "text": " added",
+     "start": 41.21,
+     "end": 41.65,
+     "p": 0.999
+    },
+    {
+     "text": " a",
+     "start": 41.65,
+     "end": 43.15,
+     "p": 0.965
+    },
+    {
+     "text": " new",
+     "start": 43.15,
+     "end": 43.31,
+     "p": 0.998
+    },
+    {
+     "text": " category",
+     "start": 43.31,
+     "end": 43.87,
+     "p": 1.0
+    },
+    {
+     "text": " called",
+     "start": 43.87,
+     "end": 44.41,
+     "p": 0.99
+    },
+    {
+     "text": " network",
+     "start": 44.41,
+     "end": 45.03,
+     "p": 0.805
+    },
+    {
+     "text": " switches.",
+     "start": 45.03,
+     "end": 45.55,
+     "p": 0.996
+    }
+   ]
+  },
+  {
+   "start": 45.77,
+   "end": 47.61,
+   "text": "We only have the Luxel in there right now.",
+   "words": [
+    {
+     "text": " We",
+     "start": 45.77,
+     "end": 45.77,
+     "p": 0.632
+    },
+    {
+     "text": " only",
+     "start": 45.77,
+     "end": 45.91,
+     "p": 0.851
+    },
+    {
+     "text": " have",
+     "start": 45.91,
+     "end": 46.15,
+     "p": 0.999
+    },
+    {
+     "text": " the",
+     "start": 46.15,
+     "end": 46.41,
+     "p": 0.961
+    },
+    {
+     "text": " Luxel",
+     "start": 46.41,
+     "end": 46.75,
+     "p": 0.612
+    },
+    {
+     "text": " in",
+     "start": 46.75,
+     "end": 46.91,
+     "p": 0.984
+    },
+    {
+     "text": " there",
+     "start": 46.91,
+     "end": 47.05,
+     "p": 0.998
+    },
+    {
+     "text": " right",
+     "start": 47.05,
+     "end": 47.23,
+     "p": 0.998
+    },
+    {
+     "text": " now.",
+     "start": 47.23,
+     "end": 47.61,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 47.61,
+   "end": 52.15,
+   "text": "but this is gonna have a lot more switches coming up",
+   "words": [
+    {
+     "text": " but",
+     "start": 47.61,
+     "end": 47.85,
+     "p": 0.724
+    },
+    {
+     "text": " this",
+     "start": 47.85,
+     "end": 48.29,
+     "p": 0.988
+    },
+    {
+     "text": " is",
+     "start": 48.29,
+     "end": 49.05,
+     "p": 0.988
+    },
+    {
+     "text": " gonna",
+     "start": 49.05,
+     "end": 49.27,
+     "p": 0.755
+    },
+    {
+     "text": " have",
+     "start": 49.27,
+     "end": 49.97,
+     "p": 0.998
+    },
+    {
+     "text": " a",
+     "start": 49.97,
+     "end": 50.17,
+     "p": 0.597
+    },
+    {
+     "text": " lot",
+     "start": 50.17,
+     "end": 50.33,
+     "p": 1.0
+    },
+    {
+     "text": " more",
+     "start": 50.33,
+     "end": 50.63,
+     "p": 1.0
+    },
+    {
+     "text": " switches",
+     "start": 50.63,
+     "end": 51.05,
+     "p": 0.99
+    },
+    {
+     "text": " coming",
+     "start": 51.05,
+     "end": 51.73,
+     "p": 0.997
+    },
+    {
+     "text": " up",
+     "start": 51.73,
+     "end": 52.15,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 52.15,
+   "end": 56.33,
+   "text": "and it's gonna aid in setting up switches for AV over IP.",
+   "words": [
+    {
+     "text": " and",
+     "start": 52.15,
+     "end": 52.51,
+     "p": 0.686
+    },
+    {
+     "text": " it's",
+     "start": 52.51,
+     "end": 52.73,
+     "p": 0.969
+    },
+    {
+     "text": " gonna",
+     "start": 52.73,
+     "end": 52.91,
+     "p": 0.955
+    },
+    {
+     "text": " aid",
+     "start": 52.91,
+     "end": 53.25,
+     "p": 0.992
+    },
+    {
+     "text": " in",
+     "start": 53.25,
+     "end": 53.57,
+     "p": 0.979
+    },
+    {
+     "text": " setting",
+     "start": 53.57,
+     "end": 54.03,
+     "p": 0.963
+    },
+    {
+     "text": " up",
+     "start": 54.03,
+     "end": 54.29,
+     "p": 0.999
+    },
+    {
+     "text": " switches",
+     "start": 54.29,
+     "end": 54.69,
+     "p": 0.996
+    },
+    {
+     "text": " for",
+     "start": 54.69,
+     "end": 55.51,
+     "p": 0.997
+    },
+    {
+     "text": " AV",
+     "start": 55.51,
+     "end": 55.75,
+     "p": 0.969
+    },
+    {
+     "text": " over",
+     "start": 55.75,
+     "end": 55.97,
+     "p": 0.826
+    },
+    {
+     "text": " IP.",
+     "start": 55.97,
+     "end": 56.33,
+     "p": 0.995
+    }
+   ]
+  },
+  {
+   "start": 57.19,
+   "end": 61.21,
+   "text": "And on that note, we added a lot more AV over IP endpoints.",
+   "words": [
+    {
+     "text": " And",
+     "start": 57.19,
+     "end": 57.39,
+     "p": 0.989
+    },
+    {
+     "text": " on",
+     "start": 57.39,
+     "end": 57.53,
+     "p": 0.997
+    },
+    {
+     "text": " that",
+     "start": 57.53,
+     "end": 57.75,
+     "p": 1.0
+    },
+    {
+     "text": " note,",
+     "start": 57.75,
+     "end": 57.95,
+     "p": 0.993
+    },
+    {
+     "text": " we",
+     "start": 57.95,
+     "end": 58.17,
+     "p": 1.0
+    },
+    {
+     "text": " added",
+     "start": 58.17,
+     "end": 58.41,
+     "p": 0.998
+    },
+    {
+     "text": " a",
+     "start": 58.41,
+     "end": 58.79,
+     "p": 0.976
+    },
+    {
+     "text": " lot",
+     "start": 58.79,
+     "end": 59.15,
+     "p": 0.998
+    },
+    {
+     "text": " more",
+     "start": 59.15,
+     "end": 59.51,
+     "p": 0.999
+    },
+    {
+     "text": " AV",
+     "start": 59.51,
+     "end": 59.85,
+     "p": 0.98
+    },
+    {
+     "text": " over",
+     "start": 59.85,
+     "end": 60.13,
+     "p": 0.969
+    },
+    {
+     "text": " IP",
+     "start": 60.13,
+     "end": 60.51,
+     "p": 0.995
+    },
+    {
+     "text": " endpoints.",
+     "start": 60.51,
+     "end": 61.21,
+     "p": 0.882
+    }
+   ]
+  },
+  {
+   "start": 61.83,
+   "end": 66.31,
+   "text": "We have IPMX, which is this universal protocol",
+   "words": [
+    {
+     "text": " We",
+     "start": 61.83,
+     "end": 62.17,
+     "p": 0.997
+    },
+    {
+     "text": " have",
+     "start": 62.17,
+     "end": 62.35,
+     "p": 1.0
+    },
+    {
+     "text": " IPMX,",
+     "start": 62.35,
+     "end": 63.25,
+     "p": 0.916
+    },
+    {
+     "text": " which",
+     "start": 63.31,
+     "end": 63.45,
+     "p": 1.0
+    },
+    {
+     "text": " is",
+     "start": 63.45,
+     "end": 63.65,
+     "p": 0.996
+    },
+    {
+     "text": " this",
+     "start": 63.65,
+     "end": 63.87,
+     "p": 0.906
+    },
+    {
+     "text": " universal",
+     "start": 63.87,
+     "end": 64.87,
+     "p": 0.989
+    },
+    {
+     "text": " protocol",
+     "start": 64.87,
+     "end": 66.31,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 66.31,
+   "end": 71.27,
+   "text": "for AV over IP switching and control.",
+   "words": [
+    {
+     "text": " for",
+     "start": 66.31,
+     "end": 67.17,
+     "p": 0.996
+    },
+    {
+     "text": " AV",
+     "start": 67.17,
+     "end": 68.41,
+     "p": 0.981
+    },
+    {
+     "text": " over",
+     "start": 68.41,
+     "end": 68.67,
+     "p": 0.993
+    },
+    {
+     "text": " IP",
+     "start": 68.67,
+     "end": 68.99,
+     "p": 0.99
+    },
+    {
+     "text": " switching",
+     "start": 68.99,
+     "end": 69.63,
+     "p": 0.985
+    },
+    {
+     "text": " and",
+     "start": 69.63,
+     "end": 70.77,
+     "p": 0.518
+    },
+    {
+     "text": " control.",
+     "start": 70.77,
+     "end": 71.27,
+     "p": 0.839
+    }
+   ]
+  },
+  {
+   "start": 71.8,
+   "end": 74.73,
+   "text": "We also added Kramer, Matrox,",
+   "words": [
+    {
+     "text": " We",
+     "start": 71.8,
+     "end": 72.15,
+     "p": 0.992
+    },
+    {
+     "text": " also",
+     "start": 72.15,
+     "end": 72.41,
+     "p": 1.0
+    },
+    {
+     "text": " added",
+     "start": 72.41,
+     "end": 72.75,
+     "p": 0.993
+    },
+    {
+     "text": " Kramer,",
+     "start": 72.75,
+     "end": 73.31,
+     "p": 0.616
+    },
+    {
+     "text": " Matrox,",
+     "start": 74.31,
+     "end": 74.73,
+     "p": 0.921
+    }
+   ]
+  },
+  {
+   "start": 74.73,
+   "end": 79.45,
+   "text": "and all research endpoints for AV over IP.",
+   "words": [
+    {
+     "text": " and",
+     "start": 74.73,
+     "end": 75.53,
+     "p": 0.579
+    },
+    {
+     "text": " all",
+     "start": 75.53,
+     "end": 76.05,
+     "p": 0.352
+    },
+    {
+     "text": " research",
+     "start": 76.05,
+     "end": 76.75,
+     "p": 0.974
+    },
+    {
+     "text": " endpoints",
+     "start": 76.75,
+     "end": 77.83,
+     "p": 0.895
+    },
+    {
+     "text": " for",
+     "start": 77.83,
+     "end": 78.63,
+     "p": 0.958
+    },
+    {
+     "text": " AV",
+     "start": 78.63,
+     "end": 78.85,
+     "p": 0.971
+    },
+    {
+     "text": " over",
+     "start": 78.85,
+     "end": 79.11,
+     "p": 0.84
+    },
+    {
+     "text": " IP.",
+     "start": 79.11,
+     "end": 79.45,
+     "p": 0.996
+    }
+   ]
+  },
+  {
+   "start": 80.37,
+   "end": 84.99,
+   "text": "As far as endpoints for RS-232,",
+   "words": [
+    {
+     "text": " As",
+     "start": 80.37,
+     "end": 80.51,
+     "p": 0.995
+    },
+    {
+     "text": " far",
+     "start": 80.51,
+     "end": 80.75,
+     "p": 0.998
+    },
+    {
+     "text": " as",
+     "start": 80.75,
+     "end": 81.29,
+     "p": 0.998
+    },
+    {
+     "text": " endpoints",
+     "start": 81.29,
+     "end": 82.27,
+     "p": 0.961
+    },
+    {
+     "text": " for",
+     "start": 82.27,
+     "end": 82.97,
+     "p": 0.982
+    },
+    {
+     "text": " RS",
+     "start": 82.97,
+     "end": 84.33,
+     "p": 0.908
+    },
+    {
+     "text": "-232,",
+     "start": 84.33,
+     "end": 84.99,
+     "p": 0.695
+    }
+   ]
+  },
+  {
+   "start": 85.75,
+   "end": 90.17,
+   "text": "IP to RS-232, or IP to IR,",
+   "words": [
+    {
+     "text": " IP",
+     "start": 85.75,
+     "end": 86.75,
+     "p": 0.838
+    },
+    {
+     "text": " to",
+     "start": 86.75,
+     "end": 87.45,
+     "p": 0.98
+    },
+    {
+     "text": " RS",
+     "start": 87.45,
+     "end": 87.85,
+     "p": 0.998
+    },
+    {
+     "text": "-232,",
+     "start": 87.85,
+     "end": 88.31,
+     "p": 0.993
+    },
+    {
+     "text": " or",
+     "start": 88.37,
+     "end": 88.97,
+     "p": 0.996
+    },
+    {
+     "text": " IP",
+     "start": 88.97,
+     "end": 89.33,
+     "p": 0.996
+    },
+    {
+     "text": " to",
+     "start": 89.33,
+     "end": 89.79,
+     "p": 0.992
+    },
+    {
+     "text": " IR,",
+     "start": 89.79,
+     "end": 90.17,
+     "p": 0.996
+    }
+   ]
+  },
+  {
+   "start": 90.41,
+   "end": 94.77,
+   "text": "we've added additional models for Global Cache.",
+   "words": [
+    {
+     "text": " we've",
+     "start": 90.41,
+     "end": 90.63,
+     "p": 0.995
+    },
+    {
+     "text": " added",
+     "start": 90.63,
+     "end": 90.93,
+     "p": 0.999
+    },
+    {
+     "text": " additional",
+     "start": 90.93,
+     "end": 92.15,
+     "p": 0.998
+    },
+    {
+     "text": " models",
+     "start": 92.15,
+     "end": 93.69,
+     "p": 0.999
+    },
+    {
+     "text": " for",
+     "start": 93.69,
+     "end": 94.15,
+     "p": 0.998
+    },
+    {
+     "text": " Global",
+     "start": 94.15,
+     "end": 94.47,
+     "p": 0.578
+    },
+    {
+     "text": " Cache.",
+     "start": 94.47,
+     "end": 94.77,
+     "p": 0.74
+    }
+   ]
+  },
+  {
+   "start": 95.37,
+   "end": 97.33,
+   "text": "We have their complete line now.",
+   "words": [
+    {
+     "text": " We",
+     "start": 95.37,
+     "end": 95.67,
+     "p": 0.965
+    },
+    {
+     "text": " have",
+     "start": 95.67,
+     "end": 95.81,
+     "p": 0.999
+    },
+    {
+     "text": " their",
+     "start": 95.81,
+     "end": 95.93,
+     "p": 0.904
+    },
+    {
+     "text": " complete",
+     "start": 95.93,
+     "end": 96.41,
+     "p": 0.979
+    },
+    {
+     "text": " line",
+     "start": 96.41,
+     "end": 96.83,
+     "p": 0.998
+    },
+    {
+     "text": " now.",
+     "start": 96.83,
+     "end": 97.33,
+     "p": 0.99
+    }
+   ]
+  },
+  {
+   "start": 97.63,
+   "end": 100.11,
+   "text": "We also added a Pooser,",
+   "words": [
+    {
+     "text": " We",
+     "start": 97.63,
+     "end": 98.11,
+     "p": 0.997
+    },
+    {
+     "text": " also",
+     "start": 98.11,
+     "end": 98.45,
+     "p": 0.993
+    },
+    {
+     "text": " added",
+     "start": 98.45,
+     "end": 99.21,
+     "p": 0.999
+    },
+    {
+     "text": " a",
+     "start": 99.21,
+     "end": 99.77,
+     "p": 0.68
+    },
+    {
+     "text": " Pooser,",
+     "start": 99.77,
+     "end": 100.11,
+     "p": 0.462
+    }
+   ]
+  },
+  {
+   "start": 100.11,
+   "end": 108.69,
+   "text": "which is an industrial-type wireless or wired Ethernet portal",
+   "words": [
+    {
+     "text": " which",
+     "start": 100.11,
+     "end": 100.45,
+     "p": 0.438
+    },
+    {
+     "text": " is",
+     "start": 100.45,
+     "end": 100.69,
+     "p": 0.975
+    },
+    {
+     "text": " an",
+     "start": 100.69,
+     "end": 101.29,
+     "p": 0.376
+    },
+    {
+     "text": " industrial",
+     "start": 101.29,
+     "end": 101.83,
+     "p": 0.993
+    },
+    {
+     "text": "-type",
+     "start": 101.83,
+     "end": 102.71,
+     "p": 0.607
+    },
+    {
+     "text": " wireless",
+     "start": 102.71,
+     "end": 103.77,
+     "p": 0.892
+    },
+    {
+     "text": " or",
+     "start": 103.77,
+     "end": 104.99,
+     "p": 0.879
+    },
+    {
+     "text": " wired",
+     "start": 104.99,
+     "end": 105.93,
+     "p": 0.996
+    },
+    {
+     "text": " Ethernet",
+     "start": 105.93,
+     "end": 106.99,
+     "p": 0.797
+    },
+    {
+     "text": " portal",
+     "start": 106.99,
+     "end": 108.69,
+     "p": 0.947
+    }
+   ]
+  },
+  {
+   "start": 108.69,
+   "end": 116.75,
+   "text": "and allows you to convert IP to RS-232 or RS-45",
+   "words": [
+    {
+     "text": " and",
+     "start": 108.69,
+     "end": 109.59,
+     "p": 0.441
+    },
+    {
+     "text": " allows",
+     "start": 109.59,
+     "end": 110.17,
+     "p": 0.89
+    },
+    {
+     "text": " you",
+     "start": 110.17,
+     "end": 110.53,
+     "p": 0.998
+    },
+    {
+     "text": " to",
+     "start": 110.53,
+     "end": 110.83,
+     "p": 0.999
+    },
+    {
+     "text": " convert",
+     "start": 110.83,
+     "end": 111.53,
+     "p": 0.988
+    },
+    {
+     "text": " IP",
+     "start": 111.53,
+     "end": 112.05,
+     "p": 0.993
+    },
+    {
+     "text": " to",
+     "start": 112.05,
+     "end": 113.25,
+     "p": 0.996
+    },
+    {
+     "text": " RS",
+     "start": 113.25,
+     "end": 113.55,
+     "p": 0.948
+    },
+    {
+     "text": "-232",
+     "start": 113.55,
+     "end": 113.99,
+     "p": 0.829
+    },
+    {
+     "text": " or",
+     "start": 113.99,
+     "end": 114.89,
+     "p": 0.95
+    },
+    {
+     "text": " RS",
+     "start": 114.89,
+     "end": 115.39,
+     "p": 0.992
+    },
+    {
+     "text": "-45",
+     "start": 115.39,
+     "end": 116.75,
+     "p": 0.894
+    }
+   ]
+  },
+  {
+   "start": 116.75,
+   "end": 120.39,
+   "text": "or just connect the tablet straight to the device",
+   "words": [
+    {
+     "text": " or",
+     "start": 116.75,
+     "end": 117.41,
+     "p": 0.504
+    },
+    {
+     "text": " just",
+     "start": 117.41,
+     "end": 117.63,
+     "p": 0.986
+    },
+    {
+     "text": " connect",
+     "start": 117.63,
+     "end": 118.07,
+     "p": 0.997
+    },
+    {
+     "text": " the",
+     "start": 118.07,
+     "end": 118.65,
+     "p": 0.99
+    },
+    {
+     "text": " tablet",
+     "start": 118.65,
+     "end": 119.03,
+     "p": 0.918
+    },
+    {
+     "text": " straight",
+     "start": 119.03,
+     "end": 119.39,
+     "p": 0.993
+    },
+    {
+     "text": " to",
+     "start": 119.39,
+     "end": 119.71,
+     "p": 1.0
+    },
+    {
+     "text": " the",
+     "start": 119.71,
+     "end": 119.91,
+     "p": 0.999
+    },
+    {
+     "text": " device",
+     "start": 119.91,
+     "end": 120.39,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 120.39,
+   "end": 124.11,
+   "text": "and then control IP devices on the network.",
+   "words": [
+    {
+     "text": " and",
+     "start": 120.39,
+     "end": 121.01,
+     "p": 0.938
+    },
+    {
+     "text": " then",
+     "start": 121.01,
+     "end": 121.21,
+     "p": 0.983
+    },
+    {
+     "text": " control",
+     "start": 121.21,
+     "end": 121.81,
+     "p": 0.997
+    },
+    {
+     "text": " IP",
+     "start": 121.81,
+     "end": 122.35,
+     "p": 0.995
+    },
+    {
+     "text": " devices",
+     "start": 122.35,
+     "end": 122.83,
+     "p": 0.998
+    },
+    {
+     "text": " on",
+     "start": 122.83,
+     "end": 123.53,
+     "p": 0.999
+    },
+    {
+     "text": " the",
+     "start": 123.53,
+     "end": 123.69,
+     "p": 0.999
+    },
+    {
+     "text": " network.",
+     "start": 123.69,
+     "end": 124.11,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 124.87,
+   "end": 126.87,
+   "text": "So this is a great, great product.",
+   "words": [
+    {
+     "text": " So",
+     "start": 124.87,
+     "end": 125.01,
+     "p": 0.654
+    },
+    {
+     "text": " this",
+     "start": 125.01,
+     "end": 125.21,
+     "p": 0.862
+    },
+    {
+     "text": " is",
+     "start": 125.21,
+     "end": 125.61,
+     "p": 0.979
+    },
+    {
+     "text": " a",
+     "start": 125.61,
+     "end": 125.75,
+     "p": 0.971
+    },
+    {
+     "text": " great,",
+     "start": 125.75,
+     "end": 126.07,
+     "p": 0.999
+    },
+    {
+     "text": " great",
+     "start": 126.07,
+     "end": 126.35,
+     "p": 0.999
+    },
+    {
+     "text": " product.",
+     "start": 126.35,
+     "end": 126.87,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 126.87,
+   "end": 132.99,
+   "text": "Um, and, and so, yeah, we added all these, these devices here, but the, the, the biggest,",
+   "words": [
+    {
+     "text": " Um,",
+     "start": 126.87,
+     "end": 127.55,
+     "p": 0.051
+    },
+    {
+     "text": " and,",
+     "start": 128.27,
+     "end": 128.67,
+     "p": 0.921
+    },
+    {
+     "text": " and",
+     "start": 129.01,
+     "end": 129.01,
+     "p": 0.991
+    },
+    {
+     "text": " so,",
+     "start": 129.01,
+     "end": 129.27,
+     "p": 0.993
+    },
+    {
+     "text": " yeah,",
+     "start": 129.27,
+     "end": 129.59,
+     "p": 0.97
+    },
+    {
+     "text": " we",
+     "start": 129.59,
+     "end": 129.77,
+     "p": 0.998
+    },
+    {
+     "text": " added",
+     "start": 129.77,
+     "end": 129.99,
+     "p": 0.996
+    },
+    {
+     "text": " all",
+     "start": 129.99,
+     "end": 130.21,
+     "p": 0.999
+    },
+    {
+     "text": " these,",
+     "start": 130.21,
+     "end": 130.39,
+     "p": 0.932
+    },
+    {
+     "text": " these",
+     "start": 130.39,
+     "end": 130.75,
+     "p": 0.997
+    },
+    {
+     "text": " devices",
+     "start": 130.75,
+     "end": 131.11,
+     "p": 0.999
+    },
+    {
+     "text": " here,",
+     "start": 131.11,
+     "end": 131.47,
+     "p": 0.997
+    },
+    {
+     "text": " but",
+     "start": 131.47,
+     "end": 131.97,
+     "p": 0.999
+    },
+    {
+     "text": " the,",
+     "start": 131.97,
+     "end": 132.21,
+     "p": 0.989
+    },
+    {
+     "text": " the,",
+     "start": 132.21,
+     "end": 132.49,
+     "p": 1.0
+    },
+    {
+     "text": " the",
+     "start": 132.49,
+     "end": 132.69,
+     "p": 0.998
+    },
+    {
+     "text": " biggest,",
+     "start": 132.69,
+     "end": 132.99,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 133.31,
+   "end": 141.87,
+   "text": "uh, uh, you know, quality of life, uh, and just, um, uh, feature that we added is this",
+   "words": [
+    {
+     "text": " uh,",
+     "start": 133.31,
+     "end": 133.59,
+     "p": 0.844
+    },
+    {
+     "text": " uh,",
+     "start": 133.59,
+     "end": 134.21,
+     "p": 0.979
+    },
+    {
+     "text": " you",
+     "start": 134.23,
+     "end": 134.41,
+     "p": 0.993
+    },
+    {
+     "text": " know,",
+     "start": 134.41,
+     "end": 134.63,
+     "p": 0.999
+    },
+    {
+     "text": " quality",
+     "start": 134.79,
+     "end": 135.03,
+     "p": 0.992
+    },
+    {
+     "text": " of",
+     "start": 135.03,
+     "end": 135.23,
+     "p": 0.998
+    },
+    {
+     "text": " life,",
+     "start": 135.23,
+     "end": 135.51,
+     "p": 0.998
+    },
+    {
+     "text": " uh,",
+     "start": 135.51,
+     "end": 136.17,
+     "p": 0.993
+    },
+    {
+     "text": " and",
+     "start": 136.47,
+     "end": 136.59,
+     "p": 0.286
+    },
+    {
+     "text": " just,",
+     "start": 136.59,
+     "end": 136.87,
+     "p": 0.991
+    },
+    {
+     "text": " um,",
+     "start": 136.87,
+     "end": 138.01,
+     "p": 0.951
+    },
+    {
+     "text": " uh,",
+     "start": 138.75,
+     "end": 138.75,
+     "p": 0.769
+    },
+    {
+     "text": " feature",
+     "start": 138.75,
+     "end": 139.07,
+     "p": 0.829
+    },
+    {
+     "text": " that",
+     "start": 139.07,
+     "end": 139.27,
+     "p": 0.998
+    },
+    {
+     "text": " we",
+     "start": 139.27,
+     "end": 139.45,
+     "p": 0.998
+    },
+    {
+     "text": " added",
+     "start": 139.45,
+     "end": 139.89,
+     "p": 0.977
+    },
+    {
+     "text": " is",
+     "start": 139.89,
+     "end": 141.59,
+     "p": 0.574
+    },
+    {
+     "text": " this",
+     "start": 141.59,
+     "end": 141.87,
+     "p": 0.973
+    }
+   ]
+  },
+  {
+   "start": 141.87,
+   "end": 144.17,
+   "text": "device discovery up here in the corner, right?",
+   "words": [
+    {
+     "text": " device",
+     "start": 141.87,
+     "end": 142.21,
+     "p": 0.997
+    },
+    {
+     "text": " discovery",
+     "start": 142.21,
+     "end": 142.69,
+     "p": 0.996
+    },
+    {
+     "text": " up",
+     "start": 142.69,
+     "end": 142.89,
+     "p": 0.996
+    },
+    {
+     "text": " here",
+     "start": 142.89,
+     "end": 143.03,
+     "p": 1.0
+    },
+    {
+     "text": " in",
+     "start": 143.03,
+     "end": 143.15,
+     "p": 0.992
+    },
+    {
+     "text": " the",
+     "start": 143.15,
+     "end": 143.27,
+     "p": 0.788
+    },
+    {
+     "text": " corner,",
+     "start": 143.27,
+     "end": 143.57,
+     "p": 0.999
+    },
+    {
+     "text": " right?",
+     "start": 143.57,
+     "end": 144.17,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 144.35,
+   "end": 150.25,
+   "text": "And you can see here, um, what, what this is doing is going out and scanning, uh, the,",
+   "words": [
+    {
+     "text": " And",
+     "start": 144.35,
+     "end": 144.91,
+     "p": 0.994
+    },
+    {
+     "text": " you",
+     "start": 144.91,
+     "end": 145.01,
+     "p": 0.999
+    },
+    {
+     "text": " can",
+     "start": 145.01,
+     "end": 145.15,
+     "p": 1.0
+    },
+    {
+     "text": " see",
+     "start": 145.15,
+     "end": 145.37,
+     "p": 1.0
+    },
+    {
+     "text": " here,",
+     "start": 145.37,
+     "end": 145.69,
+     "p": 0.999
+    },
+    {
+     "text": " um,",
+     "start": 145.69,
+     "end": 146.35,
+     "p": 0.994
+    },
+    {
+     "text": " what,",
+     "start": 146.45,
+     "end": 146.59,
+     "p": 0.924
+    },
+    {
+     "text": " what",
+     "start": 146.77,
+     "end": 146.85,
+     "p": 0.998
+    },
+    {
+     "text": " this",
+     "start": 146.85,
+     "end": 147.09,
+     "p": 0.999
+    },
+    {
+     "text": " is",
+     "start": 147.09,
+     "end": 147.33,
+     "p": 0.998
+    },
+    {
+     "text": " doing",
+     "start": 147.33,
+     "end": 147.65,
+     "p": 0.999
+    },
+    {
+     "text": " is",
+     "start": 147.65,
+     "end": 148.09,
+     "p": 0.986
+    },
+    {
+     "text": " going",
+     "start": 148.09,
+     "end": 148.31,
+     "p": 1.0
+    },
+    {
+     "text": " out",
+     "start": 148.31,
+     "end": 148.57,
+     "p": 1.0
+    },
+    {
+     "text": " and",
+     "start": 148.57,
+     "end": 148.77,
+     "p": 0.963
+    },
+    {
+     "text": " scanning,",
+     "start": 148.77,
+     "end": 149.23,
+     "p": 0.998
+    },
+    {
+     "text": " uh,",
+     "start": 149.23,
+     "end": 149.89,
+     "p": 0.998
+    },
+    {
+     "text": " the,",
+     "start": 149.95,
+     "end": 150.25,
+     "p": 0.986
+    }
+   ]
+  },
+  {
+   "start": 150.25,
+   "end": 152.85,
+   "text": "the network for any connected devices, right?",
+   "words": [
+    {
+     "text": " the",
+     "start": 150.25,
+     "end": 150.49,
+     "p": 1.0
+    },
+    {
+     "text": " network",
+     "start": 150.49,
+     "end": 150.75,
+     "p": 0.998
+    },
+    {
+     "text": " for",
+     "start": 150.75,
+     "end": 150.99,
+     "p": 0.999
+    },
+    {
+     "text": " any",
+     "start": 150.99,
+     "end": 151.21,
+     "p": 0.999
+    },
+    {
+     "text": " connected",
+     "start": 151.21,
+     "end": 151.59,
+     "p": 0.986
+    },
+    {
+     "text": " devices,",
+     "start": 151.59,
+     "end": 152.19,
+     "p": 0.997
+    },
+    {
+     "text": " right?",
+     "start": 152.23,
+     "end": 152.85,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 152.85,
+   "end": 171.57,
+   "text": "And then it's making a match when it sees something on the network that is matching a device driver in the database, then it'll allow you to add that driver just with one click and see how easy that is.",
+   "words": [
+    {
+     "text": " And",
+     "start": 152.85,
+     "end": 153.63,
+     "p": 0.741
+    },
+    {
+     "text": " then",
+     "start": 153.63,
+     "end": 154.09,
+     "p": 0.998
+    },
+    {
+     "text": " it's",
+     "start": 154.09,
+     "end": 154.59,
+     "p": 0.89
+    },
+    {
+     "text": " making",
+     "start": 154.59,
+     "end": 154.87,
+     "p": 0.998
+    },
+    {
+     "text": " a",
+     "start": 154.87,
+     "end": 155.53,
+     "p": 0.994
+    },
+    {
+     "text": " match",
+     "start": 155.53,
+     "end": 156.03,
+     "p": 0.982
+    },
+    {
+     "text": " when",
+     "start": 156.03,
+     "end": 156.31,
+     "p": 0.863
+    },
+    {
+     "text": " it",
+     "start": 156.31,
+     "end": 156.53,
+     "p": 0.994
+    },
+    {
+     "text": " sees",
+     "start": 156.53,
+     "end": 157.11,
+     "p": 0.954
+    },
+    {
+     "text": " something",
+     "start": 157.11,
+     "end": 157.59,
+     "p": 0.998
+    },
+    {
+     "text": " on",
+     "start": 157.59,
+     "end": 158.31,
+     "p": 0.998
+    },
+    {
+     "text": " the",
+     "start": 158.31,
+     "end": 158.47,
+     "p": 0.999
+    },
+    {
+     "text": " network",
+     "start": 158.47,
+     "end": 158.97,
+     "p": 0.992
+    },
+    {
+     "text": " that",
+     "start": 158.97,
+     "end": 159.87,
+     "p": 0.958
+    },
+    {
+     "text": " is",
+     "start": 159.87,
+     "end": 160.35,
+     "p": 0.999
+    },
+    {
+     "text": " matching",
+     "start": 160.35,
+     "end": 160.95,
+     "p": 0.998
+    },
+    {
+     "text": " a",
+     "start": 160.95,
+     "end": 161.93,
+     "p": 0.943
+    },
+    {
+     "text": " device",
+     "start": 161.93,
+     "end": 162.27,
+     "p": 0.989
+    },
+    {
+     "text": " driver",
+     "start": 162.27,
+     "end": 162.61,
+     "p": 0.991
+    },
+    {
+     "text": " in",
+     "start": 162.61,
+     "end": 162.79,
+     "p": 0.991
+    },
+    {
+     "text": " the",
+     "start": 162.79,
+     "end": 162.97,
+     "p": 1.0
+    },
+    {
+     "text": " database,",
+     "start": 162.97,
+     "end": 163.35,
+     "p": 0.997
+    },
+    {
+     "text": " then",
+     "start": 163.35,
+     "end": 164.35,
+     "p": 0.983
+    },
+    {
+     "text": " it'll",
+     "start": 164.35,
+     "end": 165.11,
+     "p": 0.789
+    },
+    {
+     "text": " allow",
+     "start": 165.11,
+     "end": 165.31,
+     "p": 0.999
+    },
+    {
+     "text": " you",
+     "start": 165.31,
+     "end": 165.53,
+     "p": 1.0
+    },
+    {
+     "text": " to",
+     "start": 165.53,
+     "end": 165.79,
+     "p": 0.999
+    },
+    {
+     "text": " add",
+     "start": 165.79,
+     "end": 166.11,
+     "p": 0.997
+    },
+    {
+     "text": " that",
+     "start": 166.11,
+     "end": 166.93,
+     "p": 0.994
+    },
+    {
+     "text": " driver",
+     "start": 166.93,
+     "end": 167.83,
+     "p": 0.678
+    },
+    {
+     "text": " just",
+     "start": 167.83,
+     "end": 169.23,
+     "p": 0.822
+    },
+    {
+     "text": " with",
+     "start": 169.23,
+     "end": 169.49,
+     "p": 0.999
+    },
+    {
+     "text": " one",
+     "start": 169.49,
+     "end": 169.75,
+     "p": 0.992
+    },
+    {
+     "text": " click",
+     "start": 169.75,
+     "end": 170.09,
+     "p": 0.99
+    },
+    {
+     "text": " and",
+     "start": 170.09,
+     "end": 170.49,
+     "p": 0.93
+    },
+    {
+     "text": " see",
+     "start": 170.49,
+     "end": 170.69,
+     "p": 0.999
+    },
+    {
+     "text": " how",
+     "start": 170.69,
+     "end": 170.83,
+     "p": 0.998
+    },
+    {
+     "text": " easy",
+     "start": 170.83,
+     "end": 171.01,
+     "p": 0.882
+    },
+    {
+     "text": " that",
+     "start": 171.01,
+     "end": 171.23,
+     "p": 0.993
+    },
+    {
+     "text": " is.",
+     "start": 171.23,
+     "end": 171.57,
+     "p": 0.997
+    }
+   ]
+  },
+  {
+   "start": 171.57,
+   "end": 176.61,
+   "text": "And right now I'm adding some Matrox MGX decoders",
+   "words": [
+    {
+     "text": " And",
+     "start": 171.57,
+     "end": 171.93,
+     "p": 0.458
+    },
+    {
+     "text": " right",
+     "start": 171.93,
+     "end": 172.05,
+     "p": 0.979
+    },
+    {
+     "text": " now",
+     "start": 172.05,
+     "end": 172.27,
+     "p": 0.999
+    },
+    {
+     "text": " I'm",
+     "start": 172.27,
+     "end": 172.39,
+     "p": 0.959
+    },
+    {
+     "text": " adding",
+     "start": 172.39,
+     "end": 172.79,
+     "p": 0.999
+    },
+    {
+     "text": " some",
+     "start": 172.79,
+     "end": 173.57,
+     "p": 0.87
+    },
+    {
+     "text": " Matrox",
+     "start": 173.57,
+     "end": 174.17,
+     "p": 0.738
+    },
+    {
+     "text": " MGX",
+     "start": 174.17,
+     "end": 175.35,
+     "p": 0.786
+    },
+    {
+     "text": " decoders",
+     "start": 175.35,
+     "end": 176.61,
+     "p": 0.931
+    }
+   ]
+  },
+  {
+   "start": 176.61,
+   "end": 177.77,
+   "text": "and encoders.",
+   "words": [
+    {
+     "text": " and",
+     "start": 176.61,
+     "end": 176.97,
+     "p": 0.977
+    },
+    {
+     "text": " encoders.",
+     "start": 176.97,
+     "end": 177.77,
+     "p": 0.984
+    }
+   ]
+  },
+  {
+   "start": 178.05,
+   "end": 181.29,
+   "text": "And if there was any kind of authorization",
+   "words": [
+    {
+     "text": " And",
+     "start": 178.05,
+     "end": 178.77,
+     "p": 0.985
+    },
+    {
+     "text": " if",
+     "start": 178.77,
+     "end": 179.37,
+     "p": 0.842
+    },
+    {
+     "text": " there",
+     "start": 179.37,
+     "end": 179.55,
+     "p": 0.999
+    },
+    {
+     "text": " was",
+     "start": 179.55,
+     "end": 179.83,
+     "p": 0.996
+    },
+    {
+     "text": " any",
+     "start": 179.83,
+     "end": 180.15,
+     "p": 0.971
+    },
+    {
+     "text": " kind",
+     "start": 180.15,
+     "end": 180.43,
+     "p": 0.976
+    },
+    {
+     "text": " of",
+     "start": 180.43,
+     "end": 180.65,
+     "p": 1.0
+    },
+    {
+     "text": " authorization",
+     "start": 180.65,
+     "end": 181.29,
+     "p": 0.995
+    }
+   ]
+  },
+  {
+   "start": 181.29,
+   "end": 182.81,
+   "text": "that needs to happen here,",
+   "words": [
+    {
+     "text": " that",
+     "start": 181.29,
+     "end": 181.55,
+     "p": 0.997
+    },
+    {
+     "text": " needs",
+     "start": 181.55,
+     "end": 181.73,
+     "p": 0.999
+    },
+    {
+     "text": " to",
+     "start": 181.73,
+     "end": 181.93,
+     "p": 0.999
+    },
+    {
+     "text": " happen",
+     "start": 181.93,
+     "end": 182.25,
+     "p": 0.999
+    },
+    {
+     "text": " here,",
+     "start": 182.25,
+     "end": 182.81,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 182.93,
+   "end": 188.19,
+   "text": "or a sort of certificate that needs to be trusted,",
+   "words": [
+    {
+     "text": " or",
+     "start": 182.93,
+     "end": 183.77,
+     "p": 0.996
+    },
+    {
+     "text": " a",
+     "start": 183.77,
+     "end": 184.91,
+     "p": 0.713
+    },
+    {
+     "text": " sort",
+     "start": 184.91,
+     "end": 185.85,
+     "p": 0.456
+    },
+    {
+     "text": " of",
+     "start": 185.85,
+     "end": 186.19,
+     "p": 0.99
+    },
+    {
+     "text": " certificate",
+     "start": 186.19,
+     "end": 186.69,
+     "p": 0.997
+    },
+    {
+     "text": " that",
+     "start": 186.69,
+     "end": 186.93,
+     "p": 0.997
+    },
+    {
+     "text": " needs",
+     "start": 186.93,
+     "end": 187.13,
+     "p": 1.0
+    },
+    {
+     "text": " to",
+     "start": 187.13,
+     "end": 187.35,
+     "p": 1.0
+    },
+    {
+     "text": " be",
+     "start": 187.35,
+     "end": 187.83,
+     "p": 1.0
+    },
+    {
+     "text": " trusted,",
+     "start": 187.83,
+     "end": 188.19,
+     "p": 0.992
+    }
+   ]
+  },
+  {
+   "start": 189.17,
+   "end": 190.65,
+   "text": "that would pop up.",
+   "words": [
+    {
+     "text": " that",
+     "start": 189.17,
+     "end": 189.53,
+     "p": 0.995
+    },
+    {
+     "text": " would",
+     "start": 189.53,
+     "end": 189.67,
+     "p": 1.0
+    },
+    {
+     "text": " pop",
+     "start": 189.67,
+     "end": 189.95,
+     "p": 0.999
+    },
+    {
+     "text": " up.",
+     "start": 189.95,
+     "end": 190.65,
+     "p": 0.991
+    }
+   ]
+  },
+  {
+   "start": 191.09,
+   "end": 195.43,
+   "text": "But for these devices that isn't required.",
+   "words": [
+    {
+     "text": " But",
+     "start": 191.09,
+     "end": 191.23,
+     "p": 0.975
+    },
+    {
+     "text": " for",
+     "start": 191.23,
+     "end": 192.55,
+     "p": 0.962
+    },
+    {
+     "text": " these",
+     "start": 192.55,
+     "end": 193.71,
+     "p": 0.979
+    },
+    {
+     "text": " devices",
+     "start": 193.71,
+     "end": 194.21,
+     "p": 0.999
+    },
+    {
+     "text": " that",
+     "start": 194.21,
+     "end": 194.59,
+     "p": 0.512
+    },
+    {
+     "text": " isn't",
+     "start": 194.59,
+     "end": 194.87,
+     "p": 0.958
+    },
+    {
+     "text": " required.",
+     "start": 194.87,
+     "end": 195.43,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 196.29,
+   "end": 200.09,
+   "text": "And let's add a global cache as well.",
+   "words": [
+    {
+     "text": " And",
+     "start": 196.29,
+     "end": 196.85,
+     "p": 0.964
+    },
+    {
+     "text": " let's",
+     "start": 196.85,
+     "end": 197.15,
+     "p": 0.996
+    },
+    {
+     "text": " add",
+     "start": 197.15,
+     "end": 197.35,
+     "p": 0.993
+    },
+    {
+     "text": " a",
+     "start": 197.35,
+     "end": 197.81,
+     "p": 0.997
+    },
+    {
+     "text": " global",
+     "start": 197.81,
+     "end": 198.19,
+     "p": 0.876
+    },
+    {
+     "text": " cache",
+     "start": 198.19,
+     "end": 198.55,
+     "p": 0.934
+    },
+    {
+     "text": " as",
+     "start": 198.55,
+     "end": 199.77,
+     "p": 0.92
+    },
+    {
+     "text": " well.",
+     "start": 199.77,
+     "end": 200.09,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 200.09,
+   "end": 202.93,
+   "text": "And so I can kind of show you a couple of things with that.",
+   "words": [
+    {
+     "text": " And",
+     "start": 200.09,
+     "end": 200.47,
+     "p": 0.34
+    },
+    {
+     "text": " so",
+     "start": 200.47,
+     "end": 200.61,
+     "p": 0.967
+    },
+    {
+     "text": " I",
+     "start": 200.61,
+     "end": 200.71,
+     "p": 0.951
+    },
+    {
+     "text": " can",
+     "start": 200.71,
+     "end": 200.89,
+     "p": 0.999
+    },
+    {
+     "text": " kind",
+     "start": 200.89,
+     "end": 201.05,
+     "p": 0.729
+    },
+    {
+     "text": " of",
+     "start": 201.05,
+     "end": 201.15,
+     "p": 0.999
+    },
+    {
+     "text": " show",
+     "start": 201.15,
+     "end": 201.31,
+     "p": 0.999
+    },
+    {
+     "text": " you",
+     "start": 201.31,
+     "end": 201.55,
+     "p": 0.999
+    },
+    {
+     "text": " a",
+     "start": 201.55,
+     "end": 201.93,
+     "p": 0.995
+    },
+    {
+     "text": " couple",
+     "start": 201.93,
+     "end": 202.09,
+     "p": 0.995
+    },
+    {
+     "text": " of",
+     "start": 202.09,
+     "end": 202.19,
+     "p": 0.862
+    },
+    {
+     "text": " things",
+     "start": 202.19,
+     "end": 202.39,
+     "p": 1.0
+    },
+    {
+     "text": " with",
+     "start": 202.39,
+     "end": 202.59,
+     "p": 0.984
+    },
+    {
+     "text": " that.",
+     "start": 202.59,
+     "end": 202.93,
+     "p": 0.997
+    }
+   ]
+  },
+  {
+   "start": 205.26,
+   "end": 206.78,
+   "text": "All right, let's take a look.",
+   "words": [
+    {
+     "text": " All",
+     "start": 205.26,
+     "end": 205.3,
+     "p": 0.804
+    },
+    {
+     "text": " right,",
+     "start": 205.3,
+     "end": 205.42,
+     "p": 0.999
+    },
+    {
+     "text": " let's",
+     "start": 205.52,
+     "end": 205.74,
+     "p": 0.99
+    },
+    {
+     "text": " take",
+     "start": 205.74,
+     "end": 206.38,
+     "p": 0.824
+    },
+    {
+     "text": " a",
+     "start": 206.38,
+     "end": 206.56,
+     "p": 1.0
+    },
+    {
+     "text": " look.",
+     "start": 206.56,
+     "end": 206.78,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 207.1,
+   "end": 211.08,
+   "text": "I'm gonna also just add an Acer projector, RS-232.",
+   "words": [
+    {
+     "text": " I'm",
+     "start": 207.1,
+     "end": 207.4,
+     "p": 0.999
+    },
+    {
+     "text": " gonna",
+     "start": 207.4,
+     "end": 207.48,
+     "p": 0.69
+    },
+    {
+     "text": " also",
+     "start": 207.48,
+     "end": 207.82,
+     "p": 0.995
+    },
+    {
+     "text": " just",
+     "start": 207.82,
+     "end": 208.08,
+     "p": 0.996
+    },
+    {
+     "text": " add",
+     "start": 208.08,
+     "end": 208.42,
+     "p": 0.993
+    },
+    {
+     "text": " an",
+     "start": 208.42,
+     "end": 208.84,
+     "p": 0.856
+    },
+    {
+     "text": " Acer",
+     "start": 208.84,
+     "end": 209.24,
+     "p": 0.882
+    },
+    {
+     "text": " projector,",
+     "start": 209.24,
+     "end": 210.0,
+     "p": 0.97
+    },
+    {
+     "text": " RS",
+     "start": 210.36,
+     "end": 210.58,
+     "p": 0.941
+    },
+    {
+     "text": "-232.",
+     "start": 210.58,
+     "end": 211.08,
+     "p": 0.77
+    }
+   ]
+  },
+  {
+   "start": 212.88,
+   "end": 215.52,
+   "text": "And I'm adding that so you can kind of see",
+   "words": [
+    {
+     "text": " And",
+     "start": 212.88,
+     "end": 213.4,
+     "p": 0.976
+    },
+    {
+     "text": " I'm",
+     "start": 213.4,
+     "end": 213.68,
+     "p": 0.923
+    },
+    {
+     "text": " adding",
+     "start": 213.68,
+     "end": 214.0,
+     "p": 0.999
+    },
+    {
+     "text": " that",
+     "start": 214.0,
+     "end": 214.26,
+     "p": 0.999
+    },
+    {
+     "text": " so",
+     "start": 214.26,
+     "end": 214.42,
+     "p": 0.853
+    },
+    {
+     "text": " you",
+     "start": 214.42,
+     "end": 214.6,
+     "p": 0.996
+    },
+    {
+     "text": " can",
+     "start": 214.6,
+     "end": 214.86,
+     "p": 0.998
+    },
+    {
+     "text": " kind",
+     "start": 214.86,
+     "end": 215.02,
+     "p": 0.861
+    },
+    {
+     "text": " of",
+     "start": 215.02,
+     "end": 215.16,
+     "p": 0.999
+    },
+    {
+     "text": " see",
+     "start": 215.16,
+     "end": 215.52,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 216.06,
+   "end": 220.9,
+   "text": "that we have this, you know, end point right in here",
+   "words": [
+    {
+     "text": " that",
+     "start": 216.06,
+     "end": 216.32,
+     "p": 0.98
+    },
+    {
+     "text": " we",
+     "start": 216.32,
+     "end": 216.52,
+     "p": 0.999
+    },
+    {
+     "text": " have",
+     "start": 216.52,
+     "end": 216.88,
+     "p": 0.999
+    },
+    {
+     "text": " this,",
+     "start": 216.88,
+     "end": 217.88,
+     "p": 0.956
+    },
+    {
+     "text": " you",
+     "start": 217.88,
+     "end": 218.94,
+     "p": 0.89
+    },
+    {
+     "text": " know,",
+     "start": 218.94,
+     "end": 219.14,
+     "p": 1.0
+    },
+    {
+     "text": " end",
+     "start": 219.26,
+     "end": 219.4,
+     "p": 0.378
+    },
+    {
+     "text": " point",
+     "start": 219.4,
+     "end": 219.64,
+     "p": 0.986
+    },
+    {
+     "text": " right",
+     "start": 219.64,
+     "end": 219.84,
+     "p": 0.988
+    },
+    {
+     "text": " in",
+     "start": 219.84,
+     "end": 220.06,
+     "p": 0.999
+    },
+    {
+     "text": " here",
+     "start": 220.06,
+     "end": 220.9,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 221.62,
+   "end": 223.86,
+   "text": "and we can connect to it directly.",
+   "words": [
+    {
+     "text": " and",
+     "start": 221.62,
+     "end": 222.14,
+     "p": 0.502
+    },
+    {
+     "text": " we",
+     "start": 222.14,
+     "end": 222.58,
+     "p": 0.998
+    },
+    {
+     "text": " can",
+     "start": 222.58,
+     "end": 222.74,
+     "p": 1.0
+    },
+    {
+     "text": " connect",
+     "start": 222.74,
+     "end": 223.06,
+     "p": 1.0
+    },
+    {
+     "text": " to",
+     "start": 223.06,
+     "end": 223.22,
+     "p": 0.998
+    },
+    {
+     "text": " it",
+     "start": 223.22,
+     "end": 223.36,
+     "p": 0.997
+    },
+    {
+     "text": " directly.",
+     "start": 223.36,
+     "end": 223.86,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 224.6,
+   "end": 227.22,
+   "text": "And then you can see how that kind of,",
+   "words": [
+    {
+     "text": " And",
+     "start": 224.6,
+     "end": 224.9,
+     "p": 0.997
+    },
+    {
+     "text": " then",
+     "start": 224.9,
+     "end": 225.26,
+     "p": 0.998
+    },
+    {
+     "text": " you",
+     "start": 225.26,
+     "end": 225.76,
+     "p": 0.65
+    },
+    {
+     "text": " can",
+     "start": 225.76,
+     "end": 225.9,
+     "p": 1.0
+    },
+    {
+     "text": " see",
+     "start": 225.9,
+     "end": 226.1,
+     "p": 0.999
+    },
+    {
+     "text": " how",
+     "start": 226.1,
+     "end": 226.34,
+     "p": 0.983
+    },
+    {
+     "text": " that",
+     "start": 226.34,
+     "end": 226.58,
+     "p": 0.963
+    },
+    {
+     "text": " kind",
+     "start": 226.58,
+     "end": 226.98,
+     "p": 0.885
+    },
+    {
+     "text": " of,",
+     "start": 226.98,
+     "end": 227.22,
+     "p": 0.996
+    }
+   ]
+  },
+  {
+   "start": 227.4,
+   "end": 230.76,
+   "text": "this whole terminal is new right here.",
+   "words": [
+    {
+     "text": " this",
+     "start": 227.4,
+     "end": 227.9,
+     "p": 0.776
+    },
+    {
+     "text": " whole",
+     "start": 227.9,
+     "end": 228.5,
+     "p": 0.955
+    },
+    {
+     "text": " terminal",
+     "start": 228.5,
+     "end": 229.28,
+     "p": 0.991
+    },
+    {
+     "text": " is",
+     "start": 229.28,
+     "end": 229.62,
+     "p": 0.999
+    },
+    {
+     "text": " new",
+     "start": 229.62,
+     "end": 229.94,
+     "p": 0.998
+    },
+    {
+     "text": " right",
+     "start": 229.94,
+     "end": 230.26,
+     "p": 0.983
+    },
+    {
+     "text": " here.",
+     "start": 230.26,
+     "end": 230.76,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 230.76,
+   "end": 234.72,
+   "text": "also the layout, the way that we have the commands",
+   "words": [
+    {
+     "text": " also",
+     "start": 230.76,
+     "end": 231.46,
+     "p": 0.219
+    },
+    {
+     "text": " the",
+     "start": 231.46,
+     "end": 231.76,
+     "p": 0.897
+    },
+    {
+     "text": " layout,",
+     "start": 231.76,
+     "end": 232.32,
+     "p": 0.782
+    },
+    {
+     "text": " the",
+     "start": 232.48,
+     "end": 232.86,
+     "p": 0.998
+    },
+    {
+     "text": " way",
+     "start": 232.86,
+     "end": 232.98,
+     "p": 0.999
+    },
+    {
+     "text": " that",
+     "start": 232.98,
+     "end": 233.16,
+     "p": 0.991
+    },
+    {
+     "text": " we",
+     "start": 233.16,
+     "end": 233.3,
+     "p": 0.999
+    },
+    {
+     "text": " have",
+     "start": 233.3,
+     "end": 233.66,
+     "p": 0.998
+    },
+    {
+     "text": " the",
+     "start": 233.66,
+     "end": 234.06,
+     "p": 0.925
+    },
+    {
+     "text": " commands",
+     "start": 234.06,
+     "end": 234.72,
+     "p": 0.997
+    }
+   ]
+  },
+  {
+   "start": 235.32,
+   "end": 238.7,
+   "text": "and the configuration on the right.",
+   "words": [
+    {
+     "text": " and",
+     "start": 235.32,
+     "end": 235.7,
+     "p": 0.781
+    },
+    {
+     "text": " the",
+     "start": 235.7,
+     "end": 236.52,
+     "p": 0.414
+    },
+    {
+     "text": " configuration",
+     "start": 236.52,
+     "end": 237.78,
+     "p": 0.994
+    },
+    {
+     "text": " on",
+     "start": 237.78,
+     "end": 238.02,
+     "p": 0.997
+    },
+    {
+     "text": " the",
+     "start": 238.02,
+     "end": 238.32,
+     "p": 0.998
+    },
+    {
+     "text": " right.",
+     "start": 238.32,
+     "end": 238.7,
+     "p": 0.965
+    }
+   ]
+  },
+  {
+   "start": 239.84,
+   "end": 242.1,
+   "text": "And so all that's new.",
+   "words": [
+    {
+     "text": " And",
+     "start": 239.84,
+     "end": 239.88,
+     "p": 0.661
+    },
+    {
+     "text": " so",
+     "start": 239.88,
+     "end": 241.08,
+     "p": 0.951
+    },
+    {
+     "text": " all",
+     "start": 241.08,
+     "end": 241.46,
+     "p": 0.946
+    },
+    {
+     "text": " that's",
+     "start": 241.46,
+     "end": 241.88,
+     "p": 0.816
+    },
+    {
+     "text": " new.",
+     "start": 241.88,
+     "end": 242.1,
+     "p": 0.974
+    }
+   ]
+  },
+  {
+   "start": 242.62,
+   "end": 244.48,
+   "text": "All right, now we can come into connect here",
+   "words": [
+    {
+     "text": " All",
+     "start": 242.62,
+     "end": 242.68,
+     "p": 0.76
+    },
+    {
+     "text": " right,",
+     "start": 242.68,
+     "end": 242.8,
+     "p": 0.999
+    },
+    {
+     "text": " now",
+     "start": 242.86,
+     "end": 242.98,
+     "p": 0.994
+    },
+    {
+     "text": " we",
+     "start": 242.98,
+     "end": 243.12,
+     "p": 0.987
+    },
+    {
+     "text": " can",
+     "start": 243.12,
+     "end": 243.28,
+     "p": 0.999
+    },
+    {
+     "text": " come",
+     "start": 243.28,
+     "end": 243.48,
+     "p": 0.999
+    },
+    {
+     "text": " into",
+     "start": 243.48,
+     "end": 243.76,
+     "p": 0.925
+    },
+    {
+     "text": " connect",
+     "start": 243.76,
+     "end": 244.1,
+     "p": 0.552
+    },
+    {
+     "text": " here",
+     "start": 244.1,
+     "end": 244.48,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 245.04,
+   "end": 249.9,
+   "text": "and take a look at some of the connections.",
+   "words": [
+    {
+     "text": " and",
+     "start": 245.04,
+     "end": 245.42,
+     "p": 0.918
+    },
+    {
+     "text": " take",
+     "start": 245.42,
+     "end": 245.98,
+     "p": 0.88
+    },
+    {
+     "text": " a",
+     "start": 245.98,
+     "end": 246.14,
+     "p": 0.999
+    },
+    {
+     "text": " look",
+     "start": 246.14,
+     "end": 246.28,
+     "p": 1.0
+    },
+    {
+     "text": " at",
+     "start": 246.28,
+     "end": 246.72,
+     "p": 0.998
+    },
+    {
+     "text": " some",
+     "start": 246.72,
+     "end": 247.2,
+     "p": 0.997
+    },
+    {
+     "text": " of",
+     "start": 247.2,
+     "end": 247.58,
+     "p": 0.941
+    },
+    {
+     "text": " the",
+     "start": 247.58,
+     "end": 248.46,
+     "p": 0.999
+    },
+    {
+     "text": " connections.",
+     "start": 248.46,
+     "end": 249.9,
+     "p": 0.994
+    }
+   ]
+  },
+  {
+   "start": 249.9,
+   "end": 252.58,
+   "text": "You can obviously test the Matrox switcher",
+   "words": [
+    {
+     "text": " You",
+     "start": 249.9,
+     "end": 250.2,
+     "p": 0.998
+    },
+    {
+     "text": " can",
+     "start": 250.2,
+     "end": 250.42,
+     "p": 1.0
+    },
+    {
+     "text": " obviously",
+     "start": 250.42,
+     "end": 250.86,
+     "p": 0.99
+    },
+    {
+     "text": " test",
+     "start": 250.86,
+     "end": 251.28,
+     "p": 0.997
+    },
+    {
+     "text": " the",
+     "start": 251.28,
+     "end": 251.78,
+     "p": 0.992
+    },
+    {
+     "text": " Matrox",
+     "start": 251.78,
+     "end": 252.1,
+     "p": 0.772
+    },
+    {
+     "text": " switcher",
+     "start": 252.1,
+     "end": 252.58,
+     "p": 0.888
+    }
+   ]
+  },
+  {
+   "start": 252.58,
+   "end": 258.58,
+   "text": "and see how it's connected to all of them as a group.",
+   "words": [
+    {
+     "text": " and",
+     "start": 252.58,
+     "end": 253.1,
+     "p": 0.968
+    },
+    {
+     "text": " see",
+     "start": 253.1,
+     "end": 253.26,
+     "p": 1.0
+    },
+    {
+     "text": " how",
+     "start": 253.26,
+     "end": 253.48,
+     "p": 0.994
+    },
+    {
+     "text": " it's",
+     "start": 253.48,
+     "end": 254.52,
+     "p": 0.764
+    },
+    {
+     "text": " connected",
+     "start": 254.52,
+     "end": 255.46,
+     "p": 0.991
+    },
+    {
+     "text": " to",
+     "start": 255.46,
+     "end": 256.3,
+     "p": 0.988
+    },
+    {
+     "text": " all",
+     "start": 256.3,
+     "end": 256.92,
+     "p": 0.637
+    },
+    {
+     "text": " of",
+     "start": 256.92,
+     "end": 257.2,
+     "p": 0.975
+    },
+    {
+     "text": " them",
+     "start": 257.2,
+     "end": 257.52,
+     "p": 0.977
+    },
+    {
+     "text": " as",
+     "start": 257.52,
+     "end": 258.02,
+     "p": 0.731
+    },
+    {
+     "text": " a",
+     "start": 258.02,
+     "end": 258.26,
+     "p": 0.999
+    },
+    {
+     "text": " group.",
+     "start": 258.26,
+     "end": 258.58,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 258.58,
+   "end": 261.44,
+   "text": "You can select any of the individual ones",
+   "words": [
+    {
+     "text": " You",
+     "start": 258.58,
+     "end": 259.2,
+     "p": 0.719
+    },
+    {
+     "text": " can",
+     "start": 259.2,
+     "end": 259.4,
+     "p": 0.999
+    },
+    {
+     "text": " select",
+     "start": 259.4,
+     "end": 259.78,
+     "p": 0.993
+    },
+    {
+     "text": " any",
+     "start": 259.78,
+     "end": 260.1,
+     "p": 0.997
+    },
+    {
+     "text": " of",
+     "start": 260.1,
+     "end": 260.22,
+     "p": 0.996
+    },
+    {
+     "text": " the",
+     "start": 260.22,
+     "end": 260.44,
+     "p": 0.962
+    },
+    {
+     "text": " individual",
+     "start": 260.44,
+     "end": 261.06,
+     "p": 0.999
+    },
+    {
+     "text": " ones",
+     "start": 261.06,
+     "end": 261.44,
+     "p": 0.997
+    }
+   ]
+  },
+  {
+   "start": 261.44,
+   "end": 264.32,
+   "text": "if you want to control any of those.",
+   "words": [
+    {
+     "text": " if",
+     "start": 261.44,
+     "end": 261.58,
+     "p": 0.884
+    },
+    {
+     "text": " you",
+     "start": 261.58,
+     "end": 261.74,
+     "p": 1.0
+    },
+    {
+     "text": " want",
+     "start": 261.74,
+     "end": 261.98,
+     "p": 0.999
+    },
+    {
+     "text": " to",
+     "start": 261.98,
+     "end": 262.6,
+     "p": 0.997
+    },
+    {
+     "text": " control",
+     "start": 262.6,
+     "end": 263.48,
+     "p": 0.828
+    },
+    {
+     "text": " any",
+     "start": 263.48,
+     "end": 263.76,
+     "p": 0.991
+    },
+    {
+     "text": " of",
+     "start": 263.76,
+     "end": 263.96,
+     "p": 0.999
+    },
+    {
+     "text": " those.",
+     "start": 263.96,
+     "end": 264.32,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 265.28,
+   "end": 267.7,
+   "text": "We're gonna just look at the global cache real quick",
+   "words": [
+    {
+     "text": " We're",
+     "start": 265.28,
+     "end": 265.72,
+     "p": 0.988
+    },
+    {
+     "text": " gonna",
+     "start": 265.72,
+     "end": 265.82,
+     "p": 0.156
+    },
+    {
+     "text": " just",
+     "start": 265.82,
+     "end": 266.04,
+     "p": 0.996
+    },
+    {
+     "text": " look",
+     "start": 266.04,
+     "end": 266.24,
+     "p": 0.999
+    },
+    {
+     "text": " at",
+     "start": 266.24,
+     "end": 266.4,
+     "p": 0.998
+    },
+    {
+     "text": " the",
+     "start": 266.4,
+     "end": 266.48,
+     "p": 0.996
+    },
+    {
+     "text": " global",
+     "start": 266.48,
+     "end": 266.74,
+     "p": 0.675
+    },
+    {
+     "text": " cache",
+     "start": 266.74,
+     "end": 267.04,
+     "p": 0.94
+    },
+    {
+     "text": " real",
+     "start": 267.04,
+     "end": 267.34,
+     "p": 0.728
+    },
+    {
+     "text": " quick",
+     "start": 267.34,
+     "end": 267.7,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 268.26,
+   "end": 270.7,
+   "text": "because I wanna show you some of the different options",
+   "words": [
+    {
+     "text": " because",
+     "start": 268.26,
+     "end": 268.48,
+     "p": 0.211
+    },
+    {
+     "text": " I",
+     "start": 268.48,
+     "end": 268.6,
+     "p": 0.997
+    },
+    {
+     "text": " wanna",
+     "start": 268.6,
+     "end": 268.74,
+     "p": 0.376
+    },
+    {
+     "text": " show",
+     "start": 268.74,
+     "end": 269.0,
+     "p": 0.997
+    },
+    {
+     "text": " you",
+     "start": 269.0,
+     "end": 269.18,
+     "p": 0.996
+    },
+    {
+     "text": " some",
+     "start": 269.18,
+     "end": 269.38,
+     "p": 0.959
+    },
+    {
+     "text": " of",
+     "start": 269.38,
+     "end": 269.66,
+     "p": 0.922
+    },
+    {
+     "text": " the",
+     "start": 269.66,
+     "end": 269.8,
+     "p": 0.982
+    },
+    {
+     "text": " different",
+     "start": 269.8,
+     "end": 270.08,
+     "p": 0.996
+    },
+    {
+     "text": " options",
+     "start": 270.08,
+     "end": 270.7,
+     "p": 0.997
+    }
+   ]
+  },
+  {
+   "start": 270.7,
+   "end": 271.52,
+   "text": "you have now.",
+   "words": [
+    {
+     "text": " you",
+     "start": 270.7,
+     "end": 270.88,
+     "p": 0.98
+    },
+    {
+     "text": " have",
+     "start": 270.88,
+     "end": 271.1,
+     "p": 1.0
+    },
+    {
+     "text": " now.",
+     "start": 271.1,
+     "end": 271.52,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 272.28,
+   "end": 274.42,
+   "text": "So you have your buttons that you can just go in",
+   "words": [
+    {
+     "text": " So",
+     "start": 272.28,
+     "end": 272.44,
+     "p": 0.971
+    },
+    {
+     "text": " you",
+     "start": 272.44,
+     "end": 272.7,
+     "p": 0.876
+    },
+    {
+     "text": " have",
+     "start": 272.7,
+     "end": 272.88,
+     "p": 1.0
+    },
+    {
+     "text": " your",
+     "start": 272.88,
+     "end": 273.06,
+     "p": 0.998
+    },
+    {
+     "text": " buttons",
+     "start": 273.06,
+     "end": 273.48,
+     "p": 0.998
+    },
+    {
+     "text": " that",
+     "start": 273.48,
+     "end": 273.68,
+     "p": 0.927
+    },
+    {
+     "text": " you",
+     "start": 273.68,
+     "end": 273.76,
+     "p": 0.994
+    },
+    {
+     "text": " can",
+     "start": 273.76,
+     "end": 273.84,
+     "p": 0.984
+    },
+    {
+     "text": " just",
+     "start": 273.84,
+     "end": 274.0,
+     "p": 0.997
+    },
+    {
+     "text": " go",
+     "start": 274.0,
+     "end": 274.22,
+     "p": 0.999
+    },
+    {
+     "text": " in",
+     "start": 274.22,
+     "end": 274.42,
+     "p": 0.995
+    }
+   ]
+  },
+  {
+   "start": 274.42,
+   "end": 276.44,
+   "text": "and you can set the global cache",
+   "words": [
+    {
+     "text": " and",
+     "start": 274.42,
+     "end": 274.52,
+     "p": 0.958
+    },
+    {
+     "text": " you",
+     "start": 274.52,
+     "end": 274.62,
+     "p": 0.994
+    },
+    {
+     "text": " can",
+     "start": 274.62,
+     "end": 274.8,
+     "p": 0.999
+    },
+    {
+     "text": " set",
+     "start": 274.8,
+     "end": 275.14,
+     "p": 0.999
+    },
+    {
+     "text": " the",
+     "start": 275.14,
+     "end": 275.8,
+     "p": 0.895
+    },
+    {
+     "text": " global",
+     "start": 275.8,
+     "end": 276.04,
+     "p": 0.987
+    },
+    {
+     "text": " cache",
+     "start": 276.04,
+     "end": 276.44,
+     "p": 0.993
+    }
+   ]
+  },
+  {
+   "start": 277.12,
+   "end": 280.64,
+   "text": "or you can open up the terminal now directly, right?",
+   "words": [
+    {
+     "text": " or",
+     "start": 277.12,
+     "end": 277.56,
+     "p": 0.642
+    },
+    {
+     "text": " you",
+     "start": 277.56,
+     "end": 277.78,
+     "p": 1.0
+    },
+    {
+     "text": " can",
+     "start": 277.78,
+     "end": 277.94,
+     "p": 0.995
+    },
+    {
+     "text": " open",
+     "start": 277.94,
+     "end": 278.12,
+     "p": 0.999
+    },
+    {
+     "text": " up",
+     "start": 278.12,
+     "end": 278.3,
+     "p": 0.995
+    },
+    {
+     "text": " the",
+     "start": 278.3,
+     "end": 278.42,
+     "p": 0.996
+    },
+    {
+     "text": " terminal",
+     "start": 278.42,
+     "end": 279.02,
+     "p": 0.984
+    },
+    {
+     "text": " now",
+     "start": 279.02,
+     "end": 279.46,
+     "p": 0.985
+    },
+    {
+     "text": " directly,",
+     "start": 279.46,
+     "end": 280.12,
+     "p": 0.981
+    },
+    {
+     "text": " right?",
+     "start": 280.48,
+     "end": 280.64,
+     "p": 0.93
+    }
+   ]
+  },
+  {
+   "start": 280.66,
+   "end": 283.9,
+   "text": "And I can send, I get devices and you can see the feedback.",
+   "words": [
+    {
+     "text": " And",
+     "start": 280.66,
+     "end": 280.82,
+     "p": 0.988
+    },
+    {
+     "text": " I",
+     "start": 280.82,
+     "end": 280.94,
+     "p": 0.998
+    },
+    {
+     "text": " can",
+     "start": 280.94,
+     "end": 281.14,
+     "p": 0.999
+    },
+    {
+     "text": " send,",
+     "start": 281.14,
+     "end": 281.6,
+     "p": 0.979
+    },
+    {
+     "text": " I",
+     "start": 281.9,
+     "end": 282.06,
+     "p": 0.741
+    },
+    {
+     "text": " get",
+     "start": 282.06,
+     "end": 282.14,
+     "p": 0.872
+    },
+    {
+     "text": " devices",
+     "start": 282.14,
+     "end": 282.66,
+     "p": 0.996
+    },
+    {
+     "text": " and",
+     "start": 282.66,
+     "end": 282.92,
+     "p": 0.911
+    },
+    {
+     "text": " you",
+     "start": 282.92,
+     "end": 283.0,
+     "p": 0.998
+    },
+    {
+     "text": " can",
+     "start": 283.0,
+     "end": 283.1,
+     "p": 0.959
+    },
+    {
+     "text": " see",
+     "start": 283.1,
+     "end": 283.26,
+     "p": 1.0
+    },
+    {
+     "text": " the",
+     "start": 283.26,
+     "end": 283.42,
+     "p": 0.998
+    },
+    {
+     "text": " feedback.",
+     "start": 283.42,
+     "end": 283.9,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 283.96,
+   "end": 286.74,
+   "text": "If I wanted to send a command directly,",
+   "words": [
+    {
+     "text": " If",
+     "start": 283.96,
+     "end": 284.4,
+     "p": 0.997
+    },
+    {
+     "text": " I",
+     "start": 284.4,
+     "end": 284.56,
+     "p": 1.0
+    },
+    {
+     "text": " wanted",
+     "start": 284.56,
+     "end": 284.8,
+     "p": 0.982
+    },
+    {
+     "text": " to",
+     "start": 284.8,
+     "end": 285.16,
+     "p": 0.998
+    },
+    {
+     "text": " send",
+     "start": 285.16,
+     "end": 285.6,
+     "p": 0.99
+    },
+    {
+     "text": " a",
+     "start": 285.6,
+     "end": 285.8,
+     "p": 0.995
+    },
+    {
+     "text": " command",
+     "start": 285.8,
+     "end": 286.1,
+     "p": 0.999
+    },
+    {
+     "text": " directly,",
+     "start": 286.1,
+     "end": 286.74,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 286.74,
+   "end": 288.46,
+   "text": "I can do that from right here as well.",
+   "words": [
+    {
+     "text": " I",
+     "start": 286.74,
+     "end": 286.9,
+     "p": 0.771
+    },
+    {
+     "text": " can",
+     "start": 286.9,
+     "end": 287.04,
+     "p": 0.988
+    },
+    {
+     "text": " do",
+     "start": 287.04,
+     "end": 287.18,
+     "p": 0.997
+    },
+    {
+     "text": " that",
+     "start": 287.18,
+     "end": 287.38,
+     "p": 0.998
+    },
+    {
+     "text": " from",
+     "start": 287.38,
+     "end": 287.58,
+     "p": 0.996
+    },
+    {
+     "text": " right",
+     "start": 287.58,
+     "end": 287.76,
+     "p": 0.997
+    },
+    {
+     "text": " here",
+     "start": 287.76,
+     "end": 288.0,
+     "p": 0.999
+    },
+    {
+     "text": " as",
+     "start": 288.0,
+     "end": 288.2,
+     "p": 0.978
+    },
+    {
+     "text": " well.",
+     "start": 288.2,
+     "end": 288.46,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 288.72,
+   "end": 291.18,
+   "text": "Let's see, just gives you another option",
+   "words": [
+    {
+     "text": " Let's",
+     "start": 288.72,
+     "end": 288.72,
+     "p": 0.539
+    },
+    {
+     "text": " see,",
+     "start": 288.72,
+     "end": 288.84,
+     "p": 0.964
+    },
+    {
+     "text": " just",
+     "start": 289.36,
+     "end": 289.72,
+     "p": 0.593
+    },
+    {
+     "text": " gives",
+     "start": 289.72,
+     "end": 289.92,
+     "p": 0.988
+    },
+    {
+     "text": " you",
+     "start": 289.92,
+     "end": 290.16,
+     "p": 0.999
+    },
+    {
+     "text": " another",
+     "start": 290.16,
+     "end": 290.5,
+     "p": 0.997
+    },
+    {
+     "text": " option",
+     "start": 290.5,
+     "end": 291.18,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 291.92,
+   "end": 296.58,
+   "text": "to be able to send and test things using the console",
+   "words": [
+    {
+     "text": " to",
+     "start": 291.92,
+     "end": 292.26,
+     "p": 0.645
+    },
+    {
+     "text": " be",
+     "start": 292.26,
+     "end": 292.76,
+     "p": 0.479
+    },
+    {
+     "text": " able",
+     "start": 292.76,
+     "end": 292.96,
+     "p": 0.999
+    },
+    {
+     "text": " to",
+     "start": 292.96,
+     "end": 293.4,
+     "p": 0.999
+    },
+    {
+     "text": " send",
+     "start": 293.4,
+     "end": 294.0,
+     "p": 0.958
+    },
+    {
+     "text": " and",
+     "start": 294.0,
+     "end": 294.44,
+     "p": 0.993
+    },
+    {
+     "text": " test",
+     "start": 294.44,
+     "end": 294.72,
+     "p": 0.999
+    },
+    {
+     "text": " things",
+     "start": 294.72,
+     "end": 295.24,
+     "p": 0.999
+    },
+    {
+     "text": " using",
+     "start": 295.24,
+     "end": 295.98,
+     "p": 0.945
+    },
+    {
+     "text": " the",
+     "start": 295.98,
+     "end": 296.2,
+     "p": 0.997
+    },
+    {
+     "text": " console",
+     "start": 296.2,
+     "end": 296.58,
+     "p": 0.991
+    }
+   ]
+  },
+  {
+   "start": 296.58,
+   "end": 303.62,
+   "text": "and a great new addition to the feature set there.",
+   "words": [
+    {
+     "text": " and",
+     "start": 296.58,
+     "end": 297.48,
+     "p": 0.707
+    },
+    {
+     "text": " a",
+     "start": 297.48,
+     "end": 299.2,
+     "p": 0.766
+    },
+    {
+     "text": " great",
+     "start": 299.2,
+     "end": 299.48,
+     "p": 0.996
+    },
+    {
+     "text": " new",
+     "start": 299.48,
+     "end": 300.02,
+     "p": 0.68
+    },
+    {
+     "text": " addition",
+     "start": 300.02,
+     "end": 300.68,
+     "p": 0.966
+    },
+    {
+     "text": " to",
+     "start": 300.68,
+     "end": 301.74,
+     "p": 0.982
+    },
+    {
+     "text": " the",
+     "start": 301.74,
+     "end": 302.72,
+     "p": 0.975
+    },
+    {
+     "text": " feature",
+     "start": 302.72,
+     "end": 303.0,
+     "p": 0.974
+    },
+    {
+     "text": " set",
+     "start": 303.0,
+     "end": 303.3,
+     "p": 0.995
+    },
+    {
+     "text": " there.",
+     "start": 303.3,
+     "end": 303.62,
+     "p": 0.995
+    }
+   ]
+  },
+  {
+   "start": 304.32,
+   "end": 307.96,
+   "text": "And additionally, if the device has a webpage, right,",
+   "words": [
+    {
+     "text": " And",
+     "start": 304.32,
+     "end": 304.58,
+     "p": 0.952
+    },
+    {
+     "text": " additionally,",
+     "start": 304.58,
+     "end": 305.16,
+     "p": 0.985
+    },
+    {
+     "text": " if",
+     "start": 305.4,
+     "end": 305.64,
+     "p": 0.999
+    },
+    {
+     "text": " the",
+     "start": 305.64,
+     "end": 305.8,
+     "p": 0.992
+    },
+    {
+     "text": " device",
+     "start": 305.8,
+     "end": 306.18,
+     "p": 1.0
+    },
+    {
+     "text": " has",
+     "start": 306.18,
+     "end": 306.84,
+     "p": 1.0
+    },
+    {
+     "text": " a",
+     "start": 306.84,
+     "end": 307.32,
+     "p": 0.999
+    },
+    {
+     "text": " webpage,",
+     "start": 307.32,
+     "end": 307.42,
+     "p": 0.78
+    },
+    {
+     "text": " right,",
+     "start": 307.76,
+     "end": 307.96,
+     "p": 0.758
+    }
+   ]
+  },
+  {
+   "start": 308.32,
+   "end": 311.42,
+   "text": "then you'll be able to access that webpage directly,",
+   "words": [
+    {
+     "text": " then",
+     "start": 308.32,
+     "end": 308.78,
+     "p": 0.996
+    },
+    {
+     "text": " you'll",
+     "start": 308.78,
+     "end": 309.1,
+     "p": 0.944
+    },
+    {
+     "text": " be",
+     "start": 309.1,
+     "end": 309.28,
+     "p": 1.0
+    },
+    {
+     "text": " able",
+     "start": 309.28,
+     "end": 309.42,
+     "p": 0.999
+    },
+    {
+     "text": " to",
+     "start": 309.42,
+     "end": 309.68,
+     "p": 0.999
+    },
+    {
+     "text": " access",
+     "start": 309.68,
+     "end": 310.04,
+     "p": 0.999
+    },
+    {
+     "text": " that",
+     "start": 310.04,
+     "end": 310.4,
+     "p": 1.0
+    },
+    {
+     "text": " webpage",
+     "start": 310.4,
+     "end": 310.74,
+     "p": 0.917
+    },
+    {
+     "text": " directly,",
+     "start": 310.74,
+     "end": 311.42,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 311.42,
+   "end": 315.1,
+   "text": "which is really, really, really good,",
+   "words": [
+    {
+     "text": " which",
+     "start": 311.42,
+     "end": 311.98,
+     "p": 0.999
+    },
+    {
+     "text": " is",
+     "start": 311.98,
+     "end": 312.28,
+     "p": 0.999
+    },
+    {
+     "text": " really,",
+     "start": 312.28,
+     "end": 312.82,
+     "p": 0.997
+    },
+    {
+     "text": " really,",
+     "start": 312.82,
+     "end": 313.26,
+     "p": 0.978
+    },
+    {
+     "text": " really",
+     "start": 313.26,
+     "end": 313.8,
+     "p": 0.964
+    },
+    {
+     "text": " good,",
+     "start": 313.8,
+     "end": 315.1,
+     "p": 0.926
+    }
+   ]
+  },
+  {
+   "start": 315.1,
+   "end": 320.78,
+   "text": "especially for advice like this, we can come right in and you can change any of the parameters",
+   "words": [
+    {
+     "text": " especially",
+     "start": 315.1,
+     "end": 315.48,
+     "p": 0.831
+    },
+    {
+     "text": " for",
+     "start": 315.48,
+     "end": 315.82,
+     "p": 0.996
+    },
+    {
+     "text": " advice",
+     "start": 315.82,
+     "end": 316.1,
+     "p": 0.766
+    },
+    {
+     "text": " like",
+     "start": 316.1,
+     "end": 316.32,
+     "p": 0.996
+    },
+    {
+     "text": " this,",
+     "start": 316.32,
+     "end": 316.66,
+     "p": 0.999
+    },
+    {
+     "text": " we",
+     "start": 316.66,
+     "end": 317.02,
+     "p": 0.813
+    },
+    {
+     "text": " can",
+     "start": 317.02,
+     "end": 317.16,
+     "p": 0.999
+    },
+    {
+     "text": " come",
+     "start": 317.16,
+     "end": 317.4,
+     "p": 0.999
+    },
+    {
+     "text": " right",
+     "start": 317.4,
+     "end": 317.64,
+     "p": 0.996
+    },
+    {
+     "text": " in",
+     "start": 317.64,
+     "end": 318.04,
+     "p": 0.998
+    },
+    {
+     "text": " and",
+     "start": 318.04,
+     "end": 318.4,
+     "p": 0.934
+    },
+    {
+     "text": " you",
+     "start": 318.4,
+     "end": 318.56,
+     "p": 0.993
+    },
+    {
+     "text": " can",
+     "start": 318.56,
+     "end": 318.76,
+     "p": 0.999
+    },
+    {
+     "text": " change",
+     "start": 318.76,
+     "end": 319.2,
+     "p": 0.999
+    },
+    {
+     "text": " any",
+     "start": 319.2,
+     "end": 319.48,
+     "p": 0.996
+    },
+    {
+     "text": " of",
+     "start": 319.48,
+     "end": 319.76,
+     "p": 0.993
+    },
+    {
+     "text": " the",
+     "start": 319.76,
+     "end": 320.16,
+     "p": 0.999
+    },
+    {
+     "text": " parameters",
+     "start": 320.16,
+     "end": 320.78,
+     "p": 0.947
+    }
+   ]
+  },
+  {
+   "start": 321.74,
+   "end": 328.18,
+   "text": "if you want to do that instead of using the terminal or somewhere else.",
+   "words": [
+    {
+     "text": " if",
+     "start": 321.74,
+     "end": 322.08,
+     "p": 0.513
+    },
+    {
+     "text": " you",
+     "start": 322.08,
+     "end": 322.44,
+     "p": 0.966
+    },
+    {
+     "text": " want",
+     "start": 322.44,
+     "end": 323.48,
+     "p": 0.451
+    },
+    {
+     "text": " to",
+     "start": 323.48,
+     "end": 323.66,
+     "p": 0.998
+    },
+    {
+     "text": " do",
+     "start": 323.66,
+     "end": 323.8,
+     "p": 0.999
+    },
+    {
+     "text": " that",
+     "start": 323.8,
+     "end": 324.12,
+     "p": 0.999
+    },
+    {
+     "text": " instead",
+     "start": 324.12,
+     "end": 324.36,
+     "p": 0.871
+    },
+    {
+     "text": " of",
+     "start": 324.36,
+     "end": 324.52,
+     "p": 0.999
+    },
+    {
+     "text": " using",
+     "start": 324.52,
+     "end": 324.94,
+     "p": 0.999
+    },
+    {
+     "text": " the",
+     "start": 324.94,
+     "end": 325.42,
+     "p": 0.998
+    },
+    {
+     "text": " terminal",
+     "start": 325.42,
+     "end": 325.78,
+     "p": 0.95
+    },
+    {
+     "text": " or",
+     "start": 325.78,
+     "end": 326.7,
+     "p": 0.981
+    },
+    {
+     "text": " somewhere",
+     "start": 326.7,
+     "end": 327.7,
+     "p": 0.967
+    },
+    {
+     "text": " else.",
+     "start": 327.7,
+     "end": 328.18,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 329.72,
+   "end": 337.0,
+   "text": "Great. Now let's just take a look at our activities. We haven't really changed too much",
+   "words": [
+    {
+     "text": " Great.",
+     "start": 329.72,
+     "end": 329.9,
+     "p": 0.933
+    },
+    {
+     "text": " Now",
+     "start": 330.52,
+     "end": 330.84,
+     "p": 0.98
+    },
+    {
+     "text": " let's",
+     "start": 330.84,
+     "end": 331.28,
+     "p": 0.896
+    },
+    {
+     "text": " just",
+     "start": 331.28,
+     "end": 331.68,
+     "p": 0.435
+    },
+    {
+     "text": " take",
+     "start": 331.68,
+     "end": 331.88,
+     "p": 0.976
+    },
+    {
+     "text": " a",
+     "start": 331.88,
+     "end": 332.02,
+     "p": 0.999
+    },
+    {
+     "text": " look",
+     "start": 332.02,
+     "end": 332.16,
+     "p": 1.0
+    },
+    {
+     "text": " at",
+     "start": 332.16,
+     "end": 332.82,
+     "p": 0.999
+    },
+    {
+     "text": " our",
+     "start": 332.82,
+     "end": 333.94,
+     "p": 0.926
+    },
+    {
+     "text": " activities.",
+     "start": 333.94,
+     "end": 334.5,
+     "p": 0.982
+    },
+    {
+     "text": " We",
+     "start": 335.44,
+     "end": 335.66,
+     "p": 0.382
+    },
+    {
+     "text": " haven't",
+     "start": 335.66,
+     "end": 335.88,
+     "p": 0.996
+    },
+    {
+     "text": " really",
+     "start": 335.88,
+     "end": 336.1,
+     "p": 0.988
+    },
+    {
+     "text": " changed",
+     "start": 336.1,
+     "end": 336.4,
+     "p": 0.997
+    },
+    {
+     "text": " too",
+     "start": 336.4,
+     "end": 336.76,
+     "p": 0.995
+    },
+    {
+     "text": " much",
+     "start": 336.76,
+     "end": 337.0,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 337.0,
+   "end": 342.46,
+   "text": "here. But we do have a addition that you can you can basically",
+   "words": [
+    {
+     "text": " here.",
+     "start": 337.0,
+     "end": 337.56,
+     "p": 0.611
+    },
+    {
+     "text": " But",
+     "start": 337.64,
+     "end": 338.18,
+     "p": 0.587
+    },
+    {
+     "text": " we",
+     "start": 338.18,
+     "end": 338.42,
+     "p": 0.995
+    },
+    {
+     "text": " do",
+     "start": 338.42,
+     "end": 338.76,
+     "p": 0.729
+    },
+    {
+     "text": " have",
+     "start": 338.76,
+     "end": 339.24,
+     "p": 0.998
+    },
+    {
+     "text": " a",
+     "start": 339.24,
+     "end": 339.92,
+     "p": 0.815
+    },
+    {
+     "text": " addition",
+     "start": 339.92,
+     "end": 340.54,
+     "p": 0.601
+    },
+    {
+     "text": " that",
+     "start": 340.54,
+     "end": 340.86,
+     "p": 0.995
+    },
+    {
+     "text": " you",
+     "start": 340.86,
+     "end": 341.04,
+     "p": 0.997
+    },
+    {
+     "text": " can",
+     "start": 341.04,
+     "end": 341.26,
+     "p": 0.999
+    },
+    {
+     "text": " you",
+     "start": 341.26,
+     "end": 341.46,
+     "p": 0.06
+    },
+    {
+     "text": " can",
+     "start": 341.46,
+     "end": 341.74,
+     "p": 0.996
+    },
+    {
+     "text": " basically",
+     "start": 341.74,
+     "end": 342.46,
+     "p": 0.994
+    }
+   ]
+  },
+  {
+   "start": 342.46,
+   "end": 351.1,
+   "text": "add messages, right? Hello, world, right to and this will",
+   "words": [
+    {
+     "text": " add",
+     "start": 342.46,
+     "end": 343.06,
+     "p": 0.994
+    },
+    {
+     "text": " messages,",
+     "start": 343.06,
+     "end": 344.14,
+     "p": 0.687
+    },
+    {
+     "text": " right?",
+     "start": 344.82,
+     "end": 344.94,
+     "p": 0.992
+    },
+    {
+     "text": " Hello,",
+     "start": 346.26,
+     "end": 346.54,
+     "p": 0.666
+    },
+    {
+     "text": " world,",
+     "start": 347.28,
+     "end": 348.08,
+     "p": 0.32
+    },
+    {
+     "text": " right",
+     "start": 348.6,
+     "end": 349.7,
+     "p": 0.957
+    },
+    {
+     "text": " to",
+     "start": 349.7,
+     "end": 350.24,
+     "p": 0.758
+    },
+    {
+     "text": " and",
+     "start": 350.24,
+     "end": 350.54,
+     "p": 0.767
+    },
+    {
+     "text": " this",
+     "start": 350.54,
+     "end": 350.94,
+     "p": 0.865
+    },
+    {
+     "text": " will",
+     "start": 350.94,
+     "end": 351.1,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 351.1,
+   "end": 357.08,
+   "text": "pop up when you hit that power off button, right. And you can",
+   "words": [
+    {
+     "text": " pop",
+     "start": 351.1,
+     "end": 351.36,
+     "p": 0.999
+    },
+    {
+     "text": " up",
+     "start": 351.36,
+     "end": 351.58,
+     "p": 0.999
+    },
+    {
+     "text": " when",
+     "start": 351.58,
+     "end": 351.72,
+     "p": 0.996
+    },
+    {
+     "text": " you",
+     "start": 351.72,
+     "end": 351.84,
+     "p": 0.814
+    },
+    {
+     "text": " hit",
+     "start": 351.84,
+     "end": 351.98,
+     "p": 1.0
+    },
+    {
+     "text": " that",
+     "start": 351.98,
+     "end": 352.48,
+     "p": 0.998
+    },
+    {
+     "text": " power",
+     "start": 352.48,
+     "end": 353.14,
+     "p": 0.903
+    },
+    {
+     "text": " off",
+     "start": 353.14,
+     "end": 353.54,
+     "p": 0.998
+    },
+    {
+     "text": " button,",
+     "start": 353.54,
+     "end": 354.26,
+     "p": 0.97
+    },
+    {
+     "text": " right.",
+     "start": 354.86,
+     "end": 354.94,
+     "p": 0.999
+    },
+    {
+     "text": " And",
+     "start": 355.92,
+     "end": 356.54,
+     "p": 0.997
+    },
+    {
+     "text": " you",
+     "start": 356.54,
+     "end": 356.94,
+     "p": 0.999
+    },
+    {
+     "text": " can",
+     "start": 356.94,
+     "end": 357.08,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 357.08,
+   "end": 361.98,
+   "text": "see our av over IP. So already set up, you can change the fonts",
+   "words": [
+    {
+     "text": " see",
+     "start": 357.08,
+     "end": 357.26,
+     "p": 0.999
+    },
+    {
+     "text": " our",
+     "start": 357.26,
+     "end": 357.44,
+     "p": 0.987
+    },
+    {
+     "text": " av",
+     "start": 357.44,
+     "end": 357.64,
+     "p": 0.554
+    },
+    {
+     "text": " over",
+     "start": 357.64,
+     "end": 357.88,
+     "p": 0.936
+    },
+    {
+     "text": " IP.",
+     "start": 357.88,
+     "end": 358.3,
+     "p": 0.737
+    },
+    {
+     "text": " So",
+     "start": 358.3,
+     "end": 358.94,
+     "p": 0.527
+    },
+    {
+     "text": " already",
+     "start": 358.94,
+     "end": 359.2,
+     "p": 0.917
+    },
+    {
+     "text": " set",
+     "start": 359.2,
+     "end": 359.44,
+     "p": 0.982
+    },
+    {
+     "text": " up,",
+     "start": 359.44,
+     "end": 359.76,
+     "p": 0.999
+    },
+    {
+     "text": " you",
+     "start": 359.78,
+     "end": 359.9,
+     "p": 0.999
+    },
+    {
+     "text": " can",
+     "start": 359.9,
+     "end": 360.06,
+     "p": 1.0
+    },
+    {
+     "text": " change",
+     "start": 360.06,
+     "end": 360.46,
+     "p": 1.0
+    },
+    {
+     "text": " the",
+     "start": 360.46,
+     "end": 361.4,
+     "p": 0.997
+    },
+    {
+     "text": " fonts",
+     "start": 361.4,
+     "end": 361.98,
+     "p": 0.979
+    }
+   ]
+  },
+  {
+   "start": 361.98,
+   "end": 368.68,
+   "text": "or the labels and you can change the icons for the sources.",
+   "words": [
+    {
+     "text": " or",
+     "start": 361.98,
+     "end": 362.36,
+     "p": 0.231
+    },
+    {
+     "text": " the",
+     "start": 362.36,
+     "end": 363.04,
+     "p": 0.965
+    },
+    {
+     "text": " labels",
+     "start": 363.04,
+     "end": 363.8,
+     "p": 0.946
+    },
+    {
+     "text": " and",
+     "start": 363.8,
+     "end": 364.08,
+     "p": 0.502
+    },
+    {
+     "text": " you",
+     "start": 364.08,
+     "end": 364.18,
+     "p": 0.998
+    },
+    {
+     "text": " can",
+     "start": 364.18,
+     "end": 364.38,
+     "p": 0.997
+    },
+    {
+     "text": " change",
+     "start": 364.38,
+     "end": 364.78,
+     "p": 0.999
+    },
+    {
+     "text": " the",
+     "start": 364.78,
+     "end": 365.98,
+     "p": 0.985
+    },
+    {
+     "text": " icons",
+     "start": 365.98,
+     "end": 367.46,
+     "p": 0.939
+    },
+    {
+     "text": " for",
+     "start": 367.46,
+     "end": 367.96,
+     "p": 0.989
+    },
+    {
+     "text": " the",
+     "start": 367.96,
+     "end": 368.3,
+     "p": 0.936
+    },
+    {
+     "text": " sources.",
+     "start": 368.3,
+     "end": 368.68,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 369.52,
+   "end": 371.96,
+   "text": "Let's go into the end user interface.",
+   "words": [
+    {
+     "text": " Let's",
+     "start": 369.52,
+     "end": 370.16,
+     "p": 0.861
+    },
+    {
+     "text": " go",
+     "start": 370.16,
+     "end": 370.28,
+     "p": 0.997
+    },
+    {
+     "text": " into",
+     "start": 370.28,
+     "end": 370.7,
+     "p": 0.807
+    },
+    {
+     "text": " the",
+     "start": 370.7,
+     "end": 370.9,
+     "p": 0.995
+    },
+    {
+     "text": " end",
+     "start": 370.9,
+     "end": 371.08,
+     "p": 0.955
+    },
+    {
+     "text": " user",
+     "start": 371.08,
+     "end": 371.26,
+     "p": 0.893
+    },
+    {
+     "text": " interface.",
+     "start": 371.26,
+     "end": 371.96,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 372.98,
+   "end": 378.26,
+   "text": "Another great feature now is you can drag and drop",
+   "words": [
+    {
+     "text": " Another",
+     "start": 372.98,
+     "end": 373.24,
+     "p": 0.998
+    },
+    {
+     "text": " great",
+     "start": 373.24,
+     "end": 373.72,
+     "p": 1.0
+    },
+    {
+     "text": " feature",
+     "start": 373.72,
+     "end": 374.1,
+     "p": 0.998
+    },
+    {
+     "text": " now",
+     "start": 374.1,
+     "end": 374.76,
+     "p": 0.96
+    },
+    {
+     "text": " is",
+     "start": 374.76,
+     "end": 375.48,
+     "p": 0.954
+    },
+    {
+     "text": " you",
+     "start": 375.48,
+     "end": 375.82,
+     "p": 0.692
+    },
+    {
+     "text": " can",
+     "start": 375.82,
+     "end": 376.46,
+     "p": 1.0
+    },
+    {
+     "text": " drag",
+     "start": 376.46,
+     "end": 377.52,
+     "p": 0.97
+    },
+    {
+     "text": " and",
+     "start": 377.52,
+     "end": 377.8,
+     "p": 0.996
+    },
+    {
+     "text": " drop",
+     "start": 377.8,
+     "end": 378.26,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 378.26,
+   "end": 379.56,
+   "text": "the sources on there.",
+   "words": [
+    {
+     "text": " the",
+     "start": 378.26,
+     "end": 378.62,
+     "p": 0.989
+    },
+    {
+     "text": " sources",
+     "start": 378.62,
+     "end": 378.92,
+     "p": 0.997
+    },
+    {
+     "text": " on",
+     "start": 378.92,
+     "end": 379.3,
+     "p": 0.996
+    },
+    {
+     "text": " there.",
+     "start": 379.3,
+     "end": 379.56,
+     "p": 0.997
+    }
+   ]
+  },
+  {
+   "start": 379.6,
+   "end": 384.22,
+   "text": "You still have the option to select source, select output,",
+   "words": [
+    {
+     "text": " You",
+     "start": 379.6,
+     "end": 379.8,
+     "p": 0.996
+    },
+    {
+     "text": " still",
+     "start": 379.8,
+     "end": 380.12,
+     "p": 0.992
+    },
+    {
+     "text": " have",
+     "start": 380.12,
+     "end": 380.28,
+     "p": 0.999
+    },
+    {
+     "text": " the",
+     "start": 380.28,
+     "end": 380.44,
+     "p": 0.999
+    },
+    {
+     "text": " option",
+     "start": 380.44,
+     "end": 380.7,
+     "p": 1.0
+    },
+    {
+     "text": " to",
+     "start": 380.7,
+     "end": 380.96,
+     "p": 0.999
+    },
+    {
+     "text": " select",
+     "start": 380.96,
+     "end": 381.24,
+     "p": 0.988
+    },
+    {
+     "text": " source,",
+     "start": 381.24,
+     "end": 381.7,
+     "p": 0.968
+    },
+    {
+     "text": " select",
+     "start": 382.28,
+     "end": 383.02,
+     "p": 0.999
+    },
+    {
+     "text": " output,",
+     "start": 383.02,
+     "end": 384.22,
+     "p": 0.99
+    }
+   ]
+  },
+  {
+   "start": 385.26,
+   "end": 388.38,
+   "text": "or you can drag and drop source to output.",
+   "words": [
+    {
+     "text": " or",
+     "start": 385.26,
+     "end": 385.62,
+     "p": 0.999
+    },
+    {
+     "text": " you",
+     "start": 385.62,
+     "end": 385.82,
+     "p": 1.0
+    },
+    {
+     "text": " can",
+     "start": 385.82,
+     "end": 385.98,
+     "p": 0.76
+    },
+    {
+     "text": " drag",
+     "start": 385.98,
+     "end": 386.32,
+     "p": 0.999
+    },
+    {
+     "text": " and",
+     "start": 386.32,
+     "end": 386.54,
+     "p": 0.998
+    },
+    {
+     "text": " drop",
+     "start": 386.54,
+     "end": 387.0,
+     "p": 1.0
+    },
+    {
+     "text": " source",
+     "start": 387.0,
+     "end": 387.66,
+     "p": 0.971
+    },
+    {
+     "text": " to",
+     "start": 387.66,
+     "end": 387.86,
+     "p": 0.989
+    },
+    {
+     "text": " output.",
+     "start": 387.86,
+     "end": 388.38,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 389.26,
+   "end": 391.72,
+   "text": "And of course you can select a source",
+   "words": [
+    {
+     "text": " And",
+     "start": 389.26,
+     "end": 389.62,
+     "p": 0.961
+    },
+    {
+     "text": " of",
+     "start": 389.62,
+     "end": 389.78,
+     "p": 0.972
+    },
+    {
+     "text": " course",
+     "start": 389.78,
+     "end": 389.96,
+     "p": 1.0
+    },
+    {
+     "text": " you",
+     "start": 389.96,
+     "end": 390.12,
+     "p": 0.866
+    },
+    {
+     "text": " can",
+     "start": 390.12,
+     "end": 390.28,
+     "p": 0.999
+    },
+    {
+     "text": " select",
+     "start": 390.28,
+     "end": 390.62,
+     "p": 0.998
+    },
+    {
+     "text": " a",
+     "start": 390.62,
+     "end": 391.36,
+     "p": 0.997
+    },
+    {
+     "text": " source",
+     "start": 391.36,
+     "end": 391.72,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 391.72,
+   "end": 393.72,
+   "text": "and send to all by hitting that all button.",
+   "words": [
+    {
+     "text": " and",
+     "start": 391.72,
+     "end": 392.0,
+     "p": 0.823
+    },
+    {
+     "text": " send",
+     "start": 392.0,
+     "end": 392.28,
+     "p": 0.827
+    },
+    {
+     "text": " to",
+     "start": 392.28,
+     "end": 392.46,
+     "p": 0.972
+    },
+    {
+     "text": " all",
+     "start": 392.46,
+     "end": 392.6,
+     "p": 0.795
+    },
+    {
+     "text": " by",
+     "start": 392.6,
+     "end": 392.78,
+     "p": 0.973
+    },
+    {
+     "text": " hitting",
+     "start": 392.78,
+     "end": 393.02,
+     "p": 0.994
+    },
+    {
+     "text": " that",
+     "start": 393.02,
+     "end": 393.24,
+     "p": 0.995
+    },
+    {
+     "text": " all",
+     "start": 393.24,
+     "end": 393.4,
+     "p": 0.738
+    },
+    {
+     "text": " button.",
+     "start": 393.4,
+     "end": 393.72,
+     "p": 0.992
+    }
+   ]
+  },
+  {
+   "start": 396.08,
+   "end": 398.48,
+   "text": "Also, just a little safety feature.",
+   "words": [
+    {
+     "text": " Also,",
+     "start": 396.08,
+     "end": 396.52,
+     "p": 0.735
+    },
+    {
+     "text": " just",
+     "start": 396.86,
+     "end": 397.0,
+     "p": 0.993
+    },
+    {
+     "text": " a",
+     "start": 397.0,
+     "end": 397.32,
+     "p": 0.992
+    },
+    {
+     "text": " little",
+     "start": 397.32,
+     "end": 397.64,
+     "p": 0.998
+    },
+    {
+     "text": " safety",
+     "start": 397.64,
+     "end": 398.06,
+     "p": 0.999
+    },
+    {
+     "text": " feature.",
+     "start": 398.06,
+     "end": 398.48,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 398.74,
+   "end": 400.5,
+   "text": "We have a little X in the corner.",
+   "words": [
+    {
+     "text": " We",
+     "start": 398.74,
+     "end": 398.76,
+     "p": 0.997
+    },
+    {
+     "text": " have",
+     "start": 398.76,
+     "end": 398.9,
+     "p": 1.0
+    },
+    {
+     "text": " a",
+     "start": 398.9,
+     "end": 399.04,
+     "p": 0.995
+    },
+    {
+     "text": " little",
+     "start": 399.04,
+     "end": 399.32,
+     "p": 0.999
+    },
+    {
+     "text": " X",
+     "start": 399.32,
+     "end": 399.84,
+     "p": 0.815
+    },
+    {
+     "text": " in",
+     "start": 399.84,
+     "end": 400.04,
+     "p": 0.999
+    },
+    {
+     "text": " the",
+     "start": 400.04,
+     "end": 400.14,
+     "p": 1.0
+    },
+    {
+     "text": " corner.",
+     "start": 400.14,
+     "end": 400.5,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 400.6,
+   "end": 402.5,
+   "text": "So if you want to cancel or power off,",
+   "words": [
+    {
+     "text": " So",
+     "start": 400.6,
+     "end": 400.96,
+     "p": 0.958
+    },
+    {
+     "text": " if",
+     "start": 400.96,
+     "end": 401.06,
+     "p": 0.855
+    },
+    {
+     "text": " you",
+     "start": 401.06,
+     "end": 401.16,
+     "p": 1.0
+    },
+    {
+     "text": " want",
+     "start": 401.16,
+     "end": 401.28,
+     "p": 0.92
+    },
+    {
+     "text": " to",
+     "start": 401.28,
+     "end": 401.48,
+     "p": 0.995
+    },
+    {
+     "text": " cancel",
+     "start": 401.48,
+     "end": 401.78,
+     "p": 0.997
+    },
+    {
+     "text": " or",
+     "start": 401.78,
+     "end": 402.0,
+     "p": 0.579
+    },
+    {
+     "text": " power",
+     "start": 402.0,
+     "end": 402.16,
+     "p": 0.996
+    },
+    {
+     "text": " off,",
+     "start": 402.16,
+     "end": 402.5,
+     "p": 0.992
+    }
+   ]
+  },
+  {
+   "start": 402.58,
+   "end": 403.92,
+   "text": "you're able to do that now.",
+   "words": [
+    {
+     "text": " you're",
+     "start": 402.58,
+     "end": 402.7,
+     "p": 0.995
+    },
+    {
+     "text": " able",
+     "start": 402.7,
+     "end": 402.88,
+     "p": 1.0
+    },
+    {
+     "text": " to",
+     "start": 402.88,
+     "end": 403.04,
+     "p": 1.0
+    },
+    {
+     "text": " do",
+     "start": 403.04,
+     "end": 403.2,
+     "p": 1.0
+    },
+    {
+     "text": " that",
+     "start": 403.2,
+     "end": 403.4,
+     "p": 1.0
+    },
+    {
+     "text": " now.",
+     "start": 403.4,
+     "end": 403.92,
+     "p": 0.996
+    }
+   ]
+  },
+  {
+   "start": 406.0,
+   "end": 407.72,
+   "text": "And it's a good little feature.",
+   "words": [
+    {
+     "text": " And",
+     "start": 406.0,
+     "end": 406.44,
+     "p": 0.923
+    },
+    {
+     "text": " it's",
+     "start": 406.44,
+     "end": 406.88,
+     "p": 0.899
+    },
+    {
+     "text": " a",
+     "start": 406.88,
+     "end": 407.0,
+     "p": 0.999
+    },
+    {
+     "text": " good",
+     "start": 407.0,
+     "end": 407.14,
+     "p": 0.999
+    },
+    {
+     "text": " little",
+     "start": 407.14,
+     "end": 407.32,
+     "p": 0.998
+    },
+    {
+     "text": " feature.",
+     "start": 407.32,
+     "end": 407.72,
+     "p": 0.998
+    }
+   ]
+  },
+  {
+   "start": 407.78,
+   "end": 409.7,
+   "text": "And there's our hello world message.",
+   "words": [
+    {
+     "text": " And",
+     "start": 407.78,
+     "end": 407.88,
+     "p": 0.975
+    },
+    {
+     "text": " there's",
+     "start": 407.88,
+     "end": 408.1,
+     "p": 0.987
+    },
+    {
+     "text": " our",
+     "start": 408.1,
+     "end": 408.3,
+     "p": 0.99
+    },
+    {
+     "text": " hello",
+     "start": 408.3,
+     "end": 408.78,
+     "p": 0.492
+    },
+    {
+     "text": " world",
+     "start": 408.78,
+     "end": 409.22,
+     "p": 0.953
+    },
+    {
+     "text": " message.",
+     "start": 409.22,
+     "end": 409.7,
+     "p": 0.997
+    }
+   ]
+  },
+  {
+   "start": 410.08,
+   "end": 410.6,
+   "text": "Isn't that wonderful?",
+   "words": [
+    {
+     "text": " Isn't",
+     "start": 410.08,
+     "end": 410.16,
+     "p": 0.973
+    },
+    {
+     "text": " that",
+     "start": 410.16,
+     "end": 410.26,
+     "p": 0.996
+    },
+    {
+     "text": " wonderful?",
+     "start": 410.26,
+     "end": 410.6,
+     "p": 0.995
+    }
+   ]
+  },
+  {
+   "start": 411.4,
+   "end": 412.92,
+   "text": "Anyway, thanks for joining me.",
+   "words": [
+    {
+     "text": " Anyway,",
+     "start": 411.4,
+     "end": 411.58,
+     "p": 0.969
+    },
+    {
+     "text": " thanks",
+     "start": 411.9,
+     "end": 412.18,
+     "p": 0.996
+    },
+    {
+     "text": " for",
+     "start": 412.18,
+     "end": 412.36,
+     "p": 1.0
+    },
+    {
+     "text": " joining",
+     "start": 412.36,
+     "end": 412.6,
+     "p": 0.999
+    },
+    {
+     "text": " me.",
+     "start": 412.6,
+     "end": 412.92,
+     "p": 0.999
+    }
+   ]
+  },
+  {
+   "start": 412.92,
+   "end": 415.86,
+   "text": "And I hope this was informative.",
+   "words": [
+    {
+     "text": " And",
+     "start": 412.92,
+     "end": 413.48,
+     "p": 0.562
+    },
+    {
+     "text": " I",
+     "start": 413.48,
+     "end": 414.9,
+     "p": 0.958
+    },
+    {
+     "text": " hope",
+     "start": 414.9,
+     "end": 415.04,
+     "p": 0.998
+    },
+    {
+     "text": " this",
+     "start": 415.04,
+     "end": 415.22,
+     "p": 0.998
+    },
+    {
+     "text": " was",
+     "start": 415.22,
+     "end": 415.4,
+     "p": 0.998
+    },
+    {
+     "text": " informative.",
+     "start": 415.4,
+     "end": 415.86,
+     "p": 1.0
+    }
+   ]
+  }
+ ]
+}
