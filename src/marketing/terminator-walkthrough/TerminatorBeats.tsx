@@ -1,13 +1,14 @@
 import type {ReactNode} from 'react';
 import {interpolate} from 'remotion';
 import {
-  TERM_ADAPTER, TERM_RAW_TCP, TERM_SERIAL, TERM_SERVER, TERM_SSH, TERM_TOOLS,
+  TERM_ADAPTER, TERM_NAV_WIDTH, TERM_RAW_TCP, TERM_SERIAL, TERM_SERVER, TERM_SSH, TERM_TOOLS,
   termRegions,
 } from '../../app-ui/term/termData';
 import {round, sp, text} from '../../app-ui/term/termTheme';
-import {TermScanScene, TermServerScene} from '../../app-ui/term/TermScenes';
+import {TermRawTcpScene, TermScanScene, TermSerialScene, TermServerScene} from '../../app-ui/term/TermScenes';
 import {TermApp, TermScan, TermSerial, TermSsh, TermTcpClient, TermTcpServer, type TermTab} from '../../app-ui/term/Terminator';
-import {FocusRing, Spotlight} from '../../camera/Annotations';
+import {FocusRing, PointerClick, Spotlight} from '../../camera/Annotations';
+import {padRegion} from '../../camera/Camera';
 import type {WalkthroughFormat} from '../WalkthroughShell';
 import {ServerDiagram} from './ServerDiagram';
 import {BEATS, CUE_FRAMES} from './terminatorWalkthroughData';
@@ -94,9 +95,93 @@ export const ServerBeat = ({frame, frames}: BeatProps) => {
       ) : (
         <>
           <Spotlight region={termRegions.serverLog} appearAt={commands} intensity={0.25} />
-          <FocusRing region={arrivingLine} appearAt={commands} name="Arriving server command" />
+          <FocusRing region={padRegion(arrivingLine, 4)} appearAt={commands} radius={round.sm} name="Arriving server command" />
         </>
       )}
+    </>
+  );
+};
+
+// Pin icon region in InstanceTabs from markup constants, calibrated against the rendered still:
+// x: nav width + tabs padding-left (sp(4)) + tab border (1) + tab padding-left (sp(3.5))
+//    + live dot (sp(2)) + dot gap (sp(2)) + label width ('Server 1 (23)' length * font * 0.45)
+//    + pin gap (sp(2)).
+// y: vertically centred in tabs bar (~17 to 31).
+// Padded by 6px to give a comfortable ring around the 14x14 icon.
+const pinIconRaw = {
+  x: TERM_NAV_WIDTH + sp(4) + 1 + sp(3.5) + sp(2) + sp(2) + 'Server 1 (23)'.length * text.xs.fontSize * 0.45 + sp(2),
+  y: 17,
+  width: 14,
+  height: 14,
+};
+const pinIcon = padRegion(pinIconRaw, 6);
+
+export const PinBeat = ({frame}: BeatProps) => {
+  const pinFirst = CUE_FRAMES.pinFirst - BEATS.pin.from;
+  const pinSecond = CUE_FRAMES.pinSecond - BEATS.pin.from;
+  const pinned = frame >= pinSecond;
+  return (
+    <>
+      <TermApp tab="tcp-server">
+        <TermTcpServer
+          port={TERM_SERVER.port}
+          listening
+          clients={1}
+          received={TERM_SERVER.received}
+          sent={TERM_SERVER.sent}
+          pinned={pinned}
+        />
+      </TermApp>
+      <FocusRing region={pinIcon} appearAt={pinFirst} radius={round.sm} name="Pin tab focus ring" />
+      <PointerClick
+        to={{x: pinIcon.x + pinIcon.width / 2, y: pinIcon.y + pinIcon.height / 2}}
+        at={pinSecond}
+        fadeOutAt={pinSecond + 16}
+        name="Pin tab pointer"
+      />
+    </>
+  );
+};
+
+export const RawTcpBeat = ({frame, frames}: BeatProps) => {
+  const raw = CUE_FRAMES.raw - BEATS['raw-tcp'].from;
+  const telnet = CUE_FRAMES.telnet - BEATS['raw-tcp'].from;
+  return (
+    <>
+      <TermRawTcpScene
+        frames={frames}
+        connectFrame={70}
+        sendFrame={390}
+        replyFrame={450}
+      />
+      {frame < telnet && (
+        <FocusRing
+          region={termRegions.connectFields}
+          appearAt={raw}
+          radius={round.md}
+          name="Raw TCP connect fields"
+        />
+      )}
+    </>
+  );
+};
+
+export const SerialBeat = ({frames}: BeatProps) => {
+  const parameters = CUE_FRAMES.parameters - BEATS.serial.from;
+  return (
+    <>
+      <TermSerialScene
+        frames={frames}
+        openFrame={65}
+        sendFrame={220}
+        replyFrame={310}
+      />
+      <FocusRing
+        region={termRegions.serialParams}
+        appearAt={parameters}
+        radius={round.md}
+        name="Serial parameters"
+      />
     </>
   );
 };

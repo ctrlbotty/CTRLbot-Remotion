@@ -1,16 +1,16 @@
 // Revision 2: cue-driven proof, scan and server; later beat tasks retain their scenes.
 import {useCurrentFrame} from 'remotion';
-import {TERM_ADAPTER, TERM_SERVER, TERM_VIEWPORT} from '../../app-ui/term/termData';
-import {
-  TermRawTcpScene, TermSerialScene, TermSshScene,
-} from '../../app-ui/term/TermScenes';
-import {TermApp, TermScan, TermTcpServer, type TermTab} from '../../app-ui/term/Terminator';
+import {TERM_ADAPTER, TERM_VIEWPORT} from '../../app-ui/term/termData';
+import {TermSshScene} from '../../app-ui/term/TermScenes';
+import {TermApp, TermScan, type TermTab} from '../../app-ui/term/Terminator';
 import {PromoPreload} from '../eui-promo/PromoPreload';
 import {WalkthroughShell, type WalkthroughBeat, type WalkthroughFormat} from '../WalkthroughShell';
 import {TERMINATOR_CAPTION_CORRECTIONS} from './terminatorWalkthroughNarration';
 import {TERMINATOR_WALKTHROUGH_EDIT} from './terminatorWalkthroughNarration.generated';
 import {TERMINATOR_WALKTHROUGH_FRAMES, WALKTHROUGH_BEATS} from './terminatorWalkthroughData';
-import {ProofBeat, ScanBeat, ServerBeat} from './TerminatorBeats';
+import {
+  PinBeat, ProofBeat, RawTcpBeat, ScanBeat, SerialBeat, ServerBeat,
+} from './TerminatorBeats';
 
 export const terminatorWalkthroughDuration = TERMINATOR_WALKTHROUGH_FRAMES;
 const NAV_TABS: TermTab[] = ['scan', 'tcp-server', 'tcp-client', 'serial', 'ssh'];
@@ -27,16 +27,6 @@ const ToolOverview = ({frames}: {frames: number}) => {
   );
 };
 
-const PinBeat = ({frames}: {frames: number}) => {
-  const frame = useCurrentFrame();
-  return (
-    <TermApp tab="tcp-server">
-      <TermTcpServer port={TERM_SERVER.port} listening clients={1}
-        received={TERM_SERVER.received} sent={TERM_SERVER.sent} pinned={frame >= frames * 0.4} />
-    </TermApp>
-  );
-};
-
 export const TERMINATOR_WALKTHROUGH_BEATS: WalkthroughBeat[] = WALKTHROUGH_BEATS.map((beat) => ({
   ...beat,
   render: ({frame, frames, format}) => {
@@ -45,9 +35,9 @@ export const TERMINATOR_WALKTHROUGH_BEATS: WalkthroughBeat[] = WALKTHROUGH_BEATS
       case 'recap': return <ToolOverview frames={frames} />;
       case 'scan': return <ScanBeat frame={frame} frames={frames} format={format} />;
       case 'server': return <ServerBeat frame={frame} frames={frames} format={format} />;
-      case 'pin': return <PinBeat frames={frames} />;
-      case 'raw-tcp': return <TermRawTcpScene frames={frames} />;
-      case 'serial': return <TermSerialScene frames={frames} />;
+      case 'pin': return <PinBeat frame={frame} frames={frames} format={format} />;
+      case 'raw-tcp': return <RawTcpBeat frame={frame} frames={frames} format={format} />;
+      case 'serial': return <SerialBeat frame={frame} frames={frames} format={format} />;
       case 'ssh': return <TermSshScene frames={frames} />;
       default: return null;
     }
