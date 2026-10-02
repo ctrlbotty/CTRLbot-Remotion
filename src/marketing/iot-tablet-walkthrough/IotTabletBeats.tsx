@@ -26,12 +26,16 @@ import {
 import {ProductWebView} from '../../app-ui/ProductWebView';
 import {
   ConnectionPanel,
+  connectionRegions,
   type DeviceCommand,
   type TerminalLine,
 } from '../../app-ui/ConnectionPanel';
 import {
   ConnectTest,
+  DEFAULT_CONNECT_COMMANDS,
+  DEFAULT_CONNECT_TERMINAL,
   DEFAULT_MATROX_INPUTS,
+  connectTestRegions,
   type ConnectTestSubTab,
 } from '../../app-ui/ConnectTest';
 import {
@@ -352,15 +356,23 @@ export const DatabaseBeat: React.FC<{frame: number; frames: number}> = ({frame})
 /**
  * Epson beat (23.5s = 705 frames):
  * Epson PowerLite in the detail pane: device info, specs, setup, support; the manufacturer
- * link is ringed and the app's web view opens loading; back on the pane, control info.
+ * link is ringed and tapped, and the web view's address bar loads for at most 2s;
+ * back on the pane, the connection info is ringed.
+ * Cues: epson-info "projector" (abs 2208, rel 123) · epson-webpage "manufacturer" (abs 2392, rel 307)
+ *       · epson-connection "connection" (abs 2721, rel 636).
  */
 export const EpsonBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const showWebView = frame >= 240 && frame < 450;
-  const ringActive = frame >= 140 && frame < 240;
-  const showControl = frame >= 450;
+  const cueProjector = CUE_FRAMES.epsonProjector - BEATS.epson.from;
+  const cueWebpage = CUE_FRAMES.epsonWebpage - BEATS.epson.from;
+  const cueConnection = CUE_FRAMES.epsonConnection - BEATS.epson.from;
+
+  // Web view loads for under 2s (50 frames = 1.67s at 30fps)
+  const WEB_LOAD_FRAMES = 50;
+  const showWebView = frame >= cueWebpage && frame < cueWebpage + WEB_LOAD_FRAMES;
 
   if (showWebView) {
-    const progress = interpolate(frame, [240, 450], [15, 80], {
+    const progress = interpolate(frame, [cueWebpage, cueWebpage + WEB_LOAD_FRAMES], [15, 80], {
+      easing: Easing.bezier(0.16, 1, 0.3, 1),
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
     });
@@ -374,60 +386,192 @@ export const EpsonBeat: React.FC<{frame: number; frames: number}> = ({frame}) =>
     );
   }
 
+  // Card 7 (EPSON PowerLite) position: listScroll = 180
+  const card7 = catalogRegions('tablet').card(7);
+  const card7VisualY = card7.y - 180;
+  const card7CenterX = card7.x + card7.width / 2;
+  const card7CenterY = card7VisualY + card7.height / 2;
+  const card7Region = {
+    x: card7.x,
+    y: card7VisualY,
+    width: card7.width,
+    height: card7.height,
+  };
+
+  // Manufacturer link region in detail header: x = 1070, y = 36, width = 130, height = 40
+  const mfrLinkRegion = {x: 1070, y: 36, width: 130, height: 40};
+  const mfrLinkCenterX = mfrLinkRegion.x + mfrLinkRegion.width / 2;
+  const mfrLinkCenterY = mfrLinkRegion.y + mfrLinkRegion.height / 2;
+  const ringActive = frame >= cueWebpage - 15 && frame < cueWebpage;
+
+  // Connection info region in detail pane: scrolls into view on epson-connection
+  const afterWeb = frame >= cueWebpage + WEB_LOAD_FRAMES;
+  const detailScroll = afterWeb
+    ? interpolate(frame, [500, 540], [0, 120], {
+        easing: Easing.bezier(0.16, 1, 0.3, 1),
+        extrapolateLeft: 'clamp',
+        extrapolateRight: 'clamp',
+      })
+    : 0;
+  const controlRegion = {x: 660, y: 280, width: 480, height: 160};
+
+  const isSelected = frame >= cueProjector;
+
   return (
-    <DriverCatalog
-      device="tablet"
-      drivers={CATALOG_DRIVERS}
-      background={SETUP_BACKGROUND}
-      selectedIndex={7}
-      listScroll={180}
-      detail={
-        <DriverDetail
-          title="EPSON Projectors"
-          ringManufacturer={ringActive}
-          scroll={showControl ? 120 : 0}
-        >
-          <ModelRow model="PowerLite" />
-          <DeviceInfo>
-            The Epson PowerLite Presenter HD is a portable projector with an integrated DVD
-            player and speakers, suitable for presentations and video playback.
-          </DeviceInfo>
-          <Accordion label="Specs" />
-          <Accordion label="Setup" />
-          <Accordion label="Support" />
-          {showControl ? (
-            <ControlInfo
-              controlType="IP"
-              ipType="TCP"
-              port="3629"
-              keepAlive="Disabled"
-              onConnection="Disabled"
-              authentication="No"
-              show={6}
-            />
-          ) : null}
-        </DriverDetail>
-      }
-    />
+    <>
+      <DriverCatalog
+        device="tablet"
+        drivers={CATALOG_DRIVERS}
+        background={SETUP_BACKGROUND}
+        selectedIndex={isSelected ? 7 : null}
+        listScroll={180}
+        detail={
+          isSelected ? (
+            <DriverDetail
+              title="EPSON Projectors"
+              ringManufacturer={ringActive}
+              scroll={detailScroll}
+            >
+              <ModelRow model="PowerLite" />
+              <DeviceInfo>
+                The Epson PowerLite Presenter HD is a portable projector with an integrated DVD
+                player and speakers, suitable for presentations and video playback.
+              </DeviceInfo>
+              <Accordion label="Specs" />
+              <Accordion label="Setup" />
+              <Accordion label="Support" />
+              {afterWeb ? (
+                <ControlInfo
+                  controlType="IP"
+                  ipType="TCP"
+                  port="3629"
+                  keepAlive="Disabled"
+                  onConnection="Disabled"
+                  authentication="No"
+                  show={6}
+                />
+              ) : null}
+            </DriverDetail>
+          ) : undefined
+        }
+      />
+
+      {/* Cue 1: Epson card tap & focus */}
+      <TapIndicator
+        x={card7CenterX}
+        y={card7CenterY}
+        at={cueProjector}
+        name="Epson card tap"
+      />
+      {frame < cueWebpage ? (
+        <FocusRing
+          region={card7Region}
+          appearAt={cueProjector}
+          radius={5}
+          name="Epson card ring"
+        />
+      ) : null}
+
+      {/* Cue 2: Manufacturer link ring & tap */}
+      {frame >= cueWebpage - 15 && frame < cueWebpage + 10 ? (
+        <>
+          <FocusRing
+            region={mfrLinkRegion}
+            appearAt={cueWebpage - 15}
+            radius={4}
+            name="Manufacturer link ring"
+          />
+          <TapIndicator
+            x={mfrLinkCenterX}
+            y={mfrLinkCenterY}
+            at={cueWebpage}
+            name="Manufacturer link tap"
+          />
+        </>
+      ) : null}
+
+      {/* Cue 3: Connection info ring */}
+      {afterWeb ? (
+        <FocusRing
+          region={controlRegion}
+          appearAt={cueConnection}
+          radius={6}
+          name="Connection info ring"
+        />
+      ) : null}
+    </>
   );
 };
 
 /**
- * Add beat (15.5s = 465 frames):
- * + opens Configure Connection, the IP is entered, Connect goes to Disconnect,
- * with no save button pressed.
+ * Add beat (16s = 480 frames):
+ * + is tapped and Configure Connection opens; the IP is entered on "IP";
+ * Connect is tapped on "connect" and turns Disconnect; the saved line is ringed.
+ * Cues: add-ip "plus" (abs 2823, rel 33) · "IP" (abs 2946, rel 156)
+ *       · add-saved "connect" (abs 3028, rel 238) · "save" (abs 3213, rel 423).
  */
 export const AddBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const cuePlus = CUE_FRAMES.addPlus - BEATS.add.from;
+  const cueIp = CUE_FRAMES.addIp - BEATS.add.from;
+  const cueConnect = CUE_FRAMES.addConnect - BEATS.add.from;
+  const cueSave = CUE_FRAMES.addSave - BEATS.add.from;
+
+  const connRegs = connectionRegions('tablet');
+
+  // Phase 1: Before "plus" cue, show Epson detail pane with + button ringed and tapped
+  if (frame < cuePlus) {
+    return (
+      <>
+        <DriverCatalog
+          device="tablet"
+          drivers={CATALOG_DRIVERS}
+          background={SETUP_BACKGROUND}
+          selectedIndex={7}
+          listScroll={180}
+          detail={
+            <DriverDetail title="EPSON Projectors" scroll={120}>
+              <ModelRow model="PowerLite" />
+              <DeviceInfo>
+                The Epson PowerLite Presenter HD is a portable projector with an integrated DVD
+                player and speakers, suitable for presentations and video playback.
+              </DeviceInfo>
+              <Accordion label="Specs" />
+              <Accordion label="Setup" />
+              <Accordion label="Support" />
+              <ControlInfo
+                controlType="IP"
+                ipType="TCP"
+                port="3629"
+                keepAlive="Disabled"
+                onConnection="Disabled"
+                authentication="No"
+                show={6}
+              />
+            </DriverDetail>
+          }
+        />
+        <FocusRing
+          region={{x: 1206, y: 32, width: 48, height: 48}}
+          appearAt={0}
+          radius={24}
+          name="Add button ring"
+        />
+        <TapIndicator x={1230} y={56} at={cuePlus} name="Add button tap" />
+      </>
+    );
+  }
+
+  // Phase 2: Configure Connection is open
   const fullIp = '192.168.0.134';
   const charsCount = Math.floor(
-    interpolate(frame, [30, 110], [0, fullIp.length], {
+    interpolate(frame, [cueIp, cueIp + 40], [0, fullIp.length], {
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
     }),
   );
-  const host = fullIp.slice(0, charsCount);
-  const hostCaret = frame < 120;
-  const connected = frame >= 150;
+  const host = frame < cueIp ? '' : fullIp.slice(0, charsCount);
+  const hostCaret = frame >= cueIp && frame < cueConnect;
+  const connected = frame >= cueConnect;
 
   const terminal: TerminalLine[] = connected
     ? [
@@ -436,81 +580,281 @@ export const AddBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
       ]
     : [];
 
+  const hostField = connRegs.hostField;
+  const hostCenterX = hostField.x + hostField.width / 2;
+  const hostCenterY = hostField.y + hostField.height / 2;
+
+  const connectAction = connRegs.connectAction;
+  const connectCenterX = connectAction.x + connectAction.width / 2;
+  const connectCenterY = connectAction.y + connectAction.height / 2;
+
+  // Saved line in terminal: Line 1 starts at y = terminal.y + 30
+  const savedLineRegion = {
+    x: connRegs.terminal.x + 10,
+    y: connRegs.terminal.y + 30,
+    width: 190,
+    height: 24,
+  };
+
   return (
-    <ConnectionPanel
-      device="tablet"
-      deviceName="EPSON PowerLite - New"
-      host={host}
-      port="3629"
-      connected={connected}
-      commands={EPSON_COMMANDS}
-      terminal={terminal}
-      hostCaret={hostCaret}
-      showRoomMenus={connected}
-    />
+    <>
+      <ConnectionPanel
+        device="tablet"
+        deviceName="EPSON PowerLite - New"
+        host={host}
+        port="3629"
+        connected={connected}
+        commands={EPSON_COMMANDS}
+        terminal={terminal}
+        hostCaret={hostCaret}
+        showRoomMenus={connected}
+      />
+
+      {/* Host IP field tap & focus on "IP" */}
+      <TapIndicator
+        x={hostCenterX}
+        y={hostCenterY}
+        at={cueIp}
+        name="Host field tap"
+      />
+      {frame < cueConnect ? (
+        <FocusRing
+          region={hostField}
+          appearAt={cueIp}
+          radius={5}
+          name="Host field ring"
+        />
+      ) : null}
+
+      {/* Connect button tap & focus on "connect" */}
+      <TapIndicator
+        x={connectCenterX}
+        y={connectCenterY}
+        at={cueConnect}
+        name="Connect tap"
+      />
+      {frame < cueSave ? (
+        <FocusRing
+          region={connectAction}
+          appearAt={cueConnect}
+          radius={5}
+          name="Connect ring"
+        />
+      ) : null}
+
+      {/* Saved connection line ring on "save" */}
+      <FocusRing
+        region={savedLineRegion}
+        appearAt={cueSave}
+        radius={4}
+        name="Saved connection line ring"
+      />
+    </>
   );
 };
 
 /**
- * Terminal beat (6s = 180 frames):
- * Power On and Power Off are sent and land in the terminal.
+ * Terminal beat (5.5s = 165 frames):
+ * Power On and Power Off are tapped on "commands" and land in the terminal, readable.
+ * Cue: term-commands "commands" (abs 3363, rel 93).
  */
 export const TerminalBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const cueCommands = CUE_FRAMES.termCommands - BEATS.terminal.from;
+  const cuePowerOff = cueCommands + 25; // second command tapped shortly after
+
+  const connRegs = connectionRegions('tablet');
+  const send0 = connRegs.sendButton(0);
+  const send1 = connRegs.sendButton(1);
+
   let highlightedCommand: number | null = null;
+  if (frame >= cueCommands && frame < cuePowerOff) {
+    highlightedCommand = 0; // Power On
+  } else if (frame >= cuePowerOff && frame < cuePowerOff + 25) {
+    highlightedCommand = 1; // Power Off
+  }
+
   const terminal: TerminalLine[] = [
     {text: '[10:25:58] Connected to 192.168.0.134:3629', kind: 'status'},
   ];
-
-  if (frame < 80) {
-    highlightedCommand = 0; // Power On
+  if (frame >= cueCommands) {
     terminal.push({text: 'Sent: PWR ON [0D]', kind: 'sent'});
-  } else {
-    highlightedCommand = 1; // Power Off
-    terminal.push({text: 'Sent: PWR ON [0D]', kind: 'sent'});
+  }
+  if (frame >= cuePowerOff) {
     terminal.push({text: 'Sent: PWR OFF [0D]', kind: 'sent'});
   }
 
+  const pwrOnLineRegion = {
+    x: connRegs.terminal.x + 10,
+    y: connRegs.terminal.y + 30,
+    width: 220,
+    height: 24,
+  };
+  const pwrOffLineRegion = {
+    x: connRegs.terminal.x + 10,
+    y: connRegs.terminal.y + 54,
+    width: 230,
+    height: 24,
+  };
+
   return (
-    <ConnectionPanel
-      device="tablet"
-      deviceName="EPSON PowerLite - New"
-      host="192.168.0.134"
-      port="3629"
-      connected
-      commands={EPSON_COMMANDS}
-      terminal={terminal}
-      highlightedCommand={highlightedCommand}
-      showRoomMenus
-    />
+    <>
+      <ConnectionPanel
+        device="tablet"
+        deviceName="EPSON PowerLite - New"
+        host="192.168.0.134"
+        port="3629"
+        connected
+        commands={EPSON_COMMANDS}
+        terminal={terminal}
+        highlightedCommand={highlightedCommand}
+        showRoomMenus
+      />
+
+      {/* Tap on Power On send button */}
+      <TapIndicator
+        x={send0.x + send0.width / 2}
+        y={send0.y + send0.height / 2}
+        at={cueCommands}
+        name="Power On tap"
+      />
+
+      {/* Tap on Power Off send button */}
+      <TapIndicator
+        x={send1.x + send1.width / 2}
+        y={send1.y + send1.height / 2}
+        at={cuePowerOff}
+        name="Power Off tap"
+      />
+
+      {/* Ring on arriving terminal lines */}
+      <FocusRing
+        region={pwrOnLineRegion}
+        appearAt={cueCommands}
+        radius={4}
+        name="Power On line ring"
+      />
+      {frame >= cuePowerOff ? (
+        <FocusRing
+          region={pwrOffLineRegion}
+          appearAt={cuePowerOff}
+          radius={4}
+          name="Power Off line ring"
+        />
+      ) : null}
+    </>
   );
 };
 
 /**
  * Test beat (28s = 840 frames):
- * Test Device Drivers: the device list on the right; Switcher routes an input to Out 1,
- * then Terminal, then Web page loading.
+ * The device list is ringed on "listed"; Switcher, Terminal and Web page are each
+ * tapped on their word; the Web page is held under two seconds.
+ * Cues: test-device "listed" (abs 3698, rel 263) · test-switcher "switcher" (abs 3867, rel 432)
+ *       · test-terminal "terminal" (abs 3919, rel 484) · test-webpage "webpage" (abs 4133, rel 698).
  */
 export const TestBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  let testTab: ConnectTestSubTab = 'switcher';
-  if (frame >= 560) {
-    testTab = 'web';
-  } else if (frame >= 280) {
+  const cueListed = CUE_FRAMES.testListed - BEATS.test.from;
+  const cueSwitcher = CUE_FRAMES.testSwitcher - BEATS.test.from;
+  const cueTerminal = CUE_FRAMES.testTerminal - BEATS.test.from;
+  const cueWebpage = CUE_FRAMES.testWebpage - BEATS.test.from;
+
+  // Web page tab is held for under two seconds (50 frames = 1.67s)
+  const WEB_HOLD_FRAMES = 50;
+  const webEnd = cueWebpage + WEB_HOLD_FRAMES;
+
+  let testTab: ConnectTestSubTab = 'buttons';
+  if (frame >= webEnd) {
     testTab = 'terminal';
-  } else {
+  } else if (frame >= cueWebpage) {
+    testTab = 'web';
+  } else if (frame >= cueTerminal) {
+    testTab = 'terminal';
+  } else if (frame >= cueSwitcher) {
     testTab = 'switcher';
+  } else {
+    testTab = 'buttons';
   }
 
-  const selectedInput = frame >= 140 ? 2 : 1;
+  const selectedInput = frame >= cueSwitcher + 25 ? 2 : 1;
+
+  const testRegs = connectTestRegions('tablet');
+  const switcherTab = testRegs.subTab('switcher');
+  const terminalTab = testRegs.subTab('terminal');
+  const webpageTab = testRegs.subTab('web');
 
   return (
-    <ConnectTest
-      device="tablet"
-      topTab="test"
-      testTab={testTab}
-      deviceName="EPSON PowerLite - New"
-      connected
-      selectedInput={selectedInput}
-    />
+    <>
+      <ConnectTest
+        device="tablet"
+        topTab="test"
+        testTab={testTab}
+        deviceName="EPSON PowerLite - New"
+        connected
+        selectedInput={selectedInput}
+        terminalLines={DEFAULT_CONNECT_TERMINAL}
+        commands={DEFAULT_CONNECT_COMMANDS}
+        webUrl="192.168.0.134"
+        webTitle="EPSON Web Control"
+      />
+
+      {/* Cue 1: Device list ringed on "listed" */}
+      {frame < cueSwitcher ? (
+        <FocusRing
+          region={testRegs.deviceList}
+          appearAt={cueListed}
+          radius={6}
+          name="Device list ring"
+        />
+      ) : null}
+
+      {/* Cue 2: Switcher tab tapped & ringed on "switcher" */}
+      <TapIndicator
+        x={switcherTab.x + switcherTab.width / 2}
+        y={switcherTab.y + switcherTab.height / 2}
+        at={cueSwitcher}
+        name="Switcher tab tap"
+      />
+      {frame >= cueSwitcher && frame < cueTerminal ? (
+        <FocusRing
+          region={switcherTab}
+          appearAt={cueSwitcher}
+          radius={4}
+          name="Switcher tab ring"
+        />
+      ) : null}
+
+      {/* Cue 3: Terminal tab tapped & ringed on "terminal" */}
+      <TapIndicator
+        x={terminalTab.x + terminalTab.width / 2}
+        y={terminalTab.y + terminalTab.height / 2}
+        at={cueTerminal}
+        name="Terminal tab tap"
+      />
+      {frame >= cueTerminal && frame < cueWebpage ? (
+        <FocusRing
+          region={terminalTab}
+          appearAt={cueTerminal}
+          radius={4}
+          name="Terminal tab ring"
+        />
+      ) : null}
+
+      {/* Cue 4: Web page tab tapped & ringed on "webpage" */}
+      <TapIndicator
+        x={webpageTab.x + webpageTab.width / 2}
+        y={webpageTab.y + webpageTab.height / 2}
+        at={cueWebpage}
+        name="Web page tab tap"
+      />
+      {frame >= cueWebpage && frame < webEnd ? (
+        <FocusRing
+          region={webpageTab}
+          appearAt={cueWebpage}
+          radius={4}
+          name="Web page tab ring"
+        />
+      ) : null}
+    </>
   );
 };
 

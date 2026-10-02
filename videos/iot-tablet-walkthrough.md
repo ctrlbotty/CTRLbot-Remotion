@@ -349,10 +349,12 @@ displays together. The subject is never in the right 140 px column.
   - Chapters show their revision 1 state until T22–T26.
 - [x] T21: Merged into T20 (2026-10-02) — files: videos/iot-tablet-walkthrough.md
 - [x] T22: Build the proof, first-run, ai and database beats to the Shot list — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
-- [ ] T23: Build the epson, add, terminal and test beats to the Shot list, each screen changing on its cue — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
+- [x] T23: Build the epson, add, terminal and test beats to the Shot list, each screen changing on its cue — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [ ] T24: Build the activities, switch-audio, eui and exit beats to the Shot list, the power state continuous from eui into exit — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [ ] T25: Build the discovery, matrox-add, matrox-test and matrox-switch beats to the Shot list — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [ ] T26: Build the m2m and settings beats to the Shot list — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
+- [ ] T28: Rebalance W04's chapter shots where a region is blown up or the cued result is off camera: `add` frames DISCONNECT at about 4x, and the saved line ringed on "save" is out of shot — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts
+  - Found in T23's review. Re-check every chapter's stills after T26, and fix them together before T27.
 - [ ] T27: Run the feature gates on both shapes, render both, write the .srt from the edit, check the voice, and record the results here — files: videos/iot-tablet-walkthrough.md
   - As W01's T15, with `--corrections=IOT_TABLET_CAPTION_CORRECTIONS` and `--destination=social-walkthrough`.
   - The voice check is `npm run narration:verify` on the landscape render. It is `[!]` only when it exits 1; every other difference is a Review note. The words named in the next line are checked in its output, and against the audio level when Whisper misses one.
@@ -375,6 +377,8 @@ displays together. The subject is never in the right 140 px column.
 - **Blocked:** no known implementation blocker; task dependencies still apply.
 
 ## Review notes
+
+- T23, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy in lane B, 346s. Check and lint pass in a clean worktree. Twelve cue stills, landscape: Epson detail on "projector"; the manufacturer page under 2s on "manufacturer"; Control Info ringed on "connection"; Configure Connection on "plus"; the IP typed on "IP"; Disconnect on "connect"; Power On/Off land in the terminal on "commands"; the device list, Switcher, Terminal and Web page tabs each on their word. Notes (camera data, new T28): DISCONNECT is framed about 4x, and the saved-line ring on "save" is out of shot.
 
 - T22, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy in lane B, 309s. Check and lint pass in a clean worktree. Stills at 170/400/470/900/1010/1110/1560/1945, both shapes, match the Shot list: proof "app" taps a source and the display fills; the tour steps on "walkthrough" and ✕ closes it on "close"; the question list arrives on "AI", a question is tapped on "troubleshoot" and the answer lands on "manual"; the catalog scrolls on "library" and the filter opens on "sorting". Notes (T20 camera and callouts, for review): landscape chapters are framed tight (the tour card's top is cut, the answer text touches the left edge), and the callouts cover a list row in landscape.
 
