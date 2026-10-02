@@ -2,9 +2,18 @@
 
 Approved by Nathan on 2026-10-02. Codex coordinates; Gemini 3.8 Flash High implements. Codex may resume a checkpoint if Gemini becomes unavailable. Publishing is outside this run.
 
+## Current status — PAUSED at Nathan's request
+
+All workers stopped; no render/audio jobs remain. The heartbeat is PAUSED. Historical checkpoints below do not authorize new work while paused.
+
+- W02 draft exists: `out/terminator-walkthrough-preview.mp4` (138s, narration, 960x540). It predates T13 and is not final.
+- W02 T13 source ready, check/lint passed; eight stills at frames 394/692/1280/1462 across both shapes finished rendering. Independent visual review is unfinished; T13 stays unchecked and uncommitted.
+- Next on explicit resume: review `out/coordinator/t13-*.png` against T13 evidence, commit owned paths if accepted, then fresh T14 and T15 tasks. Finish T16 both shapes before other lanes.
+- W03 T23 remains blocked pending Nathan's timing-transfer answer. W04 inactive. W05 T3 stopped/unverified; preserve its Root.tsx and DriverCatalog.tsx changes.
+- Lessons and restart rules: [COORDINATOR-RETROSPECTIVE-2026-10-02.md](COORDINATOR-RETROSPECTIVE-2026-10-02.md).
 ## Dispatch rules
 
-- At most two implementation workers and one independent verifier. Each worker receives one atomic task and its exact owned paths; no nested agents.
+- On resume, one implementation worker; independent verification only when ready. Each worker receives one atomic task and its exact owned paths; no nested agents.
 - One writer per file. `src/Root.tsx`, audio helpers, `package.json`, and shared surfaces require explicit ownership. The coordinator alone edits briefs, commits, and integrates.
 - Whole-project checks run against a frozen source snapshot. A worker reports implementation ready, then pauses while independent verification runs. Only verified and committed tasks become `[x]`.
 - One heavy slot for renders, contact sheets, frame checks, and GPU transcription. Other workers may read and edit disjoint files while it is occupied, but cannot change a render's imported sources.
@@ -25,8 +34,8 @@ Approved by Nathan on 2026-10-02. Codex coordinates; Gemini 3.8 Flash High imple
 
 | Owner | Task | Owned files | State |
 |---|---|---|---|
-| Codex implementation worker | W02 T13 | TerminatorBeats.tsx, TerminatorWalkthrough.tsx, terminatorWalkthroughData.ts | w02_t13 fresh minimal context; source edits only |
-| Codex coordinator | W02 draft render | Immutable out/coordinator/w02-shell-preview-bundle | exec session81803; exclusive render slot |
+| Codex implementation worker | W02 T13 | TerminatorBeats.tsx, TerminatorWalkthrough.tsx, terminatorWalkthroughData.ts | STOP READY; check/lint pass; eight stills rendered; independent review pending |
+| Codex coordinator | W02 draft render | Immutable out/coordinator/w02-shell-preview-bundle | COMPLETE; preview preserved; render slot free |
 | W05 stopped checkpoint | T3 | DriverCatalog.tsx, Root.tsx partial hunks | STOP READY preserved; no active worker, pending independent proof review |
 | W03 checkpoint | T23 | Three partial narration files preserved | Independently FAIL; marked blocked, timing decision pending; worker stopped |
 | Codex coordinator | Scheduling and W01 approved close-out | Four active briefs, this queue, `Roadmap.md`, archive and `RELEASE-NOTES.md` | Independently reviewed and committed as `e0aafb5` |
