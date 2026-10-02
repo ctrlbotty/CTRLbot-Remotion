@@ -2,14 +2,14 @@
 
 Approved by Nathan on 2026-10-02. Restarted the same afternoon with a new coordinator: Claude (desktop Code session) coordinates, verifies and commits; Gemini 3.8 Flash High implements through Antigravity's CLI, one fresh headless conversation per task (`agy -p ... --model gemini-3.8-flash-high --output-format json --print-timeout 25m`). Prompts, results and token use are in `out/coordinator/agy/`. Publishing is outside this run.
 
-## Current status — RUNNING (updated 2026-10-02)
+## Current status — RUNNING (updated 2026-10-02 17:45)
 
-- **W02:** T13 committed `d7759e8` (PASS WITH NOTES). T14 dispatched to Gemini (lane A). T20 (server diagram arrows run the wrong way) added; then T15, then T16 renders by the coordinator.
-- **W05:** T3 committed `3582d82` (PASS WITH NOTES); remaining tasks wait until W02–W04 renders, because they change surfaces those cuts show.
-- **W04:** T19 opens lane B once T14 passes, in its own git worktree.
-- **W03:** Nathan chose the timing transfer (settings 15 → 15.5s, close 6 → 5.5s). T23 is unblocked for edge repairs; its partial narration files are preserved.
-- **Heavy slot:** coordinator-held; Gemini renders only its beat's contact stills.
-- **Lessons:** [COORDINATION-ASSESSMENT-2026-10-02.md](COORDINATION-ASSESSMENT-2026-10-02.md). The heartbeat stays off; dispatch is event-driven.
+- **W02:** DELIVERED for Nathan's review. T13–T16, T20, T21 committed; renders, contact sheets and SRT in `out/`. No close-out before his notes.
+- **W03 (lane A, main checkout):** T23, T24 (merged with T25), T26, T27 committed. T28 dispatched; T29, T30, then T33 (landscape framing), then T31 renders. T32 (voice.mjs clipped tails) after delivery.
+- **W04 (lane B, worktree on branch `lane-b`):** T19, T20 (merged with T21), T22–T24 committed. T25 dispatched; T26, then T28 (framing), then T27 renders.
+- **W05:** T3 committed; rest waits for the W03/W04 renders (shared surfaces).
+- **Gemini quota:** hit 17:38 (429, resets ~18:09). W03 T28 and W04 T25 made no edits; one queued retry at 18:10, no polling.
+- **Verification:** coordinator, non-author, in a clean worktree at HEAD plus the task's files; stills at cue frames. Prompts, results and token use in `out/coordinator/agy/`.
 
 ## Dispatch rules
 
