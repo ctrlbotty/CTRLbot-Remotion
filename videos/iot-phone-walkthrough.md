@@ -359,10 +359,12 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
   - Then `npm run narration:verify` on `edit.m4a` (W02's T17). Fix each real edge leak with `notBefore` / `notAfter` or a tighter `sourceEnd` (the contract's "Clip edges leak"), at most two more builds. A leak that remains goes in the Review notes with its clip and level.
 - [ ] T32: Make `scripts/lib/voice.mjs` end a clip after its last word's decay when `sourceEnd`/`notAfter` allow it — files: scripts/lib/voice.mjs
   - Found in T23's review. `test-saves` still ends at source 138.67 while "connection." is at -15 dB until 138.85 (quiet at 138.95). `eui-screen` ends at 218.99 while "screen." decays to 219.2. Raising `sourceEnd` to 139.0/219.3 and `notAfter` to 139.2/219.6 did not move either cut. Regression: W01, W02 and the shorts' narration hashes unchanged except where a tail was clipped. Runs after the W02–W04 deliveries; not a blocker for T24.
-- [ ] T24: Rewrite W03's beat data for the shell: beats and layouts, the revision 2 copy, regions and cue frames — files: src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughData.ts
-  - 10080 frames in total. `DriverCatalog` callers opt into the app's blue wash (Roadmap, Deferred). `beatShots()` is removed.
+- [ ] T24: Migrate W03's coupled beat data and both shell compositions at 10080 frames, with the revision 2 copy, layouts, regions and cue frames — files: src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughData.ts, src/marketing/iot-phone-walkthrough/IotPhoneWalkthrough.tsx, src/Root.tsx
+  - Coupled with the former T25 (2026-10-02), as W02's T11 was: removing `beatShots()` breaks the composition that imports it. The worked example is W02's migration, commit `9114a3d`.
+  - 10080 frames in total. `DriverCatalog` callers opt into the app's blue wash (Roadmap, Deferred). `beatShots()` is removed. In `src/Root.tsx`, only W03's two registrations change.
   - Every region change the Shot list ties to a word is a `shots` entry with `at` from `cueFrame`, relative to the beat. Use `regions` arrays only for untimed changes, because they split the beat evenly. Add no hold keyframes: the shell drifts.
-- [ ] T25: Rebuild both W03 compositions on `WalkthroughShell` at 10080 frames, chapters showing their revision 1 state until T26–T30 — files: src/marketing/iot-phone-walkthrough/IotPhoneWalkthrough.tsx, src/Root.tsx
+  - Chapters show their revision 1 state until T26–T30.
+- [x] T25: Merged into T24 (2026-10-02) — files: videos/iot-phone-walkthrough.md
 - [ ] T26: Build the proof, first-run, ai and database beats to the Shot list — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [ ] T27: Build the epson, add, terminal and test beats to the Shot list — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [ ] T28: Build the activities, switch-audio, eui and exit beats to the Shot list, the power state continuous from eui into exit — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
