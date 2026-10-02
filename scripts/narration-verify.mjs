@@ -6,8 +6,8 @@
 // words with the heard words in the same window (+-0.3s), and checks audio levels
 // (ffmpeg -af astats) at edge differences.
 //
-// Exit 1 only when an extra edge word measures above -50 dB, or a missing edge
-// word's span measures below -50 dB. All else exits 0.
+// Exit 1 for audible extra edges, silent missing edges, or unconfirmed zero-duration
+// ASR edge timestamps. Confirmed timing artifacts are reported as notes.
 
 import {existsSync, readFileSync, readdirSync, statSync, unlinkSync, writeFileSync} from 'node:fs';
 import {spawnSync} from 'node:child_process';
@@ -262,8 +262,12 @@ const checkExtraEdge = ({
   gapEnd = Infinity,
 }) => {
   const span = [word.start, word.end];
-  const rms = measureRmsFn(mediaPath, span[0], span[1]);
-  if (rms <= -50) {
+  const zeroTimestamp = Number.isFinite(word.start) && word.start >= 0 && word.start === word.end;
+  if (!zeroTimestamp && (!Number.isFinite(word.start) || !Number.isFinite(word.end) || word.end <= word.start)) {
+    return {type, word: word.text, span, rms: null, isDefect: true, diagnostic: 'Invalid ASR timestamp; audio edge cannot be verified'};
+  }
+  const rms = zeroTimestamp ? null : measureRmsFn(mediaPath, span[0], span[1]);
+  if (!zeroTimestamp && rms <= -50) {
     return {
       type,
       word: word.text,
@@ -277,8 +281,11 @@ const checkExtraEdge = ({
   // Word is audible (> -50 dB). Check for boundary-straddling exception.
   const clipStart = clip.at;
   const clipEnd = clip.at + clip.seconds;
-  const isStraddling =
-    type === 'extra-first'
+  const isStraddling = zeroTimestamp
+    ? type === 'extra-first'
+      ? word.start <= clipStart && word.start >= clipStart - 0.3 && word.start > gapStart
+      : word.start >= clipEnd && word.start <= clipEnd + 0.3 && word.start < gapEnd
+    : type === 'extra-first'
       ? word.start < clipStart && word.end > clipStart
       : word.start < clipEnd && word.end > clipEnd;
 
@@ -290,14 +297,23 @@ const checkExtraEdge = ({
       rms,
       isDefect: true,
       isNote: false,
+      ...(zeroTimestamp ? {diagnostic: 'Zero-duration ASR word has no measurable outside-gap evidence'} : {}),
     };
   }
 
   // Adjudicate only the real gap between clips: speech from the neighbouring clip is not leakage.
-  const outsideSpan =
-    type === 'extra-first'
+  // A timestamp point has no RMS. Measure a separate, at most 100 ms gap neighbourhood,
+  // never the word span or a neighbouring clip, then require acoustic and isolated edge proof.
+  const outsideSpan = zeroTimestamp
+    ? type === 'extra-first'
+      ? [Math.max(0, gapStart, word.start - 0.05), Math.min(clipStart, word.start + 0.05)]
+      : [Math.max(clipEnd, word.start - 0.05), Math.min(gapEnd, word.start + 0.05)]
+    : type === 'extra-first'
       ? [Math.max(word.start, gapStart), clipStart]
       : [clipEnd, Math.min(word.end, gapEnd)];
+  if (zeroTimestamp && outsideSpan[1] <= outsideSpan[0]) {
+    return {type, word: word.text, span, rms, isDefect: true, diagnostic: 'Zero-duration ASR word has no positive outside-gap evidence'};
+  }
   const outsideRms =
     outsideSpan[1] > outsideSpan[0] ? measureRmsFn(mediaPath, outsideSpan[0], outsideSpan[1]) : -Infinity;
 
@@ -311,6 +327,7 @@ const checkExtraEdge = ({
       isNote: false,
       outsideSpan,
       outsideRms,
+      ...(zeroTimestamp ? {diagnostic: 'Zero-duration ASR timestamp lies in audible gap audio'} : {}),
     };
   }
 
@@ -330,6 +347,7 @@ const checkExtraEdge = ({
       outsideSpan,
       outsideRms,
       isolatedError: err.message,
+      ...(zeroTimestamp ? {diagnostic: 'Zero-duration ASR timestamp could not obtain isolated planned-edge confirmation'} : {}),
     };
   }
 
@@ -361,7 +379,14 @@ const checkExtraEdge = ({
     omittedExtra = isolatedWords.length === 0 || isolatedLastWord.norm !== word.norm;
   }
 
-  if (confirmedEdge && omittedExtra) {
+  let plannedEdgeRms;
+  if (zeroTimestamp) {
+    const edge = type === 'extra-first' ? editWords[0] : editWords[editWords.length - 1];
+    if (edge && edge.endMs > edge.startMs && edge.startMs / 1000 >= clipStart && edge.endMs / 1000 <= clipEnd) {
+      plannedEdgeRms = measureRmsFn(mediaPath, edge.startMs / 1000, edge.endMs / 1000);
+    }
+  }
+  if (confirmedEdge && omittedExtra && (!zeroTimestamp || plannedEdgeRms > -50)) {
     return {
       type,
       word: word.text,
@@ -372,6 +397,7 @@ const checkExtraEdge = ({
       outsideSpan,
       outsideRms,
       isolatedConfirmed: true,
+      ...(zeroTimestamp ? {zeroTimestamp: true, plannedEdgeRms} : {}),
     };
   }
 
@@ -385,6 +411,7 @@ const checkExtraEdge = ({
     outsideSpan,
     outsideRms,
     isolatedConfirmed: false,
+    ...(zeroTimestamp ? {diagnostic: 'Zero-duration ASR timestamp lacks isolated planned-edge speech confirmation', plannedEdgeRms} : {}),
   };
 };
 
@@ -1000,6 +1027,19 @@ const runSelfTest = () => {
         () => ({segments: [{words: [{text: 'tone', start: 0, end: 1}]}]}),
       );
       if (pcmRes.defectCount !== 0) fail('real PCM 10 ms outside gap was not adjudicated as a note');
+      // A zero-duration ASR extra in real silence needs both gap PCM and independent edge proof.
+      const zeroHeard = {segments: [{words: [{text: 'tone', start: 1, end: 2}, {text: 'extra', start: 2.05, end: 2.05}]}]};
+      const isolatedTone = () => ({segments: [{words: [{text: 'tone', start: 0, end: 1}]}]});
+      const zeroPass = verifyNarration(pcmEdit, zeroHeard, wav, measureRms, isolatedTone);
+      if (zeroPass.defectCount !== 0 || !zeroPass.results[0]?.edgeChecks[0]?.zeroTimestamp) fail('silent zero-duration ASR timestamp was not independently confirmed');
+      const zeroUnconfirmed = verifyNarration(pcmEdit, zeroHeard, wav, measureRms, () => ({segments: []}));
+      if (zeroUnconfirmed.defectCount !== 1) fail('unconfirmed zero-duration ASR timestamp was silently accepted');
+      const shortEdit = {clips: [{id: 'pcm', at: 1, seconds: 0.5}], words: [{text: 'tone', startMs: 1000, endMs: 1500}]};
+      const zeroAudible = verifyNarration(shortEdit, {segments: [{words: [{text: 'tone', start: 1, end: 1.5}, {text: 'extra', start: 1.55, end: 1.55}]}]}, wav, measureRms, isolatedTone);
+      if (zeroAudible.defectCount !== 1) fail('zero-duration timestamp in audible gap was silently accepted');
+      let zeroRmsThrew = false;
+      try { measureRms(wav, 2.05, 2.05); } catch { zeroRmsThrew = true; }
+      if (!zeroRmsThrew) fail('measureRms accepted a zero-duration caller span');
       // A same-path replacement must invalidate the decoded PCM cache.
       samples.fill(3277);
       writeFileSync(wav, Buffer.concat([header, Buffer.from(samples.buffer)]));
@@ -1202,7 +1242,7 @@ const main = async () => {
       console.log(`  heard: ${res.heardWords.join(' ')}`);
 
       for (const check of res.edgeChecks) {
-        const rmsStr = Number.isFinite(check.rms) ? `${check.rms.toFixed(1)} dB` : '-inf dB';
+        const rmsStr = check.rms === null ? 'unmeasurable ASR timestamp' : Number.isFinite(check.rms) ? `${check.rms.toFixed(1)} dB` : '-inf dB';
         const spanStr = `${check.span[0].toFixed(3)}s-${check.span[1].toFixed(3)}s`;
         if (check.type === 'missing-first') {
           const status = check.isDefect ? 'FAIL (< -50 dB, audio is silent)' : 'PASS (speech present)';
@@ -1210,7 +1250,7 @@ const main = async () => {
         } else if (check.type === 'extra-first') {
           let status;
           if (check.isDefect) {
-            status = 'FAIL (> -50 dB, audio leaked)';
+            status = check.diagnostic ? `FAIL (${check.diagnostic})` : 'FAIL (> -50 dB, audio leaked)';
           } else if (check.isNote) {
             const outRmsStr = Number.isFinite(check.outsideRms) ? `${check.outsideRms.toFixed(1)} dB` : '-inf dB';
             const outSpanStr = `${check.outsideSpan[0].toFixed(3)}s-${check.outsideSpan[1].toFixed(3)}s`;
@@ -1225,7 +1265,7 @@ const main = async () => {
         } else if (check.type === 'extra-last') {
           let status;
           if (check.isDefect) {
-            status = 'FAIL (> -50 dB, audio leaked)';
+            status = check.diagnostic ? `FAIL (${check.diagnostic})` : 'FAIL (> -50 dB, audio leaked)';
           } else if (check.isNote) {
             const outRmsStr = Number.isFinite(check.outsideRms) ? `${check.outsideRms.toFixed(1)} dB` : '-inf dB';
             const outSpanStr = `${check.outsideSpan[0].toFixed(3)}s-${check.outsideSpan[1].toFixed(3)}s`;
