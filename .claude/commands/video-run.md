@@ -22,9 +22,11 @@ For each pending `- [ ]` task, in order:
    `## Blocked notes`, and stop — later tasks would inherit a broken baseline.
 
 Never `git add -A` or `git add .`. Never stash, reset, or discard to manufacture a
-clean tree. A dirty path the task does not own is a hard stop — unless another
-brief being run at the same time owns it; the brief's `Concurrency` section says
-which. Leave those paths alone.
+clean tree. For a coordinated run, the brief's `Concurrency` section and the
+coordinator's queue identify other workers' owned paths and pre-existing unrelated
+changes; leave them alone. An unassigned new source change is a hard stop until its
+owner is established. Require only the verified task's paths to be committed, and
+freeze source before whole-project checks.
 
 When every task is `[x]`, run the brief's final task: the full gates and the render
 (both renders for a narrated cut). **Do not stop for approval at any point before

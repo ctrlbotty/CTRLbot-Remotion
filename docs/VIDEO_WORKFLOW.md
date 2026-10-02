@@ -370,7 +370,10 @@ Run every pending task in order. Fresh context per task. For each one:
 3. FAIL only for: a video:lint error, a broken npm run check, or a beat that plainly
    is not its evidence line. Warnings and style are notes, never failures.
 4. On PASS or PASS WITH NOTES: mark [x], stage only the task's files plus the brief,
-   commit with a "Tn: " message, require a clean tree, continue.
+   commit with a "Tn: " message, require the task's owned paths to be committed,
+   continue. In an approved concurrent run, preserve other workers' changes and
+   pre-existing unrelated changes identified by the brief's Concurrency section;
+   freeze source before whole-project checks.
 5. On FAIL: repair with the concrete fix list, up to two rounds. Then mark [!],
    record why under Blocked notes, and stop.
 

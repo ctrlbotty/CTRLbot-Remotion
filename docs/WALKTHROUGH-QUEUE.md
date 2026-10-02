@@ -27,9 +27,11 @@ Approved by Nathan on 2026-10-02. Codex coordinates; Gemini 3.8 Flash High imple
 |---|---|---|---|
 | Gemini worker A | W02 T17 | `scripts/narration-verify.mjs`, `package.json` | Dispatched in Antigravity; awaiting implementation result |
 | Gemini worker B | W03 T20 | `src/app-ui/ConnectTest.tsx`, `src/app-ui/DiscoverDevices.tsx`, `src/app-ui/ProductWebView.tsx` | Dispatched; pause before proof rendering for independent verification |
-| Codex coordinator | Scheduling and W01 approved close-out | Four active briefs, this queue, `Roadmap.md`, archive and `RELEASE-NOTES.md` | In progress |
+| Codex coordinator | Scheduling and W01 approved close-out | Four active briefs, this queue, `Roadmap.md`, archive and `RELEASE-NOTES.md` | Independently reviewed and committed as `e0aafb5` |
 
 ## Checkpoints
 
 - 2026-10-02: Baseline has existing plan edits and W05 ingest/narration assets. `.claude/settings.local.json` is unrelated and must remain unstaged. No source changes preceded this run.
 - W01 approved baseline: commit `d20993e`; 136 seconds, landscape 25% inert, portrait 29%; both narration checks passed. Keep its recording until S01 is delivered.
+- Coordination plans and W01 close-out independently reviewed: PASS. W01 archived verbatim at `videos/archive/2026-10-02-mirror-walkthrough-r2.md`; existing user revision plans are preserved in commit `e0aafb5`.
+- Antigravity worker A: `Implement W02 T17 Narration`, conversation `a8a46e96-291c-4c76-b2b3-57ed1789bc47`. Worker B: `IoT Phone Walkthrough Implementation`; assigned W03 T20 only. Both were observed working after dispatch.
