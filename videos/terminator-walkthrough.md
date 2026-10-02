@@ -324,7 +324,7 @@ Placement and holds follow W01's rule. Corrections stay `TERMINATOR_CAPTION_CORR
   - Verify: `Proof-Term-ServerDiagram` at progress 0.5 and 1, and the server beat at frame 1280 in both shapes.
 - [x] T21: Give the proof and recap stage beats a push to 0.94 and back, anchored top-left so the navigation stays whole — files: src/marketing/terminator-walkthrough/terminatorWalkthroughData.ts
   - Found by T16: portrait measured 61% inert (ceiling 60%). Per beat, proof was 83% and recap 87%, because only the nav highlight changed. Measured on sampled frames: proof 59%, recap 75%.
-- [ ] T16: Run the feature gates on both shapes, render both, write the .srt from the edit, check the voice, and record the results here — files: videos/terminator-walkthrough.md
+- [x] T16: Run the feature gates on both shapes, render both, write the .srt from the edit, check the voice, and record the results here — files: videos/terminator-walkthrough.md
   - As W01's T15, with `--corrections=TERMINATOR_CAPTION_CORRECTIONS`. The .srt has no `Luxall` and no lowercase `com ports`.
   - The voice check is `npm run narration:verify` on the landscape render. It is `[!]` only when it exits 1; every other difference is a Review note (the contract's "Whisper's voice check over-reports").
   - Portrait `content-area` warns for Terminator's window. That is expected, not a defect. If `inert-fraction` fails, measure it per beat before changing anything.
@@ -389,6 +389,16 @@ Placement and holds follow W01's rule. Corrections stay `TERMINATOR_CAPTION_CORR
 - T19/T10, 2026-10-02: Independent T19 PASS and T10 PASS WITH NOTES. Original cached edit transcription and saved isolated evidence:0edge defects/7ASRnotes. Independent actual138s duration, all holds>=1.064s and required complete tails confirmed; no audio edge rebuild needed. Zero timestamp only noted with measured silentgap/expectededge speech/isolated confirmation; audible/unconfirmed negatives fail. Evidence: out/coordinator/t19-review.txt and t10-review.txt.
 
 - T11/T12, 2026-10-02: Independent coordinator non-author PASS WITH NOTES. Check/lint/validate pass; ten stills at0/90/350/900/4080 across bothshapes inspected, cards/copy/captions/chapter frame visible,138s sharededit. One Root encoding preservation repair completed; baseline differs only in W02import/durations. Proofnav is cropped by current stage shot and remains a concrete T13 framing correction; cue actions still intentionally pendingT13–15. Evidence out/coordinator/w02-shell-*.png. Partial W05Root hunks excluded from staging.
+
+- T16, 2026-10-02: Coordinator run at `af4ec9e` in a clean worktree. Results:
+  - `check`, both destination lints (0/0) and `validate` (10 beats, 138s) pass. Contact sheets for both shapes are in `out/terminator-walkthrough{,-portrait}/contact.html`.
+  - Renders: `out/terminator-walkthrough.mp4` (29.9 MB) and `out/terminator-walkthrough-portrait.mp4` (24.7 MB), h264 crf 20, with narration.
+  - Frames: landscape 40% inert, content 98%. Portrait 56% inert, content 68% (`content-area` warning, expected for a desktop window).
+  - The first run measured portrait at 61%. Per beat, proof was 83% and recap 87%, which led to T21.
+  - `narration:check` passes on both: 138.05s, -16.18 LUFS, -4.43 dBTP. `narration:verify` on the landscape render passes with 0 edge defects and 6 notes: ASR spellings such as Luxel, ControlBot and CCP, plus one confirmed timing artifact.
+  - `out/terminator-walkthrough.srt`: 58 captions and 287 words, with no `Luxall` and no lowercase `com ports`. Two one-word captions remain (`Next,`, `Finally,`), which is a note.
+  - All five `Proof-Term-*` stills are byte-identical to their baselines. `TermScenes` is unchanged since T8, so S02 is unaffected.
+  - The revision 1 renders are kept as `out/terminator-walkthrough{,-portrait}-r1.mp4`. Logs are in `out/coordinator/t16/`.
 
 - T15, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy, 258s. Check and lint pass in a clean worktree. Stills at 3470/3520/3700/3775/3890/3955, both shapes: `help` is typed on its cue and its output follows inside the exchange crop, and the recap lights Scan, TCP Server, SSH and Serial with their pane in step with the captions. Notes: the recap stage panel is small in landscape; the Telnet and SSH cues are about a second apart.
 
