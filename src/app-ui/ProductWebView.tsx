@@ -7,8 +7,8 @@
 // Rule: Draw no website content — empty, loading page only.
 
 import React from 'react';
-import {PhoneNavMenu} from './PhoneNavMenu';
-import {TabletNavRail} from './TabletNavRail';
+import {PhoneNavMenu, NAV_COLLAPSED_H} from './PhoneNavMenu';
+import {TABLET_NAV_WIDTH, TabletNavRail} from './TabletNavRail';
 import {VIEWPORT} from './viewports';
 import {appColors} from '../design/tokens.generated';
 import {font} from '../design/theme';
@@ -22,6 +22,82 @@ export type ProductWebViewProps = {
   showNavMenu?: boolean;
 };
 
+// Layout rhythm, shared between markup and productWebRegions() so camera targets
+// never drift from the controls they frame.
+const TOP_BAR_H = 56;
+const PROGRESS_H = 3;
+const ACTION_BTN_SIZE = 44;
+
+const layoutFor = (device: 'phone' | 'tablet') => {
+  const viewport = VIEWPORT[device];
+  const isTablet = device === 'tablet';
+  const railW = isTablet ? TABLET_NAV_WIDTH : 0;
+  const contentX = railW;
+  const contentW = viewport.width - railW;
+  const padX = isTablet ? 12 : 8;
+  const marginX = isTablet ? 12 : 8;
+
+  const backX = contentX + padX;
+  const backY = (TOP_BAR_H - ACTION_BTN_SIZE) / 2;
+
+  const rightBtnsW = ACTION_BTN_SIZE * 2;
+  const addressX = backX + ACTION_BTN_SIZE + marginX;
+  const addressW = contentW - padX * 2 - ACTION_BTN_SIZE - marginX * 2 - rightBtnsW;
+
+  const refreshX = contentX + contentW - padX - rightBtnsW;
+  const openExternalX = refreshX + ACTION_BTN_SIZE;
+
+  const progressY = TOP_BAR_H;
+  const webY = TOP_BAR_H + PROGRESS_H;
+  const navH = !isTablet ? NAV_COLLAPSED_H : 0;
+  const webH = viewport.height - webY - navH;
+
+  return {
+    viewport,
+    isTablet,
+    railW,
+    contentX,
+    contentW,
+    padX,
+    marginX,
+    topBarH: TOP_BAR_H,
+    progressH: PROGRESS_H,
+    btnSize: ACTION_BTN_SIZE,
+    backX,
+    backY,
+    addressX,
+    addressW,
+    refreshX,
+    openExternalX,
+    progressY,
+    webY,
+    webH,
+    navH,
+  };
+};
+
+/**
+ * Named regions for <Camera> and annotations in ProductWebView's coordinate space.
+ * Follows connectionRegions(device): derived from layoutFor(device).
+ */
+export const productWebRegions = (device: 'phone' | 'tablet') => {
+  const l = layoutFor(device);
+  return {
+    full: {x: 0, y: 0, width: l.viewport.width, height: l.viewport.height},
+    content: {x: l.contentX, y: 0, width: l.contentW, height: l.viewport.height},
+    centreX: l.contentX + l.contentW / 2,
+    appBar: {x: l.contentX, y: 0, width: l.contentW, height: l.topBarH},
+    backButton: {x: l.backX, y: l.backY, width: l.btnSize, height: l.btnSize},
+    addressBar: {x: l.addressX, y: 0, width: l.addressW, height: l.topBarH},
+    refreshButton: {x: l.refreshX, y: l.backY, width: l.btnSize, height: l.btnSize},
+    openExternalButton: {x: l.openExternalX, y: l.backY, width: l.btnSize, height: l.btnSize},
+    progressBar: {x: l.contentX, y: l.progressY, width: l.contentW, height: l.progressH},
+    webView: {x: l.contentX, y: l.webY, width: l.contentW, height: l.webH},
+  };
+};
+
+export const productWebViewRegions = productWebRegions;
+
 export const ProductWebView: React.FC<ProductWebViewProps> = ({
   device = 'phone',
   title = 'Manufacturer Home Page',
@@ -30,13 +106,15 @@ export const ProductWebView: React.FC<ProductWebViewProps> = ({
   contentBg = 'dark',
   showNavMenu = true,
 }) => {
+  const l = layoutFor(device);
+
   if (device === 'tablet') {
     return (
       <div
         style={{
           position: 'relative',
-          width: VIEWPORT.tablet.width,
-          height: VIEWPORT.tablet.height,
+          width: l.viewport.width,
+          height: l.viewport.height,
           backgroundColor: appColors.black,
           overflow: 'hidden',
           fontFamily: font.ui,
@@ -61,11 +139,11 @@ export const ProductWebView: React.FC<ProductWebViewProps> = ({
           {/* Top App Bar: 56dp */}
           <div
             style={{
-              height: 56,
+              height: l.topBarH,
               display: 'flex',
               alignItems: 'center',
-              paddingLeft: 12,
-              paddingRight: 12,
+              paddingLeft: l.padX,
+              paddingRight: l.padX,
               backgroundColor: appColors.black,
               zIndex: 2,
             }}
@@ -73,8 +151,8 @@ export const ProductWebView: React.FC<ProductWebViewProps> = ({
             {/* Back Button */}
             <div
               style={{
-                width: 44,
-                height: 44,
+                width: l.btnSize,
+                height: l.btnSize,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -92,8 +170,8 @@ export const ProductWebView: React.FC<ProductWebViewProps> = ({
                 flex: 1,
                 display: 'flex',
                 flexDirection: 'column',
-                marginLeft: 12,
-                marginRight: 12,
+                marginLeft: l.marginX,
+                marginRight: l.marginX,
                 overflow: 'hidden',
               }}
             >
@@ -127,8 +205,8 @@ export const ProductWebView: React.FC<ProductWebViewProps> = ({
             {/* Refresh Button */}
             <div
               style={{
-                width: 44,
-                height: 44,
+                width: l.btnSize,
+                height: l.btnSize,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -143,8 +221,8 @@ export const ProductWebView: React.FC<ProductWebViewProps> = ({
             {/* Open External Button */}
             <div
               style={{
-                width: 44,
-                height: 44,
+                width: l.btnSize,
+                height: l.btnSize,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -161,7 +239,7 @@ export const ProductWebView: React.FC<ProductWebViewProps> = ({
           <div
             style={{
               width: '100%',
-              height: 3,
+              height: l.progressH,
               backgroundColor: 'transparent',
               position: 'relative',
               zIndex: 2,
@@ -193,8 +271,8 @@ export const ProductWebView: React.FC<ProductWebViewProps> = ({
     <div
       style={{
         position: 'relative',
-        width: VIEWPORT[device].width,
-        height: VIEWPORT[device].height,
+        width: l.viewport.width,
+        height: l.viewport.height,
         backgroundColor: appColors.black,
         overflow: 'hidden',
         fontFamily: font.ui,
@@ -205,11 +283,11 @@ export const ProductWebView: React.FC<ProductWebViewProps> = ({
       {/* Top App Bar: 56dp */}
       <div
         style={{
-          height: 56,
+          height: l.topBarH,
           display: 'flex',
           alignItems: 'center',
-          paddingLeft: 8,
-          paddingRight: 8,
+          paddingLeft: l.padX,
+          paddingRight: l.padX,
           backgroundColor: appColors.black,
           zIndex: 2,
         }}
@@ -217,8 +295,8 @@ export const ProductWebView: React.FC<ProductWebViewProps> = ({
         {/* Back Button */}
         <div
           style={{
-            width: 44,
-            height: 44,
+            width: l.btnSize,
+            height: l.btnSize,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -236,8 +314,8 @@ export const ProductWebView: React.FC<ProductWebViewProps> = ({
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
-            marginLeft: 8,
-            marginRight: 8,
+            marginLeft: l.marginX,
+            marginRight: l.marginX,
             overflow: 'hidden',
           }}
         >
@@ -271,8 +349,8 @@ export const ProductWebView: React.FC<ProductWebViewProps> = ({
         {/* Refresh Button */}
         <div
           style={{
-            width: 44,
-            height: 44,
+            width: l.btnSize,
+            height: l.btnSize,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -287,8 +365,8 @@ export const ProductWebView: React.FC<ProductWebViewProps> = ({
         {/* Open External Button */}
         <div
           style={{
-            width: 44,
-            height: 44,
+            width: l.btnSize,
+            height: l.btnSize,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -305,7 +383,7 @@ export const ProductWebView: React.FC<ProductWebViewProps> = ({
       <div
         style={{
           width: '100%',
-          height: 3,
+          height: l.progressH,
           backgroundColor: 'transparent',
           position: 'relative',
           zIndex: 2,

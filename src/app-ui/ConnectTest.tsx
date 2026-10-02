@@ -9,8 +9,8 @@
 
 import React from 'react';
 import {AppIcon} from './AppIcon';
-import {PhoneNavMenu} from './PhoneNavMenu';
-import {TabletNavRail} from './TabletNavRail';
+import {NAV_COLLAPSED_H, PhoneNavMenu} from './PhoneNavMenu';
+import {TABLET_NAV_WIDTH, TabletNavRail} from './TabletNavRail';
 import {VIEWPORT} from './viewports';
 import {appColors} from '../design/tokens.generated';
 import {font} from '../design/theme';
@@ -107,6 +107,941 @@ export type ConnectTestProps = {
   matrixSelection?: {output: number; input: number};
 };
 
+export type ConnectTestRegionOptions = Partial<ConnectTestProps> & {
+  terminalLineCount?: number;
+};
+
+export const CONNECT_TERMINAL_CONFIG = {
+  phone: {
+    maxLines: 10,
+    lineH: 12.825,
+    fontSize: 9.5,
+    lineHeight: 1.35,
+    padX: 8,
+    padY: 6,
+  },
+  tablet: {
+    maxLines: 12,
+    lineH: 17.4,
+    fontSize: 12,
+    lineHeight: 1.45,
+    padX: 14,
+    padY: 10,
+  },
+} as const;
+
+export const getConnectTestSubTabs = (props?: {
+  subTabs?: Array<{id: ConnectTestSubTab; label: string}>;
+  multiOutput?: boolean;
+  deviceName?: string;
+}): Array<{id: ConnectTestSubTab; label: string}> => {
+  if (props?.subTabs) {
+    return props.subTabs;
+  }
+  if (props?.multiOutput) {
+    return [{id: 'switcher', label: 'Switcher'}];
+  }
+  if (props?.deviceName === 'ConvertIP TX 1') {
+    return [{id: 'terminal', label: 'Terminal'}];
+  }
+  return [
+    {id: 'buttons', label: 'Buttons'},
+    {id: 'switcher', label: 'Switcher'},
+    {id: 'terminal', label: 'Terminal'},
+    {id: 'web', label: 'Web page'},
+  ];
+};
+
+// Layout rhythm, shared between markup and connectTestRegions() so camera targets
+// never drift from the controls they frame.
+export const CONNECT_TEST_LAYOUT = {
+  phone: {
+    padX: 10,
+    remoteHeaderH: 28,
+    topToggleH: 44,
+    topToggleMarginY: 4,
+    topToggleMarginBottom: 8,
+    subTabsH: 38,
+    subTabsGap: 5,
+    navH: NAV_COLLAPSED_H, // 108
+
+    // Buttons Tab
+    btnPowerCircle: 40,
+    btnPowerRowH: 56,
+    btnPowerStartX: 57,
+    btnPowerStep: 103,
+    btnDpadSize: 176,
+    btnOkSize: 40,
+    btnMenuExitW: 110,
+    btnMenuExitH: 28,
+    btnMenuExitGap: 12,
+    btnVolumeH: 24,
+    btnInputsW: 110,
+    btnInputsH: 32,
+    btnInputsGap: 12,
+
+    // Switcher Tab (Multi-output)
+    outGridCols: 2,
+    outGridGap: 8,
+    outBoxH: 78,
+    outLabelH: 28,
+    outCardMarginTop: 3,
+    allBtnH: 38,
+    allBtnMarginTop: 8,
+    allBtnMarginBottom: 6,
+    inpCardW: 100,
+    inpCardH: 94,
+    inpCardGap: 8,
+
+    // Switcher Tab (Single-output)
+    singleOutPreviewW: 320,
+    singleOutPreviewH: 172,
+    singleOutBarH: 30,
+    singleInpCardSize: 96,
+    singleInpCardGap: 10,
+
+    // Terminal Tab
+    terminalLogH: 160,
+    cmdInputH: 34,
+    cmdRowH: 50,
+    cmdRowGap: 6,
+    sendBtnH: 32,
+    sendBtnW: 68,
+
+    dropdownTop: 32,
+    dropdownItemH: 46,
+  },
+  tablet: {
+    railW: TABLET_NAV_WIDTH, // 200
+    mainW: 768,
+    sidebarW: 312,
+    padX: 12,
+    topToggleH: 48,
+    topToggleMarginTop: 8,
+    topToggleMarginBottom: 4,
+    subTabsH: 40,
+    subTabsMarginBottom: 12,
+    subTabsGap: 6,
+    sidebarHeaderH: 48,
+    sidebarPadX: 10,
+    sidebarItemH: 42,
+    sidebarItemGap: 8,
+
+    // Buttons Tab
+    btnPowerCircle: 52,
+    btnPowerRowH: 70,
+    btnPowerGap: 48,
+    btnDpadSize: 220,
+    btnOkSize: 52,
+    btnMenuExitW: 140,
+    btnMenuExitH: 36,
+    btnMenuExitGap: 24,
+
+    // Switcher Tab (Multi-output)
+    multiInpCardW: 210,
+    multiInpCardH: 72,
+    multiInpCardGap: 12,
+    multiOutBoxH: 94,
+    multiOutLabelH: 32,
+    multiOutGridW: 380,
+    multiOutCardW: 180,
+    multiOutGap: 12,
+    multiColGap: 18,
+    multiAllBtnW: 52,
+
+    // Switcher Tab (Single-output)
+    singleInpCardW: 220,
+    singleInpCardH: 76,
+    singleInpCardGap: 12,
+    singleOutPreviewW: 364,
+    singleOutPreviewH: 205,
+    singleOutBarH: 38,
+
+    // Terminal Tab
+    terminalLogH: 260,
+    cmdInputH: 38,
+    cmdRowH: 56,
+    cmdRowGap: 8,
+    sendBtnH: 32,
+    sendBtnW: 76,
+  },
+} as const;
+
+type TabletLayout = {
+  viewport: typeof VIEWPORT.tablet;
+  isTablet: true;
+  railW: number;
+  contentX: number;
+  contentW: number;
+  sidebarX: number;
+  sidebarW: number;
+  toggleX: number;
+  toggleY: number;
+  toggleW: number;
+  toggleH: number;
+  subTabsX: number;
+  subTabsY: number;
+  subTabsW: number;
+  subTabsH: number;
+  middleY: number;
+  middleH: number;
+  powerRowX: number;
+  powerRowY: number;
+  powerRowW: number;
+  dpadX: number;
+  dpadY: number;
+  dpadOkX: number;
+  dpadOkY: number;
+  c: typeof CONNECT_TEST_LAYOUT.tablet;
+};
+
+type PhoneLayout = {
+  viewport: typeof VIEWPORT.phone;
+  isTablet: false;
+  railW: number;
+  contentX: number;
+  contentW: number;
+  sidebarX: number;
+  sidebarW: number;
+  toggleX: number;
+  toggleY: number;
+  toggleW: number;
+  toggleH: number;
+  subTabsX: number;
+  subTabsY: number;
+  subTabsW: number;
+  subTabsH: number;
+  middleY: number;
+  middleH: number;
+  powerRowX: number;
+  powerRowY: number;
+  powerRowW: number;
+  dpadX: number;
+  dpadY: number;
+  dpadOkX: number;
+  dpadOkY: number;
+  menuExitY: number;
+  volumeBarY: number;
+  inputsRowY: number;
+  c: typeof CONNECT_TEST_LAYOUT.phone;
+};
+
+function layoutFor(device: 'tablet'): TabletLayout;
+function layoutFor(device: 'phone'): PhoneLayout;
+function layoutFor(device: 'phone' | 'tablet'): TabletLayout | PhoneLayout;
+function layoutFor(device: 'phone' | 'tablet'): TabletLayout | PhoneLayout {
+  if (device === 'tablet') {
+    const viewport = VIEWPORT.tablet;
+    const c = CONNECT_TEST_LAYOUT.tablet;
+    const railW = c.railW;
+    const contentX = railW;
+    const contentW = c.mainW;
+    const sidebarX = contentX + contentW;
+    const sidebarW = c.sidebarW;
+
+    const toggleX = contentX + c.padX;
+    const toggleY = c.topToggleMarginTop;
+    const toggleW = contentW - c.padX * 2;
+    const toggleH = c.topToggleH;
+
+    const subTabsX = contentX + c.padX;
+    const subTabsY = viewport.height - c.subTabsMarginBottom - c.subTabsH;
+    const subTabsW = contentW - c.padX * 2;
+    const subTabsH = c.subTabsH;
+
+    const middleY = toggleY + toggleH + c.topToggleMarginBottom;
+    const middleH = subTabsY - 4 - middleY;
+
+    // Tablet Buttons tab (flex space-evenly distribution in middleH)
+    const btnInnerH = middleH - 32;
+    const btnTotalH = c.btnPowerRowH + c.btnDpadSize + c.btnMenuExitH;
+    const btnSpace = (btnInnerH - btnTotalH) / 4;
+    const powerRowY = Math.round(middleY + 16 + btnSpace);
+    const powerRowW = c.btnPowerCircle * 3 + c.btnPowerGap * 2;
+    const powerRowX = contentX + (contentW - powerRowW) / 2;
+    const dpadY = Math.round(powerRowY + c.btnPowerRowH + btnSpace);
+    const dpadX = contentX + (contentW - c.btnDpadSize) / 2;
+    const dpadOkX = contentX + (contentW - c.btnOkSize) / 2;
+    const dpadOkY = Math.round(dpadY + (c.btnDpadSize - c.btnOkSize) / 2);
+
+    return {
+      viewport,
+      isTablet: true,
+      railW,
+      contentX,
+      contentW,
+      sidebarX,
+      sidebarW,
+      toggleX,
+      toggleY,
+      toggleW,
+      toggleH,
+      subTabsX,
+      subTabsY,
+      subTabsW,
+      subTabsH,
+      middleY,
+      middleH,
+      powerRowX,
+      powerRowY,
+      powerRowW,
+      dpadX,
+      dpadY,
+      dpadOkX,
+      dpadOkY,
+      c,
+    };
+  }
+
+  const viewport = VIEWPORT.phone;
+  const c = CONNECT_TEST_LAYOUT.phone;
+  const contentX = 0;
+  const contentW = viewport.width;
+
+  const remoteY = 0;
+  const remoteH = c.remoteHeaderH;
+
+  const toggleX = c.padX;
+  const toggleY = remoteY + remoteH + c.topToggleMarginY;
+  const toggleW = contentW - c.padX * 2;
+  const toggleH = c.topToggleH;
+
+  const subTabsX = c.padX;
+  const subTabsY = viewport.height - c.navH - c.subTabsH;
+  const subTabsW = contentW - c.padX * 2;
+  const subTabsH = c.subTabsH;
+
+  const middleY = toggleY + toggleH + c.topToggleMarginBottom;
+  const middleH = subTabsY - middleY;
+
+  // Phone Buttons tab (flex space-evenly distribution with paddingBottom: 154)
+  const phoneBtnSpace =
+    (viewport.height - middleY - 154 - (c.btnPowerRowH + c.btnDpadSize + c.btnMenuExitH + c.btnVolumeH + c.btnInputsH)) / 6;
+  const powerRowY = Math.round(middleY + phoneBtnSpace);
+  const powerRowX = c.btnPowerStartX;
+  const powerRowW = c.btnPowerStep * 2 + c.btnPowerCircle;
+  const dpadY = Math.round(powerRowY + c.btnPowerRowH + phoneBtnSpace);
+  const dpadX = (contentW - c.btnDpadSize) / 2;
+  const dpadOkX = (contentW - c.btnOkSize) / 2;
+  const dpadOkY = Math.round(dpadY + (c.btnDpadSize - c.btnOkSize) / 2);
+  const menuExitY = Math.round(dpadY + c.btnDpadSize + phoneBtnSpace);
+  const volumeBarY = Math.round(menuExitY + c.btnMenuExitH + phoneBtnSpace);
+  const inputsRowY = Math.round(volumeBarY + c.btnVolumeH + phoneBtnSpace);
+
+  return {
+    viewport,
+    isTablet: false,
+    railW: 0,
+    contentX,
+    contentW,
+    sidebarX: 0,
+    sidebarW: 0,
+    toggleX,
+    toggleY,
+    toggleW,
+    toggleH,
+    subTabsX,
+    subTabsY,
+    subTabsW,
+    subTabsH,
+    middleY,
+    middleH,
+    powerRowX,
+    powerRowY,
+    powerRowW,
+    dpadX,
+    dpadY,
+    dpadOkX,
+    dpadOkY,
+    menuExitY,
+    volumeBarY,
+    inputsRowY,
+    c,
+  };
+}
+
+/**
+ * Named regions for <Camera> and annotations in ConnectTest's coordinate space.
+ * Follows connectionRegions(device): derived from layoutFor(device).
+ */
+export const connectTestRegions = (
+  device: 'phone' | 'tablet',
+  props?: ConnectTestRegionOptions
+) => {
+  if (device === 'tablet') {
+    const l = layoutFor('tablet');
+
+    // Tablet Switcher: Multi-output centered row layout
+    const tabletSwitcherTotalW =
+      l.c.multiInpCardW + l.c.multiColGap + l.c.multiAllBtnW + l.c.multiColGap + l.c.multiOutGridW;
+    const tabletSwitcherLeftX = l.contentX + (l.contentW - tabletSwitcherTotalW) / 2;
+    const tabletInputsX = tabletSwitcherLeftX;
+    const tabletAllBtnX = tabletInputsX + l.c.multiInpCardW + l.c.multiColGap;
+    const tabletOutputsX = tabletAllBtnX + l.c.multiAllBtnW + l.c.multiColGap;
+    const tabletInputsH = 4 * l.c.multiInpCardH + 3 * l.c.multiInpCardGap;
+    const tabletInputsY = l.middleY + (l.middleH - tabletInputsH) / 2;
+    const tabletOutputsH = 2 * (l.c.multiOutBoxH + l.c.multiOutLabelH + 3) + l.c.multiOutGap;
+    const tabletOutputsY = l.middleY + (l.middleH - tabletOutputsH) / 2;
+
+    // Tablet Switcher: Single-output centered row layout
+    const singleSwitcherTotalW = l.c.singleInpCardW + 24 + 58 + 24 + l.c.singleOutPreviewW;
+    const singleSwitcherLeftX = l.contentX + (l.contentW - singleSwitcherTotalW) / 2;
+    const singlePreviewX = singleSwitcherLeftX + l.c.singleInpCardW + 24 + 58 + 24;
+    const singlePreviewH = l.c.singleOutPreviewH + 8 + l.c.singleOutBarH;
+    const singlePreviewY = l.middleY + (l.middleH - singlePreviewH) / 2;
+
+    // Tablet Terminal
+    const termX = l.contentX + 16;
+    const termW = l.contentW - 32;
+    const termY = l.middleY + 34;
+    const termCmdInputY = termY + l.c.terminalLogH + 8;
+    const termCmdStartY = termCmdInputY + l.c.cmdInputH + 14 + 16 + 8;
+
+    return {
+      full: {x: 0, y: 0, width: l.viewport.width, height: l.viewport.height},
+      content: {x: l.contentX, y: 0, width: l.contentW, height: l.viewport.height},
+      centreX: l.contentX + l.contentW / 2,
+
+      /** The remote device status header (phone: top bar; tablet: top of sidebar) */
+      remoteHeader: {x: l.sidebarX, y: 0, width: l.sidebarW, height: l.c.sidebarHeaderH},
+
+      /** Top toggle pill container (Device Driver Connections | Test Device Drivers) */
+      topToggle: {
+        x: l.toggleX,
+        y: l.toggleY,
+        width: l.toggleW,
+        height: l.toggleH,
+      },
+
+      /** Individual top tab ('connections' or 'test') */
+      topTab: (tab: ConnectTestTopTab) => ({
+        x: tab === 'connections' ? l.toggleX : l.toggleX + l.toggleW / 2,
+        y: l.toggleY,
+        width: l.toggleW / 2,
+        height: l.toggleH,
+      }),
+
+      /** Sub-tabs bar container (Buttons | Switcher | Terminal | Web page) */
+      subTabs: {
+        x: l.subTabsX,
+        y: l.subTabsY,
+        width: l.subTabsW,
+        height: l.subTabsH,
+      },
+
+      /** Individual sub-tab button by id */
+      subTab: (
+        tabId: ConnectTestSubTab | string,
+        overrideProps?: Partial<ConnectTestProps> | Array<{id: ConnectTestSubTab; label: string}>
+      ) => {
+        const tabs = Array.isArray(overrideProps)
+          ? overrideProps
+          : getConnectTestSubTabs(overrideProps ?? props);
+        const count = tabs.length;
+        const gap = l.c.subTabsGap;
+        const tabW = count === 1 ? l.subTabsW : (l.subTabsW - (count - 1) * gap) / count;
+        const index = tabs.findIndex((t) => t.id === tabId);
+        const idx = index >= 0 ? index : 0;
+        return {
+          x: count === 1 ? l.subTabsX : l.subTabsX + idx * (tabW + gap),
+          y: l.subTabsY,
+          width: tabW,
+          height: l.subTabsH,
+        };
+      },
+
+      /** Switcher tab: single-output display preview */
+      switcherDisplay: {
+        x: singlePreviewX,
+        y: singlePreviewY,
+        width: l.c.singleOutPreviewW,
+        height: l.c.singleOutPreviewH,
+      },
+
+      /** Switcher tab: OUT 1 label bar */
+      switcherDisplayBar: {
+        x: singlePreviewX,
+        y: singlePreviewY + l.c.singleOutPreviewH + 8,
+        width: l.c.singleOutPreviewW,
+        height: l.c.singleOutBarH,
+      },
+
+      /** Switcher inputs container */
+      switcherInputs: {
+        x: tabletInputsX,
+        y: tabletInputsY,
+        width: l.c.multiInpCardW,
+        height: tabletInputsH,
+      },
+
+      /** Switcher input button by 1-based id (1..4) */
+      switcherInput: (id: number) => {
+        const idx = Math.max(0, id - 1);
+        return {
+          x: tabletInputsX,
+          y: tabletInputsY + idx * (l.c.multiInpCardH + l.c.multiInpCardGap),
+          width: l.c.multiInpCardW,
+          height: l.c.multiInpCardH,
+        };
+      },
+
+      /** Switcher outputs container */
+      switcherOutputs: {
+        x: tabletOutputsX,
+        y: tabletOutputsY,
+        width: l.c.multiOutGridW,
+        height: tabletOutputsH,
+      },
+
+      /** Switcher output display by 1-based index (1..4) */
+      switcherOutput: (index: number) => {
+        const idx = Math.max(0, index - 1);
+        const col = idx % 2;
+        const row = Math.floor(idx / 2);
+        return {
+          x: tabletOutputsX + col * (l.c.multiOutCardW + l.c.multiOutGap),
+          y: tabletOutputsY + row * (l.c.multiOutBoxH + l.c.multiOutLabelH + 3 + l.c.multiOutGap),
+          width: l.c.multiOutCardW,
+          height: l.c.multiOutBoxH + l.c.multiOutLabelH + 3,
+        };
+      },
+
+      /** Multi-output Switcher "All" routing button */
+      switcherAllButton: {
+        x: tabletAllBtnX,
+        y: tabletInputsY + (tabletInputsH - 60) / 2,
+        width: l.c.multiAllBtnW,
+        height: 60,
+      },
+
+      /** Terminal tab log box */
+      terminal: {
+        x: termX,
+        y: termY,
+        width: termW,
+        height: l.c.terminalLogH,
+      },
+
+      /** Individual line in the terminal log box */
+      terminalLine: (index: number, lineCountOverride?: number) => {
+        const cfg = CONNECT_TERMINAL_CONFIG.tablet;
+        const count = Math.min(
+          lineCountOverride ??
+            props?.terminalLineCount ??
+            (props?.terminalLines?.length ?? DEFAULT_CONNECT_TERMINAL.length),
+          cfg.maxLines
+        );
+        const actualCount = Math.max(1, count);
+        const contentBottomY = termY + l.c.terminalLogH - 1 - cfg.padY;
+        const lineY = contentBottomY - (actualCount - index) * cfg.lineH;
+        return {
+          x: termX + cfg.padX,
+          y: lineY,
+          width: termW - cfg.padX * 2,
+          height: cfg.lineH,
+        };
+      },
+
+      /** Command input field */
+      commandInput: {
+        x: termX,
+        y: termCmdInputY,
+        width: termW,
+        height: l.c.cmdInputH,
+      },
+
+      /** Command row in commands list */
+      commandRow: (index: number) => ({
+        x: termX,
+        y: termCmdStartY + index * (l.c.cmdRowH + l.c.cmdRowGap),
+        width: termW,
+        height: l.c.cmdRowH,
+      }),
+
+      /** SEND button in command row */
+      sendButton: (index: number) => {
+        const rowY = termCmdStartY + index * (l.c.cmdRowH + l.c.cmdRowGap);
+        return {
+          x: l.contentX + l.contentW - 16 - 16 - l.c.sendBtnW,
+          y: rowY + (l.c.cmdRowH - l.c.sendBtnH) / 2,
+          width: l.c.sendBtnW,
+          height: l.c.sendBtnH,
+        };
+      },
+
+      /** Right sidebar on tablet */
+      sidebar: {x: l.sidebarX, y: 0, width: l.sidebarW, height: l.viewport.height},
+
+      /** Device list container (sidebar on tablet, dropdown overlay on phone) */
+      deviceList: {
+        x: l.sidebarX + l.c.sidebarPadX,
+        y: l.c.sidebarHeaderH + 8,
+        width: l.sidebarW - l.c.sidebarPadX * 2,
+        height: l.viewport.height - l.c.sidebarHeaderH - 16,
+      },
+
+      /** Individual device row in the device list */
+      deviceItem: (index: number) => ({
+        x: l.sidebarX + l.c.sidebarPadX,
+        y: l.c.sidebarHeaderH + 8 + index * (l.c.sidebarItemH + l.c.sidebarItemGap),
+        width: l.sidebarW - l.c.sidebarPadX * 2,
+        height: l.c.sidebarItemH,
+      }),
+
+      /** Device selector dropdown overlay on phone */
+      deviceDropdown: undefined,
+
+      /** Power row in Buttons tab */
+      powerRow: {
+        x: l.powerRowX,
+        y: l.powerRowY,
+        width: l.powerRowW,
+        height: l.c.btnPowerRowH,
+      },
+
+      /** Power button ('toggle' | 'on' | 'off') */
+      powerButton: (type: 'toggle' | 'on' | 'off') => {
+        const idx = type === 'toggle' ? 0 : type === 'on' ? 1 : 2;
+        return {
+          x: l.powerRowX + idx * (l.c.btnPowerCircle + l.c.btnPowerGap),
+          y: l.powerRowY,
+          width: l.c.btnPowerCircle,
+          height: l.c.btnPowerRowH,
+        };
+      },
+
+      /** D-Pad circle */
+      dpad: {
+        x: l.dpadX,
+        y: l.dpadY,
+        width: l.c.btnDpadSize,
+        height: l.c.btnDpadSize,
+      },
+
+      /** OK button in center of D-pad */
+      dpadOk: {
+        x: l.dpadOkX,
+        y: l.dpadOkY,
+        width: l.c.btnOkSize,
+        height: l.c.btnOkSize,
+      },
+
+      /** Volume slider bar (phone) */
+      volumeBar: undefined,
+
+      /** Web Page tab: top browser bar */
+      webBar: {
+        x: l.contentX + 12,
+        y: l.middleY + 4,
+        width: l.contentW - 24,
+        height: 44,
+      },
+
+      /** Web Page tab: address bar / host */
+      webUrl: {
+        x: l.contentX + 12 + 40,
+        y: l.middleY + 4,
+        width: l.contentW - 24 - 80,
+        height: 44,
+      },
+
+      /** Web Page tab: web view content area */
+      webView: {
+        x: l.contentX + 12,
+        y: l.middleY + 4 + 44 + 2,
+        width: l.contentW - 24,
+        height: l.subTabsY - (l.middleY + 4 + 44 + 2) - 8,
+      },
+    };
+  }
+
+  const l = layoutFor('phone');
+
+  // Phone Switcher
+  const phoneGridW = l.contentW - l.c.padX * 2;
+  const phoneCardW = (phoneGridW - l.c.outGridGap) / 2;
+  const phoneCardH = l.c.outBoxH + l.c.outCardMarginTop + l.c.outLabelH;
+  const phoneGridH = phoneCardH * 2 + l.c.outGridGap;
+  const phoneAllBtnY = l.middleY + 2 + phoneGridH + l.c.allBtnMarginTop;
+  const phoneInputsY = phoneAllBtnY + l.c.allBtnH + l.c.allBtnMarginBottom;
+
+  // Phone Terminal
+  const phoneTermX = l.contentX + l.c.padX;
+  const phoneTermW = l.contentW - l.c.padX * 2;
+  const phoneTermY = l.middleY + 18;
+  const phoneCmdInputY = phoneTermY + l.c.terminalLogH + 6;
+  const phoneCmdStartY = phoneCmdInputY + l.c.cmdInputH + 10 + 18 + 6;
+
+  return {
+    full: {x: 0, y: 0, width: l.viewport.width, height: l.viewport.height},
+    content: {x: l.contentX, y: 0, width: l.contentW, height: l.viewport.height},
+    centreX: l.contentX + l.contentW / 2,
+
+    /** The remote device status header (phone: top bar; tablet: top of sidebar) */
+    remoteHeader: {x: l.contentX, y: 0, width: l.contentW, height: l.c.remoteHeaderH},
+
+    /** Top toggle pill container (Device Driver Connections | Test Device Drivers) */
+    topToggle: {
+      x: l.toggleX,
+      y: l.toggleY,
+      width: l.toggleW,
+      height: l.toggleH,
+    },
+
+    /** Individual top tab ('connections' or 'test') */
+    topTab: (tab: ConnectTestTopTab) => ({
+      x: tab === 'connections' ? l.toggleX : l.toggleX + l.toggleW / 2,
+      y: l.toggleY,
+      width: l.toggleW / 2,
+      height: l.toggleH,
+    }),
+
+    /** Sub-tabs bar container (Buttons | Switcher | Terminal | Web page) */
+    subTabs: {
+      x: l.subTabsX,
+      y: l.subTabsY,
+      width: l.subTabsW,
+      height: l.subTabsH,
+    },
+
+    /** Individual sub-tab button by id */
+    subTab: (
+      tabId: ConnectTestSubTab | string,
+      overrideProps?: Partial<ConnectTestProps> | Array<{id: ConnectTestSubTab; label: string}>
+    ) => {
+      const tabs = Array.isArray(overrideProps)
+        ? overrideProps
+        : getConnectTestSubTabs(overrideProps ?? props);
+      const count = tabs.length;
+      const gap = l.c.subTabsGap;
+      const tabW = count === 1 ? l.subTabsW : (l.subTabsW - (count - 1) * gap) / count;
+      const index = tabs.findIndex((t) => t.id === tabId);
+      const idx = index >= 0 ? index : 0;
+      return {
+        x: count === 1 ? l.subTabsX : l.subTabsX + idx * (tabW + gap),
+        y: l.subTabsY,
+        width: tabW,
+        height: l.subTabsH,
+      };
+    },
+
+    /** Switcher tab: single-output display preview */
+    switcherDisplay: {
+      x: l.contentX + (l.contentW - l.c.singleOutPreviewW) / 2,
+      y: l.middleY + 4,
+      width: l.c.singleOutPreviewW,
+      height: l.c.singleOutPreviewH,
+    },
+
+    /** Switcher tab: OUT 1 label bar */
+    switcherDisplayBar: {
+      x: l.contentX + (l.contentW - l.c.singleOutPreviewW) / 2,
+      y: l.middleY + 4 + l.c.singleOutPreviewH + 6,
+      width: l.c.singleOutPreviewW,
+      height: l.c.singleOutBarH,
+    },
+
+    /** Switcher inputs container */
+    switcherInputs: {
+      x: l.contentX + l.c.padX,
+      y: phoneInputsY,
+      width: phoneGridW,
+      height: l.c.inpCardH,
+    },
+
+    /** Switcher input button by 1-based id (1..4) */
+    switcherInput: (id: number) => {
+      const idx = Math.max(0, id - 1);
+      return {
+        x: l.contentX + l.c.padX + idx * (l.c.inpCardW + l.c.inpCardGap),
+        y: phoneInputsY,
+        width: l.c.inpCardW,
+        height: l.c.inpCardH,
+      };
+    },
+
+    /** Switcher outputs container */
+    switcherOutputs: {
+      x: l.contentX + l.c.padX,
+      y: l.middleY + 2,
+      width: phoneGridW,
+      height: phoneGridH,
+    },
+
+    /** Switcher output display by 1-based index (1..4) */
+    switcherOutput: (index: number) => {
+      const idx = Math.max(0, index - 1);
+      const col = idx % 2;
+      const row = Math.floor(idx / 2);
+      return {
+        x: l.contentX + l.c.padX + col * (phoneCardW + l.c.outGridGap),
+        y: l.middleY + 2 + row * (phoneCardH + l.c.outGridGap),
+        width: phoneCardW,
+        height: phoneCardH,
+      };
+    },
+
+    /** Multi-output Switcher "All" routing button */
+    switcherAllButton: {
+      x: l.contentX + (l.contentW - 80) / 2,
+      y: phoneAllBtnY,
+      width: 80,
+      height: l.c.allBtnH,
+    },
+
+    /** Terminal tab log box */
+    terminal: {
+      x: phoneTermX,
+      y: phoneTermY,
+      width: phoneTermW,
+      height: l.c.terminalLogH,
+    },
+
+    /** Individual line in the terminal log box */
+    terminalLine: (index: number, lineCountOverride?: number) => {
+      const cfg = CONNECT_TERMINAL_CONFIG.phone;
+      const count = Math.min(
+        lineCountOverride ??
+          props?.terminalLineCount ??
+          (props?.terminalLines?.length ?? DEFAULT_CONNECT_TERMINAL.length),
+        cfg.maxLines
+      );
+      const actualCount = Math.max(1, count);
+      const contentBottomY = phoneTermY + l.c.terminalLogH - 1 - cfg.padY;
+      const lineY = contentBottomY - (actualCount - index) * cfg.lineH;
+      return {
+        x: phoneTermX + cfg.padX,
+        y: lineY,
+        width: phoneTermW - cfg.padX * 2,
+        height: cfg.lineH,
+      };
+    },
+
+    /** Command input field */
+    commandInput: {
+      x: phoneTermX,
+      y: phoneCmdInputY,
+      width: phoneTermW,
+      height: l.c.cmdInputH,
+    },
+
+    /** Command row in commands list */
+    commandRow: (index: number) => ({
+      x: phoneTermX,
+      y: phoneCmdStartY + index * (l.c.cmdRowH + l.c.cmdRowGap),
+      width: phoneTermW,
+      height: l.c.cmdRowH,
+    }),
+
+    /** SEND button in command row */
+    sendButton: (index: number) => {
+      const rowY = phoneCmdStartY + index * (l.c.cmdRowH + l.c.cmdRowGap);
+      return {
+        x: l.contentX + l.contentW - l.c.padX - 12 - l.c.sendBtnW,
+        y: rowY + (l.c.cmdRowH - l.c.sendBtnH) / 2,
+        width: l.c.sendBtnW,
+        height: l.c.sendBtnH,
+      };
+    },
+
+    /** Right sidebar on tablet */
+    sidebar: undefined,
+
+    /** Device list container (sidebar on tablet, dropdown overlay on phone) */
+    deviceList: {
+      x: 10,
+      y: l.c.dropdownTop,
+      width: l.contentW - 20,
+      height: l.viewport.height - l.c.dropdownTop - 154,
+    },
+
+    /** Individual device row in the device list */
+    deviceItem: (index: number) => ({
+      x: 10,
+      y: l.c.dropdownTop + index * l.c.dropdownItemH,
+      width: l.contentW - 20,
+      height: l.c.dropdownItemH,
+    }),
+
+    /** Device selector dropdown overlay on phone */
+    deviceDropdown: {
+      x: 10,
+      y: l.c.dropdownTop,
+      width: l.contentW - 20,
+      height: l.viewport.height - l.c.dropdownTop - 154,
+    },
+
+    /** Power row in Buttons tab */
+    powerRow: {
+      x: l.powerRowX,
+      y: l.powerRowY,
+      width: l.powerRowW,
+      height: l.c.btnPowerRowH,
+    },
+
+    /** Power button ('toggle' | 'on' | 'off') */
+    powerButton: (type: 'toggle' | 'on' | 'off') => {
+      const idx = type === 'toggle' ? 0 : type === 'on' ? 1 : 2;
+      return {
+        x: l.powerRowX + idx * l.c.btnPowerStep,
+        y: l.powerRowY,
+        width: l.c.btnPowerCircle,
+        height: l.c.btnPowerRowH,
+      };
+    },
+
+    /** D-Pad circle */
+    dpad: {
+      x: l.dpadX,
+      y: l.dpadY,
+      width: l.c.btnDpadSize,
+      height: l.c.btnDpadSize,
+    },
+
+    /** OK button in center of D-pad */
+    dpadOk: {
+      x: l.dpadOkX,
+      y: l.dpadOkY,
+      width: l.c.btnOkSize,
+      height: l.c.btnOkSize,
+    },
+
+    /** Volume slider bar (phone) */
+    volumeBar: {
+      x: l.contentX + l.contentW * 0.05,
+      y: l.volumeBarY,
+      width: l.contentW * 0.9,
+      height: l.c.btnVolumeH,
+    },
+
+    /** Web Page tab: top browser bar */
+    webBar: {
+      x: l.contentX + 10,
+      y: l.middleY + 4,
+      width: l.contentW - 20,
+      height: 42,
+    },
+
+    /** Web Page tab: address bar / host */
+    webUrl: {
+      x: l.contentX + 10 + 36,
+      y: l.middleY + 4 + 7,
+      width: l.contentW - 20 - 72,
+      height: 28,
+    },
+
+    /** Web Page tab: web view content area */
+    webView: {
+      x: l.contentX + 10,
+      y: l.middleY + 4 + 42 + 2,
+      width: l.contentW - 20,
+      height: l.subTabsY - (l.middleY + 4 + 42 + 2) - 8,
+    },
+  };
+};
+
+export const connectionTestRegions = connectTestRegions;
+
 export const ConnectTest: React.FC<ConnectTestProps> = ({
   device = 'phone',
   topTab = 'test',
@@ -140,12 +1075,13 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
     deviceName.includes('ConvertIP');
 
   if (device === 'tablet') {
+    const l = layoutFor('tablet');
     return (
       <div
         style={{
           position: 'relative',
-          width: VIEWPORT.tablet.width,
-          height: VIEWPORT.tablet.height,
+          width: l.viewport.width,
+          height: l.viewport.height,
           backgroundColor: appColors.black,
           overflow: 'hidden',
           fontFamily: font.ui,
@@ -160,8 +1096,8 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
         <div
           style={{
             position: 'relative',
-            width: VIEWPORT.tablet.width - 200,
-            height: VIEWPORT.tablet.height,
+            width: l.viewport.width - l.railW,
+            height: l.viewport.height,
             display: 'flex',
             flexDirection: 'row',
             background:
@@ -171,8 +1107,8 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
           {/* Main Content Area (width: 1080 - 312 = 768px) */}
           <div
             style={{
-              width: 768,
-              height: 800,
+              width: l.contentW,
+              height: l.viewport.height,
               display: 'flex',
               flexDirection: 'column',
               position: 'relative',
@@ -183,8 +1119,8 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
             <div
               style={{
                 display: 'flex',
-                height: 48,
-                margin: '8px 12px 4px',
+                height: l.c.topToggleH,
+                margin: `${l.c.topToggleMarginTop}px ${l.c.padX}px ${l.c.topToggleMarginBottom}px`,
                 borderRadius: 6,
                 overflow: 'hidden',
                 backgroundColor: appColors.gray20,
@@ -286,7 +1222,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                   }}
                 >
                   {/* Top Power Row */}
-                  <div style={{display: 'flex', justifyContent: 'center', gap: 48, width: '100%'}}>
+                  <div style={{display: 'flex', justifyContent: 'center', gap: l.c.btnPowerGap, width: '100%'}}>
                     {[
                       {label: 'TOGGLE', color: appColors.priRed, active: true},
                       {label: 'ON', color: appColors.gray50, active: false},
@@ -295,8 +1231,8 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                       <div key={btn.label} style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6}}>
                         <div
                           style={{
-                            width: 52,
-                            height: 52,
+                            width: l.c.btnPowerCircle,
+                            height: l.c.btnPowerCircle,
                             borderRadius: '50%',
                             border: `3px solid ${btn.color}`,
                             display: 'flex',
@@ -319,8 +1255,8 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                   <div
                     style={{
                       position: 'relative',
-                      width: 220,
-                      height: 220,
+                      width: l.c.btnDpadSize,
+                      height: l.c.btnDpadSize,
                       borderRadius: '50%',
                       border: '2px solid rgba(255,255,255,0.22)',
                       display: 'flex',
@@ -350,8 +1286,8 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                     </div>
                     <div
                       style={{
-                        width: 52,
-                        height: 52,
+                        width: l.c.btnOkSize,
+                        height: l.c.btnOkSize,
                         backgroundColor: appColors.gray50,
                         borderRadius: 6,
                         display: 'flex',
@@ -367,13 +1303,13 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                   </div>
 
                   {/* Menu / Exit Row */}
-                  <div style={{display: 'flex', gap: 24, width: '100%', justifyContent: 'center'}}>
+                  <div style={{display: 'flex', gap: l.c.btnMenuExitGap, width: '100%', justifyContent: 'center'}}>
                     {['MENU', 'EXIT'].map((label) => (
                       <div
                         key={label}
                         style={{
-                          width: 140,
-                          height: 36,
+                          width: l.c.btnMenuExitW,
+                          height: l.c.btnMenuExitH,
                           backgroundColor: '#1E1E1E',
                           borderRadius: 4,
                           display: 'flex',
@@ -399,17 +1335,17 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                       flexDirection: 'row',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      gap: 18,
+                      gap: l.c.multiColGap,
                       padding: '12px 14px',
                     }}
                   >
                     {/* Left Column: Input Cards (TX 1..4) */}
                     <div
                       style={{
-                        width: 210,
+                        width: l.c.multiInpCardW,
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: 12,
+                        gap: l.c.multiInpCardGap,
                       }}
                     >
                       {inputs.map((inp) => {
@@ -423,7 +1359,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                           <div
                             key={inp.id}
                             style={{
-                              height: 72,
+                              height: l.c.multiInpCardH,
                               backgroundColor: bg,
                               borderRadius: 6,
                               display: 'flex',
@@ -489,8 +1425,8 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                       style={{
                         display: 'grid',
                         gridTemplateColumns: 'repeat(2, 1fr)',
-                        gap: 12,
-                        width: 380,
+                        gap: l.c.multiOutGap,
+                        width: l.c.multiOutGridW,
                       }}
                     >
                       {outputs.map((out, idx) => {
@@ -504,13 +1440,13 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                             style={{
                               display: 'flex',
                               flexDirection: 'column',
-                              width: 180,
+                              width: l.c.multiOutCardW,
                             }}
                           >
                             {/* Monitor Box */}
                             <div
                               style={{
-                                height: 94,
+                                height: l.c.multiOutBoxH,
                                 borderRadius: 4,
                                 background: isRouted
                                   ? 'radial-gradient(circle at 50% 50%, #157AB5 0%, #084D76 100%)'
@@ -559,7 +1495,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                             {/* Label Bar */}
                             <div
                               style={{
-                                height: 32,
+                                height: l.c.multiOutLabelH,
                                 backgroundColor: '#1E1E1E',
                                 marginTop: 4,
                                 borderRadius: 2,
@@ -604,10 +1540,10 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                     {/* Left Column: Source Buttons */}
                     <div
                       style={{
-                        width: 220,
+                        width: l.c.singleInpCardW,
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: 12,
+                        gap: l.c.singleInpCardGap,
                       }}
                     >
                       {[
@@ -630,7 +1566,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                           <div
                             key={inp.id}
                             style={{
-                              height: 76,
+                              height: l.c.singleInpCardH,
                               backgroundColor: bg,
                               borderRadius: 6,
                               display: 'flex',
@@ -669,12 +1605,12 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                     </div>
 
                     {/* Right Display Container */}
-                    <div style={{width: 364, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                    <div style={{width: l.c.singleOutPreviewW, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                       {/* Display Box */}
                       <div
                         style={{
-                          width: 364,
-                          height: 205,
+                          width: l.c.singleOutPreviewW,
+                          height: l.c.singleOutPreviewH,
                           borderRadius: 4,
                           background: selectedInput === 2
                             ? 'radial-gradient(circle at 50% 50%, #157AB5 0%, #084D76 100%)'
@@ -708,8 +1644,8 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                       {/* OUT 1 Bar */}
                       <div
                         style={{
-                          width: 364,
-                          height: 38,
+                          width: l.c.singleOutPreviewW,
+                          height: l.c.singleOutBarH,
                           backgroundColor: '#1E1E1E',
                           marginTop: 8,
                           borderRadius: 2,
@@ -736,14 +1672,14 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                   {/* Terminal Log Box */}
                   <div
                     style={{
-                      height: 260,
+                      height: l.c.terminalLogH,
                       backgroundColor: '#121212',
                       border: '1px solid #2B2B2B',
                       borderRadius: 4,
-                      padding: '10px 14px',
+                      padding: `${CONNECT_TERMINAL_CONFIG.tablet.padY}px ${CONNECT_TERMINAL_CONFIG.tablet.padX}px`,
                       fontFamily: font.mono,
-                      fontSize: 12,
-                      lineHeight: 1.45,
+                      fontSize: CONNECT_TERMINAL_CONFIG.tablet.fontSize,
+                      lineHeight: CONNECT_TERMINAL_CONFIG.tablet.lineHeight,
                       color: appColors.green,
                       overflow: 'hidden',
                       display: 'flex',
@@ -751,7 +1687,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                       justifyContent: 'flex-end',
                     }}
                   >
-                    {terminalLines.slice(-12).map((line, idx) => (
+                    {terminalLines.slice(-CONNECT_TERMINAL_CONFIG.tablet.maxLines).map((line, idx) => (
                       <div key={idx} style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
                         {line.text}
                       </div>
@@ -761,7 +1697,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                   {/* Command Input Field */}
                   <div
                     style={{
-                      height: 38,
+                      height: l.c.cmdInputH,
                       backgroundColor: appColors.gray20,
                       borderRadius: 4,
                       marginTop: 8,
@@ -779,7 +1715,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                   <div style={{fontSize: 13, fontWeight: 600, color: appColors.white, margin: '14px 0 8px'}}>
                     Commands
                   </div>
-                  <div style={{display: 'flex', flexDirection: 'column', gap: 8}}>
+                  <div style={{display: 'flex', flexDirection: 'column', gap: l.c.cmdRowGap}}>
                     {commands.slice(0, 3).map((cmd) => (
                       <div
                         key={cmd.name}
@@ -798,7 +1734,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                         </div>
                         <div
                           style={{
-                            height: 32,
+                            height: l.c.sendBtnH,
                             padding: '0 20px',
                             backgroundColor: appColors.gray25,
                             borderRadius: 4,
@@ -864,20 +1800,13 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
             {isTest ? (
               <div
                 style={{
-                  height: 40,
-                  margin: '4px 12px 12px',
+                  height: l.c.subTabsH,
+                  margin: `4px ${l.c.padX}px ${l.c.subTabsMarginBottom}px`,
                   display: 'flex',
-                  gap: 6,
+                  gap: l.c.subTabsGap,
                 }}
               >
-                {(
-                  subTabs ?? [
-                    {id: 'buttons' as const, label: 'Buttons'},
-                    {id: 'switcher' as const, label: 'Switcher'},
-                    {id: 'terminal' as const, label: 'Terminal'},
-                    {id: 'web' as const, label: 'Web page'},
-                  ]
-                ).map((tab) => {
+                {getConnectTestSubTabs({subTabs, multiOutput, deviceName}).map((tab) => {
                   const active = testTab === tab.id;
                   return (
                     <div
@@ -906,8 +1835,8 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
           {/* Right Sidebar (width: 312px) */}
           <div
             style={{
-              width: 312,
-              height: 800,
+              width: l.sidebarW,
+              height: l.viewport.height,
               backgroundColor: '#151515',
               borderLeft: '1px solid rgba(255,255,255,0.08)',
               display: 'flex',
@@ -918,8 +1847,8 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
             {/* Sidebar Header: Remote prefix + Device Name + Connection Button */}
             <div
               style={{
-                height: 48,
-                padding: '0 12px',
+                height: l.c.sidebarHeaderH,
+                padding: `0 ${l.c.padX}px`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -1053,12 +1982,14 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
     );
   }
 
+  const l = layoutFor('phone');
+
   return (
     <div
       style={{
         position: 'relative',
-        width: VIEWPORT[device].width,
-        height: VIEWPORT[device].height,
+        width: l.viewport.width,
+        height: l.viewport.height,
         backgroundColor: appColors.black,
         overflow: 'hidden',
         fontFamily: font.ui,
@@ -1086,7 +2017,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '10px 14px 4px',
-          height: 28,
+          height: l.c.remoteHeaderH,
         }}
       >
         <div style={{display: 'flex', alignItems: 'center', gap: 6}}>
@@ -1126,8 +2057,8 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
           position: 'relative',
           zIndex: 2,
           display: 'flex',
-          height: 44,
-          margin: '4px 10px 8px',
+          height: l.c.topToggleH,
+          margin: `${l.c.topToggleMarginY}px ${l.c.padX}px ${l.c.topToggleMarginBottom}px`,
           borderRadius: 6,
           overflow: 'hidden',
         }}
@@ -1269,8 +2200,8 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                 >
                   <div
                     style={{
-                      width: 40,
-                      height: 40,
+                      width: l.c.btnPowerCircle,
+                      height: l.c.btnPowerCircle,
                       borderRadius: '50%',
                       border: `2.5px solid ${btn.color}`,
                       display: 'flex',
@@ -1305,8 +2236,8 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
             <div
               style={{
                 position: 'relative',
-                width: 176,
-                height: 176,
+                width: l.c.btnDpadSize,
+                height: l.c.btnDpadSize,
                 borderRadius: '50%',
                 border: '1.5px solid rgba(255,255,255,0.22)',
                 display: 'flex',
@@ -1341,8 +2272,8 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
               {/* OK Center */}
               <div
                 style={{
-                  width: 40,
-                  height: 40,
+                  width: l.c.btnOkSize,
+                  height: l.c.btnOkSize,
                   backgroundColor: appColors.gray50,
                   borderRadius: 4,
                   display: 'flex',
@@ -1358,13 +2289,13 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
             </div>
 
             {/* Menu / Exit Row */}
-            <div style={{display: 'flex', gap: 12, width: '100%', justifyContent: 'center'}}>
+            <div style={{display: 'flex', gap: l.c.btnMenuExitGap, width: '100%', justifyContent: 'center'}}>
               {['MENU', 'EXIT'].map((label) => (
                 <div
                   key={label}
                   style={{
-                    width: 110,
-                    height: 28,
+                    width: l.c.btnMenuExitW,
+                    height: l.c.btnMenuExitH,
                     backgroundColor: '#1E1E1E',
                     borderRadius: 4,
                     display: 'flex',
@@ -1429,13 +2360,13 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
             </div>
 
             {/* Inputs Row */}
-            <div style={{display: 'flex', gap: 12, width: '100%', justifyContent: 'center'}}>
+            <div style={{display: 'flex', gap: l.c.btnInputsGap, width: '100%', justifyContent: 'center'}}>
               {['INPUT 1', 'INPUT 2'].map((inp, idx) => (
                 <div
                   key={inp}
                   style={{
-                    width: 110,
-                    height: 32,
+                    width: l.c.btnInputsW,
+                    height: l.c.btnInputsH,
                     backgroundColor: idx === 0 ? appColors.gray20 : '#2B2B2B',
                     borderRadius: 4,
                     display: 'flex',
@@ -1467,7 +2398,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                 style={{
                   display: 'grid',
                   gridTemplateColumns: 'repeat(2, 1fr)',
-                  gap: 8,
+                  gap: l.c.outGridGap,
                   marginTop: 2,
                 }}
               >
@@ -1486,7 +2417,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                       <div
                         style={{
                           width: '100%',
-                          height: 78,
+                          height: l.c.outBoxH,
                           borderRadius: 4,
                           background: isSelected
                             ? 'radial-gradient(circle at 50% 50%, #FFF875 0%, #FFE600 65%, #E5CE00 100%)'
@@ -1517,7 +2448,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                           backgroundColor: appColors.gray20,
                           borderRadius: 2,
                           padding: '3px 4px',
-                          marginTop: 3,
+                          marginTop: l.c.outCardMarginTop,
                           display: 'flex',
                           flexDirection: 'column',
                           alignItems: 'center',
@@ -1558,7 +2489,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  margin: '8px 0 6px',
+                  margin: `${l.c.allBtnMarginTop}px 0 ${l.c.allBtnMarginBottom}px`,
                 }}
               >
                 <span
@@ -1583,7 +2514,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
               <div
                 style={{
                   display: 'flex',
-                  gap: 8,
+                  gap: l.c.inpCardGap,
                   overflowX: 'hidden',
                   padding: '2px 0',
                 }}
@@ -1594,8 +2525,8 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                     <div
                       key={inp.id}
                       style={{
-                        width: 100,
-                        height: 94,
+                        width: l.c.inpCardW,
+                        height: l.c.inpCardH,
                         flexShrink: 0,
                         backgroundColor: isSelected ? appColors.blue : appColors.gray20,
                         border: isSelected
@@ -1645,8 +2576,8 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
               <div
                 style={{
                   width: '100%',
-                  maxWidth: 320,
-                  height: 172,
+                  maxWidth: l.c.singleOutPreviewW,
+                  height: l.c.singleOutPreviewH,
                   background:
                     'radial-gradient(circle at 50% 50%, #707070 0%, #303030 100%)',
                   borderRadius: 4,
@@ -1661,8 +2592,8 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
               <div
                 style={{
                   width: '100%',
-                  maxWidth: 320,
-                  height: 30,
+                  maxWidth: l.c.singleOutPreviewW,
+                  height: l.c.singleOutBarH,
                   backgroundColor: appColors.gray20,
                   display: 'flex',
                   alignItems: 'center',
@@ -1686,13 +2617,13 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
               </div>
 
               {/* Input Cards Row */}
-              <div style={{display: 'flex', gap: 10, width: '100%', paddingLeft: 4}}>
+              <div style={{display: 'flex', gap: l.c.singleInpCardGap, width: '100%', paddingLeft: 4}}>
                 {[1, 2, 3].map((inp) => (
                   <div
                     key={inp}
                     style={{
-                      width: 96,
-                      height: 96,
+                      width: l.c.singleInpCardSize,
+                      height: l.c.singleInpCardSize,
                       backgroundColor: inp === selectedInput ? '#3A3A3A' : appColors.gray15,
                       border:
                         inp === selectedInput
@@ -1735,14 +2666,14 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
             {/* Terminal Log Box */}
             <div
               style={{
-                height: 160,
+                height: l.c.terminalLogH,
                 backgroundColor: '#121212',
                 border: '1px solid #2B2B2B',
                 borderRadius: 4,
-                padding: '6px 8px',
+                padding: `${CONNECT_TERMINAL_CONFIG.phone.padY}px ${CONNECT_TERMINAL_CONFIG.phone.padX}px`,
                 fontFamily: font.mono,
-                fontSize: 9.5,
-                lineHeight: 1.35,
+                fontSize: CONNECT_TERMINAL_CONFIG.phone.fontSize,
+                lineHeight: CONNECT_TERMINAL_CONFIG.phone.lineHeight,
                 color: appColors.green,
                 overflow: 'hidden',
                 display: 'flex',
@@ -1750,7 +2681,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                 justifyContent: 'flex-end',
               }}
             >
-              {terminalLines.slice(-10).map((line, idx) => (
+              {terminalLines.slice(-CONNECT_TERMINAL_CONFIG.phone.maxLines).map((line, idx) => (
                 <div
                   key={idx}
                   style={{
@@ -1767,7 +2698,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
             {/* Command Input Field */}
             <div
               style={{
-                height: 34,
+                height: l.c.cmdInputH,
                 backgroundColor: appColors.gray20,
                 borderRadius: 4,
                 marginTop: 6,
@@ -1792,7 +2723,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
             >
               Commands
             </div>
-            <div style={{display: 'flex', flexDirection: 'column', gap: 6}}>
+            <div style={{display: 'flex', flexDirection: 'column', gap: l.c.cmdRowGap}}>
               {commands.map((cmd) => (
                 <div
                   key={cmd.name}
@@ -1821,7 +2752,7 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
                   </div>
                   <div
                     style={{
-                      height: 32,
+                      height: l.c.sendBtnH,
                       padding: '0 16px',
                       backgroundColor: appColors.gray25,
                       borderRadius: 4,
@@ -2021,28 +2952,16 @@ export const ConnectTest: React.FC<ConnectTestProps> = ({
         <div
           style={{
             position: 'absolute',
-            bottom: showNavMenu ? 108 : 14,
-            left: 10,
-            right: 10,
+            bottom: showNavMenu ? l.c.navH : 14,
+            left: l.c.padX,
+            right: l.c.padX,
             zIndex: 10,
-            height: 38,
+            height: l.c.subTabsH,
             display: 'flex',
-            gap: 5,
+            gap: l.c.subTabsGap,
           }}
         >
-          {(
-            subTabs ??
-            (multiOutput
-              ? [{id: 'switcher' as const, label: 'Switcher'}]
-              : deviceName === 'ConvertIP TX 1'
-                ? [{id: 'terminal' as const, label: 'Terminal'}]
-                : [
-                    {id: 'buttons' as const, label: 'Buttons'},
-                    {id: 'switcher' as const, label: 'Switcher'},
-                    {id: 'terminal' as const, label: 'Terminal'},
-                    {id: 'web' as const, label: 'Web page'},
-                  ])
-          ).map((tab) => {
+          {getConnectTestSubTabs({subTabs, multiOutput, deviceName}).map((tab) => {
             const active = testTab === tab.id;
             return (
               <div

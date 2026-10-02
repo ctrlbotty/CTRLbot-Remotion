@@ -8,8 +8,8 @@
 // Device data uses private IPs only (192.168.0.*).
 
 import React from 'react';
-import {PhoneNavMenu} from './PhoneNavMenu';
-import {TabletNavRail} from './TabletNavRail';
+import {NAV_COLLAPSED_H, PhoneNavMenu} from './PhoneNavMenu';
+import {TABLET_NAV_WIDTH, TabletNavRail} from './TabletNavRail';
 import {VIEWPORT} from './viewports';
 import {appColors} from '../design/tokens.generated';
 import {font} from '../design/theme';
@@ -116,6 +116,281 @@ export type DiscoverDevicesProps = {
   initialScrollOffset?: number;
 };
 
+// Layout rhythm, shared between markup and discoverDevicesRegions() so camera targets
+// never drift from the controls they frame.
+export const DISCOVER_LAYOUT = {
+  phone: {
+    topBarHeight: 48,
+    padX: 12,
+    closeBtnSize: 44,
+    statusHeight: 24, // margin 2 + text 16 + margin 6
+    progressBarHeight: 2,
+    progressBarMarginBottom: 6,
+    listPadX: 16,
+    listPadTop: 4,
+    cardHeight: 104,
+    cardGap: 14,
+    cardPadX: 14,
+    cardPadY: 12,
+    actionButtonHeight: 34,
+    actionButtonWidth: 94,
+    btnActionWidth: 94,
+    btnAddedWidth: 66,
+    btnPadX: 14,
+    cardItemGap: 12,
+    chevronSize: 11,
+    driverMatchWidth: 180,
+    footerMarginTop: 8,
+    footerMarginBottom: 8,
+    footerMarginX: 16,
+    footerHeight: 20,
+    navHeight: NAV_COLLAPSED_H, // 108
+    toastBottom: 116,
+  },
+  tablet: {
+    railWidth: TABLET_NAV_WIDTH, // 200
+    topBarHeight: 52,
+    padX: 16,
+    closeBtnSize: 44,
+    progressBarHeight: 2.5,
+    progressBarMarginTop: 2,
+    progressBarMarginBottom: 8,
+    listPadX: 16,
+    listPadTop: 0,
+    listPadBottom: 12,
+    cardHeight: 52,
+    cardGap: 8,
+    cardPadX: 16,
+    cardPadY: 8,
+    actionButtonHeight: 32,
+    actionButtonWidth: 98,
+    btnActionWidth: 98,
+    btnAddedWidth: 70,
+    btnPadX: 16,
+    chevronSize: 12,
+    cardItemGap: 14,
+    driverMatchWidth: 180,
+    footerMarginTop: 8,
+    footerMarginBottom: 14,
+    footerMarginX: 20,
+    footerHeight: 20,
+    navHeight: 0,
+    toastBottom: 28,
+  },
+} as const;
+
+const layoutFor = (device: 'phone' | 'tablet') => {
+  const viewport = VIEWPORT[device];
+  const isTablet = device === 'tablet';
+  const railW = isTablet ? TABLET_NAV_WIDTH : 0;
+  const contentX = railW;
+  const contentW = viewport.width - railW;
+  const c = isTablet ? DISCOVER_LAYOUT.tablet : DISCOVER_LAYOUT.phone;
+
+  const topBarH = c.topBarHeight;
+  const closeBtnX = contentX + c.padX;
+  const closeBtnY = (topBarH - c.closeBtnSize) / 2;
+
+  const progressY = isTablet
+    ? topBarH + DISCOVER_LAYOUT.tablet.progressBarMarginTop
+    : topBarH + DISCOVER_LAYOUT.phone.statusHeight;
+  const progressH = c.progressBarHeight;
+
+  const listTopY = isTablet
+    ? topBarH +
+      DISCOVER_LAYOUT.tablet.progressBarMarginTop +
+      progressH +
+      DISCOVER_LAYOUT.tablet.progressBarMarginBottom +
+      c.listPadTop
+    : topBarH +
+      DISCOVER_LAYOUT.phone.statusHeight +
+      progressH +
+      DISCOVER_LAYOUT.phone.progressBarMarginBottom +
+      c.listPadTop;
+
+  const cardW = contentW - c.listPadX * 2;
+  const cardX = contentX + c.listPadX;
+
+  const footerY =
+    viewport.height - (isTablet ? 0 : c.navHeight) - c.footerMarginBottom - c.footerHeight;
+
+  return {
+    viewport,
+    isTablet,
+    railW,
+    contentX,
+    contentW,
+    c,
+    topBarH,
+    closeBtnX,
+    closeBtnY,
+    progressY,
+    progressH,
+    listTopY,
+    cardW,
+    cardX,
+    footerY,
+  };
+};
+
+/**
+ * Named regions for <Camera> and annotations in DiscoverDevices' coordinate space.
+ * Follows connectionRegions(device): derived from layoutFor(device).
+ */
+export const discoverDevicesRegions = (device: 'phone' | 'tablet') => {
+  const l = layoutFor(device);
+  const isTablet = l.isTablet;
+
+  return {
+    full: {x: 0, y: 0, width: l.viewport.width, height: l.viewport.height},
+    content: {x: l.contentX, y: 0, width: l.contentW, height: l.viewport.height},
+    centreX: l.contentX + l.contentW / 2,
+    topBar: {x: l.contentX, y: 0, width: l.contentW, height: l.topBarH},
+    closeButton: {
+      x: l.closeBtnX,
+      y: l.closeBtnY,
+      width: l.c.closeBtnSize,
+      height: l.c.closeBtnSize,
+    },
+    title: {
+      x: l.contentX + l.c.closeBtnSize + l.c.padX,
+      y: 0,
+      width: l.contentW - (l.c.closeBtnSize + l.c.padX) * 2,
+      height: l.topBarH,
+    },
+    status: isTablet
+      ? {
+          x: l.contentX + l.c.closeBtnSize + l.c.padX,
+          y: l.topBarH / 2,
+          width: l.contentW - (l.c.closeBtnSize + l.c.padX) * 2,
+          height: l.topBarH / 2,
+        }
+      : {
+          x: l.contentX,
+          y: l.topBarH,
+          width: l.contentW,
+          height: DISCOVER_LAYOUT.phone.statusHeight,
+        },
+    progressBar: {
+      x: l.contentX + (isTablet ? l.c.padX : 12),
+      y: l.progressY,
+      width: l.contentW - (isTablet ? l.c.padX * 2 : 24),
+      height: l.progressH,
+    },
+    list: {
+      x: l.cardX,
+      y: l.listTopY,
+      width: l.cardW,
+      height: l.footerY - l.listTopY,
+    },
+    card: (index: number) => ({
+      x: l.cardX,
+      y: l.listTopY + index * (l.c.cardHeight + l.c.cardGap),
+      width: l.cardW,
+      height: l.c.cardHeight,
+    }),
+    /** The Add button ("Add Driver", "Add Direct", or "Added") inside a card */
+    addButton: (
+      index: number,
+      state?: 'add_driver' | 'add_direct' | 'added' | DiscoveredDevice
+    ) => {
+      const cardY = l.listTopY + index * (l.c.cardHeight + l.c.cardGap);
+      const actionType =
+        typeof state === 'string'
+          ? state
+          : state && typeof state === 'object' && 'actionType' in state && state.actionType
+            ? state.actionType
+            : DEFAULT_DISCOVERED_DEVICES[index]?.actionType ?? 'add_direct';
+      const isAdded = actionType === 'added';
+      const btnH = l.c.actionButtonHeight;
+      const btnW = state !== undefined && isAdded ? l.c.btnAddedWidth : l.c.actionButtonWidth;
+
+      if (isTablet) {
+        const btnRight = l.cardX + l.cardW - l.c.cardPadX - l.c.chevronSize - l.c.cardItemGap;
+        return {
+          x: btnRight - btnW,
+          y: cardY + (l.c.cardHeight - btnH) / 2,
+          width: btnW,
+          height: btnH,
+        };
+      }
+      const btnRight = l.cardX + l.cardW - l.c.cardPadX;
+      return {
+        x: btnRight - btnW,
+        y: cardY + l.c.cardHeight - l.c.cardPadY - btnH,
+        width: btnW,
+        height: btnH,
+      };
+    },
+    /** The driver match label inside a card */
+    driverMatch: (
+      index: number,
+      state?: 'add_driver' | 'add_direct' | 'added' | DiscoveredDevice
+    ) => {
+      const cardY = l.listTopY + index * (l.c.cardHeight + l.c.cardGap);
+      const actionType =
+        typeof state === 'string'
+          ? state
+          : state && typeof state === 'object' && 'actionType' in state && state.actionType
+            ? state.actionType
+            : DEFAULT_DISCOVERED_DEVICES[index]?.actionType ?? 'add_direct';
+      const isAdded = actionType === 'added';
+      const btnW = state !== undefined && isAdded ? l.c.btnAddedWidth : l.c.actionButtonWidth;
+
+      if (isTablet) {
+        const btnRight = l.cardX + l.cardW - l.c.cardPadX - l.c.chevronSize - l.c.cardItemGap;
+        const btnX = btnRight - btnW;
+        const matchRight = btnX - l.c.cardItemGap;
+        // Conservative layout-container region representing the available driver match container consistently
+        const matchLeft = Math.round(l.cardX + l.cardW * 0.5);
+        const matchW = matchRight - matchLeft;
+        return {
+          x: matchLeft,
+          y: cardY + (l.c.cardHeight - 22) / 2,
+          width: matchW,
+          height: 22,
+        };
+      }
+      const btnRight = l.cardX + l.cardW - l.c.cardPadX;
+      const btnX = btnRight - btnW;
+      const startX = l.cardX + l.c.cardPadX;
+      const broadW = Math.max(120, btnX - 8 - startX);
+      return {
+        x: startX,
+        y: cardY + l.c.cardHeight - l.c.cardPadY - l.c.actionButtonHeight + 6,
+        width: broadW,
+        height: 22,
+      };
+    },
+    footer: {
+      x: l.contentX + l.c.footerMarginX,
+      y: l.footerY,
+      width: l.contentW - l.c.footerMarginX * 2,
+      height: l.c.footerHeight,
+    },
+    scanAgain: {
+      x: l.contentX + l.c.footerMarginX,
+      y: l.footerY,
+      width: 100,
+      height: l.c.footerHeight,
+    },
+    sortBy: {
+      x: l.contentX + l.contentW - l.c.footerMarginX - 80,
+      y: l.footerY,
+      width: 80,
+      height: l.c.footerHeight,
+    },
+    toast: {
+      x: l.contentX + (l.contentW - 240) / 2,
+      y: l.viewport.height - l.c.toastBottom - 36,
+      width: 240,
+      height: 36,
+    },
+  };
+};
+
+export const discoverRegions = discoverDevicesRegions;
+
 export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
   device = 'phone',
   foundCount = 15,
@@ -127,13 +402,15 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
   addedDeviceIds = [],
   initialScrollOffset = 0,
 }) => {
+  const l = layoutFor(device);
+
   if (device === 'tablet') {
     return (
       <div
         style={{
           position: 'relative',
-          width: VIEWPORT.tablet.width,
-          height: VIEWPORT.tablet.height,
+          width: l.viewport.width,
+          height: l.viewport.height,
           backgroundColor: appColors.black,
           overflow: 'hidden',
           fontFamily: font.ui,
@@ -171,16 +448,16 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
             style={{
               position: 'relative',
               zIndex: 2,
-              height: 52,
+              height: l.topBarH,
               display: 'flex',
               alignItems: 'center',
-              padding: '0 16px',
+              padding: `0 ${l.c.padX}px`,
             }}
           >
             <div
               style={{
-                width: 44,
-                height: 44,
+                width: l.c.closeBtnSize,
+                height: l.c.closeBtnSize,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -202,7 +479,7 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginRight: 44,
+                marginRight: l.c.closeBtnSize,
               }}
             >
               <div
@@ -231,8 +508,8 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
             style={{
               position: 'relative',
               zIndex: 2,
-              margin: '2px 16px 8px',
-              height: 2.5,
+              margin: `${DISCOVER_LAYOUT.tablet.progressBarMarginTop}px ${l.c.padX}px ${DISCOVER_LAYOUT.tablet.progressBarMarginBottom}px`,
+              height: l.progressH,
               backgroundColor: 'rgba(255,255,255,0.08)',
               borderRadius: 1,
               overflow: 'hidden',
@@ -254,10 +531,10 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
               zIndex: 2,
               flex: 1,
               overflowY: 'auto',
-              padding: '0 16px 12px',
+              padding: `0 ${l.c.listPadX}px ${DISCOVER_LAYOUT.tablet.listPadBottom}px`,
               display: 'flex',
               flexDirection: 'column',
-              gap: 8,
+              gap: l.c.cardGap,
               transform: initialScrollOffset ? `translateY(-${initialScrollOffset}px)` : undefined,
             }}
           >
@@ -271,13 +548,13 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
                   style={{
                     backgroundColor: '#1E1E1E',
                     borderRadius: 4,
-                    padding: '8px 16px',
+                    padding: `${l.c.cardPadY}px ${l.c.cardPadX}px`,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
                     border: '1px solid rgba(255,255,255,0.06)',
-                    height: 52,
+                    height: l.c.cardHeight,
                   }}
                 >
                   {/* Left Column: Name & IP */}
@@ -321,7 +598,7 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
                   </div>
 
                   {/* Right Column: Driver Match, Action Button & Arrow */}
-                  <div style={{display: 'flex', alignItems: 'center', gap: 14}}>
+                  <div style={{display: 'flex', alignItems: 'center', gap: l.c.cardItemGap}}>
                     <span
                       style={{
                         fontSize: 12,
@@ -334,8 +611,8 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
                     {isAdded ? (
                       <div
                         style={{
-                          height: 32,
-                          padding: '0 16px',
+                          height: l.c.actionButtonHeight,
+                          padding: `0 ${l.c.btnPadX}px`,
                           backgroundColor: 'rgba(0, 230, 118, 0.15)',
                           border: `1px solid ${appColors.green}`,
                           borderRadius: 4,
@@ -352,8 +629,8 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
                     ) : (
                       <div
                         style={{
-                          height: 32,
-                          padding: '0 16px',
+                          height: l.c.actionButtonHeight,
+                          padding: `0 ${l.c.btnPadX}px`,
                           backgroundColor: appColors.blue,
                           borderRadius: 4,
                           display: 'flex',
@@ -368,7 +645,7 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
                       </div>
                     )}
 
-                    <span style={{fontSize: 12, color: appColors.gray50}}>▾</span>
+                    <span style={{fontSize: l.c.chevronSize, color: appColors.gray50}}>▾</span>
                   </div>
                 </div>
               );
@@ -380,7 +657,7 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
             style={{
               position: 'relative',
               zIndex: 5,
-              margin: '8px 20px 14px',
+              margin: `${DISCOVER_LAYOUT.tablet.footerMarginTop}px ${DISCOVER_LAYOUT.tablet.footerMarginX}px ${DISCOVER_LAYOUT.tablet.footerMarginBottom}px`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
@@ -395,7 +672,7 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
             <div
               style={{
                 position: 'absolute',
-                bottom: 28,
+                bottom: DISCOVER_LAYOUT.tablet.toastBottom,
                 left: 0,
                 right: 0,
                 zIndex: 30,
@@ -424,12 +701,13 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
       </div>
     );
   }
+
   return (
     <div
       style={{
         position: 'relative',
-        width: VIEWPORT[device].width,
-        height: VIEWPORT[device].height,
+        width: l.viewport.width,
+        height: l.viewport.height,
         backgroundColor: appColors.black,
         overflow: 'hidden',
         fontFamily: font.ui,
@@ -453,16 +731,16 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
         style={{
           position: 'relative',
           zIndex: 2,
-          height: 48,
+          height: l.topBarH,
           display: 'flex',
           alignItems: 'center',
-          padding: '0 12px',
+          padding: `0 ${l.c.padX}px`,
         }}
       >
         <div
           style={{
-            width: 44,
-            height: 44,
+            width: l.c.closeBtnSize,
+            height: l.c.closeBtnSize,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -484,7 +762,7 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
             fontSize: 16,
             fontWeight: 700,
             color: appColors.white,
-            marginRight: 44, // Balance close button
+            marginRight: l.c.closeBtnSize,
           }}
         >
           Discover Devices
@@ -510,8 +788,8 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
         style={{
           position: 'relative',
           zIndex: 2,
-          margin: '0 12px 6px',
-          height: 2,
+          margin: `0 ${l.c.padX}px ${DISCOVER_LAYOUT.phone.progressBarMarginBottom}px`,
+          height: l.progressH,
           backgroundColor: 'rgba(255,255,255,0.08)',
           borderRadius: 1,
           overflow: 'hidden',
@@ -533,10 +811,10 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
           zIndex: 2,
           flex: 1,
           overflow: 'hidden',
-          padding: '4px 16px 0',
+          padding: `${DISCOVER_LAYOUT.phone.listPadTop}px ${l.c.listPadX}px 0`,
           display: 'flex',
           flexDirection: 'column',
-          gap: 14,
+          gap: l.c.cardGap,
           transform: initialScrollOffset ? `translateY(-${initialScrollOffset}px)` : undefined,
         }}
       >
@@ -550,9 +828,11 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
               style={{
                 backgroundColor: '#1E1E1E',
                 borderRadius: 5,
-                padding: '12px 14px',
+                padding: `${l.c.cardPadY}px ${l.c.cardPadX}px`,
                 boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
                 border: '1px solid rgba(255,255,255,0.06)',
+                height: l.c.cardHeight,
+                boxSizing: 'border-box',
               }}
             >
               {/* Row 1: Name and Expand Chevron */}
@@ -577,7 +857,7 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
                 >
                   {dev.name}
                 </span>
-                <span style={{fontSize: 11, color: appColors.gray50}}>▾</span>
+                <span style={{fontSize: l.c.chevronSize, color: appColors.gray50}}>▾</span>
               </div>
 
               {/* Row 2: IP Address */}
@@ -625,7 +905,7 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                    maxWidth: 180,
+                    maxWidth: l.c.driverMatchWidth,
                   }}
                 >
                   {dev.driverMatch ?? 'No matching driver'}
@@ -634,8 +914,8 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
                 {isAdded ? (
                   <div
                     style={{
-                      height: 34,
-                      padding: '0 14px',
+                      height: l.c.actionButtonHeight,
+                      padding: `0 ${l.c.btnPadX}px`,
                       backgroundColor: 'rgba(0, 230, 118, 0.15)',
                       border: `1px solid ${appColors.green}`,
                       borderRadius: 5,
@@ -652,8 +932,8 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
                 ) : (
                   <div
                     style={{
-                      height: 34,
-                      padding: '0 14px',
+                      height: l.c.actionButtonHeight,
+                      padding: `0 ${l.c.btnPadX}px`,
                       backgroundColor: appColors.blue,
                       borderRadius: 5,
                       display: 'flex',
@@ -678,7 +958,7 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
         style={{
           position: 'relative',
           zIndex: 5,
-          margin: '8px 16px',
+          margin: `${DISCOVER_LAYOUT.phone.footerMarginTop}px ${l.c.padX + 4}px`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -693,7 +973,7 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
         <div
           style={{
             position: 'absolute',
-            bottom: showNavMenu ? 116 : 20,
+            bottom: showNavMenu ? DISCOVER_LAYOUT.phone.toastBottom : 20,
             left: 0,
             right: 0,
             zIndex: 30,
@@ -720,7 +1000,7 @@ export const DiscoverDevices: React.FC<DiscoverDevicesProps> = ({
       ) : null}
 
       {/* Spacer for bottom navigation */}
-      {showNavMenu ? <div style={{height: 108, flexShrink: 0}} /> : null}
+      {showNavMenu ? <div style={{height: l.c.navHeight, flexShrink: 0}} /> : null}
 
       {/* Bottom Setup Navigation Bar */}
       {showNavMenu ? (

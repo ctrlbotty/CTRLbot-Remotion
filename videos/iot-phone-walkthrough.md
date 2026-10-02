@@ -348,7 +348,7 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
 | m2m | `EuiHandoff` (route across displays) | "many" → four displays · "source" then "display" → tapped in turn · "drag" → a drag onto a display · "all" → All tapped |
 | settings | — | settings "Setup" → the setup button · "Manual" → User Manual ringed · "Quick" → Quick Start ringed · "factory" → Factory Reset ringed |
 
-- [ ] T20: Add region maps for `ConnectTest`, `DiscoverDevices` and `ProductWebView`, phone and tablet, derived from each surface's own layout constants — files: src/app-ui/ConnectTest.tsx, src/app-ui/DiscoverDevices.tsx, src/app-ui/ProductWebView.tsx
+- [x] T20: Add region maps for `ConnectTest`, `DiscoverDevices` and `ProductWebView`, phone and tablet, derived from each surface's own layout constants — files: src/app-ui/ConnectTest.tsx, src/app-ui/DiscoverDevices.tsx, src/app-ui/ProductWebView.tsx
   - Follow `connectionRegions(device)`. Every region the Shot list names for these surfaces: tabs, the device list, switcher outputs and inputs, terminal lines, discovered rows and their Add, the address bar.
   - Verify: `npm run check`; their `Proof-*` stills look as before.
 - [ ] T21: Add region maps for `ActivitiesPresets`, `ActivitiesSwitch` and `ActivitiesAudio`, phone and tablet — files: src/app-ui/ActivitiesPresets.tsx, src/app-ui/ActivitiesSwitch.tsx, src/app-ui/ActivitiesAudio.tsx
@@ -385,6 +385,8 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
 - **Blocked:** no known implementation blocker; task dependencies still apply.
 
 ## Review notes
+
+- T20, 2026-10-02: Independent final PASS WITH NOTES after two repairs. Frozen check/lint pass; six default proof PNGs are SHA256-identical to baseline. Four terminal/switcher variants visually checked; maps follow line count/bottom alignment and full-width single-tab state. Discovery labels use broad containers. Evidence: out/coordinator/t20-final/.
 
 > Appended on PASS WITH NOTES. Not blockers; check these during the review.
 
