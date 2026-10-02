@@ -322,6 +322,8 @@ Placement and holds follow W01's rule. Corrections stay `TERMINATOR_CAPTION_CORR
 - [x] T20: Reverse `ServerDiagram`'s arrows so `hello world` travels from the CTRLbot IoT client to the PC's server and `reply` returns to the client, and break the PC label after `CTRLbot Terminator` — files: src/marketing/terminator-walkthrough/ServerDiagram.tsx
   - Found in T13's review. The narration says "I can send commands over to it, and they show up over here", and the server's Received Data shows `hello world`; the diagram drew the command from the PC to the tablet. Labels unchanged otherwise.
   - Verify: `Proof-Term-ServerDiagram` at progress 0.5 and 1, and the server beat at frame 1280 in both shapes.
+- [x] T21: Give the proof and recap stage beats a push to 0.94 and back, anchored top-left so the navigation stays whole — files: src/marketing/terminator-walkthrough/terminatorWalkthroughData.ts
+  - Found by T16: portrait measured 61% inert (ceiling 60%). Per beat, proof was 83% and recap 87%, because only the nav highlight changed. Measured on sampled frames: proof 59%, recap 75%.
 - [ ] T16: Run the feature gates on both shapes, render both, write the .srt from the edit, check the voice, and record the results here — files: videos/terminator-walkthrough.md
   - As W01's T15, with `--corrections=TERMINATOR_CAPTION_CORRECTIONS`. The .srt has no `Luxall` and no lowercase `com ports`.
   - The voice check is `npm run narration:verify` on the landscape render. It is `[!]` only when it exits 1; every other difference is a Review note (the contract's "Whisper's voice check over-reports").

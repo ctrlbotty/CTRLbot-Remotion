@@ -66,9 +66,12 @@ export const BEAT_REGIONS: Partial<Record<BeatName, Region>> = {
   recap: termRegions.nav,
 };
 
+// A stage push stops at 0.94 and is anchored top-left, so the navigation stays whole.
+const STAGE_PUSH = {x: 0, y: 0, width: TERM_VIEWPORT.width * 0.94, height: TERM_VIEWPORT.height * 0.94};
 // The proof needs the complete navigation and each pane; overlays supply emphasis.
 export const BEAT_SHOTS: Partial<Record<BeatName, Shot[]>> = {
-  proof: [{at: 0, region: fullFrame(TERM_VIEWPORT)}, {at: CUE_FRAMES.terminal - BEATS.proof.from, region: fullFrame(TERM_VIEWPORT)}],
+  proof: [{at: 0, region: fullFrame(TERM_VIEWPORT)}, {at: BEATS.proof.duration / 2, region: STAGE_PUSH}, {at: BEATS.proof.duration, region: fullFrame(TERM_VIEWPORT)}],
+  recap: [{at: 0, region: fullFrame(TERM_VIEWPORT)}, {at: BEATS.recap.duration / 2, region: STAGE_PUSH}, {at: BEATS.recap.duration, region: fullFrame(TERM_VIEWPORT)}],
   scan: [{at: 0, region: termRegions.results}],
   server: [
     {at: 0, region: fullFrame(TERM_VIEWPORT)},
