@@ -25,8 +25,8 @@ Approved by Nathan on 2026-10-02. Codex coordinates; Gemini 3.8 Flash High imple
 
 | Owner | Task | Owned files | State |
 |---|---|---|---|
-| Gemini worker B | W03 T22 | FirstRunEducation.tsx, SettingsSupport.tsx | Fresh task dispatched after baseline capture |
-| Gemini worker A | W05 T2 | src/audio/narrationCaptions.ts | Fresh one-file task dispatched; verification waits for independent capacity |
+| Gemini worker B | W03 T22 | FirstRunEducation.tsx, SettingsSupport.tsx | Stopped READY09:37, frozen for independent Gemini verification |
+| Gemini worker A | W05 T2 | src/audio/narrationCaptions.ts | Stopped READY09:40, frozen for independent Gemini verification |
 | Codex coordinator | Scheduling and W01 approved close-out | Four active briefs, this queue, `Roadmap.md`, archive and `RELEASE-NOTES.md` | Independently reviewed and committed as `e0aafb5` |
 
 ## Checkpoints
@@ -65,3 +65,5 @@ Approved by Nathan on 2026-10-02. Codex coordinates; Gemini 3.8 Flash High imple
 - Independent verifier hit Codex usage limit during T22 baseline capture; tool reports retry11:29AM. All four baseline PNGs were saved with correct dimensions before failure (360x780/1280x800); outputs out/coordinator/t22-baseline/. Do not repeat completed T21 checks. Resume first unverified T7 final repair and T22 verification when independent capacity returns; preserve source and do not mark complete meanwhile. Fresh Gemini T22 implementation dispatched with no GPU/render permission.
 - W03 T22 active: W03 T22 UI Implementation, conversation5aedb944-6eb2-4783-b936-7e892e57dd8f, observed working. All four original baseline PNGs validated as nonempty with correct dimensions; capture complete despite verifier error. W05 T2 dispatched in second implementation slot; scratch SRT work only, no GPU. T7 final repaired source stays untouched awaiting independent check.
 - W05 T2 active: W05 T2 Caption Correction, conversation7c74b464-fb26-44b5-bf3c-0425fd1c6653, observed working. Owns only narrationCaptions.ts. Next independent checks: T7 final repaired defaults/regions, T22 first implementation, T2 scratch caption regressions; do not rerun passing T17/T20/T21 acceptance.
+- 2026-10-02 09:40 MDT: T22 and T2 observed stopped READY, zero background jobs. T2 worker reports W01/W04 scratch SRT hashes unchanged and focused examples pass, pending independent reproduction. Source frozen. To continue within approved worker/verifier coordination despite Codex subagent quota, a fresh independent read-only Gemini3.8 Flash High verifier is dispatched sequentially for T7 final, T22 initial, T2 initial. It wrote none of the source and owns the single heavy slot; implementations remain uncommitted/unmarked until independent verdicts. No additional workers while frozen. Report expected out/coordinator/t7-t22-t2-review.txt.
+- Independent Gemini verifier: Independent Beat Verification Review, conversation d0cdbea8-dd83-4ddd-986c-51b1bb986baf; observed working, read-only source and exclusive render/GPU slot. Sequential bounded verdicts release tasks separately; repair counts T7=2, T22=0, T2=0.
