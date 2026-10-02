@@ -1,8 +1,8 @@
 import React from 'react';
 import {appColors} from '../design/tokens.generated';
 import {VIEWPORT} from './viewports';
-import {PhoneNavMenu, type NavItem} from './PhoneNavMenu';
-import {TabletNavRail} from './TabletNavRail';
+import {PhoneNavMenu, navRegions, NAV_COLLAPSED_H, type NavItem} from './PhoneNavMenu';
+import {TABLET_NAV_WIDTH, tabletNavRegions, TabletNavRail} from './TabletNavRail';
 import {font} from '../design/theme';
 
 export type SettingsSupportProps = {
@@ -16,6 +16,337 @@ export type SettingsSupportProps = {
   activeNav?: NavItem;
   scrollY?: number;
 };
+
+export type SettingsSupportRegionOptions = {
+  resetButtonState?: 'idle' | 'pressed' | 'restored';
+  showResetDialog?: boolean;
+  showDocumentationHighlight?: boolean;
+  toast?: string;
+  snackbar?: string;
+  showRoomMenus?: boolean;
+  activeNav?: NavItem;
+  scrollY?: number;
+};
+
+/**
+ * Derived layout metrics for SettingsSupport, shared by the component and region maps.
+ * Follows connectionRegions(device): accounts for device, scrollY, dialog, and nav state.
+ */
+export const layoutFor = (
+  device: 'phone' | 'tablet' = 'phone',
+  options?: SettingsSupportRegionOptions
+) => {
+  const isTablet = device === 'tablet';
+  const viewport = VIEWPORT[device];
+  const scrollY = options?.scrollY ?? 0;
+  const isRestored = options?.resetButtonState === 'restored';
+  const showRoomMenus = options?.showRoomMenus ?? true;
+  const effectiveShowRoomMenus = isRestored ? false : showRoomMenus;
+  const showResetDialog = options?.showResetDialog ?? false;
+  const showDocumentationHighlight = options?.showDocumentationHighlight ?? false;
+
+  // Rail & content container
+  const railW = isTablet ? TABLET_NAV_WIDTH : 0;
+  const contentX = isTablet ? TABLET_NAV_WIDTH : 0;
+  const contentW = isTablet ? viewport.width - TABLET_NAV_WIDTH : viewport.width;
+
+  // Padding inside content container
+  const padX = isTablet ? 32 : 16;
+  const padTop = isTablet ? 24 : 16;
+  const innerX = contentX + padX;
+  const innerW = contentW - padX * 2;
+
+  // Flow metrics follow the rendered DOM: Montserrat's normal line box is 1.219em, so a
+  // text row is fontSize * LH, not a rounded guess. Block margins are the component's own.
+  const LH = 1.219;
+  const hl = showDocumentationHighlight ? 8 : 0; // the highlight's 4px vertical padding
+
+  // Header "Settings"
+  const settingsY = padTop - scrollY;
+  const settingsH = 16 * LH;
+  const settingsMarginBottom = isTablet ? 12 : 16;
+
+  // Support section title "Support"
+  const supportY = settingsY + settingsH + settingsMarginBottom;
+  const supportH = (isTablet ? 24 : 22) * LH;
+  const supportMarginBottom = isTablet ? 4 : 6;
+
+  // Documentation highlight / subtitle (tablet: shrink-wrapped to its text, phone: full width)
+  const subtitleY = supportY + supportH + supportMarginBottom;
+  const subtitleH = (isTablet ? 14 : 12.5) * LH + hl;
+  const subtitleW = isTablet ? 336 + (hl ? 16 : 0) : innerW;
+  const subtitleMarginBottom = isTablet ? 16 : 14;
+
+  // Card 1: User Manual (padding + 16/14px title + 2px + 13/11.5px caption)
+  const cardPadY = isTablet ? 14 : 12;
+  const manualY = subtitleY + subtitleH + subtitleMarginBottom;
+  const manualW = innerW;
+  const manualH =
+    cardPadY * 2 + (isTablet ? 16 : 14) * LH + 2 + (isTablet ? 13 : 11.5) * LH;
+  const manualMarginBottom = isTablet ? 10 : 8;
+
+  // Card 2: Quick Start
+  const quickStartY = manualY + manualH + manualMarginBottom;
+  const quickStartW = innerW;
+  const quickStartH = manualH;
+  const quickStartMarginBottom = isTablet ? 16 : 14;
+
+  // Factory Reset and Database Management
+  // Tablet: two columns side-by-side, equal height; Phone: stacked cards
+  let resetCardX: number;
+  let resetCardY: number;
+  let resetCardW: number;
+  let resetCardH: number;
+  let resetBtnX: number;
+  let resetBtnY: number;
+  let resetBtnW: number;
+  let resetBtnH: number;
+
+  let dbCardX: number;
+  let dbCardY: number;
+  let dbCardW: number;
+  let dbCardH: number;
+  let dbBtnX: number;
+  let dbBtnY: number;
+  let dbBtnW: number;
+  let dbBtnH: number;
+
+  if (isTablet) {
+    const colGap = 16;
+    const colW = (innerW - colGap) / 2; // 500
+    const colY = quickStartY + quickStartH + quickStartMarginBottom;
+    // Factory Reset is the taller column (18px title, 6, one 13.5px/1.3 line, 16, 44px button, 16px padding)
+    const colH = 16 + 18 * LH + 6 + 13.5 * 1.3 + 16 + 44 + 16;
+
+    resetCardX = innerX;
+    resetCardY = colY;
+    resetCardW = colW;
+    resetCardH = colH;
+    resetBtnX = resetCardX + 18;
+    resetBtnW = resetCardW - 36;
+    resetBtnH = 44;
+    resetBtnY = resetCardY + resetCardH - 16 - resetBtnH;
+
+    dbCardX = innerX + colW + colGap;
+    dbCardY = colY;
+    dbCardW = colW;
+    dbCardH = colH; // stretched to the row; its button sits on the same baseline
+    dbBtnX = dbCardX + 18;
+    dbBtnW = dbCardW - 36;
+    dbBtnH = 44;
+    dbBtnY = dbCardY + dbCardH - 16 - dbBtnH;
+  } else {
+    // 12 padding, 13.5px title, 4, two 11.5px/1.3 lines, 12, 42px button, 12 padding
+    resetCardX = innerX;
+    resetCardY = quickStartY + quickStartH + quickStartMarginBottom;
+    resetCardW = innerW;
+    resetCardH = 12 + 13.5 * LH + 4 + 11.5 * 1.3 * 2 + 12 + 42 + 12;
+    resetBtnX = resetCardX + 14;
+    resetBtnW = resetCardW - 28;
+    resetBtnH = 42;
+    resetBtnY = resetCardY + resetCardH - 12 - resetBtnH;
+
+    dbCardX = innerX;
+    dbCardY = resetCardY + resetCardH + 12;
+    dbCardW = innerW;
+    dbCardH = 12 + 13.5 * LH + 4 + 11.5 * LH + 12 + 42 + 12;
+    dbBtnX = dbCardX + 14;
+    dbBtnW = dbCardW - 28;
+    dbBtnH = 42;
+    dbBtnY = dbCardY + dbCardH - 12 - dbBtnH;
+  }
+
+  // Setup navigation button target
+  // On tablet: the 'set' row in TabletNavRail
+  // On phone: the 'set' icon in the collapsed bottom bar
+  const navH = isTablet ? viewport.height : NAV_COLLAPSED_H;
+  const navY = isTablet ? 0 : viewport.height - NAV_COLLAPSED_H;
+  let setupNavRegion: {x: number; y: number; width: number; height: number};
+
+  if (isTablet) {
+    setupNavRegion = tabletNavRegions.row('set', effectiveShowRoomMenus);
+  } else {
+    // Phone collapsed icon bar: handle is top 48dp, icon bar is 60dp, padding 18dp left/right
+    const itemCount = effectiveShowRoomMenus ? 6 : 4;
+    const setItemIndex = effectiveShowRoomMenus ? 4 : 3;
+    const slotW = (viewport.width - 36) / itemCount;
+    const slotX = 18 + setItemIndex * slotW;
+    const iconBarY = navY + 48;
+    setupNavRegion = {
+      x: Math.round(slotX),
+      y: iconBarY,
+      width: Math.round(slotW),
+      height: 60,
+    };
+  }
+
+  // Factory Reset Confirmation Dialog (tablet only; flex-centred over the whole 1280x800 frame).
+  // Padding 24/16, header row (24px icon vs 20px title), 16, content (14px/1.5: 1+2+1+1 lines,
+  // three 12px gaps), 24, 14px button row with 8px padding, 16.
+  const dialogW = isTablet ? 520 : Math.min(340, viewport.width - 32);
+  const dialogBtnW = 76;
+  const dialogBtnH = 14 * LH + 16;
+  const dialogH = 24 + Math.max(24, 20 * LH) + 16 + 5 * 14 * 1.5 + 3 * 12 + 24 + dialogBtnH + 16;
+  const dialogX = (viewport.width - dialogW) / 2;
+  const dialogY = (viewport.height - dialogH) / 2;
+  const dialogBtnY = dialogY + dialogH - 16 - dialogBtnH;
+  const dialogConfirmX = dialogX + dialogW - 24 - dialogBtnW;
+  const dialogCancelX = dialogConfirmX - 20 - dialogBtnW;
+
+  // Toast & Snackbar sit in the content column (tablet: right of the rail)
+  const toastW = 200;
+  const toastH = (isTablet ? 13 : 12) * LH + 16 + 2;
+  const toastX = contentX + (contentW - toastW) / 2;
+  const toastY = viewport.height - (isTablet ? 32 + toastH : 116 + toastH);
+  const snackbarH = isTablet ? 13 * LH + 28 + 1 : 12.5 * LH + 24 + 1;
+  const snackbarY = viewport.height - (isTablet ? snackbarH : 108 + snackbarH);
+
+  return {
+    viewport,
+    isTablet,
+    scrollY,
+    effectiveShowRoomMenus,
+    showResetDialog,
+    showDocumentationHighlight,
+    railW,
+    contentX,
+    contentW,
+    padX,
+    padTop,
+    innerX,
+    innerW,
+    settingsY,
+    settingsH,
+    supportY,
+    supportH,
+    subtitleY,
+    subtitleW,
+    subtitleH,
+    manualY,
+    manualW,
+    manualH,
+    quickStartY,
+    quickStartW,
+    quickStartH,
+    resetCardX,
+    resetCardY,
+    resetCardW,
+    resetCardH,
+    resetBtnX,
+    resetBtnY,
+    resetBtnW,
+    resetBtnH,
+    dbCardX,
+    dbCardY,
+    dbCardW,
+    dbCardH,
+    dbBtnX,
+    dbBtnY,
+    dbBtnW,
+    dbBtnH,
+    navY,
+    navH,
+    setupNavRegion,
+    dialogX,
+    dialogY,
+    dialogW,
+    dialogH,
+    dialogCancelX,
+    dialogConfirmX,
+    dialogBtnY,
+    dialogBtnW,
+    dialogBtnH,
+    toastX,
+    toastY,
+    toastW,
+    toastH,
+    snackbarY,
+    snackbarH,
+  };
+};
+
+/**
+ * Named regions for <Camera> and annotations in SettingsSupport's coordinate space.
+ * Follows connectionRegions(device): derived from layoutFor(device).
+ */
+export const settingsSupportRegions = (
+  device: 'phone' | 'tablet' = 'phone',
+  options?: SettingsSupportRegionOptions
+) => {
+  const l = layoutFor(device, options);
+  const isTablet = l.isTablet;
+
+  return {
+    full: {x: 0, y: 0, width: l.viewport.width, height: l.viewport.height},
+    content: {x: l.contentX, y: 0, width: l.contentW, height: l.viewport.height},
+    centreX: l.contentX + l.contentW / 2,
+
+    /** Settings header text */
+    settings: {x: l.innerX, y: l.settingsY, width: l.innerW, height: l.settingsH},
+    settingsTitle: {x: l.innerX, y: l.settingsY, width: l.innerW, height: l.settingsH},
+    settingsHeader: {x: l.innerX, y: l.settingsY, width: l.innerW, height: l.settingsH},
+
+    /** Support section title */
+    support: {x: l.innerX, y: l.supportY, width: l.innerW, height: l.supportH},
+    supportTitle: {x: l.innerX, y: l.supportY, width: l.innerW, height: l.supportH},
+
+    /** Documentation highlight / subtitle banner */
+    documentationHighlight: {
+      x: l.innerX,
+      y: l.subtitleY,
+      width: l.subtitleW,
+      height: l.subtitleH,
+    },
+    subtitle: {
+      x: l.innerX,
+      y: l.subtitleY,
+      width: l.subtitleW,
+      height: l.subtitleH,
+    },
+
+    /** User Manual card */
+    userManual: {x: l.innerX, y: l.manualY, width: l.manualW, height: l.manualH},
+    userManualCard: {x: l.innerX, y: l.manualY, width: l.manualW, height: l.manualH},
+
+    /** Quick Start card */
+    quickStart: {x: l.innerX, y: l.quickStartY, width: l.quickStartW, height: l.quickStartH},
+    quickStartCard: {x: l.innerX, y: l.quickStartY, width: l.quickStartW, height: l.quickStartH},
+
+    /** Factory Reset card & action button */
+    factoryReset: {x: l.resetCardX, y: l.resetCardY, width: l.resetCardW, height: l.resetCardH},
+    factoryResetCard: {x: l.resetCardX, y: l.resetCardY, width: l.resetCardW, height: l.resetCardH},
+    factoryResetButton: {x: l.resetBtnX, y: l.resetBtnY, width: l.resetBtnW, height: l.resetBtnH},
+    resetButton: {x: l.resetBtnX, y: l.resetBtnY, width: l.resetBtnW, height: l.resetBtnH},
+
+    /** Database Management card & action button */
+    databaseManagement: {x: l.dbCardX, y: l.dbCardY, width: l.dbCardW, height: l.dbCardH},
+    databaseManagementCard: {x: l.dbCardX, y: l.dbCardY, width: l.dbCardW, height: l.dbCardH},
+    updateDatabaseButton: {x: l.dbBtnX, y: l.dbBtnY, width: l.dbBtnW, height: l.dbBtnH},
+
+    /** Setup navigation target (the setup button on the nav bar or rail) */
+    setupButton: l.setupNavRegion,
+    setupNav: l.setupNavRegion,
+    setup: l.setupNavRegion,
+
+    /** Setup nav bar / rail */
+    navMenu: isTablet
+      ? tabletNavRegions.full
+      : {x: 0, y: l.navY, width: l.viewport.width, height: l.navH},
+    navRail: tabletNavRegions.full,
+
+    /** Reset Confirmation Dialog */
+    resetDialog: {x: l.dialogX, y: l.dialogY, width: l.dialogW, height: l.dialogH},
+    resetDialogCancel: {x: l.dialogCancelX, y: l.dialogBtnY, width: l.dialogBtnW, height: l.dialogBtnH},
+    resetDialogConfirm: {x: l.dialogConfirmX, y: l.dialogBtnY, width: l.dialogBtnW, height: l.dialogBtnH},
+
+    /** Toast & Snackbar */
+    toast: {x: l.toastX, y: l.toastY, width: l.toastW, height: l.toastH},
+    snackbar: {x: l.contentX, y: l.snackbarY, width: l.contentW, height: l.snackbarH},
+  };
+};
+
+export const settingsRegions = settingsSupportRegions;
+export const supportRegions = settingsSupportRegions;
 
 // Material Warning Icon
 const WarningIcon = ({color = appColors.white, size = 20}: {color?: string; size?: number}) => (

@@ -12,8 +12,9 @@
 
 import React from 'react';
 import {AppIcon} from './AppIcon';
-import {CtrlbotAi} from './CtrlbotAi';
-import {PhoneNavMenu} from './PhoneNavMenu';
+import {CtrlbotAi, aiRegions} from './CtrlbotAi';
+import {PhoneNavMenu, navRegions} from './PhoneNavMenu';
+import {TABLET_NAV_WIDTH, tabletNavRegions} from './TabletNavRail';
 import {VIEWPORT} from './viewports';
 import {appColors} from '../design/tokens.generated';
 import {font} from '../design/theme';
@@ -51,6 +52,238 @@ export type FirstRunEducationProps = {
   /** Custom Y offset in dp for sliding the card. */
   cardOffsetY?: number;
 };
+
+export type FirstRunEducationRegionOptions = {
+  /** 1-based step index (1 = first room card, 2 = setup menu card, 3+ = dismissed). Default 1. */
+  step?: number;
+  /** Custom Y offset in dp for sliding the card. Default 0. */
+  cardOffsetY?: number;
+  /** Custom opacity for the card overlay (0..1). Default 1. */
+  cardOpacity?: number;
+  /** Whether the top-right ✕ close button is visible. Default true. */
+  showClose?: boolean;
+};
+
+/**
+ * Derived layout metrics for FirstRunEducation, shared by the component and region maps.
+ */
+export const layoutFor = (
+  device: 'phone' | 'tablet' = 'phone',
+  options?: FirstRunEducationRegionOptions
+) => {
+  const isTablet = device === 'tablet';
+  const viewport = VIEWPORT[device];
+  const step = options?.step ?? 1;
+  const cardOffsetY = options?.cardOffsetY ?? 0;
+  const isDismissed = step > FIRST_RUN_STEPS.length;
+  const currentStep = FIRST_RUN_STEPS[Math.max(0, Math.min(step - 1, FIRST_RUN_STEPS.length - 1))];
+
+  // Card geometry (1px border sits inside the border-box, so content starts 1px in)
+  const border = 1;
+  const cardTop = (isTablet ? 190 : 210) + cardOffsetY;
+  const cardW = isTablet ? 480 : viewport.width - 48; // phone: 360 - 48 = 312
+  const cardX = isTablet ? (viewport.width - cardW) / 2 : 24; // tablet: (1280 - 480) / 2 = 400
+  const padX = isTablet ? 24 : 20;
+  const padY = isTablet ? 28 : 24;
+  const innerX = cardX + border + padX;
+  const innerW = cardW - (border + padX) * 2; // phone: 312 - 42 = 270; tablet: 480 - 50 = 430
+
+  // Close button geometry
+  const closeSize = 36;
+  const closeTop = 36;
+  const closeRight = isTablet ? 36 : 22;
+  const closeX = viewport.width - closeRight - closeSize; // phone: 360 - 22 - 36 = 302; tablet: 1280 - 36 - 36 = 1208
+  const closeY = closeTop;
+
+  // Flow metrics, from the rendered proofs: Montserrat's normal line box is 1.219em,
+  // Space Mono's is 1.481em; the display lines set their own line-height.
+  const headerIconSize = 32;
+  const headerMarginBottom = 14;
+  const headerY = cardTop + border + padY;
+  const headerH = headerIconSize; // taller than the 18px wordmark beside it
+
+  const eyebrowMarginBottom = 10;
+  const eyebrowY = headerY + headerH + headerMarginBottom;
+  const eyebrowH = 11 * 1.481;
+
+  // Title is two lines on both steps
+  const titleMarginBottom = 14;
+  const titleY = eyebrowY + eyebrowH + eyebrowMarginBottom;
+  const titleH = 21 * 1.24 * 2;
+
+  // Body wraps: each paragraph is ceil(chars * 6.75 / width) lines at 13.5px Montserrat.
+  // Measured: phone step 1 renders 3 lines ("So easy." wraps), tablet 2.
+  const bodyMarginBottom = 20;
+  const bodyY = titleY + titleH + titleMarginBottom;
+  const bodyLines = currentStep.body
+    .split('\n')
+    .reduce((n, para) => n + Math.max(1, Math.ceil((para.length * 6.75) / innerW)), 0);
+  const bodyH = 13.5 * 1.48 * bodyLines;
+
+  // Divider + Tag
+  const tagPadTop = 12;
+  const tagY = bodyY + bodyH + bodyMarginBottom + 1 + tagPadTop;
+  const tagH = 10.5 * 1.481;
+
+  // Total card height, border to border
+  const cardH = tagY + tagH + padY + border - cardTop;
+
+  // Setup navigation / rail
+  const railW = isTablet ? TABLET_NAV_WIDTH : 0;
+  const contentX = isTablet ? TABLET_NAV_WIDTH : 0;
+  const contentW = isTablet ? viewport.width - TABLET_NAV_WIDTH : viewport.width;
+
+  return {
+    viewport,
+    isTablet,
+    step,
+    currentStep,
+    isDismissed,
+    cardX,
+    cardTop,
+    cardW,
+    cardH,
+    padX,
+    padY,
+    innerX,
+    innerW,
+    closeX,
+    closeY,
+    closeSize,
+    headerY,
+    headerH,
+    headerIconSize,
+    eyebrowY,
+    eyebrowH,
+    titleY,
+    titleH,
+    bodyY,
+    bodyH,
+    tagY,
+    tagH,
+    railW,
+    contentX,
+    contentW,
+  };
+};
+
+/**
+ * Named regions for <Camera> and annotations in FirstRunEducation's coordinate space.
+ * Follows connectionRegions(device): derived from layoutFor(device).
+ */
+export const firstRunEducationRegions = (
+  device: 'phone' | 'tablet' = 'phone',
+  options?: FirstRunEducationRegionOptions
+) => {
+  const l = layoutFor(device, options);
+  const isTablet = l.isTablet;
+
+  return {
+    full: {x: 0, y: 0, width: l.viewport.width, height: l.viewport.height},
+    content: {x: l.contentX, y: 0, width: l.contentW, height: l.viewport.height},
+    centreX: l.contentX + l.contentW / 2,
+
+    /** The dim scrim behind the walkthrough card */
+    scrim: {x: 0, y: 0, width: l.viewport.width, height: l.viewport.height},
+
+    /** The walkthrough tour card */
+    card: {x: l.cardX, y: l.cardTop, width: l.cardW, height: l.cardH},
+    tour: {x: l.cardX, y: l.cardTop, width: l.cardW, height: l.cardH},
+    tourCard: {x: l.cardX, y: l.cardTop, width: l.cardW, height: l.cardH},
+
+    /** The close ✕ button in the top-right corner */
+    closeButton: {x: l.closeX, y: l.closeY, width: l.closeSize, height: l.closeSize},
+    closeX: {x: l.closeX, y: l.closeY, width: l.closeSize, height: l.closeSize},
+
+    /** Step-specific region or card content */
+    step: (stepIndex: number) => {
+      const stepLayout = layoutFor(device, {...options, step: stepIndex});
+      return {
+        x: stepLayout.cardX,
+        y: stepLayout.cardTop,
+        width: stepLayout.cardW,
+        height: stepLayout.cardH,
+      };
+    },
+    steps: {x: l.cardX, y: l.cardTop, width: l.cardW, height: l.cardH},
+
+    /** Card interior regions */
+    cardHeader: {x: l.innerX, y: l.headerY, width: l.innerW, height: l.headerH},
+    cardBrand: {x: l.innerX, y: l.headerY, width: l.innerW, height: l.headerH},
+    cardEyebrow: {x: l.innerX, y: l.eyebrowY, width: l.innerW, height: l.eyebrowH},
+    cardTitle: {x: l.innerX, y: l.titleY, width: l.innerW, height: l.titleH},
+    cardBody: {x: l.innerX, y: l.bodyY, width: l.innerW, height: l.bodyH},
+    cardTag: {x: l.innerX, y: l.tagY, width: l.innerW, height: l.tagH},
+    tag: {x: l.innerX, y: l.tagY, width: l.innerW, height: l.tagH},
+
+    /** Next action target — bottom action / tag area where a user taps to step forward */
+    nextButton: {x: l.innerX, y: l.tagY - 6, width: l.innerW, height: l.tagH + 12},
+    next: {x: l.innerX, y: l.tagY - 6, width: l.innerW, height: l.tagH + 12},
+
+    /** Underlying setup menus */
+    navMenu: isTablet ? tabletNavRegions.full : navRegions.expanded,
+    navRail: tabletNavRegions.full,
+    setupMenus: isTablet
+      ? {
+          ctrlbot: tabletNavRegions.header,
+          device: tabletNavRegions.row('device'),
+          connect: tabletNavRegions.row('connect'),
+          set: tabletNavRegions.row('set'),
+        }
+      : {
+          ctrlbot: navRegions.row(0),
+          device: navRegions.row(1),
+          connect: navRegions.row(2),
+          set: navRegions.row(3),
+        },
+    menuRow: (menu: 'ctrlbot' | 'device' | 'connect' | 'set' | number) => {
+      if (isTablet) {
+        if (menu === 'ctrlbot' || menu === 0) return tabletNavRegions.header;
+        if (menu === 'device' || menu === 1) return tabletNavRegions.row('device');
+        if (menu === 'connect' || menu === 2) return tabletNavRegions.row('connect');
+        return tabletNavRegions.row('set');
+      }
+      const idx =
+        typeof menu === 'number'
+          ? menu
+          : menu === 'ctrlbot'
+            ? 0
+            : menu === 'device'
+              ? 1
+              : menu === 'connect'
+                ? 2
+                : 3;
+      return navRegions.row(idx);
+    },
+    setupMenu: (menu: 'ctrlbot' | 'device' | 'connect' | 'set' | number) => {
+      if (isTablet) {
+        if (menu === 'ctrlbot' || menu === 0) return tabletNavRegions.header;
+        if (menu === 'device' || menu === 1) return tabletNavRegions.row('device');
+        if (menu === 'connect' || menu === 2) return tabletNavRegions.row('connect');
+        return tabletNavRegions.row('set');
+      }
+      const idx =
+        typeof menu === 'number'
+          ? menu
+          : menu === 'ctrlbot'
+            ? 0
+            : menu === 'device'
+              ? 1
+              : menu === 'connect'
+                ? 2
+                : 3;
+      return navRegions.row(idx);
+    },
+
+    /** Underlying AI surface regions */
+    aiPrompt: aiRegions(device).prompt,
+    aiQuestions: aiRegions(device).questions,
+    aiMark: aiRegions(device).mark,
+  };
+};
+
+export const firstRunRegions = firstRunEducationRegions;
+export const tourRegions = firstRunEducationRegions;
 
 export const FirstRunEducation: React.FC<FirstRunEducationProps> = ({
   device = 'phone',

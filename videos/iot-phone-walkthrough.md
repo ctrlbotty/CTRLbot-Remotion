@@ -178,7 +178,7 @@ always come back in here and edit the connections" (155–159s).
 
 ## Executor instructions
 
-**Executor: Gemini 3.8 Flash, High reasoning.** Codex coordinates the approved W02–W05 run and takes over a worker only when Gemini is unavailable. Run one assigned pending task per fresh context in this checkout. Pending revision: T22–T31; never redo checked tasks.
+**Executor: Gemini 3.8 Flash, High reasoning.** Codex coordinates the approved W02–W05 run and takes over a worker only when Gemini is unavailable. Run one assigned pending task per fresh context in this checkout. Pending revision: T23–T31; never redo checked tasks.
 
 1. Read `AGENTS.md`, `docs/VIDEO_WORKFLOW.md`, `docs/NARRATED-WALKTHROUGH.md`, this brief, and the relevant installed Remotion skill before composition code. W01's current source in `src/marketing/mirror-walkthrough/` and `src/marketing/WalkthroughShell.tsx` are the worked example.
 2. **Dependencies:** T20–T22 are independent and ready now. T23 needs W02 T17. T24 needs T20–T23; T25–T31 run in order.
@@ -352,7 +352,7 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
   - Follow `connectionRegions(device)`. Every region the Shot list names for these surfaces: tabs, the device list, switcher outputs and inputs, terminal lines, discovered rows and their Add, the address bar.
   - Verify: `npm run check`; their `Proof-*` stills look as before.
 - [x] T21: Add region maps for `ActivitiesPresets`, `ActivitiesSwitch` and `ActivitiesAudio`, phone and tablet — files: src/app-ui/ActivitiesPresets.tsx, src/app-ui/ActivitiesSwitch.tsx, src/app-ui/ActivitiesAudio.tsx
-- [ ] T22: Add region maps for `FirstRunEducation` and `SettingsSupport`, phone and tablet — files: src/app-ui/FirstRunEducation.tsx, src/app-ui/SettingsSupport.tsx
+- [x] T22: Add region maps for `FirstRunEducation` and `SettingsSupport`, phone and tablet — files: src/app-ui/FirstRunEducation.tsx, src/app-ui/SettingsSupport.tsx
 - [ ] T23: Re-plan W03's edit with `narration:edit` and the changes above — files: src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughNarration.ts, src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughNarration.generated.ts, public/narration/iot-phone-walkthrough/edit.m4a
   - Two builds at most to set the `at`s. A beat that cannot keep its 1.0s hold inside its Sec is `[!]` with the measured lengths.
   - Then `npm run narration:verify` on `edit.m4a` (W02's T17). Fix each real edge leak with `notBefore` / `notAfter` or a tighter `sourceEnd` (the contract's "Clip edges leak"), at most two more builds. A leak that remains goes in the Review notes with its clip and level.
@@ -379,12 +379,14 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
 
 ## Handoff
 
-- **Pending revision:** T22–T31.
+- **Pending revision:** T23–T31.
 - **Dependencies:** T20–T22 are independent and ready now. T23 needs W02 T17. T24 needs T20–T23; T25–T31 run in order.
 - **Dispatch:** one task at a time through Codex; independent verification and scoped commit release its owned files. Final rendering waits for the shared render slot.
 - **Blocked:** no known implementation blocker; task dependencies still apply.
 
 ## Review notes
+
+- T22, 2026-10-02: Independent Claude verifier PASS WITH NOTES after first repair. Frozen check/lint pass, four defaults SHA256-identical; phone/tablet tour steps/offset, Settings scroll/restored and tablet reset-dialog targets visually aligned. Notes: tablet documentation highlight width is slightly narrow; phone dialog/toast/snackbar not exercised. Evidence: out/coordinator/t22-round1-review.txt and t22-round1/.
 
 - T21, 2026-10-02: Independent PASS WITH NOTES after one repair. Frozen check/lint pass; six default proofs SHA256-identical. Audio targets align in both shapes and mixed four-row states; encoder icon/label aligns. Secondary preset offset 2–3px remains a lenient note. Evidence: out/coordinator/t21-round1/ and t7-t21-round1-review.txt.
 
