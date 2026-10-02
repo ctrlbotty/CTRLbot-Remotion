@@ -45,16 +45,16 @@ Revision 2 (2026-10-01): the hybrid format, as W01's revision 2
 | ai | chapter | CTRLbot AI is a living manual | `CtrlbotAi` | The question list; a question is tapped and its answer lands, readable | 22 |
 | database | chapter | Everything starts with a driver | `DriverCatalog` | The catalog, on the app's blue wash, scrolls; the sort filter is tapped and opens on Projector, Display, Switchers, End Points | 23 |
 | epson | chapter | Every driver carries its device's details | `DriverDetail` + `ProductWebView` | Epson PowerLite in the detail pane; the manufacturer link is ringed and tapped, and the web view's address bar loads for under two seconds; back on the pane, the connection info is ringed | 23.5 |
-| add | chapter | Add it, enter the IP, and it saves itself | `ConnectionPanel` | + is tapped and Configure Connection opens; the IP is entered on "IP"; Connect is tapped on "connect" and turns Disconnect; the saved line is ringed | 15.5 |
-| terminal | chapter | Test the commands | `ConnectionPanel` | Power On and Power Off are tapped and land in the terminal, readable | 6 |
+| add | chapter | Add it, enter the IP, and it saves itself | `ConnectionPanel` | + is tapped and Configure Connection opens; the IP is entered on "IP"; Connect is tapped on "connect" and turns Disconnect; the saved line is ringed | 16 |
+| terminal | chapter | Test the commands | `ConnectionPanel` | Power On and Power Off are tapped and land in the terminal, readable | 5.5 |
 | test | chapter | Test it as a remote | `ConnectTest` | The device list is ringed on "listed"; Switcher, Terminal and Web page are each tapped on their word; the Web page is held under two seconds | 28 |
 | activities | chapter | The room builds itself | `ActivitiesPresets` | Presets lists Power On and Power Off; Power On is tapped and its command ringed | 19 |
 | switch-audio | chapter | Switching and audio are already set | `ActivitiesSwitch` + `ActivitiesAudio` | The Epson as the switcher, ringed; then Audio's volume up, down and set, ringed | 16.5 |
 | eui | chapter | The end user gets the room, not the settings | `TabletEui` + `EuiPower` | A source is picked for the display, the volume moves, mute turns on, then Powering Off and Welcome, each on its spoken word | 25 |
 | exit | chapter | Press and hold to get back to setup | `TabletEui` | On Welcome, the setup button is held: a hold ring fills over two seconds, Keep holding shows, and the setup menu returns | 8 |
 | discovery | chapter | Find Devices scans the network | `DiscoverDevices` | The discovery icon is ringed and tapped; the count climbs; a driver match is ringed | 20 |
-| matrox-add | chapter | Add a whole AV-over-IP system in one go | `DiscoverDevices` | Matrox ConvertIP rows are added one after another, each ending Added, readable | 31.5 |
-| matrox-test | chapter | Test each encoder and decoder | `ConnectTest` | The Matrox system with encoders and decoders side by side; a decoder takes an encoder on "switch" | 7 |
+| matrox-add | chapter | Add a whole AV-over-IP system in one go | `DiscoverDevices` | Matrox ConvertIP rows are added one after another, each ending Added, readable | 30.5 |
+| matrox-test | chapter | Test each encoder and decoder | `ConnectTest` | The Matrox system with encoders and decoders side by side; a decoder takes an encoder on "switch" | 8 |
 | matrox-switch | chapter | Encoders and decoders, set up for the room | `ActivitiesSwitch` | The switch type goes to AVoIP Encoders/Decoders on "encoders"; the ConvertIP lists fill and are ringed | 23.5 |
 | m2m | chapter | Many to many, by tap, drag or All | `TabletEui` | Four displays with sources and displays in one frame: a source tapped then a display; a source dragged onto a display; All tapped, and every display takes it | 24.5 |
 | settings | chapter | Help is built in | `SettingsSupport` | Settings → Support: User Manual, Quick Start, Factory Reset and Database Management ringed on their words | 21 |
@@ -339,6 +339,7 @@ displays together. The subject is never in the right 140 px column.
 | settings | — | settings-manual "manual" → User Manual ringed · settings-quick-start "quick" → Quick Start ringed · settings-reset "factory" → Factory Reset ringed · "database" → Database Management ringed |
 
 - [ ] T19: Re-plan W04's edit with `narration:edit` and the changes above — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughNarration.ts, src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughNarration.generated.ts, public/narration/iot-tablet-walkthrough/edit.m4a
+  - Nathan, 2026-10-02: `add` 15.5→16s and `terminal` 6→5.5s; `matrox-test` 7→8s and `matrox-add` 31.5→30.5s (total 343.5s unchanged). The first build left `add` with a 0.60s hold and `matrox-test` with 0.48s.
   - Two builds at most to set the `at`s. A beat that cannot keep its 1.0s hold inside its Sec is `[!]` with the measured lengths.
   - Then `npm run narration:verify` on `edit.m4a` (W02's T17). Fix each real edge leak with `notBefore` / `notAfter` or a tighter `sourceEnd` (the contract's "Clip edges leak"), at most two more builds. A leak that remains goes in the Review notes with its clip and level.
 - [ ] T20: Rewrite W04's beat data for the shell: beats and layouts, the revision 2 copy, regions and cue frames — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts
