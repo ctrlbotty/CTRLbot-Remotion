@@ -25,8 +25,8 @@ Approved by Nathan on 2026-10-02. Codex coordinates; Gemini 3.8 Flash High imple
 
 | Owner | Task | Owned files | State |
 |---|---|---|---|
-| Gemini worker A | W02 T17 | `scripts/narration-verify.mjs`, `package.json` | Dispatched in Antigravity; awaiting implementation result |
-| Gemini worker B | W03 T20 | `src/app-ui/ConnectTest.tsx`, `src/app-ui/DiscoverDevices.tsx`, `src/app-ui/ProductWebView.tsx` | Dispatched; pause before proof rendering for independent verification |
+| Gemini worker A | W02 T17 repair round 1 | `scripts/narration-verify.mjs`, `package.json` | Initial worker stopped; fresh repair context dispatched with independent fixture failures |
+| Gemini worker B | W03 T20 repair round 1 | `src/app-ui/ConnectTest.tsx`, `src/app-ui/DiscoverDevices.tsx`, `src/app-ui/ProductWebView.tsx` | Independent FAIL: proof images identical, but several regions miss actual controls; fresh repair dispatch next |
 | Codex coordinator | Scheduling and W01 approved close-out | Four active briefs, this queue, `Roadmap.md`, archive and `RELEASE-NOTES.md` | Independently reviewed and committed as `e0aafb5` |
 
 ## Checkpoints
@@ -34,4 +34,14 @@ Approved by Nathan on 2026-10-02. Codex coordinates; Gemini 3.8 Flash High imple
 - 2026-10-02: Baseline has existing plan edits and W05 ingest/narration assets. `.claude/settings.local.json` is unrelated and must remain unstaged. No source changes preceded this run.
 - W01 approved baseline: commit `d20993e`; 136 seconds, landscape 25% inert, portrait 29%; both narration checks passed. Keep its recording until S01 is delivered.
 - Coordination plans and W01 close-out independently reviewed: PASS. W01 archived verbatim at `videos/archive/2026-10-02-mirror-walkthrough-r2.md`; existing user revision plans are preserved in commit `e0aafb5`.
-- Antigravity worker A: `Implement W02 T17 Narration`, conversation `a8a46e96-291c-4c76-b2b3-57ed1789bc47`. Worker B: `IoT Phone Walkthrough Implementation`; assigned W03 T20 only. Both were observed working after dispatch.
+- Antigravity worker A: `Implement W02 T17 Narration`, conversation `a8a46e96-291c-4c76-b2b3-57ed1789bc47`. Worker B: `IoT Phone Walkthrough Implementation`, conversation `a269fd8b-63c0-4e76-a58c-1eb43e9ba550`; assigned W03 T20 only. Both were observed working after dispatch.
+- Current unverified implementation: T17 script and package command exist; W03 T20 exports phone/tablet region maps from all three owned surfaces. Neither task is verified or committed yet. W03 worker is instructed to pause before proof rendering. Baseline proof PNGs were copied to `out/coordinator/baseline/` for comparison.
+- Independent T17 reviewer is exercising synthetic edge fixtures without a GPU; final whole-project checks wait for the source freeze. A steering message is queued for worker A to finish its bounded implementation and stop after acceptance checks.
+- A recurring 15-minute coordinator was rejected by automatic approval review because unattended future edits/commits need explicit authorization. The approval question is pending; no recurring automation exists. Continue active-session work normally and do not bypass that rejection.
+- T17 initial independent verdict FAIL: unavailable FFmpeg silently treated as silence, no-common-word case misses the last edge, and extra-word RMS truncates the span at clip boundaries. Reproduced with real PCM in `out/coordinator/t17-fixtures.mjs`. Fresh Gemini repair round 1 is restricted to these failures and cached transcription checks; no GPU while T20 proof renders run. No task checkbox has been marked complete.
+- T17 repair worker: `Fix W02 T17 Audio Verification`, conversation `8adc9005-671a-4da2-bbe6-e9d244166bf5`.
+- T20 independent verdict FAIL: check/lint pass; all six proof PNGs SHA256-identical to baselines. ConnectTest phone offset and centered-control geometry, tablet space-evenly layout, and discovery text-sized targets are inaccurate. Repair maps from actual shared layout/state calculations while preserving identical proof output. Render slot released after this review.
+- T20 repair worker: `Repair T20 UI Layout`, conversation `1ec658f8-5514-431b-9b66-19edb69cdab6`, observed working. Owns only the same three source surfaces. It must stop before new proof renders.
+- W05 original ingest inputs validated and committed as `45ec33d`: recording byte count matches metadata, normalized narration exists, 49 JPEG frames/contact sheet exist, JSON parses. Transcript remains DRAFT; T1 has not been completed.
+- Latest allowance check: 43% of the five-hour window used, 57% remaining; 28% weekly used. Prefer awaiting bounded worker results over frequent snapshots. This is a point-in-time reading, not a guarantee of four hours of capacity.
+- Next coordinator actions: independently recheck T17 repair fixtures and cached W01 acceptance, and T20 repaired maps/proofs; allow one further repair if required. Do not dispatch dependent narration/data tasks before PASS and scoped commits. If unattended coordination is approved, create the requested 15-minute heartbeat; none has been created yet.
