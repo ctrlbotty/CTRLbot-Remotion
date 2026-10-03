@@ -31,6 +31,7 @@ import {
 import {
   ConnectTest,
   connectTestRegions,
+  DEFAULT_MATROX_DEVICE_LIST,
   DEFAULT_MATROX_INPUTS,
   type ConnectTestSubTab,
 } from '../../app-ui/ConnectTest';
@@ -50,7 +51,12 @@ import {
   activitiesAudioRegions,
   DEFAULT_AUDIO_MAPPINGS,
 } from '../../app-ui/ActivitiesAudio';
-import {DiscoverDevices} from '../../app-ui/DiscoverDevices';
+import {
+  DEFAULT_DISCOVERED_DEVICES,
+  DiscoverDevices,
+  discoverDevicesRegions,
+  type DiscoveredDevice,
+} from '../../app-ui/DiscoverDevices';
 import {SettingsSupport} from '../../app-ui/SettingsSupport';
 import {EUI_POWER_REGIONS, EuiPowerCapture} from '../../app-ui/EuiPower';
 import {PhoneNavMenu} from '../../app-ui/PhoneNavMenu';
@@ -1143,115 +1149,315 @@ export const ExitBeat: React.FC<{frame: number; frames: number}> = ({frame}) => 
   );
 };
 
+export const DISCOVERY_DEVICES: DiscoveredDevice[] = [
+  {
+    id: 'd0',
+    name: 'Luxul AMS-1208P',
+    ip: '192.168.0.2',
+    hasWebPage: true,
+    driverMatch: 'LUXUL Net Switchers',
+    actionType: 'add_driver',
+  },
+  ...DEFAULT_DISCOVERED_DEVICES,
+];
+
 /**
- * Discovery beat (18.5s = 555 frames):
- * Discover Devices counts up as devices are found; each row shows its driver match or Add driver.
+ * Discovery beat (19.5s = 585 frames):
+ * Discover Devices counts up as devices are found; a row's driver match and an Add driver are ringed.
+ * Cues: discovery "discovery", scans "scans", library "library".
  */
-export const DiscoveryBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+export const DiscoveryBeat: React.FC<{frame: number; frames: number}> = ({frame, frames}) => {
+  const scansCue = CUE_FRAMES.scans - BEATS.discovery.from; // 210
+  const libraryCue = CUE_FRAMES.library - BEATS.discovery.from; // 449
+
   const foundCount = Math.floor(
-    interpolate(frame, [0, 480], [3, 16], {
+    interpolate(frame, [scansCue, libraryCue], [3, 16], {
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
     }),
   );
-  const scanningProgress = interpolate(frame, [0, 555], [10, 85], {
+  const scanningProgress = interpolate(frame, [0, frames], [10, 85], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
+  const discoverReg = discoverDevicesRegions('phone');
+
   return (
-    <DiscoverDevices
-      device="phone"
-      foundCount={foundCount}
-      stillLooking
-      scanningProgress={scanningProgress}
-    />
+    <>
+      <DiscoverDevices
+        device="phone"
+        foundCount={foundCount}
+        stillLooking={true}
+        scanningProgress={scanningProgress}
+        devices={DISCOVERY_DEVICES}
+      />
+      {frame >= libraryCue && (
+        <>
+          <FocusRing
+            region={discoverReg.driverMatch(0, 'add_driver')}
+            appearAt={libraryCue}
+            radius={4}
+            name="Driver match ring"
+          />
+          <FocusRing
+            region={discoverReg.addButton(0, 'add_driver')}
+            appearAt={libraryCue}
+            radius={5}
+            name="Add driver button ring"
+          />
+        </>
+      )}
+    </>
   );
 };
 
+export const MATROX_DISCOVERED_DEVICES: DiscoveredDevice[] = [
+  {
+    id: 'm1',
+    name: 'Matrox ConvertIP',
+    ip: '192.168.0.101',
+    hasWebPage: true,
+    driverMatch: 'MATROX End Points',
+    actionType: 'add_driver',
+  },
+  {
+    id: 'm2',
+    name: 'Matrox ConvertIP',
+    ip: '192.168.0.102',
+    hasWebPage: true,
+    driverMatch: 'MATROX End Points',
+    actionType: 'add_driver',
+  },
+  {
+    id: 'm3',
+    name: 'Matrox ConvertIP',
+    ip: '192.168.0.103',
+    hasWebPage: true,
+    driverMatch: 'MATROX End Points',
+    actionType: 'add_driver',
+  },
+  {
+    id: 'm4',
+    name: 'Matrox ConvertIP',
+    ip: '192.168.0.104',
+    hasWebPage: true,
+    driverMatch: 'MATROX End Points',
+    actionType: 'add_driver',
+  },
+  ...DEFAULT_DISCOVERED_DEVICES,
+];
+
 /**
  * Matrox-Add beat (28.5s = 855 frames):
- * Matrox ConvertIP rows are added one after another; each ends Added.
+ * Matrox ConvertIP rows are added one after another, each ending Added, readable.
+ * Cues: matrox "Matrox", adding "adding", saving "saving".
  */
 export const MatroxAddBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const matroxCue = CUE_FRAMES.matrox - BEATS['matrox-add'].from; // 96
+  const addingCue = CUE_FRAMES.adding - BEATS['matrox-add'].from; // 411
+  const savingCue = CUE_FRAMES.saving - BEATS['matrox-add'].from; // 427
+
+  const discoverReg = discoverDevicesRegions('phone');
+
   const addedDeviceIds: string[] = [];
-  if (frame >= 250) {
-    addedDeviceIds.push('d7');
+  if (frame >= savingCue) {
+    addedDeviceIds.push('m1');
   }
-  if (frame >= 480) {
-    addedDeviceIds.push('d8');
+  if (frame >= 560) {
+    addedDeviceIds.push('m2');
   }
-  if (frame >= 700) {
-    addedDeviceIds.push('d9');
+  if (frame >= 680) {
+    addedDeviceIds.push('m3');
+  }
+  if (frame >= 780) {
+    addedDeviceIds.push('m4');
   }
 
-  const scrollOffset = interpolate(frame, [0, 300], [0, 180], {
-    easing: Easing.bezier(0.45, 0, 0.55, 1),
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  const addDriverBtn = discoverReg.addButton(0, 'add_driver');
+  const addedBtn = discoverReg.addButton(0, 'added');
 
   return (
-    <DiscoverDevices
-      device="phone"
-      foundCount={16}
-      stillLooking={false}
-      scanningProgress={100}
-      addedDeviceIds={addedDeviceIds}
-      initialScrollOffset={scrollOffset}
-      toast={frame >= 740 ? 'Device added to connections' : undefined}
-    />
+    <>
+      <DiscoverDevices
+        device="phone"
+        foundCount={16}
+        stillLooking={false}
+        scanningProgress={100}
+        devices={MATROX_DISCOVERED_DEVICES}
+        addedDeviceIds={addedDeviceIds}
+        toast={frame >= savingCue ? 'Device added to connections' : undefined}
+      />
+      {frame >= matroxCue && frame < addingCue && (
+        <FocusRing
+          region={discoverReg.card(0)}
+          appearAt={matroxCue}
+          radius={5}
+          name="Matrox row ring"
+        />
+      )}
+      <TapIndicator
+        x={centerOf(addDriverBtn).x}
+        y={centerOf(addDriverBtn).y}
+        at={addingCue}
+        name="Add button tap"
+      />
+      {frame >= savingCue && (
+        <FocusRing
+          region={addedBtn}
+          appearAt={savingCue}
+          radius={5}
+          name="Added button ring"
+        />
+      )}
+    </>
   );
 };
 
 /**
  * Matrox-Test beat (18.5s = 555 frames):
- * The Matrox system is selected: four decoders over four encoders; a decoder takes an encoder.
+ * The Matrox system: four decoders over four encoders; a decoder is tapped, then an encoder, and it takes it.
+ * Cues: connect "connect", matroxTestMatrox "Matrox", individual "individual".
  */
 export const MatroxTestBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const selectedOutput = frame < 150 ? undefined : 0;
-  const selectedInput = frame < 280 ? undefined : 0;
+  const connectCue = CUE_FRAMES.connect - BEATS['matrox-test'].from; // 79
+  const matroxCue = CUE_FRAMES.matroxTestMatrox - BEATS['matrox-test'].from; // 260
+  const individualCue = CUE_FRAMES.individual - BEATS['matrox-test'].from; // 445
+  const routeInputCue = individualCue + 30; // 475: encoder tapped to complete routing
+
+  const connectTestReg = connectTestRegions('phone');
+
+  const isDropdownOpen = frame >= connectCue && frame < matroxCue;
+  const isMatroxSelected = frame >= matroxCue;
+
+  // Selected output is 1-based in ConnectTest: output 1 corresponds to index 1
+  const selectedOutput = frame >= individualCue ? 1 : undefined;
+  // Selected input is 1-based in ConnectTest: input 1 corresponds to id 1
+  const selectedInput = frame >= routeInputCue ? 1 : undefined;
+
   const outputs = [
-    {name: 'CONVERTIP RX 1', ip: '239.100.45.1', routed: frame >= 280 ? 'CONVERTIP TX 1' : null},
+    {
+      name: 'CONVERTIP RX 1',
+      ip: '239.100.45.1',
+      routed: frame >= routeInputCue ? 'CONVERTIP TX 1' : null,
+    },
     {name: 'CONVERTIP RX 2', ip: '239.100.46.1', routed: null},
     {name: 'CONVERTIP RX 3', ip: '239.100.47.1', routed: null},
     {name: 'CONVERTIP RX 4', ip: '239.100.48.1', routed: null},
   ];
 
   return (
-    <ConnectTest
-      device="phone"
-      topTab="test"
-      testTab="switcher"
-      deviceName="MATROX ConvertIP (8)"
-      multiOutput
-      outputs={outputs}
-      inputs={DEFAULT_MATROX_INPUTS}
-      selectedOutput={selectedOutput}
-      selectedInput={selectedInput}
-      connected
-    />
+    <>
+      <ConnectTest
+        device="phone"
+        topTab="test"
+        testTab="switcher"
+        deviceName="MATROX ConvertIP (8)"
+        multiOutput={isMatroxSelected}
+        outputs={outputs}
+        inputs={DEFAULT_MATROX_INPUTS}
+        selectedOutput={selectedOutput}
+        selectedInput={selectedInput}
+        connected={true}
+        deviceSelectorOpen={isDropdownOpen}
+        deviceList={DEFAULT_MATROX_DEVICE_LIST}
+      />
+      {/* "connect" cue: tap top toggle to open device dropdown */}
+      <TapIndicator
+        x={centerOf(connectTestReg.topToggle).x}
+        y={centerOf(connectTestReg.topToggle).y}
+        at={connectCue}
+        name="Connect menu tap"
+      />
+      {/* "Matrox" cue: tap Matrox ConvertIP parent row in dropdown */}
+      <TapIndicator
+        x={centerOf(connectTestReg.deviceItem(0)).x}
+        y={centerOf(connectTestReg.deviceItem(0)).y}
+        at={matroxCue}
+        name="Select Matrox system tap"
+      />
+      {/* "individual" cue: tap decoder 1 */}
+      {isMatroxSelected && (
+        <>
+          <TapIndicator
+            x={centerOf(connectTestReg.switcherOutput(1)).x}
+            y={centerOf(connectTestReg.switcherOutput(1)).y}
+            at={individualCue}
+            name="Decoder 1 tap"
+          />
+          {frame >= individualCue && (
+            <FocusRing
+              region={connectTestReg.switcherOutput(1)}
+              appearAt={individualCue}
+              radius={4}
+              name="Decoder 1 ring"
+            />
+          )}
+          {/* Encoder tapped to route */}
+          <TapIndicator
+            x={centerOf(connectTestReg.switcherInput(1)).x}
+            y={centerOf(connectTestReg.switcherInput(1)).y}
+            at={routeInputCue}
+            name="Encoder 1 tap"
+          />
+        </>
+      )}
+    </>
   );
 };
 
 /**
  * Matrox-Switch beat (17s = 510 frames):
- * Switch type goes to AVoIP Encoders/Decoders; the encoder and decoder lists fill.
+ * Switch type goes to AVoIP Encoders/Decoders; the lists fill; the icon and label control is ringed.
+ * Cues: switchActivities "activities", encoders "encoders", label "label".
  */
 export const MatroxSwitchBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const isAvoip = frame >= 180;
-  const pickerOpen = frame >= 60 && frame < 180;
+  const activitiesCue = CUE_FRAMES.switchActivities - BEATS['matrox-switch'].from; // 41
+  const encodersCue = CUE_FRAMES.encoders - BEATS['matrox-switch'].from; // 164
+  const labelCue = CUE_FRAMES.label - BEATS['matrox-switch'].from; // 391
+
+  const switchReg = activitiesSwitchRegions('phone');
+
+  const isAvoip = frame >= encodersCue;
+  const pickerOpen = frame >= 70 && frame < encodersCue;
 
   return (
-    <ActivitiesSwitch
-      device="phone"
-      activeTab="switch"
-      switchType={isAvoip ? 'avoip' : 'many_to_one'}
-      switchTypePickerOpen={pickerOpen}
-      deviceName="MATROX ConvertIP (8)"
-      encoders={DEFAULT_AVOIP_ENCODERS}
-      decoders={DEFAULT_AVOIP_DECODERS}
-    />
+    <>
+      <ActivitiesSwitch
+        device="phone"
+        activeTab="switch"
+        switchType={isAvoip ? 'avoip' : 'many_to_one'}
+        switchTypePickerOpen={pickerOpen}
+        deviceName="MATROX ConvertIP (8)"
+        encoders={DEFAULT_AVOIP_ENCODERS}
+        decoders={DEFAULT_AVOIP_DECODERS}
+      />
+      {/* "activities" cue: ring the switch tab */}
+      {frame >= activitiesCue && frame < 70 && (
+        <FocusRing
+          region={switchReg.switchTab}
+          appearAt={activitiesCue}
+          radius={4}
+          name="Switch tab ring"
+        />
+      )}
+      {/* "encoders" cue: tap AVoIP option in dropdown picker */}
+      <TapIndicator
+        x={centerOf(switchReg.switchTypeOptionAvoip).x}
+        y={centerOf(switchReg.switchTypeOptionAvoip).y}
+        at={encodersCue}
+        name="AVoIP option tap"
+      />
+      {/* "label" cue: ring encoder icon and label control */}
+      {frame >= labelCue && (
+        <FocusRing
+          region={switchReg.encoderIconAndLabel(0)}
+          appearAt={labelCue}
+          radius={4}
+          name="Encoder 1 icon and label ring"
+        />
+      )}
+    </>
   );
 };
 

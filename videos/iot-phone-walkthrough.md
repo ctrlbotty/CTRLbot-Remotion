@@ -368,7 +368,7 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
 - [x] T26: Build the proof, first-run, ai and database beats to the Shot list — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [x] T27: Build the epson, add, terminal and test beats to the Shot list — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [x] T28: Build the activities, switch-audio, eui and exit beats to the Shot list, the power state continuous from eui into exit — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
-- [ ] T29: Build the discovery, matrox-add, matrox-test and matrox-switch beats to the Shot list — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
+- [x] T29: Build the discovery, matrox-add, matrox-test and matrox-switch beats to the Shot list — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [ ] T30: Build the m2m and settings beats to the Shot list — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [ ] T33: Loosen W03's landscape chapter shots where a phone region is blown up past readable framing, starting with database (the opened filter menu is cut off and sits under the callout at 1745) — files: src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughData.ts
   - Also, both shapes (T28 review): `eui` stays on `m2mReg.powerControl` after "off" while the surface switches to Powering Off and Welcome, so about 5s render black or empty. Pull to `phoneFull` once Powering Off starts. `exit` opens at about 4x on `exitControl`; frame the Welcome screen with the hold ring readable instead.
@@ -393,6 +393,8 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
 - **Blocked:** none. Nathan resolved the T23 settings hold on 2026-10-02 (settings 15.5s, close 5.5s); the four speech-edge repairs remain. Partial edits are preserved and uncommitted.
 
 ## Review notes
+
+- T29, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy, 540s. Check and lint pass in a clean worktree. Eleven cue stills: Discover Devices on "discovery"; the list grows on "scans"; the Luxul AMS-1208P to LUXUL Net Switchers match is ringed on "library" (it matches recording stills f_0036/f_0037); Matrox rows turn Added on "saving" (no certificate dialog); the Connect menu, the whole Matrox system, then an individual decoder; Activities, AV-over-IP lists on "encoders", and the icon/label control on "label". Notes: "Added" and "NOT ROUTED" shots are over-zoomed (T33).
 
 - T28, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy, 463s, after a quota pause. Check and lint pass in a clean worktree. Twelve cue stills: Presets on "activities"; Edit Preset on "builds"; POWER ON ringed on "command"; Switch and Audio on their words; power, source and volume on "turn", "sources" and "audio"; Powering Off then Welcome after "off"; the hold ring with Keep holding on "hold"; setup returns on the second "setup". The beat logic and power continuity are correct. Camera data from T24 makes about 5s after "off" black in portrait and over-zooms exit (added to T33).
 
