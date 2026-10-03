@@ -370,7 +370,7 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
 - [x] T28: Build the activities, switch-audio, eui and exit beats to the Shot list, the power state continuous from eui into exit — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [x] T29: Build the discovery, matrox-add, matrox-test and matrox-switch beats to the Shot list — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [x] T30: Build the m2m and settings beats to the Shot list — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
-- [ ] T33: Loosen W03's landscape chapter shots where a phone region is blown up past readable framing, starting with database (the opened filter menu is cut off and sits under the callout at 1745) — files: src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughData.ts
+- [x] T33: Loosen W03's landscape chapter shots where a phone region is blown up past readable framing, starting with database (the opened filter menu is cut off and sits under the callout at 1745) — files: src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughData.ts
   - Also, both shapes (T28 review): `eui` stays on `m2mReg.powerControl` after "off" while the surface switches to Powering Off and Welcome, so about 5s render black or empty. Pull to `phoneFull` once Powering Off starts. `exit` opens at about 4x on `exitControl`; frame the Welcome screen with the hold ring readable instead.
   - Found in T26's review. Portrait reads correctly; landscape `expand` framing of narrow phone regions zooms about 3x. Re-check every chapter's landscape stills after T30, and fix them together before T31.
 - [ ] T31: Run the feature gates on both shapes, render both, write the .srt from the edit, check the voice, and record the results here — files: videos/iot-phone-walkthrough.md
@@ -393,6 +393,8 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
 - **Blocked:** none. Nathan resolved the T23 settings hold on 2026-10-02 (settings 15.5s, close 5.5s); the four speech-edge repairs remain. Partial edits are preserved and uncommitted.
 
 ## Review notes
+
+- T33, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy, 500s. Check, lint and validate pass. `atLeast` wraps 37 chapter shots; eui pulls to the full phone after "off". Re-rendered problem frames (1745/5760/5850/5960/7175/7865/9260/9575): Powering Off and Welcome are in shot, with no black; the database menu, Added, NOT ROUTED and All are readable. Notes: the landscape database callout still covers part of the open menu, and the portrait exit is cropped to the left of Welcome.
 
 - T30, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy, 258s. Check and lint pass in a clean worktree. Nine cue stills: four displays on "many"; a source, then a display, on "source"/"display"; a drag onto a display on "drag"; All on "all"; the setup button on "Setup"; User Manual, Quick Start and Factory Reset ringed on their words. Notes: All and the setup button are framed far too tight (T33).
 

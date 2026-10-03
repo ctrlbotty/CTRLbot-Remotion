@@ -230,88 +230,109 @@ export const BEAT_REGIONS: Partial<Record<BeatName, Region>> = {
   settings: settingsReg.userManual,
 };
 
+/**
+ * Ensures a camera region is at least `fraction` of the phone viewport's width and height.
+ *
+ * Why: The shell's `expand` fit turns a small region into a 3–4x zoom.
+ */
+export const atLeast = (region: Region, fraction = 0.5): Region => {
+  const minW = PHONE_VIEWPORT.width * fraction;
+  const minH = PHONE_VIEWPORT.height * fraction;
+  if (region.width >= minW && region.height >= minH) {
+    return region;
+  }
+  const width = Math.max(region.width, minW);
+  const height = Math.max(region.height, minH);
+  const cx = region.x + region.width / 2;
+  const cy = region.y + region.height / 2;
+  const x = Math.max(0, Math.min(PHONE_VIEWPORT.width - width, cx - width / 2));
+  const y = Math.max(0, Math.min(PHONE_VIEWPORT.height - height, cy - height / 2));
+  return {x, y, width, height};
+};
+
 export const BEAT_SHOTS: Partial<Record<BeatName, Shot[]>> = {
   proof: [
     {at: 0, region: phoneFull},
     {at: CUE_FRAMES.app - BEATS.proof.from, region: euiReg.displayPanel},
   ],
   'first-run': [
-    {at: 0, region: firstRunReg.card},
+    {at: 0, region: atLeast(firstRunReg.card)},
     {at: CUE_FRAMES.x - BEATS['first-run'].from, region: phoneFull},
   ],
   ai: [
     {at: 0, region: phoneFull},
-    {at: CUE_FRAMES.ai - BEATS.ai.from, region: aiReg.questions},
+    {at: CUE_FRAMES.ai - BEATS.ai.from, region: atLeast(aiReg.questions)},
   ],
   database: [
-    {at: 0, region: catalogReg.card(0)},
-    {at: CUE_FRAMES.endpoint - BEATS.database.from, region: catalogReg.filters},
+    {at: 0, region: atLeast(catalogReg.card(0))},
+    {at: CUE_FRAMES.endpoint - BEATS.database.from, region: atLeast(catalogReg.filters)},
   ],
   epson: [
     {at: 0, region: phoneFull},
-    {at: CUE_FRAMES.link - BEATS.epson.from, region: productWebReg.addressBar},
+    {at: CUE_FRAMES.link - BEATS.epson.from, region: atLeast(productWebReg.addressBar)},
   ],
   add: [
     {at: 0, region: phoneFull},
-    {at: CUE_FRAMES.ip - BEATS.add.from, region: connReg.hostField},
-    {at: CUE_FRAMES.connected - BEATS.add.from, region: connReg.connectAction},
+    {at: CUE_FRAMES.ip - BEATS.add.from, region: atLeast(connReg.hostField)},
+    {at: CUE_FRAMES.connected - BEATS.add.from, region: atLeast(connReg.connectAction)},
   ],
   terminal: [
-    {at: 0, region: connReg.commandRow(0)},
-    {at: CUE_FRAMES.terminal - BEATS.terminal.from, region: connReg.terminal},
+    {at: 0, region: atLeast(connReg.commandRow(0))},
+    {at: CUE_FRAMES.terminal - BEATS.terminal.from, region: atLeast(connReg.terminal)},
   ],
   test: [
-    {at: 0, region: connectTestReg.subTabs},
+    {at: 0, region: atLeast(connectTestReg.subTabs)},
   ],
   activities: [
-    {at: 0, region: presetsReg.tabPill},
-    {at: CUE_FRAMES.builds - BEATS.activities.from, region: presetsReg.presetCard(0)},
-    {at: CUE_FRAMES.command - BEATS.activities.from, region: presetsReg.commandStep(0)},
+    {at: 0, region: atLeast(presetsReg.tabPill)},
+    {at: CUE_FRAMES.builds - BEATS.activities.from, region: atLeast(presetsReg.presetCard(0))},
+    {at: CUE_FRAMES.command - BEATS.activities.from, region: atLeast(presetsReg.commandStep(0))},
   ],
   'switch-audio': [
-    {at: 0, region: switchReg.switchTab},
-    {at: CUE_FRAMES.audio - BEATS['switch-audio'].from, region: audioReg.audioTab},
+    {at: 0, region: atLeast(switchReg.switchTab)},
+    {at: CUE_FRAMES.audio - BEATS['switch-audio'].from, region: atLeast(audioReg.audioTab)},
   ],
   eui: [
     {at: 0, region: phoneFull},
-    {at: CUE_FRAMES.turn - BEATS.eui.from, region: m2mReg.powerControl},
-    {at: CUE_FRAMES.sources - BEATS.eui.from, region: euiReg.inputStrip},
-    {at: CUE_FRAMES.euiAudio - BEATS.eui.from, region: m2mReg.volumeSlider},
-    {at: CUE_FRAMES.off - BEATS.eui.from, region: m2mReg.powerControl},
+    {at: CUE_FRAMES.turn - BEATS.eui.from, region: atLeast(m2mReg.powerControl)},
+    {at: CUE_FRAMES.sources - BEATS.eui.from, region: atLeast(euiReg.inputStrip)},
+    {at: CUE_FRAMES.euiAudio - BEATS.eui.from, region: atLeast(m2mReg.volumeSlider)},
+    {at: CUE_FRAMES.off - BEATS.eui.from, region: atLeast(m2mReg.powerControl)},
+    {at: CUE_FRAMES.off - BEATS.eui.from + 24, region: phoneFull},
   ],
   exit: [
-    {at: 0, region: m2mReg.exitControl},
+    {at: 0, region: atLeast(m2mReg.exitControl)},
     {at: CUE_FRAMES.setupSecond - BEATS.exit.from, region: phoneFull},
   ],
   discovery: [
-    {at: 0, region: discoverReg.topBar},
-    {at: CUE_FRAMES.scans - BEATS.discovery.from, region: discoverReg.status},
-    {at: CUE_FRAMES.library - BEATS.discovery.from, region: discoverReg.card(0)},
+    {at: 0, region: atLeast(discoverReg.topBar)},
+    {at: CUE_FRAMES.scans - BEATS.discovery.from, region: atLeast(discoverReg.status)},
+    {at: CUE_FRAMES.library - BEATS.discovery.from, region: atLeast(discoverReg.card(0))},
   ],
   'matrox-add': [
     {at: 0, region: discoverReg.list},
-    {at: CUE_FRAMES.adding - BEATS['matrox-add'].from, region: discoverReg.addButton(0)},
+    {at: CUE_FRAMES.adding - BEATS['matrox-add'].from, region: atLeast(discoverReg.addButton(0))},
   ],
   'matrox-test': [
-    {at: 0, region: connectTestReg.topToggle},
-    {at: CUE_FRAMES.matroxTestMatrox - BEATS['matrox-test'].from, region: connectTestReg.switcherOutputs},
-    {at: CUE_FRAMES.individual - BEATS['matrox-test'].from, region: connectTestReg.switcherOutput(0)},
+    {at: 0, region: atLeast(connectTestReg.topToggle)},
+    {at: CUE_FRAMES.matroxTestMatrox - BEATS['matrox-test'].from, region: atLeast(connectTestReg.switcherOutputs)},
+    {at: CUE_FRAMES.individual - BEATS['matrox-test'].from, region: atLeast(connectTestReg.switcherOutput(0))},
   ],
   'matrox-switch': [
-    {at: 0, region: switchReg.tabPill},
-    {at: CUE_FRAMES.encoders - BEATS['matrox-switch'].from, region: switchReg.switchTypeSelector},
-    {at: CUE_FRAMES.label - BEATS['matrox-switch'].from, region: switchReg.encoderIconAndLabel(0)},
+    {at: 0, region: atLeast(switchReg.tabPill)},
+    {at: CUE_FRAMES.encoders - BEATS['matrox-switch'].from, region: atLeast(switchReg.switchTypeSelector)},
+    {at: CUE_FRAMES.label - BEATS['matrox-switch'].from, region: atLeast(switchReg.encoderIconAndLabel(0))},
   ],
   m2m: [
-    {at: 0, region: m2mReg.outputGrid},
-    {at: CUE_FRAMES.source - BEATS.m2m.from, region: m2mReg.inputStrip},
-    {at: CUE_FRAMES.all - BEATS.m2m.from, region: m2mReg.routeAll},
+    {at: 0, region: atLeast(m2mReg.outputGrid)},
+    {at: CUE_FRAMES.source - BEATS.m2m.from, region: atLeast(m2mReg.inputStrip)},
+    {at: CUE_FRAMES.all - BEATS.m2m.from, region: atLeast(m2mReg.routeAll)},
   ],
   settings: [
-    {at: 0, region: settingsReg.setupButton},
-    {at: CUE_FRAMES.manual - BEATS.settings.from, region: settingsReg.userManual},
-    {at: CUE_FRAMES.quick - BEATS.settings.from, region: settingsReg.quickStart},
-    {at: CUE_FRAMES.factory - BEATS.settings.from, region: settingsReg.factoryReset},
+    {at: 0, region: atLeast(settingsReg.setupButton)},
+    {at: CUE_FRAMES.manual - BEATS.settings.from, region: atLeast(settingsReg.userManual)},
+    {at: CUE_FRAMES.quick - BEATS.settings.from, region: atLeast(settingsReg.quickStart)},
+    {at: CUE_FRAMES.factory - BEATS.settings.from, region: atLeast(settingsReg.factoryReset)},
   ],
 };
 
