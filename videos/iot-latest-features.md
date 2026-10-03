@@ -234,7 +234,7 @@ The authoritative task dependencies above replace Roadmap-order waits. Codex hol
 
 ### Shared
 
-- [ ] T1: Correct `ingest/iot-latest-features/transcript.md` against `ingest/iot-latest-features/contact.html` and mark it `Status: corrected <date>` — files: ingest/iot-latest-features/transcript.md
+- [x] T1: Correct `ingest/iot-latest-features/transcript.md` against `ingest/iot-latest-features/contact.html` and mark it `Status: corrected <date>` — files: ingest/iot-latest-features/transcript.md
   - Terms only: "Pooser" → PUSR, "all research" → Hall Research, "Luxel" → Luxul, "Global Cache" → Global Caché, "RS -232" → RS-232, "MGX", "Acer", "advice like this" → "a device like this" if the recording says so. Listen at 114–116s and write what is said ("RS-485" or "RS-45"). Keep filler and false starts; change no timestamp; never edit the JSON.
 - [x] T2: Let a caption correction key be two words, so `all research` becomes Hall Research without touching "send to all" — files: src/audio/narrationCaptions.ts
   - One-word keys behave exactly as today. Verify: `npm run check`; `narration:srt` for W01 and W04 writes byte-identical .srt files before and after (to a scratch path, never over `out/`).
@@ -287,6 +287,8 @@ The authoritative task dependencies above replace Roadmap-order waits. Codex hol
 ## Review notes
 
 > Appended on PASS WITH NOTES. Not blockers; check these during the review.
+
+- T1, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy, 244s. Terms corrected: Luxul, Hall Research, Global Caché (×4), PUSR, and "a device like this". No timestamps or JSON changed. 114–116s: `heard.json` letters spell "ars forty forty five", which does not settle RS-485 against RS-45, so the line is marked unconfirmed for Nathan.
 
 - T3, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES, verified in a clean worktree at HEAD plus the two task files. Check and lint pass. `Proof-Phone-Catalog` and `Proof-Tablet-Catalog` are byte-identical before and after. `Proof-Tablet-Catalog-NetSwitchers` matches `f_0005`: the six-type filter list and a Luxul AMS-1208P Net Switchers card. Notes: the recording's "15 devices found" header button is absent (pre-existing catalog layout, not this task). The End Points list (`f_0007`) is covered by the same `typeFilter`, but no still shows it. The commit also drops two stray CRs that HEAD's `Root.tsx` carried from the W02 encoding repair.
 
