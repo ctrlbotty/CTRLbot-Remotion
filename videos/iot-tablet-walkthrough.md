@@ -353,7 +353,7 @@ displays together. The subject is never in the right 140 px column.
 - [x] T24: Build the activities, switch-audio, eui and exit beats to the Shot list, the power state continuous from eui into exit — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [x] T25: Build the discovery, matrox-add, matrox-test and matrox-switch beats to the Shot list — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [x] T26: Build the m2m and settings beats to the Shot list — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
-- [ ] T28: Rebalance W04's chapter shots where a region is blown up or the cued result is off camera: `add` frames DISCONNECT at about 4x, the saved line ringed on "save" is out of shot, and `exit` frames the hold ring at about 4x — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts
+- [x] T28: Rebalance W04's chapter shots where a region is blown up or the cued result is off camera: `add` frames DISCONNECT at about 4x, the saved line ringed on "save" is out of shot, and `exit` frames the hold ring at about 4x — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts
   - Found in T23's review. Re-check every chapter's stills after T26, and fix them together before T27.
 - [ ] T27: Run the feature gates on both shapes, render both, write the .srt from the edit, check the voice, and record the results here — files: videos/iot-tablet-walkthrough.md
   - As W01's T15, with `--corrections=IOT_TABLET_CAPTION_CORRECTIONS` and `--destination=social-walkthrough`.
@@ -377,6 +377,8 @@ displays together. The subject is never in the right 140 px column.
 - **Blocked:** no known implementation blocker; task dependencies still apply.
 
 ## Review notes
+
+- T28, 2026-10-02: Claude coordinator (non-author) PASS. Gemini via agy in lane B, 304s. Check, lint and validate pass. `atLeast(region, 0.5)` wraps 19 chapter shots. Re-rendered problem frames (400/1110/1945/3045/3225/5990/6100/6215/6285): DISCONNECT is readable; the saved line is in shot on "save"; Powering Off then Welcome fill the frame; exit shows the hold ring and "Keep holding to return to Setup" over Welcome.
 
 - T26, 2026-10-02: Claude coordinator (non-author) PASS. Gemini via agy in lane B, 269s. Check and lint pass in a clean worktree. Eight cue stills: a source pressed on "press" and a display on "click", a drag onto a display on "drag", and All routes every display on "all"; then User Manual, Quick Start, Factory Reset and Database Management ringed on their words. No factory-reset dialog is shown.
 

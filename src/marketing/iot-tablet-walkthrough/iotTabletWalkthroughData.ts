@@ -163,41 +163,86 @@ export const BEAT_REGIONS: Partial<Record<TabletBeatName, Region>> = {
 // Stage framing stays wider than 94% of the window; emphasis is supplied by beat overlays.
 const STAGE_PUSH = {x: 0, y: 0, width: TABLET_VIEWPORT.width * 0.94, height: TABLET_VIEWPORT.height * 0.94};
 
+/**
+ * Grows a region about its own centre until it is at least `fraction` of the
+ * tablet surface's width AND height (1280x800 dp), then clamps it inside the
+ * surface. A region already bigger is returned unchanged.
+ *
+ * Why: The shell's `expand` fit turns a small region into a 3–4x zoom.
+ */
+export const atLeast = (region: Region, fraction = 0.5): Region => {
+  const minW = TABLET_VIEWPORT.width * fraction;
+  const minH = TABLET_VIEWPORT.height * fraction;
+  if (region.width >= minW && region.height >= minH) {
+    return region;
+  }
+  const width = Math.max(region.width, minW);
+  const height = Math.max(region.height, minH);
+  const cx = region.x + region.width / 2;
+  const cy = region.y + region.height / 2;
+  const x = Math.max(0, Math.min(TABLET_VIEWPORT.width - width, cx - width / 2));
+  const y = Math.max(0, Math.min(TABLET_VIEWPORT.height - height, cy - height / 2));
+  return {x, y, width, height};
+};
+
+const unionRegion = (a: Region, b: Region): Region => {
+  const x = Math.min(a.x, b.x);
+  const y = Math.min(a.y, b.y);
+  return {
+    x,
+    y,
+    width: Math.max(a.x + a.width, b.x + b.width) - x,
+    height: Math.max(a.y + a.height, b.y + b.height) - y,
+  };
+};
+
+// Saved connection line region from IotTabletBeats.tsx
+const savedLineRegion: Region = {
+  x: connectionRegionsMap.terminal.x + 10,
+  y: connectionRegionsMap.terminal.y + 30,
+  width: 190,
+  height: 24,
+};
+
 export const BEAT_SHOTS: Partial<Record<TabletBeatName, Shot[]>> = {
   proof: [
     {at: 0, region: fullFrame(TABLET_VIEWPORT)},
     {at: BEATS.proof.duration / 2, region: STAGE_PUSH},
     {at: BEATS.proof.duration, region: fullFrame(TABLET_VIEWPORT)},
   ],
-  'first-run': [{at: 0, region: firstRunRegionsMap.card}],
+  'first-run': [{at: 0, region: atLeast(firstRunRegionsMap.card)}],
   ai: [
     {at: 0, region: aiRegionsMap.content},
-    {at: CUE_FRAMES.aiIntro - BEATS.ai.from, region: aiRegionsMap.questions},
+    {at: CUE_FRAMES.aiIntro - BEATS.ai.from, region: atLeast(aiRegionsMap.questions)},
   ],
   database: [
     {at: 0, region: catalogRegionsMap.full},
-    {at: CUE_FRAMES.dbSorting - BEATS.database.from, region: catalogRegionsMap.filters},
+    {at: CUE_FRAMES.dbSorting - BEATS.database.from, region: atLeast(catalogRegionsMap.filters)},
   ],
   epson: [
     {at: 0, region: fullFrame(TABLET_VIEWPORT)},
-    {at: CUE_FRAMES.epsonWebpage - BEATS.epson.from, region: webRegionsMap.appBar},
+    {at: CUE_FRAMES.epsonWebpage - BEATS.epson.from, region: atLeast(webRegionsMap.appBar)},
     {at: CUE_FRAMES.epsonConnection - BEATS.epson.from, region: fullFrame(TABLET_VIEWPORT)},
   ],
   add: [
     {at: 0, region: connectionRegionsMap.content},
-    {at: CUE_FRAMES.addIp - BEATS.add.from, region: connectionRegionsMap.hostField},
-    {at: CUE_FRAMES.addConnect - BEATS.add.from, region: connectionRegionsMap.connectAction},
+    {at: CUE_FRAMES.addIp - BEATS.add.from, region: atLeast(connectionRegionsMap.hostField)},
+    {at: CUE_FRAMES.addConnect - BEATS.add.from, region: atLeast(connectionRegionsMap.connectAction)},
+    {
+      at: CUE_FRAMES.addSave - BEATS.add.from,
+      region: atLeast(unionRegion(savedLineRegion, connectionRegionsMap.connectAction)),
+    },
   ],
-  terminal: [{at: 0, region: connectionRegionsMap.terminal}],
+  terminal: [{at: 0, region: atLeast(connectionRegionsMap.terminal)}],
   test: [
-    {at: 0, region: testRegionsMap.deviceList},
+    {at: 0, region: atLeast(testRegionsMap.deviceList)},
     {at: CUE_FRAMES.testSwitcher - BEATS.test.from, region: testRegionsMap.content},
-    {at: CUE_FRAMES.testTerminal - BEATS.test.from, region: testRegionsMap.terminal},
+    {at: CUE_FRAMES.testTerminal - BEATS.test.from, region: atLeast(testRegionsMap.terminal)},
     {at: CUE_FRAMES.testWebpage - BEATS.test.from, region: testRegionsMap.content},
   ],
   activities: [
     {at: 0, region: presetsRegionsMap.content},
-    {at: CUE_FRAMES.actPower - BEATS.activities.from, region: presetsRegionsMap.presetCard(0)},
+    {at: CUE_FRAMES.actPower - BEATS.activities.from, region: atLeast(presetsRegionsMap.presetCard(0))},
   ],
   'switch-audio': [
     {at: 0, region: switchRegionsMap.content},
@@ -205,29 +250,29 @@ export const BEAT_SHOTS: Partial<Record<TabletBeatName, Shot[]>> = {
   ],
   eui: [
     {at: 0, region: TABLET_EUI_MANY_TO_ONE_REGIONS.full},
-    {at: CUE_FRAMES.euiVolume - BEATS.eui.from, region: TABLET_EUI_MANY_TO_ONE_REGIONS.volumeBar},
+    {at: CUE_FRAMES.euiVolume - BEATS.eui.from, region: atLeast(TABLET_EUI_MANY_TO_ONE_REGIONS.volumeBar)},
     {at: CUE_FRAMES.euiPower - BEATS.eui.from, region: fullFrame(TABLET_VIEWPORT)},
   ],
   exit: [
-    {at: 0, region: padRegion(TABLET_EUI_MANY_TO_ONE_REGIONS.exitControl, 20)},
+    {at: 0, region: atLeast(TABLET_EUI_MANY_TO_ONE_REGIONS.exitControl)},
     {at: CUE_FRAMES.exitBack - BEATS.exit.from, region: fullFrame(TABLET_VIEWPORT)},
   ],
   discovery: [
-    {at: 0, region: discoverRegionsMap.topBar},
+    {at: 0, region: atLeast(discoverRegionsMap.topBar)},
     {at: CUE_FRAMES.discoveryScans - BEATS.discovery.from, region: discoverRegionsMap.list},
   ],
   'matrox-add': [{at: 0, region: discoverRegionsMap.list}],
   'matrox-test': [{at: 0, region: testRegionsMap.content}],
   'matrox-switch': [
-    {at: 0, region: switchRegionsMap.switchTypeSelector},
+    {at: 0, region: atLeast(switchRegionsMap.switchTypeSelector)},
     {at: CUE_FRAMES.matroxEncoders - BEATS['matrox-switch'].from, region: avoipRegionsMap.content},
   ],
   m2m: [{at: 0, region: TABLET_EUI_REGIONS.full}],
   settings: [
-    {at: 0, region: settingsRegionsMap.userManual},
-    {at: CUE_FRAMES.settingsQuick - BEATS.settings.from, region: settingsRegionsMap.quickStart},
-    {at: CUE_FRAMES.settingsFactory - BEATS.settings.from, region: settingsRegionsMap.factoryReset},
-    {at: CUE_FRAMES.settingsDatabase - BEATS.settings.from, region: settingsRegionsMap.databaseManagement},
+    {at: 0, region: atLeast(settingsRegionsMap.userManual)},
+    {at: CUE_FRAMES.settingsQuick - BEATS.settings.from, region: atLeast(settingsRegionsMap.quickStart)},
+    {at: CUE_FRAMES.settingsFactory - BEATS.settings.from, region: atLeast(settingsRegionsMap.factoryReset)},
+    {at: CUE_FRAMES.settingsDatabase - BEATS.settings.from, region: atLeast(settingsRegionsMap.databaseManagement)},
   ],
 };
 
