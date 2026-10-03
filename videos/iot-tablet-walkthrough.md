@@ -378,6 +378,8 @@ displays together. The subject is never in the right 140 px column.
 
 ## Review notes
 
+- T27 re-run, 2026-10-02 (after T32, `86737f2`): every visual and loudness gate passes again (landscape 25% inert, portrait 44%, 343.55s, -16.12 LUFS, 162 captions). test-switcher's "right?" is whole. `narration:verify` on the render flags one first word: m2m-send-all "And" at 5:06.5, silent in its ASR span, with speech from 5:06.6. Edit-level verify passes the same audio with 0 defects. This is the second repair round on this bottleneck, so it stops here: Nathan listens at 5:06 and decides. The renders in `out/` are final candidates.
+
 - T27, 2026-10-02: `[!]` on the voice check only. Coordinator run at `8a68f67` in a clean worktree:
   - Check, both lints, validate (20 beats, 343.5s) and both contact sheets pass.
   - Renders: `out/iot-tablet-walkthrough{,-portrait}.mp4`. Frames: landscape 25% inert, content 97%; portrait 44% inert, content 72% (`content-area` warning only).

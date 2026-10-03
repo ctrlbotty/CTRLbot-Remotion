@@ -2,14 +2,14 @@
 
 Approved by Nathan on 2026-10-02. Restarted the same afternoon with a new coordinator: Claude (desktop Code session) coordinates, verifies and commits; Gemini 3.8 Flash High implements through Antigravity's CLI, one fresh headless conversation per task (`agy -p ... --model gemini-3.8-flash-high --output-format json --print-timeout 25m`). Prompts, results and token use are in `out/coordinator/agy/`. Publishing is outside this run.
 
-## Current status — RUNNING (updated 2026-10-02 17:45)
+## Current status — READY FOR NATHAN'S REVIEW (updated 2026-10-02)
 
-- **W02:** DELIVERED for Nathan's review. T13–T16, T20, T21 committed; renders, contact sheets and SRT in `out/`. No close-out before his notes.
-- **W03 (lane A, main checkout):** T23, T24 (merged with T25), T26, T27 committed. T28 dispatched; T29, T30, then T33 (landscape framing), then T31 renders. T32 (voice.mjs clipped tails) after delivery.
-- **W04 (lane B, worktree on branch `lane-b`):** T19, T20 (merged with T21), T22–T24 committed. T25 dispatched; T26, then T28 (framing), then T27 renders.
-- **W05:** T3 committed; rest waits for the W03/W04 renders (shared surfaces).
-- **Gemini quota:** hit 17:38 (429, resets ~18:09). W03 T28 and W04 T25 made no edits; one queued retry at 18:10, no polling.
-- **Verification:** coordinator, non-author, in a clean worktree at HEAD plus the task's files; stills at cue frames. Prompts, results and token use in `out/coordinator/agy/`.
+- **W02 Terminator:** delivered. `out/terminator-walkthrough{,-portrait}.mp4`, SRT, contact sheets. All gates pass.
+- **W03 IoT phone:** final candidates in `out/iot-phone-walkthrough{,-portrait}.mp4`, SRT, contact sheets. All visual and loudness gates pass. T31 stays `[!]` only on two render-level voice flags: listen at 4:26 ("If") and 4:51 ("Oh,").
+- **W04 IoT tablet:** final candidates in `out/iot-tablet-walkthrough{,-portrait}.mp4`, SRT, contact sheets. All visual and loudness gates pass. T27 stays `[!]` only on one voice flag: listen at 5:06 ("And").
+- **W05 IoT latest features:** T1, T2 and T3 done. T4–T14 not started; they wait on Nathan's review, because they change surfaces W03 and W04 show. Open question: RS-485 or RS-45 at 1:54.
+- **Stopped:** no workers running. Close-out (archive, RELEASE-NOTES, Roadmap) only after Nathan approves.
+- **Method:** Claude coordinates and verifies in clean worktrees; Gemini 3.8 Flash High implements via `agy`. Prompts, results and token use are in `out/coordinator/agy/`.
 
 ## Dispatch rules
 

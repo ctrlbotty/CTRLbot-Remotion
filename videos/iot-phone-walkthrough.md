@@ -394,6 +394,8 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
 
 ## Review notes
 
+- T31 re-run, 2026-10-02 (after T32, `86737f2`): every visual and loudness gate passes again (landscape 34% inert, portrait 26%, 336.04s, -16.13 LUFS, 145 captions). The test-saves and eui-screen tails are whole. `narration:verify` on the render still flags two first words that T23 adjudicated as ASR notes: an extra "If" at 4:26 (T23 judged it a misread of "At") and "Oh," at 4:51 (-50.5 dB, just under the line). Edit-level verify passes with 0 defects. This is the second repair round on this bottleneck, so it stops here: Nathan listens at 4:26 and 4:51. The renders in `out/` are final candidates.
+
 - T32, 2026-10-02: Claude coordinator (non-author) PASS after one repair. Gemini via agy in lane B. `voice.mjs` gains an opt-in per-clip `wholeEdges` flag. Unflagged clips are unchanged: W02's rebuilt `edit.m4a` and generated content are byte-identical (the generated file differs only in line endings), and in W03 and W04 only the flagged clips changed. Flagged ends: test-saves 138.67 → 138.90 and eui-screen 218.99 → 219.22, both now ending in their decay; W04 test-switcher now ends at 156.605 with "right?" whole (repair 1: it had first dropped the word). W04 m2m-send-all was unchanged; its onset was already inside its bounds. The coordinator's `narration:verify` on both rebuilt edits: W03 PASS (0 edge defects, 15 notes), W04 PASS (0 edge defects, 19 notes).
 
 - T31, 2026-10-02: `[!]` on the voice check only. Coordinator run at `0de0661` in a clean worktree:
