@@ -373,7 +373,7 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
 - [x] T33: Loosen W03's landscape chapter shots where a phone region is blown up past readable framing, starting with database (the opened filter menu is cut off and sits under the callout at 1745) — files: src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughData.ts
   - Also, both shapes (T28 review): `eui` stays on `m2mReg.powerControl` after "off" while the surface switches to Powering Off and Welcome, so about 5s render black or empty. Pull to `phoneFull` once Powering Off starts. `exit` opens at about 4x on `exitControl`; frame the Welcome screen with the hold ring readable instead.
   - Found in T26's review. Portrait reads correctly; landscape `expand` framing of narrow phone regions zooms about 3x. Re-check every chapter's landscape stills after T30, and fix them together before T31.
-- [ ] T31: Run the feature gates on both shapes, render both, write the .srt from the edit, check the voice, and record the results here — files: videos/iot-phone-walkthrough.md
+- [!] T31: Run the feature gates on both shapes, render both, write the .srt from the edit, check the voice, and record the results here — files: videos/iot-phone-walkthrough.md
   - As W01's T15, with `--corrections=IOT_PHONE_CAPTION_CORRECTIONS` and `--destination=social-walkthrough`.
   - The voice check is `npm run narration:verify` on the landscape render. It is `[!]` only when it exits 1; every other difference is a Review note. The words named in the next line are checked in its output, and against the audio level when Whisper misses one.
   - The voice check must hear "command", "menus", "library" and "here" whole, and no repeated fragment at 4:41.
@@ -393,6 +393,15 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
 - **Blocked:** none. Nathan resolved the T23 settings hold on 2026-10-02 (settings 15.5s, close 5.5s); the four speech-edge repairs remain. Partial edits are preserved and uncommitted.
 
 ## Review notes
+
+- T31, 2026-10-02: `[!]` on the voice check only. Coordinator run at `0de0661` in a clean worktree:
+  - Check, both lints, validate (20 beats, 336s) and both contact sheets pass.
+  - Renders: `out/iot-phone-walkthrough{,-portrait}.mp4`. Frames: landscape 35% inert, content 97%; portrait 26% inert, content 83% (`content-area` warning only).
+  - `narration:check` passes: 336.04s, -16.13 LUFS. `out/iot-phone-walkthrough.srt` has 145 captions.
+  - `narration:verify` on the landscape render exits 1 with 2 edge defects, at the same edges T23's notes covered. An extra "If" at the start of matrox-test-single (-19.8 dB): T23's review judged it an ASR misread of "At". A missing "Oh," in m2m-displays at -50.5 dB, just under the -50 dB line: T23 measured speech present.
+  - Also open: the two clipped tails in T32.
+  - Of the words the brief names, "here" is heard. "command", "menus" and "library" need a listen.
+  - The renders are review drafts. The edit is rebuilt and re-verified after T32. Logs are in `out/coordinator/w03-t31/`, and revision 1 renders are kept as `-r1`.
 
 - T33, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy, 500s. Check, lint and validate pass. `atLeast` wraps 37 chapter shots; eui pulls to the full phone after "off". Re-rendered problem frames (1745/5760/5850/5960/7175/7865/9260/9575): Powering Off and Welcome are in shot, with no black; the database menu, Added, NOT ROUTED and All are readable. Notes: the landscape database callout still covers part of the open menu, and the portrait exit is cropped to the left of Welcome.
 
