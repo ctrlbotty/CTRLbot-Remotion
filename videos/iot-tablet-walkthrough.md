@@ -352,7 +352,7 @@ displays together. The subject is never in the right 140 px column.
 - [x] T23: Build the epson, add, terminal and test beats to the Shot list, each screen changing on its cue — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [x] T24: Build the activities, switch-audio, eui and exit beats to the Shot list, the power state continuous from eui into exit — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [x] T25: Build the discovery, matrox-add, matrox-test and matrox-switch beats to the Shot list — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
-- [ ] T26: Build the m2m and settings beats to the Shot list — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
+- [x] T26: Build the m2m and settings beats to the Shot list — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [ ] T28: Rebalance W04's chapter shots where a region is blown up or the cued result is off camera: `add` frames DISCONNECT at about 4x, the saved line ringed on "save" is out of shot, and `exit` frames the hold ring at about 4x — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts
   - Found in T23's review. Re-check every chapter's stills after T26, and fix them together before T27.
 - [ ] T27: Run the feature gates on both shapes, render both, write the .srt from the edit, check the voice, and record the results here — files: videos/iot-tablet-walkthrough.md
@@ -377,6 +377,8 @@ displays together. The subject is never in the right 140 px column.
 - **Blocked:** no known implementation blocker; task dependencies still apply.
 
 ## Review notes
+
+- T26, 2026-10-02: Claude coordinator (non-author) PASS. Gemini via agy in lane B, 269s. Check and lint pass in a clean worktree. Eight cue stills: a source pressed on "press" and a display on "click", a drag onto a display on "drag", and All routes every display on "all"; then User Manual, Quick Start, Factory Reset and Database Management ringed on their words. No factory-reset dialog is shown.
 
 - T25, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. Gemini via agy in lane B, 486s, after a quota pause. Check and lint pass in a clean worktree. Twelve cue stills: Discover Devices on "discovery"; the found count climbs on "scans"; the Matrox match is ringed; three ConvertIP rows turn Added in turn from "add"/"click" (no certificate dialog); the system, then a decoder taking an encoder, on "individual"/"switch"; Activities, then AV-over-IP encoders and decoders filling the lists. Notes: the discovery icon is the app's own (`iv_discovery_icon`) but is drawn in the Discover Devices top bar, which may not be where the app shows it; check this during review.
 

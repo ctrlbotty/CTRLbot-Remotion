@@ -53,7 +53,7 @@ import {
 import {ActivitiesAudio, activitiesAudioRegions} from '../../app-ui/ActivitiesAudio';
 import {EuiPowerCapture} from '../../app-ui/EuiPower';
 import {DiscoverDevices, discoverDevicesRegions} from '../../app-ui/DiscoverDevices';
-import {SettingsSupport} from '../../app-ui/SettingsSupport';
+import {SettingsSupport, settingsSupportRegions} from '../../app-ui/SettingsSupport';
 import {FocusRing, TapIndicator} from '../../camera/Annotations';
 import {centerOf, type Region} from '../../camera/Camera';
 import {tabletNavRegions} from '../../app-ui/TabletNavRail';
@@ -1725,11 +1725,33 @@ export const MatroxSwitchBeat: React.FC<{frame: number; frames: number}> = ({fra
 
 /**
  * M2M beat (24.5s = 735 frames):
- * Four displays: a source tapped then a display; a source dragged onto a display;
- * All sends one source to every display.
+ * Many to many, by tap, drag or All:
+ * Four displays with sources and displays in one frame:
+ * a source tapped then a display; a source dragged onto a display;
+ * All tapped, and every display takes it.
+ * Cues: m2m-press-click "press" (abs 8978, rel 188) -> source tapped
+ *       · m2m-press-click "click" (abs 9008, rel 218) -> display tapped
+ *       · m2m-drag-drop "drag" (abs 9069, rel 279) -> drag onto display
+ *       · m2m-send-all "all" (abs 9257, rel 467) -> All tapped
  */
 export const M2mBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const cuePress = CUE_FRAMES.m2mPress - BEATS.m2m.from;
+  const cueClick = CUE_FRAMES.m2mClick - BEATS.m2m.from;
+  const cueDrag = CUE_FRAMES.m2mDrag - BEATS.m2m.from;
+  const cueAll = CUE_FRAMES.m2mAll - BEATS.m2m.from;
+
+  const dragStart = cueDrag;
+  const dragDuration = 40;
+  const dragEnd = dragStart + dragDuration;
+
+  const srcRow1 = centerOf(TABLET_EUI_REGIONS.sourceRow(1));
+  const srcRow2 = centerOf(TABLET_EUI_REGIONS.sourceRow(2));
+  const outCell1 = centerOf(TABLET_EUI_REGIONS.outputCell(1));
+  const outCell2 = centerOf(TABLET_EUI_REGIONS.outputCell(2));
+  const allCenter = centerOf(TABLET_EUI_REGIONS.routeAll);
+
   let selectedInput: number | null = null;
+  let pressed: string | null = null;
   let drag: {inputIndex: number; x: number; y: number; opacity?: number; scale?: number} | null = null;
   let outputs: EuiOutput[] = [
     {label: 'Display 1', source: 'ConvertIP TX 1'},
@@ -1738,46 +1760,54 @@ export const M2mBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
     {label: 'Display 4', source: null},
   ];
 
-  if (frame < 240) {
-    if (frame >= 70 && frame < 150) {
+  if (frame < cueDrag) {
+    if (frame >= cuePress && frame < cueClick) {
       selectedInput = 1; // ConvertIP TX 2 selected
-    } else if (frame >= 150) {
+      if (frame < cuePress + 8) {
+        pressed = 'input-2';
+      }
+    } else if (frame >= cueClick) {
       selectedInput = 1;
-      outputs[1] = {label: 'Display 2', source: 'ConvertIP TX 2', highlight: 'blue'};
+      if (frame < cueClick + 8) {
+        pressed = 'output-2';
+      }
+      outputs[1] = {label: 'Display 2', source: 'ConvertIP TX 2'};
     }
-  } else if (frame < 490) {
+  } else if (frame < cueAll) {
     selectedInput = null;
     outputs[1] = {label: 'Display 2', source: 'ConvertIP TX 2'};
 
     // Drag TX 3 onto Display 3
-    if (frame >= 280 && frame < 410) {
-      const dragProgress = interpolate(frame, [280, 400], [0, 1], {
+    if (frame >= dragStart && frame < dragEnd) {
+      const dragProgress = interpolate(frame, [dragStart, dragEnd], [0, 1], {
         easing: Easing.bezier(0.25, 0.1, 0.25, 1),
         extrapolateLeft: 'clamp',
         extrapolateRight: 'clamp',
       });
-      const startX = 200;
-      const startY = 380;
-      const targetX = 670;
-      const targetY = 480;
       drag = {
         inputIndex: 2,
-        x: startX + (targetX - startX) * dragProgress,
-        y: startY + (targetY - startY) * dragProgress,
-        opacity: 0.92,
+        x: srcRow2.x + (outCell2.x - srcRow2.x) * dragProgress,
+        y: srcRow2.y + (outCell2.y - srcRow2.y) * dragProgress,
+        opacity: 0.95,
         scale: 1.05,
       };
-    } else if (frame >= 410) {
-      outputs[2] = {label: 'Display 3', source: 'ConvertIP TX 3', highlight: 'yellow'};
+      if (frame >= dragEnd - 8) {
+        pressed = 'output-3';
+      }
+    } else if (frame >= dragEnd) {
+      outputs[2] = {label: 'Display 3', source: 'ConvertIP TX 3'};
     }
   } else {
     // All sends TX 1 to every display
     selectedInput = 0;
+    if (frame < cueAll + 8) {
+      pressed = 'all';
+    }
     outputs = [
-      {label: 'Display 1', source: 'ConvertIP TX 1', highlight: 'blue'},
-      {label: 'Display 2', source: 'ConvertIP TX 1', highlight: 'blue'},
-      {label: 'Display 3', source: 'ConvertIP TX 1', highlight: 'blue'},
-      {label: 'Display 4', source: 'ConvertIP TX 1', highlight: 'blue'},
+      {label: 'Display 1', source: 'ConvertIP TX 1'},
+      {label: 'Display 2', source: 'ConvertIP TX 1'},
+      {label: 'Display 3', source: 'ConvertIP TX 1'},
+      {label: 'Display 4', source: 'ConvertIP TX 1'},
     ];
   }
 
@@ -1789,34 +1819,139 @@ export const M2mBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
   ];
 
   return (
-    <TabletEui
-      outputs={outputs}
-      inputs={inputs}
-      selectedInput={selectedInput}
-      volume={0.72}
-      drag={drag}
-    />
+    <>
+      <TabletEui
+        outputs={outputs}
+        inputs={inputs}
+        selectedInput={selectedInput}
+        volume={0.72}
+        pressed={pressed}
+        drag={drag}
+      />
+
+      {/* Cue 1: Source tapped on "press" */}
+      <TapIndicator
+        x={srcRow1.x}
+        y={srcRow1.y}
+        at={cuePress}
+        name="Source tap"
+      />
+
+      {/* Cue 2: Display tapped on "click" -> routed Display 2 ringed */}
+      <TapIndicator
+        x={outCell1.x}
+        y={outCell1.y}
+        at={cueClick}
+        name="Display tap"
+      />
+      {frame >= cueClick && frame < cueDrag ? (
+        <FocusRing
+          region={TABLET_EUI_REGIONS.outputCell(1)}
+          appearAt={cueClick}
+          radius={0}
+          name="Display 2 routed ring"
+        />
+      ) : null}
+
+      {/* Cue 3: Drag onto Display 3 on "drag" */}
+      <TapIndicator
+        x={srcRow2.x}
+        y={srcRow2.y}
+        at={dragStart}
+        name="Drag start tap"
+      />
+      {frame >= dragEnd && frame < cueAll ? (
+        <FocusRing
+          region={TABLET_EUI_REGIONS.outputCell(2)}
+          appearAt={dragEnd}
+          radius={0}
+          name="Display 3 routed ring"
+        />
+      ) : null}
+
+      {/* Cue 4: All tapped on "all" -> every display takes it */}
+      <TapIndicator
+        x={allCenter.x}
+        y={allCenter.y}
+        at={cueAll}
+        name="All tap"
+      />
+      {frame >= cueAll && frame < cueAll + 45 ? (
+        <FocusRing
+          region={TABLET_EUI_REGIONS.routeAll}
+          appearAt={cueAll}
+          radius={6}
+          name="All control ring"
+        />
+      ) : null}
+    </>
   );
 };
 
 /**
  * Settings beat (21s = 630 frames):
- * Settings → Support: User Manual, Quick Start, Factory Reset and Database Management.
+ * Settings → Support: User Manual, Quick Start, Factory Reset and Database Management
+ * ringed on their words.
+ * Cues: settings-manual "manual" (abs 9675, rel 150) -> User Manual ringed
+ *       · settings-quick-start "quick" (abs 9759, rel 234) -> Quick Start ringed
+ *       · settings-reset "factory" (abs 9933, rel 408) -> Factory Reset ringed
+ *       · settings-reset "database" (abs 10003, rel 478) -> Database Management ringed
  */
 export const SettingsBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const resetButtonState =
-    frame >= 300 && frame < 450
-      ? 'pressed'
-      : frame >= 450
-        ? 'restored'
-        : 'idle';
+  const cueManual = CUE_FRAMES.settingsManual - BEATS.settings.from;
+  const cueQuick = CUE_FRAMES.settingsQuick - BEATS.settings.from;
+  const cueFactory = CUE_FRAMES.settingsFactory - BEATS.settings.from;
+  const cueDatabase = CUE_FRAMES.settingsDatabase - BEATS.settings.from;
+
+  const settingsRegs = settingsSupportRegions('tablet');
 
   return (
-    <SettingsSupport
-      device="tablet"
-      resetButtonState={resetButtonState}
-      showDocumentationHighlight={frame < 300}
-    />
+    <>
+      <SettingsSupport
+        device="tablet"
+        resetButtonState="idle"
+      />
+
+      {/* Cue 1: User Manual ringed on "manual" */}
+      {frame >= cueManual && frame < cueQuick ? (
+        <FocusRing
+          region={settingsRegs.userManualCard}
+          appearAt={cueManual}
+          radius={6}
+          name="User Manual ring"
+        />
+      ) : null}
+
+      {/* Cue 2: Quick Start ringed on "quick" */}
+      {frame >= cueQuick && frame < cueFactory ? (
+        <FocusRing
+          region={settingsRegs.quickStartCard}
+          appearAt={cueQuick}
+          radius={6}
+          name="Quick Start ring"
+        />
+      ) : null}
+
+      {/* Cue 3: Factory Reset ringed on "factory" */}
+      {frame >= cueFactory && frame < cueDatabase ? (
+        <FocusRing
+          region={settingsRegs.factoryResetCard}
+          appearAt={cueFactory}
+          radius={6}
+          name="Factory Reset ring"
+        />
+      ) : null}
+
+      {/* Cue 4: Database Management ringed on "database" */}
+      {frame >= cueDatabase ? (
+        <FocusRing
+          region={settingsRegs.databaseManagementCard}
+          appearAt={cueDatabase}
+          radius={6}
+          name="Database Management ring"
+        />
+      ) : null}
+    </>
   );
 };
 
