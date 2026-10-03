@@ -355,7 +355,7 @@ displays together. The subject is never in the right 140 px column.
 - [x] T26: Build the m2m and settings beats to the Shot list — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx
 - [x] T28: Rebalance W04's chapter shots where a region is blown up or the cued result is off camera: `add` frames DISCONNECT at about 4x, the saved line ringed on "save" is out of shot, and `exit` frames the hold ring at about 4x — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts
   - Found in T23's review. Re-check every chapter's stills after T26, and fix them together before T27.
-- [ ] T27: Run the feature gates on both shapes, render both, write the .srt from the edit, check the voice, and record the results here — files: videos/iot-tablet-walkthrough.md
+- [!] T27: Run the feature gates on both shapes, render both, write the .srt from the edit, check the voice, and record the results here — files: videos/iot-tablet-walkthrough.md
   - As W01's T15, with `--corrections=IOT_TABLET_CAPTION_CORRECTIONS` and `--destination=social-walkthrough`.
   - The voice check is `npm run narration:verify` on the landscape render. It is `[!]` only when it exits 1; every other difference is a Review note. The words named in the next line are checked in its output, and against the audio level when Whisper misses one.
   - The voice check must hear "manual", "interface", "it", "IPMX" and "here" whole, and "user manual" once in the settings beat.
@@ -377,6 +377,15 @@ displays together. The subject is never in the right 140 px column.
 - **Blocked:** no known implementation blocker; task dependencies still apply.
 
 ## Review notes
+
+- T27, 2026-10-02: `[!]` on the voice check only. Coordinator run at `8a68f67` in a clean worktree:
+  - Check, both lints, validate (20 beats, 343.5s) and both contact sheets pass.
+  - Renders: `out/iot-tablet-walkthrough{,-portrait}.mp4`. Frames: landscape 25% inert, content 97%; portrait 44% inert, content 72% (`content-area` warning only).
+  - `narration:check` passes on both: 343.55s, -16.12 LUFS, -4.42 dBTP. `out/iot-tablet-walkthrough.srt` has 162 captions.
+  - `narration:verify` on the landscape render exits 1 with 2 edge defects. `test-switcher` ends on a sliver of "right?" (silent at its span, -68.8 dB): a clipped tail. `m2m-send-all`'s leading "And" is silent at 306.50s, and speech starts at 306.6s: either a trimmed word or early ASR timing.
+  - Both belong to W03 T32 (voice.mjs edges). After it lands: rebuild W04's edit once, re-render, re-verify.
+  - Of the words the brief names, "interface", "it" and "here" are heard. "manual", "IPMX" and "user manual" need a listen.
+  - The renders are review drafts. Logs are in `out/coordinator/w04-t27/`, and revision 1 renders are kept as `-r1`.
 
 - T28, 2026-10-02: Claude coordinator (non-author) PASS. Gemini via agy in lane B, 304s. Check, lint and validate pass. `atLeast(region, 0.5)` wraps 19 chapter shots. Re-rendered problem frames (400/1110/1945/3045/3225/5990/6100/6215/6285): DISCONNECT is readable; the saved line is in shot on "save"; Powering Off then Welcome fill the frame; exit shows the hold ring and "Keep holding to return to Setup" over Welcome.
 
