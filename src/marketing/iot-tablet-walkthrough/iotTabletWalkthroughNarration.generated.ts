@@ -314,20 +314,14 @@ export const NARRATION_EDIT: NarrationEdit = {
       "id": "test-switcher",
       "at": 127.361,
       "start": 153.9,
-      "end": 157.58,
-      "seconds": 2.561,
+      "end": 156.605,
+      "seconds": 2.453,
       "removed": [
         {
           "from": 154.34,
           "to": 154.58,
           "kind": "extra",
           "heard": "a"
-        },
-        {
-          "from": 156.41,
-          "to": 156.57,
-          "kind": "noise",
-          "heard": ""
         }
       ]
     },
@@ -3323,9 +3317,9 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "text": " right?",
-      "startMs": 129862,
-      "endMs": 129922,
-      "timestampMs": 129892,
+      "startMs": 129329,
+      "endMs": 129629,
+      "timestampMs": 129479,
       "confidence": null
     },
     {
@@ -8582,7 +8576,7 @@ export const NARRATION_EDIT: NarrationEdit = {
       },
       {
         "text": "right?",
-        "ms": 129862
+        "ms": 129329
       }
     ],
     "test-terminal": [

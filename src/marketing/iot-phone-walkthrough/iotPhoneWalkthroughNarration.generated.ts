@@ -271,10 +271,10 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "id": "test-saves",
-      "at": 111.255,
+      "at": 111.155,
       "start": 135.385,
-      "end": 138.67,
-      "seconds": 2.788,
+      "end": 138.9,
+      "seconds": 3.018,
       "removed": [
         {
           "from": 137.275,
@@ -424,8 +424,8 @@ export const NARRATION_EDIT: NarrationEdit = {
       "id": "eui-screen",
       "at": 172.35,
       "start": 204.97,
-      "end": 218.99,
-      "seconds": 12.415,
+      "end": 219.22,
+      "seconds": 12.645,
       "removed": [
         {
           "from": 207.45,
@@ -2570,50 +2570,50 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "text": " Xing",
-      "startMs": 111360,
-      "endMs": 111740,
-      "timestampMs": 111550,
+      "startMs": 111260,
+      "endMs": 111640,
+      "timestampMs": 111450,
       "confidence": null
     },
     {
       "text": " out",
-      "startMs": 111740,
-      "endMs": 112000,
-      "timestampMs": 111870,
+      "startMs": 111640,
+      "endMs": 111900,
+      "timestampMs": 111770,
       "confidence": null
     },
     {
       "text": " of",
-      "startMs": 112400,
-      "endMs": 112580,
-      "timestampMs": 112490,
+      "startMs": 112300,
+      "endMs": 112480,
+      "timestampMs": 112390,
       "confidence": null
     },
     {
       "text": " this",
-      "startMs": 112580,
-      "endMs": 113133,
-      "timestampMs": 112857,
+      "startMs": 112480,
+      "endMs": 113033,
+      "timestampMs": 112757,
       "confidence": null
     },
     {
       "text": " saves",
-      "startMs": 113183,
-      "endMs": 113443,
-      "timestampMs": 113313,
+      "startMs": 113083,
+      "endMs": 113343,
+      "timestampMs": 113213,
       "confidence": null
     },
     {
       "text": " that",
-      "startMs": 113443,
-      "endMs": 113603,
-      "timestampMs": 113523,
+      "startMs": 113343,
+      "endMs": 113503,
+      "timestampMs": 113423,
       "confidence": null
     },
     {
       "text": " connection.",
-      "startMs": 113603,
-      "endMs": 114043,
+      "startMs": 113503,
+      "endMs": 114143,
       "timestampMs": 113823,
       "confidence": null
     },
@@ -3866,8 +3866,8 @@ export const NARRATION_EDIT: NarrationEdit = {
     {
       "text": " screen.",
       "startMs": 184505,
-      "endMs": 184765,
-      "timestampMs": 184635,
+      "endMs": 184955,
+      "timestampMs": 184730,
       "confidence": null
     },
     {
@@ -7475,31 +7475,31 @@ export const NARRATION_EDIT: NarrationEdit = {
     "test-saves": [
       {
         "text": "Xing",
-        "ms": 111360
+        "ms": 111260
       },
       {
         "text": "out",
-        "ms": 111740
+        "ms": 111640
       },
       {
         "text": "of",
-        "ms": 112400
+        "ms": 112300
       },
       {
         "text": "this",
-        "ms": 112580
+        "ms": 112480
       },
       {
         "text": "saves",
-        "ms": 113183
+        "ms": 113083
       },
       {
         "text": "that",
-        "ms": 113443
+        "ms": 113343
       },
       {
         "text": "connection.",
-        "ms": 113603
+        "ms": 113503
       }
     ],
     "test-remote": [

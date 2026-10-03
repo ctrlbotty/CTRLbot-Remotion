@@ -357,7 +357,7 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
   - Nathan, 2026-10-02: 0.5s moves from `close` to `settings` (15.5s and 5.5s; total 336s unchanged). Resume from the preserved partial edit — do not rebuild placements that already hold. Set the `at`s for the new table, then repair only the real edges named in `out/coordinator/t23-review.txt` (clipped "button" in settings-setup, split "Let's" at labels/m2m-intro, clipped "connection" in test-saves, the repeated tail across eui-screen/eui-power), within the task's build limits.
   - Two builds at most to set the `at`s. A beat that cannot keep its 1.0s hold inside its Sec is `[!]` with the measured lengths.
   - Then `npm run narration:verify` on `edit.m4a` (W02's T17). Fix each real edge leak with `notBefore` / `notAfter` or a tighter `sourceEnd` (the contract's "Clip edges leak"), at most two more builds. A leak that remains goes in the Review notes with its clip and level.
-- [ ] T32: Make `scripts/lib/voice.mjs` end a clip after its last word's decay when `sourceEnd`/`notAfter` allow it — files: scripts/lib/voice.mjs
+- [x] T32: Make `scripts/lib/voice.mjs` end a clip after its last word's decay when `sourceEnd`/`notAfter` allow it — files: scripts/lib/voice.mjs
   - Found in T23's review. `test-saves` still ends at source 138.67 while "connection." is at -15 dB until 138.85 (quiet at 138.95). `eui-screen` ends at 218.99 while "screen." decays to 219.2. Raising `sourceEnd` to 139.0/219.3 and `notAfter` to 139.2/219.6 did not move either cut. Regression: W01, W02 and the shorts' narration hashes unchanged except where a tail was clipped. Runs after the W02–W04 deliveries; not a blocker for T24.
 - [x] T24: Migrate W03's coupled beat data and both shell compositions at 10080 frames, with the revision 2 copy, layouts, regions and cue frames — files: src/marketing/iot-phone-walkthrough/iotPhoneWalkthroughData.ts, src/marketing/iot-phone-walkthrough/IotPhoneWalkthrough.tsx, src/Root.tsx
   - Coupled with the former T25 (2026-10-02), as W02's T11 was: removing `beatShots()` breaks the composition that imports it. The worked example is W02's migration, commit `9114a3d`.
@@ -393,6 +393,8 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
 - **Blocked:** none. Nathan resolved the T23 settings hold on 2026-10-02 (settings 15.5s, close 5.5s); the four speech-edge repairs remain. Partial edits are preserved and uncommitted.
 
 ## Review notes
+
+- T32, 2026-10-02: Claude coordinator (non-author) PASS after one repair. Gemini via agy in lane B. `voice.mjs` gains an opt-in per-clip `wholeEdges` flag. Unflagged clips are unchanged: W02's rebuilt `edit.m4a` and generated content are byte-identical (the generated file differs only in line endings), and in W03 and W04 only the flagged clips changed. Flagged ends: test-saves 138.67 → 138.90 and eui-screen 218.99 → 219.22, both now ending in their decay; W04 test-switcher now ends at 156.605 with "right?" whole (repair 1: it had first dropped the word). W04 m2m-send-all was unchanged; its onset was already inside its bounds. The coordinator's `narration:verify` on both rebuilt edits: W03 PASS (0 edge defects, 15 notes), W04 PASS (0 edge defects, 19 notes).
 
 - T31, 2026-10-02: `[!]` on the voice check only. Coordinator run at `0de0661` in a clean worktree:
   - Check, both lints, validate (20 beats, 336s) and both contact sheets pass.

@@ -403,9 +403,16 @@ export const planClip = (voice, words, heard, clip, {verbatim = false, debug = f
   // stretches the first or last word across the pause, the letters can claim the sound of
   // the phrase beside it. A stretch wholly outside the edges is not the clip's, and letters
   // heard there spell nothing of the clip's words.
+  // With wholeEdges, hard bounds default to 0.4s beyond the clip's source range and never
+  // into the adjacent words' Whisper boundaries, so letters heard in the next phrase cannot
+  // be claimed across a pause.
+  const nextWordStart = words[lastIndex + 1]?.start ?? Infinity;
+  const prevWordEnd = words[firstIndex - 1]?.end ?? -Infinity;
+  const maxAfter = clip.notAfter ?? (clip.wholeEdges ? Math.min(clip.sourceEnd + 0.4, nextWordStart) : null);
+  const minBefore = clip.notBefore ?? (clip.wholeEdges ? Math.max(clip.sourceStart - 0.4, prevWordEnd) : null);
   const outside = new Set();
   found.forEach((isl, i) => {
-    if ((clip.notBefore != null && isl.end <= clip.notBefore) || (clip.notAfter != null && isl.start >= clip.notAfter)) {
+    if ((minBefore != null && isl.end <= minBefore) || (maxAfter != null && isl.start >= maxAfter)) {
       if (kind[i] === 'keep' || kind[i] === 'mixed') kind[i] = 'other';
       outside.add(i);
     }
@@ -440,7 +447,7 @@ export const planClip = (voice, words, heard, clip, {verbatim = false, debug = f
   if (first > 0 && kind[first] !== 'mixed' && sliver(first - 1) && found[first].start - found[first - 1].end < 0.1) first--;
   if (last + 1 < found.length && kind[last] !== 'mixed' && sliver(last + 1) && found[last + 1].start - found[last].end < 0.12) last++;
   // Inside a hard end, unspelled sound run straight on from the last word is that word's tail.
-  if (clip.notAfter != null) {
+  if (clip.notAfter != null || (clip.wholeEdges && maxAfter != null)) {
     while (last + 1 < found.length && !outside.has(last + 1) && kind[last + 1] === 'silent' && found[last + 1].start - found[last].end < 0.1) last++;
   }
 
@@ -541,6 +548,45 @@ export const planClip = (voice, words, heard, clip, {verbatim = false, debug = f
   } else {
     const ceiling = (found[foot + 1]?.start ?? to) - 0.01;
     end = Math.min(ceiling, softEnd(voice, found[foot].end, ceiling) + TAIL);
+  }
+  // When wholeEdges is set, the clip's planned end extends forward through continuous sound
+  // louder than silence that runs on from its last kept word (up to notAfter if given, else
+  // sourceEnd + 0.4s, and never into the next word's Whisper start), and symmetrically its
+  // start extends back through a soft onset down to notBefore if given (else sourceStart - 0.4s).
+  if (clip.wholeEdges) {
+    const floor = Math.max(minBefore ?? -Infinity, from);
+    const stopStart = frameAt(voice, floor);
+    let fStart = frameAt(voice, found[head].start);
+    while (fStart > stopStart && voice.level[fStart - 1] > voice.silent) fStart--;
+    const extendedStart = Math.max(floor, timeAt(fStart) - LEAD);
+    if (extendedStart < start) {
+      start = extendedStart;
+      fadeIn = FADE_IN;
+    }
+
+    const ceiling = Math.min(maxAfter ?? Infinity, to);
+    const stopEnd = frameAt(voice, ceiling);
+    let fEnd = frameAt(voice, end);
+    while (fEnd < stopEnd && voice.level[fEnd] > voice.silent) fEnd++;
+    let extendedEnd = Math.min(ceiling, timeAt(fEnd));
+
+    // A sound island that starts within 0.15s after the last kept word's end and before notAfter is included.
+    let searchFrom = extendedEnd;
+    while (true) {
+      const island = found.find(
+        (isl) => isl.start >= searchFrom && isl.start - searchFrom <= 0.15 && isl.start < ceiling && !outside.has(found.indexOf(isl)),
+      );
+      if (!island) break;
+      let fNext = frameAt(voice, island.end);
+      while (fNext < stopEnd && voice.level[fNext] > voice.silent) fNext++;
+      extendedEnd = Math.max(extendedEnd, Math.min(ceiling, timeAt(fNext)));
+      searchFrom = extendedEnd;
+    }
+
+    if (extendedEnd > end) {
+      end = extendedEnd;
+      fadeOut = FADE_OUT;
+    }
   }
 
   // Long pauses shorten, and a removed stretch closes up to a pause of the same length. A

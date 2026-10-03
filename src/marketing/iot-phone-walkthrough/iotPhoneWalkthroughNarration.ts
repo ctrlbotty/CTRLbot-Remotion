@@ -52,7 +52,7 @@ export const IOT_PHONE_NARRATION_CLIPS = [
 
   // test (111–131s)
   // Keeps "connection." (ends ~138.85s; next phrase starts 139.38s).
-  {id: 'test-saves', at: 111.27, sourceStart: 135.4, sourceEnd: 139.0, notAfter: 139.2},
+  {id: 'test-saves', at: 111.17, sourceStart: 135.4, sourceEnd: 139.0, notAfter: 139.2, wholeEdges: true},
   {id: 'test-remote', at: 114.9, sourceStart: 139.3, sourceEnd: 143.8},
   {id: 'test-webpage', at: 118.72, sourceStart: 144, sourceEnd: 154.7},
 
@@ -69,7 +69,7 @@ export const IOT_PHONE_NARRATION_CLIPS = [
   // eui (169.5–195s)
   {id: 'eui-control', at: 169.75, sourceStart: 201.5, sourceEnd: 204.6},
   // Keeps "screen." whole (ends ~219.2s) without leaking into "They" (219.74s).
-  {id: 'eui-screen', at: 172.35, sourceStart: 204.6, sourceEnd: 219.3, notAfter: 219.6},
+  {id: 'eui-screen', at: 172.35, sourceStart: 204.6, sourceEnd: 219.3, notAfter: 219.6, wholeEdges: true},
   // notBefore: avoids repeating the tail of "screen." before "They" starts at 219.74s.
   {id: 'eui-power', at: 185.59, sourceStart: 219.6, sourceEnd: 226.4, notBefore: 219.6},
 

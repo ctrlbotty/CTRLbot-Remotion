@@ -4,6 +4,7 @@ import type {NarrationClip} from '../../audio/NarrationTrack';
 type NarrationEditClip = NarrationClip & {
   readonly notBefore?: number;
   readonly notAfter?: number;
+  readonly wholeEdges?: boolean;
 };
 
 /** Loudness-normalized voice from `video input/CTRLbot-IoT Walkthough v1.09.mp4`. */
@@ -57,7 +58,7 @@ export const IOT_TABLET_NARRATION_CLIPS = [
   // test (114.5–142.5s)
   {id: 'test-device', at: 114.75, sourceStart: 139.99, sourceEnd: 149.75},
   {id: 'test-remote', at: 124.493, sourceStart: 149.97, sourceEnd: 153.35},
-  {id: 'test-switcher', at: 127.361, sourceStart: 153.53, sourceEnd: 156.55},
+  {id: 'test-switcher', at: 127.361, sourceStart: 153.53, sourceEnd: 156.6, notAfter: 156.75, wholeEdges: true},
   {id: 'test-terminal', at: 130.222, sourceStart: 157.43, sourceEnd: 163.65},
   {id: 'test-webpage', at: 136.605, sourceStart: 164.43, sourceEnd: 168.45},
 
@@ -105,7 +106,7 @@ export const IOT_TABLET_NARRATION_CLIPS = [
   {id: 'm2m-different', at: 293.25, sourceStart: 364.85, sourceEnd: 368.45},
   {id: 'm2m-press-click', at: 297.1, sourceStart: 368.99, sourceEnd: 373.45},
   {id: 'm2m-drag-drop', at: 301.558, sourceStart: 373.95, sourceEnd: 379.15},
-  {id: 'm2m-send-all', at: 306.501, sourceStart: 379.63, sourceEnd: 382.3},
+  {id: 'm2m-send-all', at: 306.501, sourceStart: 379.63, sourceEnd: 382.3, wholeEdges: true},
   {id: 'm2m-anytime', at: 309.219, sourceStart: 382.33, sourceEnd: 389.55},
 
   // settings (317.5–338.5s)
