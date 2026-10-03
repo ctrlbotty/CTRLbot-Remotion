@@ -1,8 +1,9 @@
 import React from 'react';
-import {Easing, interpolate} from 'remotion';
+import {Easing, Sequence, interpolate} from 'remotion';
 import {AppIcon} from '../../app-ui/AppIcon';
 import {PHONE_VIEWPORT} from '../../app-ui/viewports';
 import {
+  EUI_REGIONS,
   PHONE_EUI_MANY_TO_ONE_REGIONS,
   PhoneEui,
   PhoneEuiManyToOne,
@@ -35,20 +36,26 @@ import {
 } from '../../app-ui/ConnectTest';
 import {
   ActivitiesPresets,
+  activitiesPresetsRegions,
   DEFAULT_COMMAND_STEPS,
 } from '../../app-ui/ActivitiesPresets';
 import {
   ActivitiesSwitch,
+  activitiesSwitchRegions,
   DEFAULT_AVOIP_DECODERS,
   DEFAULT_AVOIP_ENCODERS,
 } from '../../app-ui/ActivitiesSwitch';
-import {ActivitiesAudio} from '../../app-ui/ActivitiesAudio';
+import {
+  ActivitiesAudio,
+  activitiesAudioRegions,
+  DEFAULT_AUDIO_MAPPINGS,
+} from '../../app-ui/ActivitiesAudio';
 import {DiscoverDevices} from '../../app-ui/DiscoverDevices';
 import {SettingsSupport} from '../../app-ui/SettingsSupport';
-import {EuiPowerCapture} from '../../app-ui/EuiPower';
+import {EUI_POWER_REGIONS, EuiPowerCapture} from '../../app-ui/EuiPower';
 import {PhoneNavMenu} from '../../app-ui/PhoneNavMenu';
 import {centerOf} from '../../camera/Camera';
-import {FocusRing, TapIndicator} from '../../camera/Annotations';
+import {FocusRing, Spotlight, TapIndicator} from '../../camera/Annotations';
 import {appColors, appDimens} from '../../design/tokens.generated';
 import {font} from '../../design/theme';
 import {BEATS, CUE_FRAMES, type BeatName} from './iotPhoneWalkthroughData';
@@ -794,132 +801,344 @@ export const TestBeat: React.FC<{frame: number; frames: number}> = ({frame}) => 
 };
 
 /**
- * Activities beat (20s = 600 frames):
- * Presets lists Power On and Power Off; Power On opens with the Epson's
- * power-on command already in it.
+ * Activities beat (21s = 630 frames):
+ * Presets lists Power On and Power Off; Power On is tapped and opens with the Epson's
+ * power-on command already in it, ringed.
+ * Cues: activities "activities", builds "builds", command "command".
  */
 export const ActivitiesBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const isEdit = frame >= 220;
+  const activitiesCue = CUE_FRAMES.activities - BEATS.activities.from;
+  const buildsCue = CUE_FRAMES.builds - BEATS.activities.from;
+  const commandCue = CUE_FRAMES.command - BEATS.activities.from;
+
+  const presetsReg = activitiesPresetsRegions('phone');
+  const isEdit = frame >= buildsCue + 8;
 
   return (
-    <ActivitiesPresets
-      device="phone"
-      activeTab="presets"
-      mode={isEdit ? 'edit' : 'list'}
-      editPresetName="Power On"
-      editPresetIconColor={appColors.green}
-      commandSteps={isEdit ? DEFAULT_COMMAND_STEPS : []}
-    />
+    <>
+      <ActivitiesPresets
+        device="phone"
+        activeTab="presets"
+        mode={isEdit ? 'edit' : 'list'}
+        editPresetName="Power On"
+        editPresetIconColor={appColors.green}
+        commandSteps={isEdit ? DEFAULT_COMMAND_STEPS : []}
+      />
+      {frame < buildsCue + 8 ? (
+        <>
+          <FocusRing
+            region={presetsReg.presetsTab}
+            appearAt={activitiesCue}
+            radius={4}
+            name="Presets tab ring"
+          />
+          <TapIndicator
+            x={centerOf(presetsReg.presetCard(0)).x}
+            y={centerOf(presetsReg.presetCard(0)).y}
+            at={buildsCue}
+            name="Power On preset tap"
+          />
+        </>
+      ) : (
+        <FocusRing
+          region={presetsReg.commandStep(0)}
+          appearAt={commandCue}
+          radius={6}
+          name="Power On command ring"
+        />
+      )}
+    </>
   );
 };
 
 /**
  * Switch-Audio beat (17.5s = 525 frames):
- * Switch shows many-to-one on the Epson; Audio shows the Epson's volume
- * up, down and set mapped.
+ * Switch shows many-to-one on the Epson, ringed; then Audio's volume up, down and set mapped, ringed.
+ * Cues: switchAudioSwitcher "switcher", audio "audio".
  */
 export const SwitchAudioBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const showAudio = frame >= 260;
+  const switcherCue = CUE_FRAMES.switchAudioSwitcher - BEATS['switch-audio'].from;
+  const audioCue = CUE_FRAMES.audio - BEATS['switch-audio'].from;
 
-  if (showAudio) {
+  const switchReg = activitiesSwitchRegions('phone');
+  const audioReg = activitiesAudioRegions('phone');
+
+  if (frame >= audioCue) {
     return (
-      <ActivitiesAudio
-        device="phone"
-        activeTab="audio"
-        deviceName="EPSON PowerLite - New"
-      />
+      <>
+        <ActivitiesAudio
+          device="phone"
+          activeTab="audio"
+          deviceName="EPSON PowerLite - New"
+          mappings={DEFAULT_AUDIO_MAPPINGS}
+        />
+        <FocusRing
+          region={audioReg.audioTab}
+          appearAt={audioCue}
+          radius={4}
+          name="Audio tab ring"
+        />
+      </>
     );
   }
 
   return (
-    <ActivitiesSwitch
-      device="phone"
-      activeTab="switch"
-      switchType="many_to_one"
-      deviceName="EPSON PowerLite - New"
-    />
+    <>
+      <ActivitiesSwitch
+        device="phone"
+        activeTab="switch"
+        switchType="many_to_one"
+        deviceName="EPSON PowerLite - New"
+      />
+      <FocusRing
+        region={switchReg.switchTab}
+        appearAt={switcherCue}
+        radius={4}
+        name="Switch tab ring"
+      />
+    </>
   );
 };
 
 /**
  * EUI beat (25.5s = 765 frames):
- * Welcome, power pressed; a source is picked for the screen, the volume moves,
- * then Powering Off.
+ * Welcome, power tapped; a source tapped for the screen; the volume moves;
+ * it powers off and lands on Welcome, each on its spoken word.
+ * Cues: turn "turn", sources "sources", euiAudio "audio", off "off".
  */
 export const EuiBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  if (frame < 140) {
-    // Welcome screen with power button
-    return <EuiPowerCapture device="phone" state="off" />;
-  }
+  const turnCue = CUE_FRAMES.turn - BEATS.eui.from;
+  const sourcesCue = CUE_FRAMES.sources - BEATS.eui.from;
+  const euiAudioCue = CUE_FRAMES.euiAudio - BEATS.eui.from;
+  const offCue = CUE_FRAMES.off - BEATS.eui.from;
 
-  if (frame >= 600) {
-    // Powering off state
+  const poweringOffStart = offCue + 8;
+  const poweringOffDuration = 60;
+  const welcomeReturn = poweringOffStart + poweringOffDuration;
+
+  // Phase 1: Welcome screen before power on
+  if (frame < turnCue + 8) {
+    const welcomePower = EUI_POWER_REGIONS.phone.welcomePower;
     return (
-      <EuiPowerCapture
-        device="phone"
-        state="powering-off"
-        durationInFrames={165}
-        volume={0.72}
-      />
+      <>
+        <EuiPowerCapture device="phone" state="off" />
+        <FocusRing
+          region={welcomePower}
+          appearAt={Math.max(0, turnCue - 24)}
+          radius={999}
+          name="Welcome power ring"
+        />
+        <TapIndicator
+          x={centerOf(welcomePower).x}
+          y={centerOf(welcomePower).y}
+          at={turnCue}
+          name="Power on tap"
+        />
+      </>
     );
   }
 
-  // Active room control
-  const selectedInput = frame < 260 ? null : 0;
+  // Phase 3 & 4: Powering off dialog, then lands back on Welcome screen
+  if (frame >= poweringOffStart) {
+    if (frame < welcomeReturn) {
+      return (
+        <Sequence
+          from={poweringOffStart}
+          durationInFrames={poweringOffDuration}
+          layout="none"
+          name="Powering off progress"
+        >
+          <EuiPowerCapture
+            device="phone"
+            state="powering-off"
+            durationInFrames={poweringOffDuration}
+            volume={0.72}
+          />
+        </Sequence>
+      );
+    }
+    return <EuiPowerCapture device="phone" state="off" volume={0.72} />;
+  }
+
+  // Phase 2: Active room control
+  const isRouted = frame >= sourcesCue;
+  const sourceTile = PHONE_EUI_MANY_TO_ONE_REGIONS.inputTile(0);
+  const displayPanel = PHONE_EUI_MANY_TO_ONE_REGIONS.displayPanel;
   const volume =
-    frame < 440
+    frame < euiAudioCue
       ? 0.42
-      : interpolate(frame, [440, 560], [0.42, 0.72], {
+      : interpolate(frame, [euiAudioCue, euiAudioCue + 40], [0.42, 0.72], {
+          easing: Easing.bezier(0.16, 1, 0.3, 1),
           extrapolateLeft: 'clamp',
           extrapolateRight: 'clamp',
         });
 
   return (
-    <PhoneEuiManyToOne
-      inputs={[
-        {label: 'Input 1'},
-        {label: 'Input 2'},
-        {label: 'HDMI 1'},
-        {label: 'HDMI 2'},
-      ]}
-      selectedInput={selectedInput}
-      volume={volume}
-      outputLabel="DISPLAY 1"
-    />
+    <>
+      <PhoneEuiManyToOne
+        inputs={[
+          {label: 'Input 1'},
+          {label: 'Input 2'},
+          {label: 'HDMI 1'},
+          {label: 'HDMI 2'},
+        ]}
+        selectedInput={isRouted ? 0 : null}
+        volume={volume}
+        outputLabel="DISPLAY 1"
+      />
+
+      {frame < euiAudioCue ? (
+        <>
+          <TapIndicator
+            x={centerOf(sourceTile).x}
+            y={centerOf(sourceTile).y}
+            at={sourcesCue}
+            name="Source tap"
+          />
+          <FocusRing
+            region={displayPanel}
+            appearAt={sourcesCue}
+            radius={0}
+            name="Display panel ring"
+          />
+        </>
+      ) : null}
+
+      {frame >= euiAudioCue && frame < offCue ? (
+        <>
+          <FocusRing
+            region={EUI_REGIONS.volumeSlider}
+            appearAt={euiAudioCue}
+            radius={0}
+            name="Volume slider ring"
+          />
+          <TapIndicator
+            x={EUI_REGIONS.volumeSlider.x + EUI_REGIONS.volumeSlider.width * volume}
+            y={centerOf(EUI_REGIONS.volumeSlider).y}
+            at={euiAudioCue}
+            name="Volume drag"
+          />
+        </>
+      ) : null}
+
+      <FocusRing
+        region={EUI_REGIONS.powerControl}
+        appearAt={Math.max(0, offCue - 15)}
+        radius={4}
+        name="Power off ring"
+      />
+      <TapIndicator
+        x={centerOf(EUI_REGIONS.powerControl).x}
+        y={centerOf(EUI_REGIONS.powerControl).y}
+        at={offCue}
+        name="Power off tap"
+      />
+    </>
   );
 };
 
 /**
- * Exit beat (9s = 270 frames):
- * The setup button is held; "Keep holding to return to Setup" shows;
- * the setup menu returns.
+ * Exit beat (10s = 300 frames):
+ * On Welcome, the setup button in the top-left is held: a hold ring fills over
+ * two seconds, Keep holding shows, and the setup menu returns.
+ * Cues: hold "hold", setupSecond "setup" (second).
  */
 export const ExitBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const returnedToSetup = frame >= 140;
+  const holdCue = CUE_FRAMES.hold - BEATS.exit.from;
+  const setupSecondCue = CUE_FRAMES.setupSecond - BEATS.exit.from;
 
-  if (returnedToSetup) {
+  const exitControl = EUI_REGIONS.exitControl;
+  const holdCenter = centerOf(exitControl);
+  const HOLD_FRAMES = 60; // 2 seconds press-and-hold at 30fps
+  const holdRadius = 26;
+  const circumference = 2 * Math.PI * holdRadius;
+
+  if (frame < setupSecondCue) {
+    const holdProgress = interpolate(
+      frame,
+      [holdCue, holdCue + HOLD_FRAMES],
+      [0, 1],
+      {
+        easing: Easing.linear,
+        extrapolateLeft: 'clamp',
+        extrapolateRight: 'clamp',
+      },
+    );
+
     return (
-      <ActivitiesPresets
-        device="phone"
-        activeTab="presets"
-        mode="list"
-        toast="Switching activity saved to end UI"
-      />
+      <>
+        <EuiPowerCapture device="phone" state="off" volume={0.72} />
+
+        <Spotlight
+          region={exitControl}
+          appearAt={0}
+          radius={4}
+          name="Exit control spotlight"
+        />
+
+        {frame >= holdCue ? (
+          <>
+            <svg
+              width={holdRadius * 2 + 12}
+              height={holdRadius * 2 + 12}
+              style={{
+                position: 'absolute',
+                left: holdCenter.x - holdRadius - 6,
+                top: holdCenter.y - holdRadius - 6,
+                pointerEvents: 'none',
+              }}
+            >
+              <circle
+                cx={holdRadius + 6}
+                cy={holdRadius + 6}
+                r={holdRadius}
+                fill="none"
+                stroke="rgba(255,255,255,0.2)"
+                strokeWidth={3}
+              />
+              <circle
+                cx={holdRadius + 6}
+                cy={holdRadius + 6}
+                r={holdRadius}
+                fill="none"
+                stroke={appColors.blue}
+                strokeWidth={3}
+                strokeLinecap="round"
+                strokeDasharray={circumference}
+                transform={`rotate(-90 ${holdRadius + 6} ${holdRadius + 6})`}
+                style={{
+                  strokeDashoffset: (1 - holdProgress) * circumference,
+                }}
+              />
+            </svg>
+            <span
+              style={{
+                position: 'absolute',
+                left: 48,
+                top: 18,
+                fontFamily: font.display,
+                fontSize: 13,
+                color: appColors.white,
+                letterSpacing: 0.2,
+                whiteSpace: 'nowrap',
+                pointerEvents: 'none',
+              }}
+            >
+              Keep holding to return to Setup
+            </span>
+          </>
+        ) : null}
+      </>
     );
   }
 
   return (
-    <PhoneEuiManyToOne
-      inputs={[
-        {label: 'Input 1'},
-        {label: 'Input 2'},
-        {label: 'HDMI 1'},
-        {label: 'HDMI 2'},
-      ]}
-      selectedInput={0}
-      volume={0.72}
-      outputLabel="DISPLAY 1"
-      showExitHint
+    <ActivitiesPresets
+      device="phone"
+      activeTab="presets"
+      mode="list"
+      showNavMenu={true}
+      toast="Switching activity saved to end UI"
     />
   );
 };
