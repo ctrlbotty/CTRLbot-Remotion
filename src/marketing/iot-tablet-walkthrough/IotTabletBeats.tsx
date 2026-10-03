@@ -52,10 +52,10 @@ import {
 } from '../../app-ui/ActivitiesSwitch';
 import {ActivitiesAudio, activitiesAudioRegions} from '../../app-ui/ActivitiesAudio';
 import {EuiPowerCapture} from '../../app-ui/EuiPower';
-import {DiscoverDevices} from '../../app-ui/DiscoverDevices';
+import {DiscoverDevices, discoverDevicesRegions} from '../../app-ui/DiscoverDevices';
 import {SettingsSupport} from '../../app-ui/SettingsSupport';
 import {FocusRing, TapIndicator} from '../../camera/Annotations';
-import {centerOf} from '../../camera/Camera';
+import {centerOf, type Region} from '../../camera/Camera';
 import {tabletNavRegions} from '../../app-ui/TabletNavRail';
 import {appColors} from '../../design/tokens.generated';
 import {font} from '../../design/theme';
@@ -1310,114 +1310,416 @@ export const ExitBeat: React.FC<{frame: number; frames: number}> = ({frame}) => 
 
 /**
  * Discovery beat (20s = 600 frames):
- * Discover Devices counts up as devices are found; each row shows its driver match or Add driver.
+ * Find Devices scans the network:
+ * discovery icon ringed and tapped on "discovery"; the count climbs on "scans";
+ * driver match ringed on "database".
+ * Cues: discovery-scan "discovery" (abs 6473, rel 143) · "scans" (abs 6588, rel 258)
+ *       · "database" (abs 6843, rel 513).
  */
 export const DiscoveryBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const foundCount = Math.floor(
-    interpolate(frame, [0, 500], [3, 16], {
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
-    }),
-  );
-  const scanningProgress = interpolate(frame, [0, 600], [10, 85], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  const cueDiscovery = CUE_FRAMES.discoveryDiscovery - BEATS.discovery.from;
+  const cueScans = CUE_FRAMES.discoveryScans - BEATS.discovery.from;
+  const cueDatabase = CUE_FRAMES.discoveryDatabase - BEATS.discovery.from;
+
+  const discoverRegs = discoverDevicesRegions('tablet');
+
+  // Discovery feature icon button in top-right of top bar
+  const discoveryIconRegion: Region = {
+    x: 200 + 1080 - 16 - 44, // 1220
+    y: 4,
+    width: 44,
+    height: 44,
+  };
+  const iconCenter = centerOf(discoveryIconRegion);
+
+  // Before cueScans, count holds at 3. From cueScans onwards, count climbs to 16.
+  const foundCount =
+    frame < cueScans
+      ? 3
+      : Math.floor(
+          interpolate(frame, [cueScans, 500], [3, 16], {
+            extrapolateLeft: 'clamp',
+            extrapolateRight: 'clamp',
+          }),
+        );
+
+  const scanningProgress =
+    frame < cueScans
+      ? 10
+      : interpolate(frame, [cueScans, 600], [10, 85], {
+          extrapolateLeft: 'clamp',
+          extrapolateRight: 'clamp',
+        });
+
+  const stillLooking = frame >= cueScans;
 
   return (
-    <DiscoverDevices
-      device="tablet"
-      foundCount={foundCount}
-      stillLooking
-      scanningProgress={scanningProgress}
-    />
+    <>
+      <DiscoverDevices
+        device="tablet"
+        foundCount={foundCount}
+        stillLooking={stillLooking}
+        scanningProgress={scanningProgress}
+      />
+
+      {/* Discovery feature icon overlay in topBar corner */}
+      <div
+        style={{
+          position: 'absolute',
+          left: discoveryIconRegion.x,
+          top: discoveryIconRegion.y,
+          width: discoveryIconRegion.width,
+          height: discoveryIconRegion.height,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: 6,
+          backgroundColor:
+            frame >= cueDiscovery && frame < cueDiscovery + 10
+              ? appColors.gray25
+              : 'transparent',
+          zIndex: 10,
+          pointerEvents: 'none',
+        }}
+      >
+        <svg width={22} height={22} viewBox="0 0 24 24" fill="none">
+          <circle cx={11} cy={11} r={8} stroke={appColors.white} strokeWidth={2.2} />
+          <path
+            d="M21 21L16.65 16.65"
+            stroke={appColors.white}
+            strokeWidth={2.2}
+            strokeLinecap="round"
+          />
+        </svg>
+      </div>
+
+      {/* Cue 1: Discovery icon ringed and tapped on "discovery" */}
+      {frame < cueScans ? (
+        <>
+          <FocusRing
+            region={discoveryIconRegion}
+            appearAt={cueDiscovery - 10}
+            radius={6}
+            name="Discovery icon ring"
+          />
+          <TapIndicator
+            x={iconCenter.x}
+            y={iconCenter.y}
+            at={cueDiscovery}
+            name="Discovery icon tap"
+          />
+        </>
+      ) : null}
+
+      {/* Cue 3: Driver match ringed on "database" */}
+      {frame >= cueDatabase ? (
+        <FocusRing
+          region={discoverRegs.driverMatch(6)}
+          appearAt={cueDatabase}
+          radius={4}
+          name="Driver match ring"
+        />
+      ) : null}
+    </>
   );
 };
 
 /**
  * Matrox-Add beat (30.5s = 915 frames):
- * Matrox ConvertIP rows are added one after another; each ends Added.
+ * Add a whole AV-over-IP system in one go:
+ * Matrox rows ringed on "Matrox"; Add tapped on "add"; Added on "click".
+ * Subsequent Matrox rows added in sequence, ending Added.
+ * Cues: matrox-endpoints "Matrox" (abs 7008, rel 78) · matrox-add-these "add" (abs 7188, rel 258)
+ *       · matrox-add-these "click" (abs 7239, rel 309).
  */
 export const MatroxAddBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const cueEndpoints = CUE_FRAMES.matroxEndpoints - BEATS['matrox-add'].from;
+  const cueAdd = CUE_FRAMES.matroxAdd - BEATS['matrox-add'].from;
+  const cueClick = CUE_FRAMES.matroxClick - BEATS['matrox-add'].from;
+
+  const discoverRegs = discoverDevicesRegions('tablet');
+
+  // Smooth scroll so Matrox rows (cards 6, 7, 8) sit in the center of the viewport
+  const scrollOffset = interpolate(frame, [0, cueEndpoints], [0, 180], {
+    easing: Easing.bezier(0.16, 1, 0.3, 1),
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+
   const addedDeviceIds: string[] = [];
-  if (frame >= 260) {
+  if (frame >= cueClick) {
     addedDeviceIds.push('d7');
   }
   if (frame >= 500) {
     addedDeviceIds.push('d8');
   }
-  if (frame >= 740) {
+  if (frame >= 700) {
     addedDeviceIds.push('d9');
   }
 
-  const scrollOffset = interpolate(frame, [0, 320], [0, 180], {
-    easing: Easing.bezier(0.45, 0, 0.55, 1),
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  // Cards 6, 7, 8 are the Matrox ConvertIP rows
+  const card6 = discoverRegs.card(6);
+  const card8 = discoverRegs.card(8);
+  const matroxRowsRegion: Region = {
+    x: card6.x,
+    y: card6.y - scrollOffset,
+    width: card6.width,
+    height: card8.y + card8.height - card6.y,
+  };
+
+  const btn6 = discoverRegs.addButton(6, frame >= cueClick ? 'added' : 'add_driver');
+  const offsetBtn6: Region = {
+    x: btn6.x,
+    y: btn6.y - scrollOffset,
+    width: btn6.width,
+    height: btn6.height,
+  };
+  const btn6Center = centerOf(offsetBtn6);
+
+  const btn7 = discoverRegs.addButton(7, frame >= 500 ? 'added' : 'add_driver');
+  const offsetBtn7: Region = {
+    x: btn7.x,
+    y: btn7.y - scrollOffset,
+    width: btn7.width,
+    height: btn7.height,
+  };
+  const btn7Center = centerOf(offsetBtn7);
+
+  const btn8 = discoverRegs.addButton(8, frame >= 700 ? 'added' : 'add_driver');
+  const offsetBtn8: Region = {
+    x: btn8.x,
+    y: btn8.y - scrollOffset,
+    width: btn8.width,
+    height: btn8.height,
+  };
+  const btn8Center = centerOf(offsetBtn8);
 
   return (
-    <DiscoverDevices
-      device="tablet"
-      foundCount={16}
-      stillLooking={false}
-      scanningProgress={100}
-      addedDeviceIds={addedDeviceIds}
-      initialScrollOffset={scrollOffset}
-      toast={frame >= 780 ? 'Device added to connections' : undefined}
-    />
+    <>
+      <DiscoverDevices
+        device="tablet"
+        foundCount={16}
+        stillLooking={false}
+        scanningProgress={100}
+        addedDeviceIds={addedDeviceIds}
+        initialScrollOffset={scrollOffset}
+        toast={frame >= 740 ? 'Device added to connections' : undefined}
+      />
+
+      {/* Cue 1: Matrox rows ringed on "Matrox" */}
+      {frame >= cueEndpoints && frame < cueAdd ? (
+        <FocusRing
+          region={matroxRowsRegion}
+          appearAt={cueEndpoints}
+          radius={6}
+          name="Matrox rows ring"
+        />
+      ) : null}
+
+      {/* Cue 2: Add tapped on "add" */}
+      <TapIndicator
+        x={btn6Center.x}
+        y={btn6Center.y}
+        at={cueAdd}
+        name="Matrox Add tap"
+      />
+
+      {/* Cue 3: Added ring on "click" */}
+      {frame >= cueClick && frame < 460 ? (
+        <FocusRing
+          region={offsetBtn6}
+          appearAt={cueClick}
+          radius={5}
+          name="Matrox Added ring"
+        />
+      ) : null}
+
+      {/* Subsequent row adds */}
+      <TapIndicator
+        x={btn7Center.x}
+        y={btn7Center.y}
+        at={480}
+        name="Matrox row 2 Add tap"
+      />
+      <TapIndicator
+        x={btn8Center.x}
+        y={btn8Center.y}
+        at={680}
+        name="Matrox row 3 Add tap"
+      />
+    </>
   );
 };
 
 /**
- * Matrox-Test beat (7s = 210 frames):
- * The Matrox system in the switcher: encoders on the left, four decoders;
- * one decoder takes an encoder.
+ * Matrox-Test beat (8s = 240 frames):
+ * Test each encoder and decoder:
+ * Matrox system with encoders and decoders side by side;
+ * decoder tapped on "individual"; decoder takes encoder on "switch".
+ * Cues: matrox-test-individual "individual" (abs 7875, rel 30)
+ *       · matrox-test-switch "switch" (abs 7995, rel 150).
  */
 export const MatroxTestBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const selectedOutput = frame < 60 ? undefined : 0;
-  const selectedInput = frame < 100 ? undefined : 0;
+  const cueIndividual = CUE_FRAMES.matroxIndividual - BEATS['matrox-test'].from;
+  const cueSwitch = CUE_FRAMES.matroxSwitch - BEATS['matrox-test'].from;
+
+  const testRegs = connectTestRegions('tablet');
+
+  const selectedOutput = frame < cueIndividual ? undefined : 0;
+  const selectedInput = frame < cueSwitch ? undefined : 0;
+
   const outputs = [
-    {name: 'CONVERTIP RX 1', ip: '239.100.45.1', routed: frame >= 100 ? 'CONVERTIP TX 1' : null},
+    {
+      name: 'CONVERTIP RX 1',
+      ip: '239.100.45.1',
+      routed: frame >= cueSwitch ? 'CONVERTIP TX 1' : null,
+    },
     {name: 'CONVERTIP RX 2', ip: '239.100.46.1', routed: null},
     {name: 'CONVERTIP RX 3', ip: '239.100.47.1', routed: null},
     {name: 'CONVERTIP RX 4', ip: '239.100.48.1', routed: null},
   ];
 
+  const out1 = testRegs.switcherOutput(1);
+  const out1Center = centerOf(out1);
+  const inp1 = testRegs.switcherInput(1);
+  const inp1Center = centerOf(inp1);
+
   return (
-    <ConnectTest
-      device="tablet"
-      topTab="test"
-      testTab="switcher"
-      deviceName="MATROX ConvertIP (8)"
-      multiOutput
-      outputs={outputs}
-      inputs={DEFAULT_MATROX_INPUTS}
-      selectedOutput={selectedOutput}
-      selectedInput={selectedInput}
-      connected
-    />
+    <>
+      <ConnectTest
+        device="tablet"
+        topTab="test"
+        testTab="switcher"
+        deviceName="MATROX ConvertIP (8)"
+        multiOutput
+        outputs={outputs}
+        inputs={DEFAULT_MATROX_INPUTS}
+        selectedOutput={selectedOutput}
+        selectedInput={selectedInput}
+        connected
+      />
+
+      {/* Cue 1: Decoder tapped on "individual" */}
+      <TapIndicator
+        x={out1Center.x}
+        y={out1Center.y}
+        at={cueIndividual}
+        name="Decoder tap"
+      />
+      {frame >= cueIndividual ? (
+        <FocusRing
+          region={out1}
+          appearAt={cueIndividual}
+          radius={6}
+          name="Decoder ring"
+        />
+      ) : null}
+
+      {/* Cue 2: Encoder tapped on "switch" -> decoder takes encoder */}
+      <TapIndicator
+        x={inp1Center.x}
+        y={inp1Center.y}
+        at={cueSwitch}
+        name="Encoder tap"
+      />
+      {frame >= cueSwitch ? (
+        <FocusRing
+          region={inp1}
+          appearAt={cueSwitch}
+          radius={6}
+          name="Encoder ring"
+        />
+      ) : null}
+    </>
   );
 };
 
 /**
  * Matrox-Switch beat (23.5s = 705 frames):
- * Switch type goes to AVoIP Encoders/Decoders; the ConvertIP encoder and decoder lists fill.
+ * Encoders and decoders, set up for the room:
+ * switch type goes to AVoIP Encoders/Decoders on "encoders";
+ * ConvertIP lists fill and are ringed on "convert".
+ * Cues: matrox-switch-back "activities" (abs 8127, rel 42)
+ *       · matrox-switch-change "encoders" (abs 8281, rel 196)
+ *       · matrox-switch-convertip "convert" (abs 8387, rel 302).
  */
 export const MatroxSwitchBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const isAvoip = frame >= 200;
-  const pickerOpen = frame >= 70 && frame < 200;
+  const cueBack = CUE_FRAMES.matroxSwitchBack - BEATS['matrox-switch'].from;
+  const cueEncoders = CUE_FRAMES.matroxEncoders - BEATS['matrox-switch'].from;
+  const cueConvert = CUE_FRAMES.matroxConvert - BEATS['matrox-switch'].from;
+
+  const isAvoip = frame >= cueEncoders;
+  const pickerOpen = frame >= 120 && frame < cueEncoders;
+
+  const switchRegs = activitiesSwitchRegions('tablet');
+  const avoipRegs = activitiesSwitchRegions('tablet', {switchType: 'avoip'});
+
+  const switchTabCenter = centerOf(switchRegs.switchTab);
+  const arrowCenter = centerOf(switchRegs.switchTypeArrow);
+  const avoipOptCenter = centerOf(switchRegs.switchTypeOptionAvoip);
 
   return (
-    <ActivitiesSwitch
-      device="tablet"
-      activeTab="switch"
-      switchType={isAvoip ? 'avoip' : 'many_to_one'}
-      switchTypePickerOpen={pickerOpen}
-      deviceName="MATROX ConvertIP (8)"
-      encoders={DEFAULT_AVOIP_ENCODERS}
-      decoders={DEFAULT_AVOIP_DECODERS}
-    />
+    <>
+      <ActivitiesSwitch
+        device="tablet"
+        activeTab="switch"
+        switchType={isAvoip ? 'avoip' : 'many_to_one'}
+        switchTypePickerOpen={pickerOpen}
+        deviceName="MATROX ConvertIP (8)"
+        encoders={DEFAULT_AVOIP_ENCODERS}
+        decoders={DEFAULT_AVOIP_DECODERS}
+      />
+
+      {/* Cue 1: Activities / Switch tab tapped on "activities" */}
+      <TapIndicator
+        x={switchTabCenter.x}
+        y={switchTabCenter.y}
+        at={cueBack}
+        name="Switch tab tap"
+      />
+      {frame >= cueBack && frame < 120 ? (
+        <FocusRing
+          region={switchRegs.switchTypeSelector}
+          appearAt={cueBack}
+          radius={4}
+          name="Switch type selector ring"
+        />
+      ) : null}
+
+      {/* Dropdown open tap at frame 120 */}
+      <TapIndicator
+        x={arrowCenter.x}
+        y={arrowCenter.y}
+        at={120}
+        name="Switch type dropdown tap"
+      />
+
+      {/* Cue 2: AVoIP option tapped on "encoders" -> switch type changes */}
+      <TapIndicator
+        x={avoipOptCenter.x}
+        y={avoipOptCenter.y}
+        at={cueEncoders}
+        name="AVoIP option tap"
+      />
+
+      {/* Cue 3: Encoders and decoders lists ringed on "convert" */}
+      {frame >= cueConvert ? (
+        <>
+          <FocusRing
+            region={avoipRegs.encodersList}
+            appearAt={cueConvert}
+            radius={6}
+            name="ConvertIP encoders list ring"
+          />
+          <FocusRing
+            region={avoipRegs.decodersList}
+            appearAt={cueConvert}
+            radius={6}
+            name="ConvertIP decoders list ring"
+          />
+        </>
+      ) : null}
+    </>
   );
 };
 
