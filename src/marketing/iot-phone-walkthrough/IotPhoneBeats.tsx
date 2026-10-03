@@ -57,7 +57,7 @@ import {
   discoverDevicesRegions,
   type DiscoveredDevice,
 } from '../../app-ui/DiscoverDevices';
-import {SettingsSupport} from '../../app-ui/SettingsSupport';
+import {SettingsSupport, settingsSupportRegions} from '../../app-ui/SettingsSupport';
 import {EUI_POWER_REGIONS, EuiPowerCapture} from '../../app-ui/EuiPower';
 import {PhoneNavMenu} from '../../app-ui/PhoneNavMenu';
 import {centerOf} from '../../camera/Camera';
@@ -1461,100 +1461,259 @@ export const MatroxSwitchBeat: React.FC<{frame: number; frames: number}> = ({fra
   );
 };
 
+const M2M_INPUTS: EuiInput[] = [
+  {label: 'ConvertIP TX 1'},
+  {label: 'ConvertIP TX 2'},
+  {label: 'ConvertIP TX 3'},
+  {label: 'ConvertIP TX 4'},
+];
+
 /**
  * M2M beat (26.5s = 795 frames):
  * Four displays: a source tapped then a display; a source dragged onto a display;
  * All sends one source to every display.
+ * Cues: many "many", source "source", display "display", drag "drag", all "all".
  */
 export const M2mBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const manyCue = CUE_FRAMES.many - BEATS.m2m.from; // 150
+  const sourceCue = CUE_FRAMES.source - BEATS.m2m.from; // 320
+  const displayCue = CUE_FRAMES.display - BEATS.m2m.from; // 371
+  const dragCue = CUE_FRAMES.drag - BEATS.m2m.from; // 410
+  const allCue = CUE_FRAMES.all - BEATS.m2m.from; // 590
+
+  const dragDuration = 36;
+  const dragDropFrame = dragCue + dragDuration;
+
+  // Source selection state
   let selectedInput: number | null = null;
+  if (frame >= sourceCue && frame < displayCue + 15) {
+    selectedInput = 1; // ConvertIP TX 2 selected
+  } else if (frame >= allCue - 25) {
+    selectedInput = 0; // ConvertIP TX 1 selected for All
+  }
+
+  // Source strip scroll to bring Card 2 (ConvertIP TX 3) in view for the drag
+  const inputScroll =
+    frame < displayCue + 10
+      ? 0
+      : frame < dragCue - 10
+        ? interpolate(frame, [displayCue + 10, dragCue - 10], [0, 80], {
+            easing: Easing.bezier(0.16, 1, 0.3, 1),
+            extrapolateLeft: 'clamp',
+            extrapolateRight: 'clamp',
+          })
+        : frame < allCue - 30
+          ? 80
+          : interpolate(frame, [allCue - 30, allCue - 10], [80, 0], {
+              easing: Easing.bezier(0.16, 1, 0.3, 1),
+              extrapolateLeft: 'clamp',
+              extrapolateRight: 'clamp',
+            });
+
+  // Drag Card 2 onto Display 3
   let drag: {inputIndex: number; x: number; y: number; opacity?: number; scale?: number} | null = null;
-  let outputs: EuiOutput[] = [
-    {label: 'Display 1', source: 'ConvertIP TX 1'},
-    {label: 'Display 2', source: null},
-    {label: 'Display 3', source: null},
-    {label: 'Display 4', source: null},
-  ];
+  if (frame >= dragCue && frame < dragDropFrame) {
+    const dragProgress = interpolate(frame, [dragCue, dragDropFrame], [0, 1], {
+      easing: Easing.bezier(0.16, 1, 0.3, 1),
+      extrapolateLeft: 'clamp',
+      extrapolateRight: 'clamp',
+    });
+    const startX = centerOf(EUI_REGIONS.inputTile(2)).x - 80;
+    const startY = centerOf(EUI_REGIONS.inputTile(2)).y;
+    const target = centerOf(EUI_REGIONS.outputCell(2));
+    drag = {
+      inputIndex: 2,
+      x: startX + (target.x - startX) * dragProgress,
+      y: startY + (target.y - startY) * dragProgress,
+      opacity: 0.95,
+      scale: 1.05,
+    };
+  }
 
-  if (frame < 260) {
-    if (frame >= 80 && frame < 160) {
-      selectedInput = 1; // ConvertIP TX 2 selected
-    } else if (frame >= 160) {
-      selectedInput = 1;
-      outputs[1] = {label: 'Display 2', source: 'ConvertIP TX 2', highlight: 'blue'};
-    }
-  } else if (frame < 520) {
-    selectedInput = null;
-    outputs[1] = {label: 'Display 2', source: 'ConvertIP TX 2'};
-
-    // Drag TX 3 onto Display 3
-    if (frame >= 300 && frame < 440) {
-      const dragProgress = interpolate(frame, [300, 430], [0, 1], {
-        easing: Easing.bezier(0.25, 0.1, 0.25, 1),
-        extrapolateLeft: 'clamp',
-        extrapolateRight: 'clamp',
-      });
-      const startX = 180;
-      const startY = 600;
-      const targetX = 80;
-      const targetY = 220;
-      drag = {
-        inputIndex: 2,
-        x: startX + (targetX - startX) * dragProgress,
-        y: startY + (targetY - startY) * dragProgress,
-        opacity: 0.9,
-        scale: 1.05,
-      };
-    } else if (frame >= 440) {
-      outputs[2] = {label: 'Display 3', source: 'ConvertIP TX 3', highlight: 'yellow'};
-    }
-  } else {
-    // All sends TX 1 to every display
-    selectedInput = 0;
+  // Display outputs state progression
+  let outputs: EuiOutput[];
+  if (frame >= allCue) {
     outputs = [
       {label: 'Display 1', source: 'ConvertIP TX 1', highlight: 'blue'},
       {label: 'Display 2', source: 'ConvertIP TX 1', highlight: 'blue'},
       {label: 'Display 3', source: 'ConvertIP TX 1', highlight: 'blue'},
       {label: 'Display 4', source: 'ConvertIP TX 1', highlight: 'blue'},
     ];
+  } else {
+    outputs = [
+      {label: 'Display 1', source: 'ConvertIP TX 1', highlight: 'blue'},
+      {
+        label: 'Display 2',
+        source: frame >= displayCue ? 'ConvertIP TX 2' : null,
+        highlight: frame >= displayCue ? 'blue' : undefined,
+      },
+      {
+        label: 'Display 3',
+        source: frame >= dragDropFrame ? 'ConvertIP TX 3' : null,
+        highlight: frame >= dragDropFrame ? 'blue' : undefined,
+      },
+      {label: 'Display 4', source: null},
+    ];
   }
 
-  const inputs: EuiInput[] = [
-    {label: 'ConvertIP TX 1'},
-    {label: 'ConvertIP TX 2'},
-    {label: 'ConvertIP TX 3'},
-    {label: 'ConvertIP TX 4'},
-  ];
+  const dragStartX = centerOf(EUI_REGIONS.inputTile(2)).x - 80;
+  const dragStartY = centerOf(EUI_REGIONS.inputTile(2)).y;
 
   return (
-    <PhoneEui
-      outputs={outputs}
-      inputs={inputs}
-      selectedInput={selectedInput}
-      volume={0.72}
-      drag={drag}
-    />
+    <>
+      <PhoneEui
+        outputs={outputs}
+        inputs={M2M_INPUTS}
+        selectedInput={selectedInput}
+        volume={0.72}
+        inputScroll={inputScroll}
+        drag={drag}
+      />
+
+      {/* "many" cue: ring the four displays */}
+      {frame >= manyCue && frame < sourceCue && (
+        <FocusRing
+          region={EUI_REGIONS.outputGrid}
+          appearAt={manyCue}
+          radius={6}
+          name="Four displays grid ring"
+        />
+      )}
+
+      {/* "source" cue: tap Source 1 (ConvertIP TX 2) */}
+      <TapIndicator
+        x={centerOf(EUI_REGIONS.inputTile(1)).x}
+        y={centerOf(EUI_REGIONS.inputTile(1)).y}
+        at={sourceCue}
+        name="Source ConvertIP TX 2 tap"
+      />
+      {frame >= sourceCue && frame < displayCue && (
+        <FocusRing
+          region={EUI_REGIONS.inputTile(1)}
+          appearAt={sourceCue}
+          radius={5}
+          name="Source ConvertIP TX 2 ring"
+        />
+      )}
+
+      {/* "display" cue: tap Display 2 to complete routing */}
+      <TapIndicator
+        x={centerOf(EUI_REGIONS.outputCell(1)).x}
+        y={centerOf(EUI_REGIONS.outputCell(1)).y}
+        at={displayCue}
+        name="Display 2 tap"
+      />
+      {frame >= displayCue && frame < dragCue && (
+        <FocusRing
+          region={EUI_REGIONS.outputCell(1)}
+          appearAt={displayCue}
+          radius={2}
+          name="Display 2 ring"
+        />
+      )}
+
+      {/* "drag" cue: tap at drag start */}
+      <TapIndicator
+        x={dragStartX}
+        y={dragStartY}
+        at={dragCue}
+        name="Drag start tap"
+      />
+
+      {/* Drop result: ring Display 3 */}
+      {frame >= dragDropFrame && frame < allCue - 15 && (
+        <FocusRing
+          region={EUI_REGIONS.outputCell(2)}
+          appearAt={dragDropFrame}
+          radius={2}
+          name="Display 3 drop ring"
+        />
+      )}
+
+      {/* "all" cue: ring and tap All button */}
+      <TapIndicator
+        x={centerOf(EUI_REGIONS.routeAll).x}
+        y={centerOf(EUI_REGIONS.routeAll).y}
+        at={allCue}
+        name="All button tap"
+      />
+      {frame >= allCue - 15 && (
+        <FocusRing
+          region={EUI_REGIONS.routeAll}
+          appearAt={Math.max(0, allCue - 15)}
+          radius={6}
+          name="All button ring"
+        />
+      )}
+    </>
   );
 };
 
 /**
- * Settings beat (15s = 450 frames):
- * Settings → Support: User Manual, Quick Start, Factory Reset.
+ * Settings beat (15.5s = 465 frames):
+ * Settings → Support: User Manual, Quick Start and Factory Reset ringed on their words.
+ * Cues: settingsSetup "Setup", manual "Manual", quick "Quick", factory "factory".
  */
 export const SettingsBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const resetButtonState =
-    frame >= 240 && frame < 360
-      ? 'pressed'
-      : frame >= 360
-        ? 'restored'
-        : 'idle';
+  const setupCue = CUE_FRAMES.settingsSetup - BEATS.settings.from;
+  const manualCue = CUE_FRAMES.manual - BEATS.settings.from;
+  const quickCue = CUE_FRAMES.quick - BEATS.settings.from;
+  const factoryCue = CUE_FRAMES.factory - BEATS.settings.from;
+
+  const settingsReg = settingsSupportRegions('phone');
 
   return (
-    <SettingsSupport
-      device="phone"
-      resetButtonState={resetButtonState}
-      showDocumentationHighlight={frame < 240}
-    />
+    <>
+      <SettingsSupport device="phone" />
+
+      {/* "Setup" cue: setup button ring and tap */}
+      {frame < manualCue && (
+        <>
+          <FocusRing
+            region={settingsReg.setupButton}
+            appearAt={Math.max(0, setupCue - 24)}
+            radius={4}
+            name="Setup button ring"
+          />
+          <TapIndicator
+            x={centerOf(settingsReg.setupButton).x}
+            y={centerOf(settingsReg.setupButton).y}
+            at={setupCue}
+            name="Setup button tap"
+          />
+        </>
+      )}
+
+      {/* "Manual" cue: User Manual card ringed */}
+      {frame >= manualCue && frame < quickCue && (
+        <FocusRing
+          region={settingsReg.userManual}
+          appearAt={manualCue}
+          radius={5}
+          name="User Manual ring"
+        />
+      )}
+
+      {/* "Quick" cue: Quick Start card ringed */}
+      {frame >= quickCue && frame < factoryCue && (
+        <FocusRing
+          region={settingsReg.quickStart}
+          appearAt={quickCue}
+          radius={5}
+          name="Quick Start ring"
+        />
+      )}
+
+      {/* "factory" cue: Factory Reset card ringed */}
+      {frame >= factoryCue && (
+        <FocusRing
+          region={settingsReg.factoryReset}
+          appearAt={factoryCue}
+          radius={5}
+          name="Factory Reset ring"
+        />
+      )}
+    </>
   );
 };
 
