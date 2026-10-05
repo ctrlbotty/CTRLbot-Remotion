@@ -528,7 +528,7 @@ Nathan approved the landscape revision and requested portrait review and similar
 fixes. Phase 2 uses the same 9543-frame edit spans and complete spoken clips.
 
 - [x] T38: Frame every portrait phone with the dark grey bezel in a dedicated clear area, carry the approved dropdown and highlight fixes, and keep switching and exit controls visible — files: src/marketing/iot-phone-walkthrough/IotPhonePortraitReview.tsx, src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
-- [ ] T39: Wire the portrait review at 9543 frames while preserving the approved landscape and unrelated Root edits — files: src/marketing/iot-phone-walkthrough/IotPhoneWalkthrough.tsx, src/Root.tsx
+- [x] T39: Wire the portrait review at 9543 frames while preserving the approved landscape and unrelated Root edits — files: src/marketing/iot-phone-walkthrough/IotPhoneWalkthrough.tsx, src/Root.tsx
 - [ ] T40: Inspect portrait cue stills, render its review artifact and contact sheet, run the existing gates, and stop for Nathan — files: videos/iot-phone-walkthrough.md
 
 Portrait review found the original chapter zooms crop controls and place the
@@ -543,3 +543,7 @@ All 19 chapter/card stills were inspected, plus Product Page, Welcome power, Set
 switching and both edit boundaries. The portrait exit override uses the capture's
 tools centre (24,54); its spotlight and two-second hold ring now align. The
 overlay is contained inside the phone so the grey bezel stays visible.
+
+T39 verification: composition list confirms portrait 9543 frames / 318.10 seconds.
+Only the IoT portrait duration hunk is staged from Root; Terminator edits remain
+unstaged. Approved landscape source framing and rendered artifact are unchanged.

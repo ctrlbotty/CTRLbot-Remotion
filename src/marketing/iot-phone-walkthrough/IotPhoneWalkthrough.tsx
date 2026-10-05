@@ -13,6 +13,7 @@ import {BEAT_RENDERERS, OpenBeat} from './IotPhoneBeats';
 import {IOT_PHONE_CAPTION_CORRECTIONS} from './iotPhoneWalkthroughNarration';
 import {NARRATION_EDIT} from './iotPhoneWalkthroughNarration.generated';
 import {IotPhoneLandscapeReview} from './IotPhoneLandscapeReview';
+import {IotPhonePortraitReview} from './IotPhonePortraitReview';
 import {
   IOT_PHONE_WALKTHROUGH_FRAMES,
   WALKTHROUGH_BEATS,
@@ -45,4 +46,4 @@ const Walkthrough = ({format}: {format: WalkthroughFormat}) => (
 export const IotPhoneWalkthrough = () => <IotPhoneLandscapeReview />;
 
 /** 1080x1920, narrated, captions burned in. The cut for the feeds. */
-export const IotPhoneWalkthroughPortrait = () => <Walkthrough format="portrait" />;
+export const IotPhoneWalkthroughPortrait = () => <IotPhonePortraitReview />;
