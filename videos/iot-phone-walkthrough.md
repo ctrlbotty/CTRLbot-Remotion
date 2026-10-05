@@ -529,7 +529,7 @@ fixes. Phase 2 uses the same 9543-frame edit spans and complete spoken clips.
 
 - [x] T38: Frame every portrait phone with the dark grey bezel in a dedicated clear area, carry the approved dropdown and highlight fixes, and keep switching and exit controls visible — files: src/marketing/iot-phone-walkthrough/IotPhonePortraitReview.tsx, src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [x] T39: Wire the portrait review at 9543 frames while preserving the approved landscape and unrelated Root edits — files: src/marketing/iot-phone-walkthrough/IotPhoneWalkthrough.tsx, src/Root.tsx
-- [ ] T40: Inspect portrait cue stills, render its review artifact and contact sheet, run the existing gates, and stop for Nathan — files: videos/iot-phone-walkthrough.md
+- [x] T40: Inspect portrait cue stills, render its review artifact and contact sheet, run the existing gates, and stop for Nathan — files: videos/iot-phone-walkthrough.md
 
 Portrait review found the original chapter zooms crop controls and place the
 Product Page, exit control and Set menu under heading/caption scrims. This revision
@@ -547,3 +547,29 @@ overlay is contained inside the phone so the grey bezel stays visible.
 T39 verification: composition list confirms portrait 9543 frames / 318.10 seconds.
 Only the IoT portrait duration hunk is staged from Root; Terminator edits remain
 unstaged. Approved landscape source framing and rendered artifact are unchanged.
+
+Portrait audio check passes: 318.14s, AAC 48kHz stereo, -16.10 LUFS,
+-4.32 dBTP. Decoded audio MD5 is f662e9ac49478ffda8afdf0d43f4c983 in both
+portrait review and approved landscape. The landscape's three inherited voice
+verification flags therefore remain unchanged; cached voice verification is reused.
+Final export cue frames and one second later were inspected for proof, database,
+Product Page, Welcome power, exit hold, switching and Set. Heading and caption
+layers leave the controls visible, and the exit hold ring fills around the tools
+icon with the bezel remaining grey. Source checks and lint have passed.
+
+Final phase 2 result, 2026-10-05:
+- T38: eeb32e3; T39: c1bc880. Portrait source is isolated from the approved
+  landscape, and unrelated Mirror and Terminator changes remain unstaged.
+- Updated portrait: out/iot-phone-walkthrough-portrait.mp4, 55,812,426 bytes,
+  1080x1920 at 30fps, 9543 frames / 318.1s, burned-in corrected captions.
+- Final frame gate passes: 1273 samples, 57% inert, median content area 68%,
+  no problems and one content-fill advisory (comfortable floor 85%). Visual
+  inspection confirms deliberate room for headings/captions around the full
+  dark phone; controls are whole and there are no unintended bars or blank scenes.
+  Keep this framing for Nathan's review rather than crop controls to fill the frame.
+- Narration loudness check passes and the decoded audio matches the approved
+  landscape exactly. The inherited voice flags are recorded above and unchanged.
+- Review page with video and cue buttons: out/review/iot-phone-portrait/contact.html.
+  All chapter stills: out/iot-phone-walkthrough-portrait/contact.html. Previous
+  portrait retained at out/review/iot-phone-portrait/previous.mp4.
+- Stop for Nathan's portrait review. No publishing, archiving or close-out yet.
