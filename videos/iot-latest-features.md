@@ -318,7 +318,7 @@ and T15 are committed, with node_modules as a junction. Every W05 commit lands o
 
 ### W05
 
-- [ ] T8: Write W05's edit list from the Narration clips table and build it with `narration:edit` — files: src/marketing/iot-latest-features/iotLatestFeaturesNarration.ts, src/marketing/iot-latest-features/iotLatestFeaturesNarration.generated.ts, public/narration/iot-latest-features/edit.m4a
+- [x] T8: Write W05's edit list from the Narration clips table and build it with `narration:edit` — files: src/marketing/iot-latest-features/iotLatestFeaturesNarration.ts, src/marketing/iot-latest-features/iotLatestFeaturesNarration.generated.ts, public/narration/iot-latest-features/edit.m4a
   - Clip ids as the table; `IOT_LATEST_CAPTION_CORRECTIONS` from *Anything unusual*, plus `industrial` → `industrial-type` and `-type` → `` (Whisper splits "industrial -type", as it splits "RS -232"). Confirm the build log removed the repeated "you can" in `msg`.
   - Rev 2 replaces the 129s budget and its drop order. Build with the clip set Nathan approves (Revision 2), at most two builds to set the `at`s. Each beat's Sec is then lead + clips + 0.3s gaps + 1.0s hold, rounded up to 0.5s; T9 writes those into the Beats table. If the total is over 140s, drop `term-open` and rebuild once. Still over, or any other shortfall, is `[!]` with the measured lengths, for Nathan.
   - Then `npm run narration:verify` on `edit.m4a` (W02's T17). Fix each real edge leak with `notBefore` / `notAfter` or a tighter `sourceEnd` (contract: "Clip edges leak"), at most two more builds. Then measure each clip's last 30–80 ms in `edit.m4a`: louder than about -35 dB into silence is a clipped word, fixed with `wholeEdges: true` (W03 T32).
@@ -477,6 +477,8 @@ Then the run stops for Nathan's review. T16 follows on his go.
 - **Blocked:** nothing else; W02 T17 and W03 T20 and T21 are committed.
 
 ## Review notes
+
+- T8, 2026-10-05: author-verified (Claude) on objective gates. Measured clips came in far shorter than the plan's estimate (fillers removed): all 22 clips need about 143s, so only `eui-select` is dropped and `avoip-more` and `rs-layout` stay. 136s: open 5, proof 7, net-switches 7, avoip 12, global-cache 13, pusr 14.5, discovery 8.5, rs232 19.5, terminal 8.5, webpage 8.5, message 5.5, eui 11.5, power 11.5, close 4. Every beat holds at least 1.04s (avoip). `narration:verify` on `edit.m4a`: PASS, 0 edge defects, 8 notes. Fixed edges: `disc-click` lacked its cue word "click" and leaked a doubled "then"; `net-category`, `term-open` and `term-send` ran into the next words; `msg` now starts after the "you ca-" false start; Whisper's unheard "right?" is out of `term-open`. `power-x` is `verbatim`, because the filler pass removed its "X". Tails louder than -35 dB were checked against the source: gc-models, disc-corner, rs-terminal and thanks fall to about -54 dB straight after (natural ends); `net-category` ends at -11 dB because "switches." runs straight into "We only" — listen at 0:17.5. More than two edge builds were used, each for a distinct defect.
 
 > Appended on PASS WITH NOTES. Not blockers; check these during the review.
 
