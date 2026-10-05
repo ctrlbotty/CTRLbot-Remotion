@@ -1,6 +1,6 @@
 ---
 id: terminator-walkthrough
-destination: social-walkthrough-vertical
+destination: social-walkthrough
 ---
 
 # CTRLbot Terminator — narrated walkthrough (Roadmap W02)
@@ -34,13 +34,13 @@ Scan the network, run a test server, and talk to devices over TCP, serial and SS
 
 ## Beats
 
-Revision 2 (2026-10-01): the hybrid format, as W01's revision 2
+Landscape revision 3 (2026-10-05): the reviewed overview; portrait keeps revision 2. Hybrid format, as W01's revision 2
 (`videos/archive/2026-10-02-mirror-walkthrough-r2.md`). Layout: `card`, `stage` or `chapter`.
 
 | id | Layout | Claim | Surface | Evidence | Sec |
 |----|--------|-------|---------|----------|-----|
 | open | card | CTRLbot Terminator: the tools you test devices with, in one PC app | `MasterControlCard` | The tricon and the CTRLbot Terminator lockup are on screen at frame 0; the promise line streams in beneath them | 6.5 |
-| proof | stage | Every tool in one window | `TermApp` | The nav steps through Scan, TCP Server, Raw TCP, Serial and SSH, each tool's pane appearing in turn | 10 |
+| proof | chapter | Every tool in one window | `TermApp` | Nathan explains Scan, TCP Server, Raw TCP, Serial and SSH in sidebar order, then says to begin scanning; each pane and sidebar ring follow his narration | 38 |
 | scan | chapter | A scan names every device, its maker and its MAC | `TermScan` | Scan is pressed and rows fill at a readable size; the MAC column is ringed on "MAC" and a web link on "links" | 17.5 |
 | server | chapter | Run a server on your PC and test CTRLbot IoT against it | `ServerDiagram` + `TermTcpServer` | A diagram shows the PC as the server and CTRLbot IoT as the client, a command going over and a reply coming back; then the real server: a client connects from `192.168.0.24`, `hello world` arrives and a reply is sent | 23 |
 | pin | chapter | Pin a connection and it is there next time | `TermTcpServer` | The tab strip is close: the pin is ringed, the pointer clicks it, and it turns pinned while the session stays live | 16 |
@@ -409,3 +409,19 @@ Placement and holds follow W01's rule. Corrections stay `TERMINATOR_CAPTION_CORR
 - T13, 2026-10-02: Claude coordinator (non-author) PASS WITH NOTES. `npm run check` and `video:lint` pass (0 errors, 0 warnings) on the unchanged worker source. The eight cue stills at 394/692/1280/1462 in both shapes (`out/coordinator/t13-*.png`) were inspected in place of default contact frames: the proof nav steps with the whole window in shot; scan rows fill with the MAC column ringed; the diagram runs; the client row, then the arriving line, are ringed. Notes: the arriving-line ring covers the first glyph (carried into T14); the diagram's arrows run the wrong way (new T20).
 
 - Wrap-up at Nathan's request, 2026-10-02: T13 worker STOP READY; check/lint passed and eight cue stills rendered at394/692/1280/1462 in both shapes. Independent visual acceptance remains unfinished; T13 stays unchecked/uncommitted. All workers stopped and heartbeat paused. Preview predates T13. Resume from these stills, not from a new build or transcription. See docs/COORDINATOR-RETROSPECTIVE-2026-10-02.md.
+
+### Revision 3 · 2026-10-05 — Nathan's review (landscape first)
+
+User authorizes restoring the narrated overview and additional time. Landscape is now 166s; portrait remains 138s and awaits landscape approval. Its existing narration, timeline and render are preserved. The lead brief destination is social-walkthrough so the longer YouTube cut is checked against its own destination.
+
+- [x] T22: Restore the five-tool overview and spoken transition in a separate landscape narration edit — files: src/marketing/terminator-walkthrough/terminatorLandscapeNarration.ts, src/marketing/terminator-walkthrough/terminatorLandscapeNarration.generated.ts, public/narration/terminator-walkthrough/landscape-edit.m4a
+- [x] T23: Follow the narrated sidebar overview and extend only the landscape registration to 4980 frames — files: src/marketing/terminator-walkthrough/TerminatorLandscapeReview.tsx, src/Root.tsx
+- [x] T24: Lower and fit the HTTP ring, highlight the Serial and SSH menu entries, and show the navigation before moving toward the pane — files: src/marketing/terminator-walkthrough/TerminatorBeats.tsx, src/marketing/terminator-walkthrough/TerminatorLandscapeReview.tsx
+- [ ] T25: Check and render the revised landscape cut, preserve the previous review, and provide the contact sheet and subtitles for Nathan — files: videos/terminator-walkthrough.md
+
+Review timestamps move +28s: old 0:27 HTTP becomes 0:55; old 1:32 COM becomes 2:00; old 1:48 SSH becomes 2:16. Overview runs approximately 0:16–0:40, then the spoken start at 0:40–0:43 and scan at 0:44.5.
+
+Rebuild landscape audio: npm run narration:edit -- src/marketing/terminator-walkthrough/terminatorLandscapeNarration.ts TERMINATOR_LANDSCAPE_NARRATION_CLIPS terminator-walkthrough --seconds=166 --out-dir=src/marketing/terminator-walkthrough; move the resulting edit.m4a to public/narration/terminator-walkthrough/landscape-edit.m4a. The landscape shell explicitly selects this path because the generator's src field defaults to the ingest slug's original edit. Never hand-edit generated source.
+
+- Revision 3 checks, 2026-10-05: clean-worktree check and lint pass (0 errors, 0 warnings); 10 beats / 166s validate. Landscape cue frames 600/840/1110/1650/1680/3600/3630/4080/4110 visually inspected, with portrait spot checks preserving its previous timeline. HTTP ring fits the first button; Serial and SSH show their complete menu entries before moving toward the pane. Evidence: out/review/terminator-2026-10-05/cue-frames.png.
+- Landscape render gates: 664 samples, 32% inert, median content 98%, no problems. Narration check: AAC 48kHz stereo, 166.06s, -16.17 LUFS, -3.35 dBTP; passes. Edit narration verification: 19 clips, zero edge defects, 8 ASR differences noted (including an extra conjunction in the overview and omitted conjunction in the transition; no failed edges). Updated .srt: 69 captions, 349 words. The old landscape render and subtitles are preserved as out/terminator-walkthrough-before-review-2026-10-05.{mp4,srt}.

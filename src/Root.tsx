@@ -39,7 +39,6 @@ import {
   MirrorWalkthroughPortrait,
 } from './marketing/mirror-walkthrough/MirrorWalkthrough';
 import {
-  TerminatorWalkthrough,
   TerminatorWalkthroughPortrait,
 } from './marketing/terminator-walkthrough/TerminatorWalkthrough';
 import {
@@ -63,6 +62,7 @@ import {
   ProofWalkthroughShellPortrait,
 } from './app-ui/mirror/MirrorProofs';
 import {ServerDiagram} from './marketing/terminator-walkthrough/ServerDiagram';
+import {TerminatorLandscapeReview} from './marketing/terminator-walkthrough/TerminatorLandscapeReview';
 import {TermRawTcpProof, TermScanProof, TermSerialProof, TermServerProof, TermSshProof} from './app-ui/term/TermProofs';
 import {SHORTS, compositionId, frameSize, shortSeconds} from './shorts/shortsData';
 import {SHORT_EXAMPLE} from './shorts/example';
@@ -246,8 +246,8 @@ export const RemotionRoot = () => (
     <Folder name="CTRLbot-Terminator">
       <Composition
         id="terminator-walkthrough"
-        component={TerminatorWalkthrough}
-        durationInFrames={4140}
+        component={TerminatorLandscapeReview}
+        durationInFrames={4980}
         fps={30}
         width={1920}
         height={1080}

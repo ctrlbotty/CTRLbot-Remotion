@@ -18,7 +18,7 @@ import {BEATS, CUE_FRAMES} from './terminatorWalkthroughData';
 type BeatProps = {frame: number; frames: number; format: WalkthroughFormat};
 
 // Each navigation selection displays its own real pane, with the source session fields.
-const toolPane = (tool: TermTab): ReactNode => {
+export const toolPane = (tool: TermTab): ReactNode => {
   switch (tool) {
     case 'scan': return <TermScan adapter={TERM_ADAPTER} state={{status: 'ready', checked: 0, devices: []}} />;
     case 'tcp-server': return <TermTcpServer port={TERM_SERVER.port} listening={false} clients={0} received={[]} sent={[]} />;
@@ -57,7 +57,7 @@ const firstWebLink = {
   height: 14 + sp(1) * 2 + 2,
 };
 
-export const ScanBeat = ({frame, frames}: BeatProps) => {
+export const ScanBeat = ({frame, frames, format}: BeatProps) => {
   const host = CUE_FRAMES.host - BEATS.scan.from;
   const mac = CUE_FRAMES.mac - BEATS.scan.from;
   const links = CUE_FRAMES.links - BEATS.scan.from;
@@ -66,7 +66,7 @@ export const ScanBeat = ({frame, frames}: BeatProps) => {
       <TermScanScene frames={frames} startFrame={host} />
       <Spotlight region={termRegions.results} appearAt={host} intensity={0.25} />
       {frame < links ? <FocusRing region={macColumn} appearAt={mac} name="Scan MAC column" />
-        : <FocusRing region={firstWebLink} appearAt={links} radius={round.sm} name="Scan web link" />}
+        : <FocusRing region={format === 'landscape' ? {...firstWebLink, y: firstWebLink.y + 7, height: firstWebLink.height + 7} : firstWebLink} appearAt={links} radius={round.sm} name="Scan web link" />}
     </>
   );
 };
@@ -168,7 +168,7 @@ export const RawTcpBeat = ({frame, frames}: BeatProps) => {
   );
 };
 
-export const SerialBeat = ({frames}: BeatProps) => {
+export const SerialBeat = ({frame, frames, format}: BeatProps) => {
   const parameters = CUE_FRAMES.parameters - BEATS.serial.from;
   return (
     <>
@@ -178,6 +178,7 @@ export const SerialBeat = ({frames}: BeatProps) => {
         sendFrame={220}
         replyFrame={310}
       />
+      {format === 'landscape' && frame < 130 && <FocusRing region={termRegions.navItem('serial')} appearAt={8} radius={round.lg} name="Serial menu" />}
       <FocusRing
         region={termRegions.serialParams}
         appearAt={parameters}
@@ -188,17 +189,20 @@ export const SerialBeat = ({frames}: BeatProps) => {
   );
 };
 
-export const SshBeat = ({frames}: BeatProps) => {
+export const SshBeat = ({frame, frames, format}: BeatProps) => {
   const help = CUE_FRAMES.help - BEATS.ssh.from;
   // Connect early in the beat (frame 95) so the button press starts at frames * 0.08 (~35)
   // and finishes before typing starts on "help" (frame 244). Output follows typing (+45 frames).
   return (
-    <TermSshScene
-      frames={frames}
-      connectFrame={95}
-      typeFrame={help}
-      outputFrame={help + 45}
-    />
+    <>
+      <TermSshScene
+        frames={frames}
+        connectFrame={95}
+        typeFrame={help}
+        outputFrame={help + 45}
+      />
+      {format === 'landscape' && frame < 175 && <FocusRing region={termRegions.navItem('ssh')} appearAt={8} radius={round.lg} name="SSH menu" />}
+    </>
   );
 };
 
@@ -240,4 +244,3 @@ export const RecapBeat = ({frame}: BeatProps) => {
     </>
   );
 };
-
