@@ -575,8 +575,8 @@ export const AppsBeat: React.FC<{frame: number; frames: number}> = ({
 
   // Uninstall icon on Kindle row (index 6)
   const uninstallRegion: Rect = {
-    x: 356,
-    y: 486,
+    x: 354,
+    y: 505,
     width: 26,
     height: 26,
   };

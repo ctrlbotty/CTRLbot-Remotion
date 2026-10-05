@@ -427,3 +427,12 @@ Rebuild landscape audio: npm run narration:edit -- src/marketing/terminator-walk
 - Landscape render gates: 664 samples, 32% inert, median content 98%, no problems. Narration check: AAC 48kHz stereo, 166.06s, -16.17 LUFS, -3.35 dBTP; passes. Edit narration verification: 19 clips, zero edge defects, 8 ASR differences noted (including an extra conjunction in the overview and omitted conjunction in the transition; no failed edges). Updated .srt: 69 captions, 349 words. The old landscape render and subtitles are preserved as out/terminator-walkthrough-before-review-2026-10-05.{mp4,srt}.
 
 - T25: The landscape review render and .srt are available at the original out/ paths; the updated contact sheet is out/terminator-walkthrough/contact.html. Picture/audio gates and clean-worktree cue checks passed. Implementation commit: 4485a19. Portrait remains byte-identical (SHA256 29457A5DC517E4A92918ADCD821C813A7396A85871332ACBC4223C6A91C96119). Await Nathan’s landscape approval before portrait changes or close-out.
+
+### Revision 4 · 2026-10-05 — approved landscape fixes carried to portrait
+
+Nathan approved the landscape review and requested the same kinds of corrections in portrait. Reuse the approved 166s narration without shortening his words; a length preference question was presented while framing work proceeds. No narration or caption rebuilding is needed: the existing approved generated edit supplies the burned-in captions. The original 140s multi-platform ceiling would require a different editorial cut; the current lead brief's social-walkthrough profile checks this complete walkthrough without changing any threshold. Portrait retains its existing caption safe area.
+
+- [ ] T26: Carry the approved HTTP ring placement and menu highlights into portrait, and give its overview, Serial and SSH chapters their own camera framing — files: src/marketing/terminator-walkthrough/TerminatorBeats.tsx, src/marketing/terminator-walkthrough/TerminatorPortraitReview.tsx, src/Root.tsx
+- [ ] T27: Verify cue frames, render the portrait with the approved narration and burned-in captions, run picture and audio gates, and provide the review contact sheet — files: videos/terminator-walkthrough.md
+
+Concurrency: implement and verify in the isolated terminator-portrait-oct05 worktree at b69e89c. Other agents' Mirror and IoT source changes and the IoT hunks in Root.tsx are preserved. Wait for the occupied render/audio slot; run one render at a time. Landscape picture and narration stay approved and unchanged.

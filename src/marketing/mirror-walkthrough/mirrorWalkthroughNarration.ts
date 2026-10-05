@@ -19,8 +19,9 @@ export const MIRROR_WALKTHROUGH_NARRATION_CLIPS = [
   // proof: "basically a way to mirror what is on your Android phone or tablet."
   {id: 'mirror-what', at: 8.95, sourceStart: 10.65, sourceEnd: 16.85},
 
-  // setup: "So I've done the basic installation, but what we also have to do is we have to install ADB … but also manage applications on it"
-  {id: 'install-adb', at: 17.25, sourceStart: 30.4, sourceEnd: 44.0},
+  // setup: "we have to install ADB … but also manage applications on it"
+  // notBefore: cut "but what we also have to do is", start cleanly on "we have to install ADB".
+  {id: 'install-adb', at: 17.25, sourceStart: 32.0, sourceEnd: 44.0, notBefore: 32.10},
 
   // debugging: "make sure that USB debugging mode is on"
   {id: 'usb-debugging', at: 32.25, sourceStart: 190.45, sourceEnd: 196.45},
@@ -60,6 +61,7 @@ export const MIRROR_WALKTHROUGH_NARRATION_CLIPS = [
   // notAfter: a "Bye" follows "problems." at 497.87s.
   {id: 'setup-again', at: 127.25, sourceStart: 494.25, sourceEnd: 497.65, notBefore: 494.65, notAfter: 497.75},
 
-  // close: "Thank you for your time"
-  {id: 'thank-you', at: 131.75, sourceStart: 500.85, sourceEnd: 503.0},
 ];
+
+/** Optional spelling/caption corrections for this recording. */
+export const MIRROR_WALKTHROUGH_CAPTION_CORRECTIONS: Record<string, string> = {};

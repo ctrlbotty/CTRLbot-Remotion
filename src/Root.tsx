@@ -38,9 +38,7 @@ import {
   MirrorWalkthrough,
   MirrorWalkthroughPortrait,
 } from './marketing/mirror-walkthrough/MirrorWalkthrough';
-import {
-  TerminatorWalkthroughPortrait,
-} from './marketing/terminator-walkthrough/TerminatorWalkthrough';
+import {TerminatorPortraitReview} from './marketing/terminator-walkthrough/TerminatorPortraitReview';
 import {
   IotPhoneWalkthrough,
   IotPhoneWalkthroughPortrait,
@@ -254,8 +252,8 @@ export const RemotionRoot = () => (
       />
       <Composition
         id="terminator-walkthrough-portrait"
-        component={TerminatorWalkthroughPortrait}
-        durationInFrames={4140}
+        component={TerminatorPortraitReview}
+        durationInFrames={4980}
         fps={30}
         width={1080}
         height={1920}

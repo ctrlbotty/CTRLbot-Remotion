@@ -131,7 +131,7 @@ const regionsObject = {
   setupStep,
   installButton: {x: RAIL_WIDTH + PANEL_PADDING_X + 36, y: TITLE_BAR_HEIGHT + PANEL_HEADER_HEIGHT + 78, width: 84, height: 32},
   devicesCard: {x: RAIL_WIDTH + PANEL_PADDING_X, y: TITLE_BAR_HEIGHT + PANEL_HEADER_HEIGHT, width: SIDE_PANEL_WIDTH - PANEL_PADDING_X * 2, height: 288},
-  devicesReadyBadge: {x: RAIL_WIDTH + PANEL_PADDING_X + 56, y: TITLE_BAR_HEIGHT + PANEL_HEADER_HEIGHT + 48, width: 50, height: 20},
+  devicesReadyBadge: {x: RAIL_WIDTH + PANEL_PADDING_X + 55, y: TITLE_BAR_HEIGHT + PANEL_HEADER_HEIGHT + 58, width: 48, height: 20},
   startMirroringButton: {x: RAIL_WIDTH + PANEL_PADDING_X + 16, y: TITLE_BAR_HEIGHT + PANEL_HEADER_HEIGHT + 88 + 152, width: 164, height: 32},
   studioFrames: {x: RAIL_WIDTH + PANEL_PADDING_X, y: TITLE_BAR_HEIGHT + PANEL_HEADER_HEIGHT + 20, width: SIDE_PANEL_WIDTH - PANEL_PADDING_X * 2, height: STUDIO_FRAMES_HEIGHT},
   studioFrameButton: (index: number) => ({x: RAIL_WIDTH + PANEL_PADDING_X + index * 59.2, y: TITLE_BAR_HEIGHT + PANEL_HEADER_HEIGHT + 20, width: 55.2, height: STUDIO_FRAMES_HEIGHT}),

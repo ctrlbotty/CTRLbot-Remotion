@@ -50,10 +50,10 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "id": "install-adb",
-      "at": 16.935,
-      "start": 30.085,
+      "at": 17.25,
+      "start": 32.1,
       "end": 43.915,
-      "seconds": 13.108,
+      "seconds": 11.093,
       "removed": [
         {
           "from": 37.035,
@@ -350,14 +350,6 @@ export const NARRATION_EDIT: NarrationEdit = {
           "heard": ""
         }
       ]
-    },
-    {
-      "id": "thank-you",
-      "at": 131.75,
-      "start": 501.415,
-      "end": 503.08,
-      "seconds": 1.665,
-      "removed": []
     }
   ],
   "words": [
@@ -558,248 +550,192 @@ export const NARRATION_EDIT: NarrationEdit = {
       "confidence": null
     },
     {
-      "text": " but",
-      "startMs": 17080,
-      "endMs": 17320,
-      "timestampMs": 17200,
-      "confidence": null
-    },
-    {
-      "text": " what",
-      "startMs": 17480,
-      "endMs": 17900,
-      "timestampMs": 17690,
-      "confidence": null
-    },
-    {
-      "text": " we",
-      "startMs": 17900,
-      "endMs": 18040,
-      "timestampMs": 17970,
-      "confidence": null
-    },
-    {
-      "text": " also",
-      "startMs": 18040,
-      "endMs": 18240,
-      "timestampMs": 18140,
+      "text": " First we",
+      "startMs": 17250,
+      "endMs": 17300,
+      "timestampMs": 17275,
       "confidence": null
     },
     {
       "text": " have",
-      "startMs": 18240,
-      "endMs": 18380,
-      "timestampMs": 18310,
+      "startMs": 17280,
+      "endMs": 17420,
+      "timestampMs": 17350,
       "confidence": null
     },
     {
       "text": " to",
-      "startMs": 18380,
-      "endMs": 18500,
-      "timestampMs": 18440,
-      "confidence": null
-    },
-    {
-      "text": " do",
-      "startMs": 18500,
-      "endMs": 18760,
-      "timestampMs": 18630,
-      "confidence": null
-    },
-    {
-      "text": " is",
-      "startMs": 18760,
-      "endMs": 18840,
-      "timestampMs": 18800,
-      "confidence": null
-    },
-    {
-      "text": " we",
-      "startMs": 18840,
-      "endMs": 18980,
-      "timestampMs": 18910,
-      "confidence": null
-    },
-    {
-      "text": " have",
-      "startMs": 18980,
-      "endMs": 19120,
-      "timestampMs": 19050,
-      "confidence": null
-    },
-    {
-      "text": " to",
-      "startMs": 19120,
-      "endMs": 19420,
-      "timestampMs": 19270,
+      "startMs": 17420,
+      "endMs": 17720,
+      "timestampMs": 17570,
       "confidence": null
     },
     {
       "text": " install",
-      "startMs": 19420,
-      "endMs": 19905,
-      "timestampMs": 19663,
+      "startMs": 17720,
+      "endMs": 18205,
+      "timestampMs": 17963,
       "confidence": null
     },
     {
       "text": " ADB.",
-      "startMs": 19980,
-      "endMs": 20660,
-      "timestampMs": 20320,
+      "startMs": 18280,
+      "endMs": 18960,
+      "timestampMs": 18620,
       "confidence": null
     },
     {
       "text": " And",
-      "startMs": 20660,
-      "endMs": 20760,
-      "timestampMs": 20710,
+      "startMs": 18960,
+      "endMs": 19060,
+      "timestampMs": 19010,
       "confidence": null
     },
     {
       "text": " these",
-      "startMs": 20760,
-      "endMs": 21000,
-      "timestampMs": 20880,
+      "startMs": 19060,
+      "endMs": 19300,
+      "timestampMs": 19180,
       "confidence": null
     },
     {
       "text": " are",
-      "startMs": 21000,
-      "endMs": 21160,
-      "timestampMs": 21080,
+      "startMs": 19300,
+      "endMs": 19460,
+      "timestampMs": 19380,
       "confidence": null
     },
     {
       "text": " tools",
-      "startMs": 21160,
-      "endMs": 21770,
-      "timestampMs": 21465,
+      "startMs": 19460,
+      "endMs": 20070,
+      "timestampMs": 19765,
       "confidence": null
     },
     {
       "text": " for",
-      "startMs": 22510,
-      "endMs": 22830,
-      "timestampMs": 22670,
+      "startMs": 20810,
+      "endMs": 21130,
+      "timestampMs": 20970,
       "confidence": null
     },
     {
       "text": " Android",
-      "startMs": 22830,
-      "endMs": 23570,
-      "timestampMs": 23200,
+      "startMs": 21130,
+      "endMs": 21870,
+      "timestampMs": 21500,
       "confidence": null
     },
     {
       "text": " that",
-      "startMs": 23948,
-      "endMs": 24188,
-      "timestampMs": 24068,
+      "startMs": 22248,
+      "endMs": 22488,
+      "timestampMs": 22368,
       "confidence": null
     },
     {
       "text": " help",
-      "startMs": 24188,
-      "endMs": 24468,
-      "timestampMs": 24328,
+      "startMs": 22488,
+      "endMs": 22768,
+      "timestampMs": 22628,
       "confidence": null
     },
     {
       "text": " you",
-      "startMs": 24468,
-      "endMs": 24873,
-      "timestampMs": 24671,
+      "startMs": 22768,
+      "endMs": 23173,
+      "timestampMs": 22970,
       "confidence": null
     },
     {
       "text": " not",
-      "startMs": 24968,
-      "endMs": 25168,
-      "timestampMs": 25068,
+      "startMs": 23268,
+      "endMs": 23468,
+      "timestampMs": 23368,
       "confidence": null
     },
     {
       "text": " only",
-      "startMs": 25168,
-      "endMs": 25508,
-      "timestampMs": 25338,
+      "startMs": 23468,
+      "endMs": 23808,
+      "timestampMs": 23638,
       "confidence": null
     },
     {
       "text": " to",
-      "startMs": 25508,
-      "endMs": 25868,
-      "timestampMs": 25688,
+      "startMs": 23808,
+      "endMs": 24168,
+      "timestampMs": 23988,
       "confidence": null
     },
     {
       "text": " connect",
-      "startMs": 25908,
-      "endMs": 26308,
-      "timestampMs": 26108,
+      "startMs": 24208,
+      "endMs": 24608,
+      "timestampMs": 24408,
       "confidence": null
     },
     {
       "text": " to",
-      "startMs": 26308,
-      "endMs": 26488,
-      "timestampMs": 26398,
+      "startMs": 24608,
+      "endMs": 24788,
+      "timestampMs": 24698,
       "confidence": null
     },
     {
       "text": " your",
-      "startMs": 26488,
-      "endMs": 26688,
-      "timestampMs": 26588,
+      "startMs": 24788,
+      "endMs": 24988,
+      "timestampMs": 24888,
       "confidence": null
     },
     {
       "text": " device,",
-      "startMs": 26688,
-      "endMs": 27318,
-      "timestampMs": 27003,
+      "startMs": 24988,
+      "endMs": 25618,
+      "timestampMs": 25303,
       "confidence": null
     },
     {
       "text": " but",
-      "startMs": 27548,
-      "endMs": 27668,
-      "timestampMs": 27608,
+      "startMs": 25848,
+      "endMs": 25968,
+      "timestampMs": 25908,
       "confidence": null
     },
     {
       "text": " also",
-      "startMs": 27668,
-      "endMs": 28028,
-      "timestampMs": 27848,
+      "startMs": 25968,
+      "endMs": 26328,
+      "timestampMs": 26148,
       "confidence": null
     },
     {
       "text": " manage",
-      "startMs": 28028,
-      "endMs": 28728,
-      "timestampMs": 28378,
+      "startMs": 26328,
+      "endMs": 27028,
+      "timestampMs": 26678,
       "confidence": null
     },
     {
       "text": " applications",
-      "startMs": 28728,
-      "endMs": 29648,
-      "timestampMs": 29188,
+      "startMs": 27028,
+      "endMs": 27948,
+      "timestampMs": 27488,
       "confidence": null
     },
     {
       "text": " on",
-      "startMs": 29648,
-      "endMs": 29848,
-      "timestampMs": 29748,
+      "startMs": 27948,
+      "endMs": 28148,
+      "timestampMs": 28048,
       "confidence": null
     },
     {
       "text": " it",
-      "startMs": 29848,
-      "endMs": 30008,
-      "timestampMs": 29928,
+      "startMs": 28148,
+      "endMs": 28308,
+      "timestampMs": 28228,
       "confidence": null
     },
     {
@@ -2397,41 +2333,6 @@ export const NARRATION_EDIT: NarrationEdit = {
       "endMs": 129763,
       "timestampMs": 129560,
       "confidence": null
-    },
-    {
-      "text": " Thank",
-      "startMs": 131750,
-      "endMs": 131965,
-      "timestampMs": 131858,
-      "confidence": null
-    },
-    {
-      "text": " you",
-      "startMs": 131965,
-      "endMs": 132185,
-      "timestampMs": 132075,
-      "confidence": null
-    },
-    {
-      "text": " for",
-      "startMs": 132185,
-      "endMs": 132685,
-      "timestampMs": 132435,
-      "confidence": null
-    },
-    {
-      "text": " your",
-      "startMs": 132685,
-      "endMs": 132905,
-      "timestampMs": 132795,
-      "confidence": null
-    },
-    {
-      "text": " time",
-      "startMs": 132905,
-      "endMs": 133375,
-      "timestampMs": 133140,
-      "confidence": null
     }
   ],
   "cues": {
@@ -2553,144 +2454,112 @@ export const NARRATION_EDIT: NarrationEdit = {
     ],
     "install-adb": [
       {
-        "text": "but",
-        "ms": 17080
-      },
-      {
-        "text": "what",
-        "ms": 17480
-      },
-      {
-        "text": "we",
-        "ms": 17900
-      },
-      {
-        "text": "also",
-        "ms": 18040
+        "text": "First we",
+        "ms": 17250
       },
       {
         "text": "have",
-        "ms": 18240
+        "ms": 17280
       },
       {
         "text": "to",
-        "ms": 18380
-      },
-      {
-        "text": "do",
-        "ms": 18500
-      },
-      {
-        "text": "is",
-        "ms": 18760
-      },
-      {
-        "text": "we",
-        "ms": 18840
-      },
-      {
-        "text": "have",
-        "ms": 18980
-      },
-      {
-        "text": "to",
-        "ms": 19120
+        "ms": 17420
       },
       {
         "text": "install",
-        "ms": 19420
+        "ms": 17720
       },
       {
         "text": "ADB.",
-        "ms": 19980
+        "ms": 18280
       },
       {
         "text": "And",
-        "ms": 20660
+        "ms": 18960
       },
       {
         "text": "these",
-        "ms": 20760
+        "ms": 19060
       },
       {
         "text": "are",
-        "ms": 21000
+        "ms": 19300
       },
       {
         "text": "tools",
-        "ms": 21160
+        "ms": 19460
       },
       {
         "text": "for",
-        "ms": 22510
+        "ms": 20810
       },
       {
         "text": "Android",
-        "ms": 22830
+        "ms": 21130
       },
       {
         "text": "that",
-        "ms": 23948
+        "ms": 22248
       },
       {
         "text": "help",
-        "ms": 24188
+        "ms": 22488
       },
       {
         "text": "you",
-        "ms": 24468
+        "ms": 22768
       },
       {
         "text": "not",
-        "ms": 24968
+        "ms": 23268
       },
       {
         "text": "only",
-        "ms": 25168
+        "ms": 23468
       },
       {
         "text": "to",
-        "ms": 25508
+        "ms": 23808
       },
       {
         "text": "connect",
-        "ms": 25908
+        "ms": 24208
       },
       {
         "text": "to",
-        "ms": 26308
+        "ms": 24608
       },
       {
         "text": "your",
-        "ms": 26488
+        "ms": 24788
       },
       {
         "text": "device,",
-        "ms": 26688
+        "ms": 24988
       },
       {
         "text": "but",
-        "ms": 27548
+        "ms": 25848
       },
       {
         "text": "also",
-        "ms": 27668
+        "ms": 25968
       },
       {
         "text": "manage",
-        "ms": 28028
+        "ms": 26328
       },
       {
         "text": "applications",
-        "ms": 28728
+        "ms": 27028
       },
       {
         "text": "on",
-        "ms": 29648
+        "ms": 27948
       },
       {
         "text": "it",
-        "ms": 29848
+        "ms": 28148
       }
     ],
     "usb-debugging": [
@@ -3629,28 +3498,6 @@ export const NARRATION_EDIT: NarrationEdit = {
       {
         "text": "problems.",
         "ms": 129358
-      }
-    ],
-    "thank-you": [
-      {
-        "text": "Thank",
-        "ms": 131750
-      },
-      {
-        "text": "you",
-        "ms": 131965
-      },
-      {
-        "text": "for",
-        "ms": 132185
-      },
-      {
-        "text": "your",
-        "ms": 132685
-      },
-      {
-        "text": "time",
-        "ms": 132905
       }
     ]
   }

@@ -57,7 +57,7 @@ const firstWebLink = {
   height: 14 + sp(1) * 2 + 2,
 };
 
-export const ScanBeat = ({frame, frames, format}: BeatProps) => {
+export const ScanBeat = ({frame, frames}: BeatProps) => {
   const host = CUE_FRAMES.host - BEATS.scan.from;
   const mac = CUE_FRAMES.mac - BEATS.scan.from;
   const links = CUE_FRAMES.links - BEATS.scan.from;
@@ -66,7 +66,7 @@ export const ScanBeat = ({frame, frames, format}: BeatProps) => {
       <TermScanScene frames={frames} startFrame={host} />
       <Spotlight region={termRegions.results} appearAt={host} intensity={0.25} />
       {frame < links ? <FocusRing region={macColumn} appearAt={mac} name="Scan MAC column" />
-        : <FocusRing region={format === 'landscape' ? {...firstWebLink, y: firstWebLink.y + 7, height: firstWebLink.height + 7} : firstWebLink} appearAt={links} radius={round.sm} name="Scan web link" />}
+        : <FocusRing region={{...firstWebLink, y: firstWebLink.y + 7, height: firstWebLink.height + 7}} appearAt={links} radius={round.sm} name="Scan web link" />}
     </>
   );
 };
@@ -168,7 +168,7 @@ export const RawTcpBeat = ({frame, frames}: BeatProps) => {
   );
 };
 
-export const SerialBeat = ({frame, frames, format}: BeatProps) => {
+export const SerialBeat = ({frame, frames}: BeatProps) => {
   const parameters = CUE_FRAMES.parameters - BEATS.serial.from;
   return (
     <>
@@ -178,7 +178,7 @@ export const SerialBeat = ({frame, frames, format}: BeatProps) => {
         sendFrame={220}
         replyFrame={310}
       />
-      {format === 'landscape' && frame < 130 && <FocusRing region={termRegions.navItem('serial')} appearAt={8} radius={round.lg} name="Serial menu" />}
+      {frame < 130 && <FocusRing region={termRegions.navItem('serial')} appearAt={8} radius={round.lg} name="Serial menu" />}
       <FocusRing
         region={termRegions.serialParams}
         appearAt={parameters}
@@ -189,7 +189,7 @@ export const SerialBeat = ({frame, frames, format}: BeatProps) => {
   );
 };
 
-export const SshBeat = ({frame, frames, format}: BeatProps) => {
+export const SshBeat = ({frame, frames}: BeatProps) => {
   const help = CUE_FRAMES.help - BEATS.ssh.from;
   // Connect early in the beat (frame 95) so the button press starts at frames * 0.08 (~35)
   // and finishes before typing starts on "help" (frame 244). Output follows typing (+45 frames).
@@ -201,7 +201,7 @@ export const SshBeat = ({frame, frames, format}: BeatProps) => {
         typeFrame={help}
         outputFrame={help + 45}
       />
-      {format === 'landscape' && frame < 175 && <FocusRing region={termRegions.navItem('ssh')} appearAt={8} radius={round.lg} name="SSH menu" />}
+      {frame < 175 && <FocusRing region={termRegions.navItem('ssh')} appearAt={8} radius={round.lg} name="SSH menu" />}
     </>
   );
 };
