@@ -125,8 +125,28 @@ const TITLE_W = 150; // 'Device Drivers' at 18sp needs ~134; the rest is its gap
  * clamp crops the interface. Scenes should frame these on the viewport centre and use
  * only the y — which is what `centreX` is here for.
  */
-export const catalogRegions = (device: 'phone' | 'tablet') => {
+/**
+ * `btn_find_devices` (driver_database.xml): a 13sp label after a search icon, 16dp before and
+ * 20dp after, matched to the search field's height less its 4dp top and bottom margins. The
+ * label's width is estimated at 0.58 of its size per character and the markup is given the
+ * same width, so the region cannot drift from the button even where the estimate is loose.
+ */
+const FIND_ICON = 18;
+const FIND_ICON_GAP = 10;
+const findButtonWidth = (label: string) =>
+  Math.round(16 + FIND_ICON + FIND_ICON_GAP + label.length * 13 * 0.58 + 20);
+/** Right margin of the full-width header; the detail pane's own padding, so both end together. */
+const HEADER_RIGHT = 30;
+/** Where the detail pane starts once the header spans the screen: level with the filters. */
+const PANE_TOP_UNDER_HEADER = SEARCH_H + FILTER_GAP;
+
+export const catalogRegions = (
+  device: 'phone' | 'tablet',
+  options: {findDevices?: string} = {},
+) => {
   const viewport = CATALOG_VIEWPORT[device];
+  const findDevices = device === 'tablet' ? options.findDevices : undefined;
+  const findW = findDevices ? findButtonWidth(findDevices) : 0;
   const listX = device === 'tablet' ? TABLET_NAV_WIDTH : 0;
   const listW = device === 'tablet' ? 430 : viewport.width;
   // Phone stacks the filters, so it clears two rows before the list starts.
@@ -155,6 +175,20 @@ export const catalogRegions = (device: 'phone' | 'tablet') => {
       width: listW - EDGE * 2,
       height: CARD_H,
     }),
+    /** Tablet, with `findDevices`: the Discover button at the right end of the header. */
+    findDevices: {
+      x: viewport.width - HEADER_RIGHT - findW,
+      y: TOP + 4,
+      width: findW,
+      height: SEARCH_H - 8,
+    },
+    /** Tablet: the detail pane's origin, which the full-width header pushes down. */
+    detailPane: {
+      x: listX + listW + 30,
+      y: findDevices ? PANE_TOP_UNDER_HEADER : 0,
+      width: viewport.width - (listX + listW + 30),
+      height: viewport.height - (findDevices ? PANE_TOP_UNDER_HEADER : 0),
+    },
     /** The circular add button inside a card. */
     addButton: (index: number) => ({
       x: listX + listW - EDGE - 12 - 40,
@@ -362,6 +396,7 @@ export const DriverCatalog = ({
   openMenu,
   detail,
   background,
+  findDevices,
 }: {
   device: 'phone' | 'tablet';
   drivers: DriverEntry[];
@@ -385,6 +420,12 @@ export const DriverCatalog = ({
   detail?: ReactNode;
   /** Defaults to `gray_10`. Pass `SETUP_BACKGROUND` for the app's real setup wash. */
   background?: string;
+  /**
+   * Tablet only. The label of the header's Discover button, "Discover" or "15 devices found".
+   * Set, the title, search field and button share one row across the screen, as v1.0.9 lays
+   * them out, and the detail pane starts below it. Unset, the catalog renders as before.
+   */
+  findDevices?: string;
 }) => {
   const isTablet = device === 'tablet';
   // No scale factor. The app runs the same sp type scale on both form factors — the
@@ -392,10 +433,13 @@ export const DriverCatalog = ({
   // pass of this surface read as a blown-up phone rather than the real thing.
   const scale = 1;
   const viewport = CATALOG_VIEWPORT[device];
+  const header = isTablet && findDevices ? findDevices : undefined;
+  const regions = catalogRegions(device, {findDevices: header});
 
   return (
     <div
       style={{
+        position: 'relative',
         display: 'flex',
         width: viewport.width,
         height: viewport.height,
@@ -419,8 +463,10 @@ export const DriverCatalog = ({
           overflow: 'hidden',
         }}
       >
-        {/* Title + search */}
-        <div style={{display: 'flex', alignItems: 'center', gap: 12 * scale}}>
+        {/* Title + search. With the full-width header they are drawn across the screen
+            below, and an empty row of the same height keeps the filters where they were. */}
+        {header ? <div style={{height: SEARCH_H}} /> : null}
+        <div style={{display: header ? 'none' : 'flex', alignItems: 'center', gap: 12 * scale}}>
           <span
             style={{
               fontFamily: 'Montserrat, sans-serif',
@@ -513,7 +559,87 @@ export const DriverCatalog = ({
           was invented; at the sizes the First-Run cut frames it that read as a dark
           area, but in a shot of the whole screen it is a void down 45% of the frame. */}
       {isTablet ? (
-        <div style={{flex: 1, marginLeft: 30, overflow: 'hidden'}}>{detail}</div>
+        <div style={{flex: 1, marginLeft: 30, marginTop: regions.detailPane.y, overflow: 'hidden'}}>
+          {detail}
+        </div>
+      ) : null}
+
+      {/* The v1.0.9 header: title, search field and Discover, one row across the screen. */}
+      {header ? (
+        <div
+          style={{
+            position: 'absolute',
+            left: TABLET_NAV_WIDTH + EDGE,
+            right: HEADER_RIGHT,
+            top: TOP,
+            height: SEARCH_H,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 12,
+          }}
+        >
+          <span
+            style={{
+              fontFamily: 'Montserrat, sans-serif',
+              fontWeight: 400,
+              fontSize: 18,
+              width: TITLE_W - 12,
+              whiteSpace: 'nowrap',
+              color: appColors.white,
+            }}
+          >
+            Device Drivers
+          </span>
+          <div
+            style={{
+              flex: 1,
+              height: SEARCH_H,
+              display: 'flex',
+              alignItems: 'center',
+              paddingLeft: 14,
+              marginRight: 4,
+              backgroundColor: appColors.gray20,
+            }}
+          >
+            <span
+              style={{
+                fontFamily: 'Montserrat, sans-serif',
+                fontWeight: 400,
+                fontSize: 15,
+                color: searchText ? appColors.white : appColors.gray600,
+              }}
+            >
+              {searchText || 'Search drivers...'}
+            </span>
+          </div>
+          <div
+            style={{
+              width: regions.findDevices.width,
+              height: regions.findDevices.height,
+              flexShrink: 0,
+              display: 'flex',
+              alignItems: 'center',
+              gap: FIND_ICON_GAP,
+              paddingLeft: 16,
+              boxSizing: 'border-box',
+              borderRadius: 5,
+              backgroundColor: appColors.gray20,
+            }}
+          >
+            <AppIcon name="ic_search" size={FIND_ICON} tint={appColors.white} />
+            <span
+              style={{
+                fontFamily: 'Montserrat, sans-serif',
+                fontWeight: 400,
+                fontSize: 13,
+                whiteSpace: 'nowrap',
+                color: appColors.white,
+              }}
+            >
+              {header}
+            </span>
+          </div>
+        </div>
       ) : null}
     </div>
   );

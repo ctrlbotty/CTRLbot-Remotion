@@ -615,6 +615,27 @@ export const RemotionRoot = () => (
           background: SETUP_BACKGROUND,
         }}
       />
+      <Still
+        id="Proof-Tablet-Catalog-FindDevices"
+        component={DriverCatalog}
+        width={1280}
+        height={800}
+        defaultProps={{
+          device: 'tablet',
+          drivers: [
+            {manufacturer: 'ACER', model: 'XL2320P', deviceType: 'projector'},
+            {manufacturer: 'AVPRO EDGE', model: 'AC-MX-44', deviceType: 'switcher'},
+            {manufacturer: 'BARCO', model: 'F80-4K12', deviceType: 'projector'},
+            {manufacturer: 'BENQ', model: 'LU895UST', deviceType: 'projector'},
+            {manufacturer: 'BLUSTREAM', model: 'CMX44CS', deviceType: 'switcher'},
+            {manufacturer: 'CANON', model: 'WUX7000Z', deviceType: 'projector'},
+            {manufacturer: 'CASIO', model: 'XJ-F210WN', deviceType: 'projector'},
+            {manufacturer: 'CHRISTIE', model: 'FHD551', deviceType: 'display'},
+          ],
+          findDevices: '15 devices found',
+          background: SETUP_BACKGROUND,
+        }}
+      />
       <Still id="Proof-Phone-Connection" component={PhoneConnectionProof} width={360} height={780} />
       <Still id="Proof-Tablet-Connection" component={TabletConnectionProof} width={1280} height={800} />
       <Still id="Proof-Phone-Capture" component={PhoneCaptureProof} width={360} height={780} />
