@@ -1,0 +1,547 @@
+{
+ "beats": {
+  "scan": {
+   "spec": "{\"source\":{\"recording\":\"terminator-walkthrough\"},\"from\":63,\"seconds\":6,\"speed\":2}",
+   "width": 1460,
+   "height": 1080
+  },
+  "server": {
+   "spec": "{\"source\":{\"recording\":\"terminator-walkthrough\"},\"from\":121,\"seconds\":6,\"speed\":1.5}",
+   "width": 1460,
+   "height": 1080
+  },
+  "terminal": {
+   "spec": "{\"source\":{\"recording\":\"terminator-walkthrough\"},\"from\":326,\"seconds\":6}",
+   "width": 1460,
+   "height": 1080
+  },
+  "ssh": {
+   "spec": "{\"source\":{\"recording\":\"terminator-walkthrough\"},\"from\":458,\"seconds\":6,\"speed\":2}",
+   "width": 1460,
+   "height": 1080
+  }
+ },
+ "narration": {
+  "spec": "fa48ab235374ffa1",
+  "file": "shorts/S02/narration.m4a",
+  "loudness": "-16.91 LUFS in",
+  "clips": [
+   {
+    "id": "intro",
+    "at": 0.35,
+    "source": [
+     13.2,
+     19.285
+    ],
+    "seconds": 4,
+    "pieces": [
+     {
+      "from": 13.2,
+      "to": 13.575
+     },
+     {
+      "from": 13.85,
+      "to": 14.865
+     },
+     {
+      "from": 15.565,
+      "to": 15.94
+     },
+     {
+      "from": 16.085,
+      "to": 16.745
+     },
+     {
+      "from": 17.365,
+      "to": 17.805
+     },
+     {
+      "from": 18.09,
+      "to": 19.285
+     }
+    ],
+    "removed": [
+     {
+      "from": 13.575,
+      "to": 13.85,
+      "kind": "extra",
+      "heard": "a"
+     },
+     {
+      "from": 15.135,
+      "to": 15.565,
+      "kind": "repeat",
+      "heard": "a"
+     },
+     {
+      "from": 15.94,
+      "to": 16.085,
+      "kind": "extra",
+      "heard": "i"
+     },
+     {
+      "from": 16.805,
+      "to": 16.835,
+      "kind": "filler",
+      "heard": "Uh,"
+     },
+     {
+      "from": 16.915,
+      "to": 17.365,
+      "kind": "filler",
+      "heard": "Uh,"
+     },
+     {
+      "from": 17.82,
+      "to": 17.94,
+      "kind": "filler",
+      "heard": "P"
+     }
+    ],
+    "tightened": [],
+    "notes": []
+   },
+   {
+    "id": "scan",
+    "at": 4.9,
+    "source": [
+     23.84,
+     25.33
+    ],
+    "seconds": 1.49,
+    "pieces": [
+     {
+      "from": 23.84,
+      "to": 25.33
+     }
+    ],
+    "removed": [],
+    "tightened": [],
+    "notes": [
+     "starts mid-phrase at 23.84s, where \"It\" begins"
+    ]
+   },
+   {
+    "id": "server",
+    "at": 8.75,
+    "source": [
+     26.14,
+     29.775
+    ],
+    "seconds": 3.168,
+    "pieces": [
+     {
+      "from": 26.14,
+      "to": 27.3
+     },
+     {
+      "from": 27.755,
+      "to": 29.775
+     }
+    ],
+    "removed": [
+     {
+      "from": 27.3,
+      "to": 27.755,
+      "kind": "noise",
+      "heard": ""
+     }
+    ],
+    "tightened": [],
+    "notes": []
+   },
+   {
+    "id": "connect",
+    "at": 14.75,
+    "source": [
+     30.81,
+     35.755
+    ],
+    "seconds": 3.981,
+    "pieces": [
+     {
+      "from": 30.81,
+      "to": 32.495
+     },
+     {
+      "from": 33.13,
+      "to": 33.735
+     },
+     {
+      "from": 34.04,
+      "to": 35.755
+     }
+    ],
+    "removed": [
+     {
+      "from": 32.505,
+      "to": 32.78,
+      "kind": "repeat",
+      "heard": "an"
+     },
+     {
+      "from": 32.825,
+      "to": 33.13,
+      "kind": "repeat",
+      "heard": "an"
+     },
+     {
+      "from": 33.735,
+      "to": 34.04,
+      "kind": "repeat",
+      "heard": "ta"
+     }
+    ],
+    "tightened": [],
+    "notes": []
+   },
+   {
+    "id": "ssh",
+    "at": 20.9,
+    "source": [
+     49.18,
+     54.44
+    ],
+    "seconds": 3.631,
+    "pieces": [
+     {
+      "from": 49.18,
+      "to": 50.225
+     },
+     {
+      "from": 50.745,
+      "to": 52.77
+     },
+     {
+      "from": 53.855,
+      "to": 54.44
+     }
+    ],
+    "removed": [
+     {
+      "from": 50.225,
+      "to": 50.745,
+      "kind": "extra",
+      "heard": "h"
+     },
+     {
+      "from": 52.77,
+      "to": 53.08,
+      "kind": "filler",
+      "heard": "uh"
+     },
+     {
+      "from": 53.235,
+      "to": 53.615,
+      "kind": "filler",
+      "heard": "Um..."
+     },
+     {
+      "from": 53.71,
+      "to": 53.855,
+      "kind": "extra",
+      "heard": "a"
+     }
+    ],
+    "tightened": [],
+    "notes": []
+   }
+  ],
+  "captions": [
+   {
+    "text": " It's",
+    "startMs": 480,
+    "endMs": 713,
+    "timestampMs": 597,
+    "confidence": null
+   },
+   {
+    "text": " basically",
+    "startMs": 713,
+    "endMs": 1488,
+    "timestampMs": 1101,
+    "confidence": null
+   },
+   {
+    "text": " a",
+    "startMs": 1841,
+    "endMs": 2056,
+    "timestampMs": 1949,
+    "confidence": null
+   },
+   {
+    "text": " terminal",
+    "startMs": 2084,
+    "endMs": 2604,
+    "timestampMs": 2344,
+    "confidence": null
+   },
+   {
+    "text": " app",
+    "startMs": 2932,
+    "endMs": 3137,
+    "timestampMs": 3035,
+    "confidence": null
+   },
+   {
+    "text": " for",
+    "startMs": 3235,
+    "endMs": 3675,
+    "timestampMs": 3455,
+    "confidence": null
+   },
+   {
+    "text": " PC",
+    "startMs": 3675,
+    "endMs": 4310,
+    "timestampMs": 3993,
+    "confidence": null
+   },
+   {
+    "text": " It",
+    "startMs": 4900,
+    "endMs": 4950,
+    "timestampMs": 4925,
+    "confidence": null
+   },
+   {
+    "text": " can",
+    "startMs": 4950,
+    "endMs": 5150,
+    "timestampMs": 5050,
+    "confidence": null
+   },
+   {
+    "text": " scan",
+    "startMs": 5150,
+    "endMs": 5490,
+    "timestampMs": 5320,
+    "confidence": null
+   },
+   {
+    "text": " your",
+    "startMs": 5490,
+    "endMs": 5670,
+    "timestampMs": 5580,
+    "confidence": null
+   },
+   {
+    "text": " network.",
+    "startMs": 5670,
+    "endMs": 6190,
+    "timestampMs": 5930,
+    "confidence": null
+   },
+   {
+    "text": " It",
+    "startMs": 8900,
+    "endMs": 9000,
+    "timestampMs": 8950,
+    "confidence": null
+   },
+   {
+    "text": " can",
+    "startMs": 9000,
+    "endMs": 9560,
+    "timestampMs": 9280,
+    "confidence": null
+   },
+   {
+    "text": " set",
+    "startMs": 9560,
+    "endMs": 9780,
+    "timestampMs": 9670,
+    "confidence": null
+   },
+   {
+    "text": " up",
+    "startMs": 9780,
+    "endMs": 9898,
+    "timestampMs": 9839,
+    "confidence": null
+   },
+   {
+    "text": " a",
+    "startMs": 10033,
+    "endMs": 10193,
+    "timestampMs": 10113,
+    "confidence": null
+   },
+   {
+    "text": " server",
+    "startMs": 10193,
+    "endMs": 10958,
+    "timestampMs": 10576,
+    "confidence": null
+   },
+   {
+    "text": " for",
+    "startMs": 10973,
+    "endMs": 11153,
+    "timestampMs": 11063,
+    "confidence": null
+   },
+   {
+    "text": " testing.",
+    "startMs": 11153,
+    "endMs": 11878,
+    "timestampMs": 11516,
+    "confidence": null
+   },
+   {
+    "text": " It",
+    "startMs": 14810,
+    "endMs": 14930,
+    "timestampMs": 14870,
+    "confidence": null
+   },
+   {
+    "text": " can",
+    "startMs": 14930,
+    "endMs": 15070,
+    "timestampMs": 15000,
+    "confidence": null
+   },
+   {
+    "text": " connect",
+    "startMs": 15070,
+    "endMs": 15390,
+    "timestampMs": 15230,
+    "confidence": null
+   },
+   {
+    "text": " to",
+    "startMs": 15390,
+    "endMs": 15490,
+    "timestampMs": 15440,
+    "confidence": null
+   },
+   {
+    "text": " devices",
+    "startMs": 15490,
+    "endMs": 16285,
+    "timestampMs": 15888,
+    "confidence": null
+   },
+   {
+    "text": " and",
+    "startMs": 16285,
+    "endMs": 16483,
+    "timestampMs": 16384,
+    "confidence": null
+   },
+   {
+    "text": " allow",
+    "startMs": 16483,
+    "endMs": 17028,
+    "timestampMs": 16755,
+    "confidence": null
+   },
+   {
+    "text": " you",
+    "startMs": 17026,
+    "endMs": 17326,
+    "timestampMs": 17176,
+    "confidence": null
+   },
+   {
+    "text": " to",
+    "startMs": 17326,
+    "endMs": 17466,
+    "timestampMs": 17396,
+    "confidence": null
+   },
+   {
+    "text": " communicate",
+    "startMs": 17466,
+    "endMs": 18126,
+    "timestampMs": 17796,
+    "confidence": null
+   },
+   {
+    "text": " with",
+    "startMs": 18126,
+    "endMs": 18346,
+    "timestampMs": 18236,
+    "confidence": null
+   },
+   {
+    "text": " them",
+    "startMs": 18346,
+    "endMs": 18691,
+    "timestampMs": 18518,
+    "confidence": null
+   },
+   {
+    "text": " or",
+    "startMs": 20970,
+    "endMs": 21110,
+    "timestampMs": 21040,
+    "confidence": null
+   },
+   {
+    "text": " even",
+    "startMs": 21110,
+    "endMs": 21350,
+    "timestampMs": 21230,
+    "confidence": null
+   },
+   {
+    "text": " set",
+    "startMs": 21350,
+    "endMs": 21570,
+    "timestampMs": 21460,
+    "confidence": null
+   },
+   {
+    "text": " up",
+    "startMs": 21570,
+    "endMs": 21740,
+    "timestampMs": 21655,
+    "confidence": null
+   },
+   {
+    "text": " and",
+    "startMs": 21998,
+    "endMs": 22118,
+    "timestampMs": 22058,
+    "confidence": null
+   },
+   {
+    "text": " connect",
+    "startMs": 22118,
+    "endMs": 22458,
+    "timestampMs": 22288,
+    "confidence": null
+   },
+   {
+    "text": " to",
+    "startMs": 22458,
+    "endMs": 22838,
+    "timestampMs": 22648,
+    "confidence": null
+   },
+   {
+    "text": " an",
+    "startMs": 22838,
+    "endMs": 23058,
+    "timestampMs": 22948,
+    "confidence": null
+   },
+   {
+    "text": " SSH",
+    "startMs": 23058,
+    "endMs": 23718,
+    "timestampMs": 23388,
+    "confidence": null
+   },
+   {
+    "text": " host.",
+    "startMs": 24021,
+    "endMs": 24406,
+    "timestampMs": 24214,
+    "confidence": null
+   }
+  ]
+ }
+}
