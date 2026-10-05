@@ -165,6 +165,8 @@ export const BEAT_SHOTS: Partial<Record<LatestBeatName, Shot[]>> = {
   rs232: [
     {at: 0, region: rs232Map.content},
     {at: at(CUE_FRAMES.rsEnd, 'rs232'), region: atLeast(unionRegion(rs232Map.endPointField, rs232Map.connectAction))},
+    // The whole panel while it connects, so the progress toast at its foot is in shot.
+    {at: at(CUE_FRAMES.rsConnect, 'rs232'), region: rs232Map.content},
     {at: at(CUE_FRAMES.rsTerminal, 'rs232'), region: atLeast(rs232Map.terminal)},
     {at: at(CUE_FRAMES.rsCommands, 'rs232'), region: atLeast(unionRegion(rs232Map.config, rs232Map.commands))},
   ],
@@ -181,30 +183,78 @@ export const BEAT_SHOTS: Partial<Record<LatestBeatName, Shot[]>> = {
   power: [{at: 0, region: full}],
 };
 
-/** Landscape step labels go where the cued subject is not: right of the catalog's list. */
-const CALLOUT_SIDE: Partial<Record<LatestBeatName, 'left' | 'right'>> = {
-  'net-switches': 'right',
-  avoip: 'right',
-  'global-cache': 'left',
-  pusr: 'left',
-  discovery: 'left',
+/**
+ * Portrait is bound by its width, so a shot there is a crop of the region being taught, no
+ * wider than 720 dp (W04's rule); only the EUI beats show the whole surface. These replace
+ * the landscape shots beat by beat; a beat not listed uses its landscape shots.
+ */
+const crop = (x: number, y = 0, height: number = TABLET_VIEWPORT.height): Region => ({x, y, width: 720, height});
+const LIST_CROP = crop(200);
+const PANE_CROP = crop(560);
+
+export const PORTRAIT_SHOTS: Partial<Record<LatestBeatName, Shot[]>> = {
+  'net-switches': [{at: 0, region: LIST_CROP}],
+  'global-cache': [
+    {at: 0, region: LIST_CROP},
+    {at: at(CUE_FRAMES.gcEndpoints, 'global-cache') + 20, region: PANE_CROP},
+    {at: at(CUE_FRAMES.gcModels, 'global-cache'), region: atLeast(unionRegion(paneMap.modelField, paneMap.modelList))},
+  ],
+  pusr: [
+    {at: 0, region: LIST_CROP},
+    {at: at(CUE_FRAMES.pusrName, 'pusr') + 20, region: PANE_CROP},
+    {at: at(CUE_FRAMES.pusrConvert, 'pusr'), region: atLeast(paneMap.description)},
+  ],
+  discovery: [
+    {at: 0, region: PANE_CROP},
+    {at: at(CUE_FRAMES.discCorner, 'discovery'), region: crop(200)},
+    {at: at(CUE_FRAMES.discDriver, 'discovery'), region: crop(560)},
+  ],
+  rs232: [
+    {at: 0, region: crop(200)},
+    {at: at(CUE_FRAMES.rsEnd, 'rs232'), region: crop(544)},
+    {at: at(CUE_FRAMES.rsConnect, 'rs232'), region: crop(400)},
+    {at: at(CUE_FRAMES.rsTerminal, 'rs232'), region: crop(200)},
+    {at: at(CUE_FRAMES.rsCommands, 'rs232'), region: crop(560)},
+  ],
+  terminal: [
+    {at: 0, region: crop(220)},
+    {at: at(CUE_FRAMES.termSend, 'terminal'), region: atLeast(testMap.terminal)},
+  ],
+  webpage: [{at: 0, region: crop(220)}],
+  message: [
+    {at: 0, region: crop(200)},
+    {at: at(CUE_FRAMES.msgMessages, 'message'), region: crop(560, 160, 420)},
+  ],
 };
 
-export const WALKTHROUGH_BEATS: WalkthroughBeat[] = BEAT_NAMES.map((id) => ({
-  id,
-  ...BEATS[id],
-  copy: COPY[id],
-  shots: BEAT_SHOTS[id],
-  calloutSide: CALLOUT_SIDE[id] ?? 'left',
-  ...(id === 'open' || id === 'close'
-    ? {
-        card: {
-          lockup: 'CTRLbot IoT',
-          eyebrow: id === 'open' ? 'New in v1.0.9' : undefined,
-          line: id === 'open' ? 'New devices, new end points, and drag to route.' : 'All of it in v1.0.9.',
-        },
-      }
-    : {}),
-}));
+/** Landscape step labels go where the cued subject is not. */
+const CALLOUT_SIDE: Partial<Record<LatestBeatName, 'left' | 'right' | 'top'>> = {
+  'net-switches': 'right',
+  avoip: 'right',
+  // The selected PUSR card is the list's last row, under a left label.
+  pusr: 'right',
+  // The terminal's lines sit at its foot; a top label darkens only empty terminal.
+  terminal: 'top',
+  // The web view's address bar is at its top, so the label goes bottom right.
+  webpage: 'right',
+};
+
+export const walkthroughBeats = (format: 'landscape' | 'portrait'): WalkthroughBeat[] =>
+  BEAT_NAMES.map((id) => ({
+    id,
+    ...BEATS[id],
+    copy: COPY[id],
+    shots: (format === 'portrait' ? PORTRAIT_SHOTS[id] : undefined) ?? BEAT_SHOTS[id],
+    calloutSide: CALLOUT_SIDE[id] ?? 'left',
+    ...(id === 'open' || id === 'close'
+      ? {
+          card: {
+            lockup: 'CTRLbot IoT',
+            eyebrow: id === 'open' ? 'New in v1.0.9' : undefined,
+            line: id === 'open' ? 'New devices, new end points, and drag to route.' : 'All of it in v1.0.9.',
+          },
+        }
+      : {}),
+  }));
 
 export {catalogMap, paneMap, rs232Map, testMap, presetsMap, discoverMap};

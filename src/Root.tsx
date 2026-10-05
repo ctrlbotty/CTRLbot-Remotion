@@ -50,6 +50,7 @@ import {
   IotTabletWalkthrough,
   IotTabletWalkthroughPortrait,
 } from './marketing/iot-tablet-walkthrough/IotTabletWalkthrough';
+import {IotLatestFeatures, IotLatestFeaturesPortrait} from './marketing/iot-latest-features/IotLatestFeatures';
 import {HubCell, hubCellDuration} from './marketing/hub-cell/HubCell';
 import {Short, assertShortReady} from './shorts/Short';
 import {
@@ -292,6 +293,22 @@ export const RemotionRoot = () => (
         id="iot-tablet-walkthrough-portrait"
         component={IotTabletWalkthroughPortrait}
         durationInFrames={9900}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="iot-latest-features"
+        component={IotLatestFeatures}
+        durationInFrames={4080}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="iot-latest-features-portrait"
+        component={IotLatestFeaturesPortrait}
+        durationInFrames={4080}
         fps={30}
         width={1080}
         height={1920}
