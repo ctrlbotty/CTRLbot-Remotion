@@ -366,7 +366,7 @@ The cut is now 330s (9900 frames); every beat after `proof` moved 13.5s earlier.
 - [x] T34: Drop the `first-run` beat (0:11–0:24) so the cut opens on CTRLbot AI, and drop the closing "Thank you for your time" so `close` plays silent — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughNarration.ts, src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts, src/Root.tsx
   - Narration rebuilt with `narration:edit --seconds=330`; `IotTabletBeats.tsx` loses `FirstRunBeat`.
 - [x] T35: Settings (was 5:20, now 5:04) opens wide on the setup screen with the rail's Set row ringed and tapped on "start", Settings opens with Set selected, then the camera pans right into Support on "manual" — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx, src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts
-- [ ] T36: Carry T34–T35 to `iot-tablet-walkthrough-portrait` after Nathan approves the landscape cut — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts
+- [x] T36: Carry T34–T35 to `iot-tablet-walkthrough-portrait` after Nathan approved the landscape cut (2026-10-05); same code, no portrait-only change. Rendered: 19 beats, 330s, no problems (content-fill warning 72%, the copy band and burned-in captions), -16.12 LUFS — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts
 
 ## Deferred
 
