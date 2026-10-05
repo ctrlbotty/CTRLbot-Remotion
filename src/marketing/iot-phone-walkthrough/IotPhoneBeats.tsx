@@ -313,7 +313,7 @@ export const AiBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
  * and opens on Projector, Display, Switchers, End Points.
  * Cues: database "database", endpoint "endpoint".
  */
-export const DatabaseBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+export const DatabaseBeat: React.FC<{frame: number; frames: number; review?: boolean}> = ({frame, review}) => {
   const databaseCue = CUE_FRAMES.database - BEATS.database.from;
   const endpointCue = CUE_FRAMES.endpoint - BEATS.database.from;
 
@@ -329,7 +329,7 @@ export const DatabaseBeat: React.FC<{frame: number; frames: number}> = ({frame})
     },
   );
 
-  const menuOpen = frame >= endpointCue;
+  const menuOpen = !review && frame >= endpointCue;
   const openMenu = menuOpen
     ? {
         control: 'category' as const,
@@ -350,12 +350,12 @@ export const DatabaseBeat: React.FC<{frame: number; frames: number}> = ({frame})
         background={SETUP_BACKGROUND}
       />
 
-      <TapIndicator
+      {!review && <TapIndicator
         x={centerOf(categoryFilterRegion).x}
         y={centerOf(categoryFilterRegion).y}
         at={endpointCue}
         name="Category filter tap"
-      />
+      />}
 
       {menuOpen ? (
         <FocusRing
@@ -543,11 +543,11 @@ const EpsonDetailView: React.FC = () => (
  * the web view's address bar shows the page loading, held under two seconds.
  * Cues: epson "Epson", link "link".
  */
-export const EpsonBeat: React.FC<{frame: number; frames: number}> = ({frame, frames}) => {
+export const EpsonBeat: React.FC<{frame: number; frames: number; review?: boolean}> = ({frame, frames, review}) => {
   const epsonCue = CUE_FRAMES.epson - BEATS.epson.from;
   const linkCue = CUE_FRAMES.link - BEATS.epson.from;
 
-  if (frame >= linkCue) {
+  if (!review && frame >= linkCue) {
     const progress = interpolate(frame, [linkCue, frames], [15, 65], {
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
@@ -587,7 +587,9 @@ export const EpsonBeat: React.FC<{frame: number; frames: number}> = ({frame, fra
     );
   }
 
-  const productPageBtn = {x: 184, y: 87, width: 162, height: 42};
+  const productPageBtn = review
+    ? {x: 184, y: 89.2, width: 162, height: 42}
+    : {x: 184, y: 87, width: 162, height: 42};
   const ringStart = Math.max(epsonCue + 30, linkCue - 45);
 
   return (
@@ -912,7 +914,7 @@ export const SwitchAudioBeat: React.FC<{frame: number; frames: number}> = ({fram
  * it powers off and lands on Welcome, each on its spoken word.
  * Cues: turn "turn", sources "sources", euiAudio "audio", off "off".
  */
-export const EuiBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+export const EuiBeat: React.FC<{frame: number; frames: number; review?: boolean}> = ({frame, review}) => {
   const turnCue = CUE_FRAMES.turn - BEATS.eui.from;
   const sourcesCue = CUE_FRAMES.sources - BEATS.eui.from;
   const euiAudioCue = CUE_FRAMES.euiAudio - BEATS.eui.from;
@@ -924,7 +926,9 @@ export const EuiBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
 
   // Phase 1: Welcome screen before power on
   if (frame < turnCue + 8) {
-    const welcomePower = EUI_POWER_REGIONS.phone.welcomePower;
+    const welcomePower = review
+      ? {x: 124, y: 420, width: 112, height: 112}
+      : EUI_POWER_REGIONS.phone.welcomePower;
     return (
       <>
         <EuiPowerCapture device="phone" state="off" />
@@ -1654,7 +1658,7 @@ export const M2mBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
  * Settings → Support: User Manual, Quick Start and Factory Reset ringed on their words.
  * Cues: settingsSetup "Setup", manual "Manual", quick "Quick", factory "factory".
  */
-export const SettingsBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+export const SettingsBeat: React.FC<{frame: number; frames: number; review?: boolean}> = ({frame, review}) => {
   const setupCue = CUE_FRAMES.settingsSetup - BEATS.settings.from;
   const manualCue = CUE_FRAMES.manual - BEATS.settings.from;
   const quickCue = CUE_FRAMES.quick - BEATS.settings.from;
@@ -1665,9 +1669,9 @@ export const SettingsBeat: React.FC<{frame: number; frames: number}> = ({frame})
   return (
     <>
       <SettingsSupport device="phone" />
-
+      <div style={review ? {position: 'absolute', inset: 0, zIndex: 40, pointerEvents: 'none'} : {display: 'contents'}}>
       {/* "Setup" cue: setup button ring and tap */}
-      {frame < manualCue && (
+      {frame < (review ? quickCue : manualCue) && (
         <>
           <FocusRing
             region={settingsReg.setupButton}
@@ -1710,9 +1714,10 @@ export const SettingsBeat: React.FC<{frame: number; frames: number}> = ({frame})
           region={settingsReg.factoryReset}
           appearAt={factoryCue}
           radius={5}
-          name="Factory Reset ring"
+            name="Factory Reset ring"
         />
       )}
+      </div>
     </>
   );
 };

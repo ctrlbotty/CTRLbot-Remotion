@@ -40,11 +40,10 @@ Revision 2 (2026-10-01): the hybrid format, as W01's revision 2
 | id | Layout | Claim | Surface | Evidence | Sec |
 |----|--------|-------|---------|----------|-----|
 | open | card | CTRLbot IoT runs the room from a phone | `MasterControlCard` | The tricon and the CTRLbot IoT lockup are on screen at frame 0; the promise line streams in beneath them | 5 |
-| proof | stage | One tap, and the display takes it | `PhoneEui` | The phone EUI; a source is tapped and the display fills with it in the same moment, ringed | 6 |
-| first-run | chapter | A short tour opens the first time | `FirstRunEducation` | Full frame: the first-run walkthrough over the setup screen steps forward, then its ✕ is tapped and it closes | 16.5 |
+| proof | chapter | One tap, and the display takes it | `PhoneEui` | The phone EUI; a source is tapped and the display fills with it in the same moment, ringed | 6 |
 | ai | chapter | CTRLbot AI is a manual that answers | `CtrlbotAi` | The question list fills the frame; a question is tapped and its answer lands, readable | 18.5 |
-| database | chapter | Everything starts with a driver | `DriverCatalog` | The catalog, on the app's blue wash, scrolls; the category filter is tapped and opens on Projector, Display, Switchers, End Points | 25 |
-| epson | chapter | Every driver carries its device's details | `DriverDetail` + `ProductWebView` | Epson PowerLite's page; the product-page link is ringed and tapped; the web view's address bar shows the page loading, held under two seconds | 15 |
+| database | chapter | Everything starts with a driver | `DriverCatalog` | The catalog, on the app's blue wash, scrolls without opening a dropdown | 25 |
+| epson | chapter | Every driver carries its device's details | `DriverDetail` | Epson PowerLite's detail stays visible with its Product Page link aligned and highlighted, then cuts directly to Add | 13.6 |
 | add | chapter | Add it, enter the IP, and it saves itself | `ConnectionPanel` | + is tapped and Configure Connection opens; the IP field is ringed and filled; Connect turns Disconnect and the saved line lands | 9.5 |
 | terminal | chapter | Test commands and see every byte | `ConnectionPanel` | Power On is tapped and lands in the terminal, readable; a typed command is sent | 15.5 |
 | test | chapter | Test it as a remote | `ConnectTest` | Each tab is tapped on its spoken word: Buttons, Switcher, Terminal, Web page | 20 |
@@ -458,3 +457,32 @@ Corrections stay `IOT_PHONE_CAPTION_CORRECTIONS`. Placement and holds follow W01
 
 | Beat | Reads correctly with the sound off? | Notes |
 |------|-------------------------------------|-------|
+
+### Revision 3 · 2026-10-05 — Nathan's landscape review
+
+Phase 1 only. Nathan reviews and approves the landscape render before portrait is
+reviewed or revised. The table above now describes the 318.1s landscape cut;
+portrait remains on revision 2's 336s timeline, including first-run and 15s Epson.
+
+- [x] T34: Hide the database dropdown and manufacturer page, align Product Page and Welcome power highlights, and lift the Set highlight over the nav bar for landscape only — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
+- [ ] T35: Add a dark grey bezel to every landscape phone, enlarge the opening proof, keep the whole switching interface in view, and trim the requested sections using the original narration clock — files: src/marketing/iot-phone-walkthrough/IotPhoneLandscapeReview.tsx
+- [ ] T36: Wire the landscape revision at 9543 frames while keeping portrait at 10080 frames — files: src/marketing/iot-phone-walkthrough/IotPhoneWalkthrough.tsx, src/Root.tsx
+- [ ] T37: Render the landscape review and retime its SRT, inspect cue stills and cut boundaries, run the existing gates, and stop for Nathan — files: videos/iot-phone-walkthrough.md
+
+Edits preserve complete spoken clips. Source timeline 11–27.5s is removed together
+with both first-run narration clips. Epson's complete Product Page sentence ends
+at 84.45s; retain through 84.6s and remove 84.6–86s. No narration rebuild, source
+recording, generated edit or portrait artifact is changed.
+
+| Original review time | Revised time | Check |
+|---|---|---|
+| 00:05 | 00:05 | Larger whole phone with dark grey bezel |
+| 00:11 → 00:28 | 00:11 | Direct cut to CTRLbot AI |
+| 00:59 | 00:42.5 | Driver catalog without dropdown |
+| 01:23 | 01:06.5 | Product Page ring; Add starts 01:08.1 |
+| 02:58 | 02:40.1 | Welcome power ring; tap at about 02:41.1 |
+| 04:48 | 04:30.1 | Switching chapter begins 04:30.6, with displays, All and sources visible |
+| 05:21 | 05:03.1 | Set icon ring above the nav bar |
+
+Shared workspace: pre-existing Mirror and Terminator changes are excluded from
+this revision. Root staging must include only the phone landscape duration hunk.
