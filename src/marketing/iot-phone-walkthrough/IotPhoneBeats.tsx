@@ -60,7 +60,7 @@ import {
 import {SettingsSupport, settingsSupportRegions} from '../../app-ui/SettingsSupport';
 import {EUI_POWER_REGIONS, EuiPowerCapture} from '../../app-ui/EuiPower';
 import {PhoneNavMenu} from '../../app-ui/PhoneNavMenu';
-import {centerOf} from '../../camera/Camera';
+import {centerOf, type Region} from '../../camera/Camera';
 import {FocusRing, Spotlight, TapIndicator} from '../../camera/Annotations';
 import {appColors, appDimens} from '../../design/tokens.generated';
 import {font} from '../../design/theme';
@@ -1053,11 +1053,11 @@ export const EuiBeat: React.FC<{frame: number; frames: number; review?: boolean}
  * two seconds, Keep holding shows, and the setup menu returns.
  * Cues: hold "hold", setupSecond "setup" (second).
  */
-export const ExitBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+export const ExitBeat: React.FC<{frame: number; frames: number; exitRegion?: Region}> = ({frame, exitRegion}) => {
   const holdCue = CUE_FRAMES.hold - BEATS.exit.from;
   const setupSecondCue = CUE_FRAMES.setupSecond - BEATS.exit.from;
 
-  const exitControl = EUI_REGIONS.exitControl;
+  const exitControl = exitRegion ?? EUI_REGIONS.exitControl;
   const holdCenter = centerOf(exitControl);
   const HOLD_FRAMES = 60; // 2 seconds press-and-hold at 30fps
   const holdRadius = 26;
