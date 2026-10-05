@@ -41,17 +41,17 @@ The hybrid format, as W01's revision 2 (`videos/archive/2026-10-02-mirror-walkth
 |----|--------|-------|---------|----------|-----|
 | open | card | What is new in CTRLbot IoT | `MasterControlCard` | The tricon and the CTRLbot IoT lockup are on screen at frame 0; the line streams in beneath them | 5 |
 | proof | stage | Drag a source onto a display | `TabletEui` | The tablet EUI; a source is pressed, dragged and dropped on a display, which fills with it, ringed | 7 |
-| net-switches | chapter | Network switches have their own category | `DriverCatalog` | The type filter opens with Net Switchers in it; Net Switchers is picked and the list shows LUXUL AMS-1208P (f_0004–f_0005) | 6 |
-| avoip | chapter | Three more AV-over-IP manufacturers | `DriverCatalog` | End Points is picked; Kramer, Matrox and Hall Research rows are ringed one after another (f_0006–f_0007) | 10 |
-| global-cache | chapter | Global Caché by exact model | `DriverDetail` | Global Caché End Points in the detail pane; the Model dropdown opens on the Flex, GC-100, Global Connect and iTach models, Most Models above them (f_0008–f_0010) | 12 |
-| pusr | chapter | Serial through a PUSR USR-W630 | `DriverDetail` | PUSR End Points in the detail pane, model USR-W630; its description is ringed (f_0011) | 11 |
-| discovery | chapter | Find Devices matches and adds them | `DiscoverDevices` | Discover Devices; the Global Cache iTachFlexEthernet and PUSR rows show their matched driver, Add Driver is tapped, "1 device added" (f_0017–f_0020) | 11 |
-| rs232 | chapter | Connect an RS-232 device through the end point | `ConnectionPanel` | Configure Connection for the Acer XL2320P with the RS232 End Point set; CONNECT shows its progress, then connected, with the terminal on the left and the commands on the right (f_0022–f_0024) | 16 |
-| terminal | chapter | A terminal for every device | `ConnectTest` | Test Device Drivers, Global Cache selected, Terminal tab: GET DEVICES is sent and its reply lands in the terminal, readable (f_0027–f_0028) | 9 |
-| webpage | chapter | The device's own web page, in the app | `ConnectTest` + `ProductWebView` | The Web page tab is tapped and the device's page opens inside the app, held under 2s (f_0032) | 6 |
-| message | chapter | A message on a preset step | `ActivitiesPresets` | Edit Preset, Power On: a Delay step with `hello world` typed into its message (f_0037–f_0039) | 6 |
-| eui | chapter | Tap, drag, or send to All | `TabletEui` | A source tapped then a display; a source dragged onto a display; a source sent to All, and every display takes it (f_0042–f_0045, f_0049) | 16 |
-| power | chapter | Change your mind before it powers off | `TabletEui` + `EuiPower` | Power is tapped; Powering Off shows the ✕ in its corner, ringed; then powering on shows `hello world` under the ring (f_0046, recording 406.5s) | 10 |
+| net-switches | chapter | Network switches have their own category | `DriverCatalog` | The type filter opens with Net Switchers in it; Net Switchers is picked and the list shows LUXUL AMS-1208P (f_0004–f_0005) | 7 |
+| avoip | chapter | Three more AV-over-IP manufacturers | `DriverCatalog` | End Points is picked; Kramer, Matrox and Hall Research rows are ringed one after another (f_0006–f_0007) | 12 |
+| global-cache | chapter | Global Caché by exact model | `DriverDetail` | Global Caché End Points in the detail pane; the Model dropdown opens on the Flex, GC-100, Global Connect and iTach models, Most Models above them (f_0008–f_0010) | 13 |
+| pusr | chapter | Serial through a PUSR USR-W630 | `DriverDetail` | PUSR End Points in the detail pane, model USR-W630; its description is ringed (f_0011) | 14.5 |
+| discovery | chapter | Find Devices matches and adds them | `DiscoverDevices` | The catalog's 15 devices found button is ringed in its corner, then Discover Devices: the Global Cache iTachFlexEthernet row shows its matched driver, Add Driver is tapped, "1 device added" (f_0012, f_0017–f_0020) | 8.5 |
+| rs232 | chapter | Connect an RS-232 device through the end point | `ConnectionPanel` | Configure Connection for the Acer XL2320P with the RS232 End Point set; CONNECT shows its progress, then connected, with the terminal on the left and the commands on the right (f_0022–f_0024) | 19.5 |
+| terminal | chapter | A terminal for every device | `ConnectTest` | Test Device Drivers, Global Cache selected, Terminal tab: GET DEVICES is sent and its reply lands in the terminal, readable (f_0027–f_0028) | 8.5 |
+| webpage | chapter | The device's own web page, in the app | `ConnectTest` + `ProductWebView` | The Web page tab is tapped and the device's page opens inside the app, held under 2s (f_0032) | 8.5 |
+| message | chapter | A message on a preset step | `ActivitiesPresets` | Edit Preset, Power On: a Delay step with `hello world` typed into its message (f_0037–f_0039) | 5.5 |
+| eui | chapter | Drag to a display, or send to All | `TabletEui` | A source dragged onto a display; a source tapped, then All, and every display takes it (f_0042–f_0045, f_0049) | 11.5 |
+| power | chapter | Change your mind before it powers off | `TabletEui` + `EuiPower` | Power is tapped; Powering Off shows the ✕ in its corner, ringed; then powering on shows `hello world` under the ring (f_0046, recording 406.5s) | 11.5 |
 | close | card | The name, once, at the end | `MasterControlCard` | The CTRLbot IoT lockup and its line; no URL | 4 |
 
 ## Anything unusual
@@ -147,7 +147,7 @@ Chapters are step labels: eyebrow and title, a body only where given.
 | terminal | Connect | A terminal for every device | — |
 | webpage | Connect | The device's own web page | — |
 | message | Activities | A message on a preset step | The end user sees it while the preset runs. |
-| eui | End user interface | Tap, drag, or send to All | — |
+| eui | End user interface | Drag to a display, or send to All | — |
 | power | End user interface | Change your mind before it powers off | Tap ✕ and nothing is sent. |
 | close (card) | — | lockup **CTRLbot IoT** | line: All of it in v1.0.9. |
 
@@ -178,7 +178,6 @@ one's planned end, and at least 1.0s held after a beat's last clip. `welcome` ru
 | webpage | web | 304.25–311.45 | And additionally, if the device has a webpage, right, then you'll be able to access that webpage directly, |
 | message | msg | 340.85–344.85 | you can basically add messages, right? (the repeated "you can" comes out) |
 | eui | eui-drag | 372.95–379.6 | Another great feature now is you can drag and drop the sources on there. |
-| eui | eui-select | 379.55–388.4 | You still have the option to select source, select output, or you can drag and drop source to output. |
 | eui | eui-all | 389.25–393.75 | And of course you can select a source and send to all by hitting that all button. |
 | power | power-x | 396.05–403.95 | Also, just a little safety feature. We have a little X in the corner. So if you want to cancel or power off, you're able to do that now. |
 | power | power-message | 407.75–409.75 | And there's our hello world message. |
@@ -199,17 +198,17 @@ and `power` show the whole EUI. The subject is never in the right 140 px column.
 
 | beat | cue → action → result |
 |------|-----------------------|
-| proof | welcome "IoT" → a source pressed · 0.6s later → dragged onto a display, which fills, ringed |
+| proof | welcome "features" → a source pressed · 0.6s later → dragged onto a display, which fills, ringed |
 | net-switches | net-category "category" → the type filter opens · "switches" → Net Switchers picked, LUXUL ringed |
 | avoip | avoip-more "endpoints" → End Points picked · avoip-brands "Kramer", "Matrox", "Research" → each row ringed on its word |
 | global-cache | gc-models "endpoints" → Global Caché selected, the pane opens · "models" → the Model dropdown opens, the list ringed |
 | pusr | pusr "PUSR" → PUSR selected, USR-W630 in the pane · "convert" → the description ringed |
-| discovery | disc-corner "discovery" → the discovery icon ringed, the list · disc-click "driver" → the Global Cache row's match ringed · "click" → Add Driver tapped, "1 device added" |
+| discovery | disc-corner "discovery" → the catalog's "15 devices found" button ringed · "corner" → Discover Devices, the list · disc-click "driver" → the Global Cache row's match ringed · "click" → Add Driver tapped, "1 device added" |
 | rs232 | rs-acer "Acer" → Configure Connection for the Acer · rs-endpoint "end" → the RS232 End Point field ringed · "connect" → CONNECT tapped, the progress line · rs-terminal "terminal" → connected, the terminal ringed · rs-layout "commands" → the commands column ringed |
 | terminal | term-open "terminal" → the Terminal tab · term-send "send" → GET DEVICES tapped, Sent then Received land |
 | webpage | web "webpage" (first) → the Web page tab tapped · "directly" → the page opens; leave it by the beat end |
 | message | msg "messages" → the Delay step's message ringed as `hello world` types in |
-| eui | eui-drag "drag" → a drag onto a display · eui-select "select" (first) → a source tapped · "output" → a display tapped · eui-all "all" (first) → All tapped, every display takes it |
+| eui | eui-drag "drag" → a drag onto a display · eui-all "source" → a source tapped · "all" (first) → All tapped, every display takes it |
 | power | power-x "safety" → power tapped, Powering Off · "X" → the ✕ ringed · power-message "hello" → powering on, `hello world` under the ring |
 
 ## Executor instructions
@@ -329,7 +328,7 @@ and T15 are committed, with node_modules as a junction. Every W05 commit lands o
     - `pusr`: "-232" ends at 113.99s, exactly where "or" starts, so `notAfter` sits on that boundary. Listen to its middle, 101–109s, for "Alright" and "Uh oh" that the filler pass may keep.
     - `power-message`: "feature." ends at 407.72s and "And" starts at 407.78s.
     - Also `rs-endpoint`, `msg` and `thanks`, all cut out of running speech.
-- [ ] T9: Write W05's beat data: beats and layouts from the Beats table, copy from the Copy table, regions and cue frames from the Shot list — files: src/marketing/iot-latest-features/iotLatestFeaturesData.ts, videos/iot-latest-features.md
+- [x] T9: Write W05's beat data: beats and layouts from the Beats table, copy from the Copy table, regions and cue frames from the Shot list — files: src/marketing/iot-latest-features/iotLatestFeaturesData.ts, videos/iot-latest-features.md
   - The total T8 measured, at 30fps. `DriverCatalog` callers use the app's blue wash and T17's header, in every catalog beat, so the header does not jump between beats.
   - Every Shot-list region change is a `shots` entry with `at` from `cueFrame`, relative to the beat. A `regions` array splits the beat evenly and misses the cue. Add no hold keyframes: the shell drifts.
   - Rev 2: write T8's measured Sec into the Beats table above, and apply the approved deltas (Revision 2) to the Beats evidence, Copy, Narration clips and Shot list tables. `npm run video:frames -- iot-latest-features validate` reads the Beats table.
@@ -397,6 +396,9 @@ and a 1.0s hold. Allow about ±5s; T8 measures the real lengths. (A second estim
 - **The alternative is to keep every clip, about 2:35.** Both shapes then use the
   `social-walkthrough` destination. The portrait still fits TikTok, Shorts (3:00) and
   LinkedIn, but not X.
+
+**Measured (T8) supersedes the table:** every clip but `eui-select` fits, 136s. `avoip-more` and
+`rs-layout` stay, so their deltas below do not apply.
 
 **Deltas under the recommendation.** T8 and T9 write them into the tables above; T11–T13 build
 them.
@@ -477,6 +479,8 @@ Then the run stops for Nathan's review. T16 follows on his go.
 - **Blocked:** nothing else; W02 T17 and W03 T20 and T21 are committed.
 
 ## Review notes
+
+- T9, 2026-10-05: author-verified (Claude) on objective gates. Check, lint and `validate` pass (14 beats, 136s). 4080 frames; all 31 cue words resolve (proof "features" at frame 187, power "hello" at 3885). Every Shot-list region change is a `shots` entry at its cue; small regions go through a local `atLeast`. The catalog beats use T17's header throughout, and net-switches and avoip put the landscape step label on the right, clear of the list. The Beats table now carries the measured Sec, and the discovery and eui evidence, the eui copy, the clip table and the proof, discovery and eui shot rows follow revision 2.
 
 - T7, 2026-10-05: author-verified (Claude) on objective gates. Check and lint pass. W04 frame 5560, W03 portrait frame 5900 and EUI promo frames 60, 1700 and 1760 are byte-identical before and after. `Proof-Tablet-Power-Cancel` matches `f_0046`: Powering Off with the 56dp countdown ring and ✕ in the top-right corner, and no status line. `Proof-Tablet-Power-Message` matches the recording at 406.5s: Powering On with "hello world" under the ring. Two findings: the power captures have the app's "Done" baked in under the ring, so a given `statusMessage` (including '') masks it with the capture's field colour first; and the synced tokens predate `power_cancel_*`, so those four dimens are repeated from `values/dimens.xml` with a comment rather than re-running `sync:tokens`, which would move other drifted tokens. `EUI_POWER_REGIONS.tablet.cancel` and `.statusMessage` are exported.
 
