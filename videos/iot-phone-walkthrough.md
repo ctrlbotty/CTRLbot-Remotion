@@ -466,7 +466,7 @@ portrait remains on revision 2's 336s timeline, including first-run and 15s Epso
 
 - [x] T34: Hide the database dropdown and manufacturer page, align Product Page and Welcome power highlights, and lift the Set highlight over the nav bar for landscape only — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [x] T35: Add a dark grey bezel to every landscape phone, enlarge the opening proof, keep the whole switching interface in view, and trim the requested sections using the original narration clock — files: src/marketing/iot-phone-walkthrough/IotPhoneLandscapeReview.tsx
-- [ ] T36: Wire the landscape revision at 9543 frames while keeping portrait at 10080 frames — files: src/marketing/iot-phone-walkthrough/IotPhoneWalkthrough.tsx, src/Root.tsx
+- [x] T36: Wire the landscape revision at 9543 frames while keeping portrait at 10080 frames — files: src/marketing/iot-phone-walkthrough/IotPhoneWalkthrough.tsx, src/Root.tsx
 - [ ] T37: Render the landscape review and retime its SRT, inspect cue stills and cut boundaries, run the existing gates, and stop for Nathan — files: videos/iot-phone-walkthrough.md
 
 Edits preserve complete spoken clips. Source timeline 11–27.5s is removed together
