@@ -467,7 +467,7 @@ portrait remains on revision 2's 336s timeline, including first-run and 15s Epso
 - [x] T34: Hide the database dropdown and manufacturer page, align Product Page and Welcome power highlights, and lift the Set highlight over the nav bar for landscape only — files: src/marketing/iot-phone-walkthrough/IotPhoneBeats.tsx
 - [x] T35: Add a dark grey bezel to every landscape phone, enlarge the opening proof, keep the whole switching interface in view, and trim the requested sections using the original narration clock — files: src/marketing/iot-phone-walkthrough/IotPhoneLandscapeReview.tsx
 - [x] T36: Wire the landscape revision at 9543 frames while keeping portrait at 10080 frames — files: src/marketing/iot-phone-walkthrough/IotPhoneWalkthrough.tsx, src/Root.tsx
-- [ ] T37: Render the landscape review and retime its SRT, inspect cue stills and cut boundaries, run the existing gates, and stop for Nathan — files: videos/iot-phone-walkthrough.md
+- [!] T37: Render the landscape review and retime its SRT, inspect cue stills and cut boundaries, run the existing gates, and stop for Nathan — files: videos/iot-phone-walkthrough.md
 
 Edits preserve complete spoken clips. Source timeline 11–27.5s is removed together
 with both first-run narration clips. Epson's complete Product Page sentence ends
@@ -486,3 +486,39 @@ recording, generated edit or portrait artifact is changed.
 
 Shared workspace: pre-existing Mirror and Terminator changes are excluded from
 this revision. Root staging must include only the phone landscape duration hunk.
+Revision 3 verification record:
+- T34: `a56f42f`, with Product Page padding correction `fe647a2`. The model
+  field's 22dp horizontal padding gives Product Page x=195, width=151; its
+  y=89.2 follows the Model label line height and margin. Welcome ring uses the
+  capture's power centre (180,476), rather than the live layout's higher centre.
+- T35: `4b73078`; T36: `89e8b0c`. The Root commit contains only the landscape
+  duration hunk; existing Terminator imports and portrait registration stay unstaged.
+- Source check and destination lint pass with 0 errors and 0 warnings. Brief
+  validation passes: 19 beats, 318.1s. Cue stills were visually inspected; the
+  Set ring is above the navigation stacking layer and switching shows displays,
+  All and the native horizontally scrolling source strip.
+- Initial render narration loudness check passes: 318.14s, -16.10 LUFS,
+  -4.32 dBTP. Voice verification exits 1 with 3 edge flags: discovery-intro
+  "I'd" at 3:07.35, matrox-test-single "If" at 4:07.76, and m2m-displays "Oh,"
+  at 4:32.65. The latter two are the prior T31 review flags. The newly flagged
+  "I'd" is also unchanged audio: its first 50ms is -53.904 dB in the previous
+  render at 205.25s and -53.907 dB in the revision at 187.35s. No voice repair
+  is made beyond Nathan's requested first-run removal. Full voice log:
+  `out/review/iot-phone-landscape/voice-verification.log`.
+- Review page: `out/review/iot-phone-landscape/contact.html`; timed subtitles:
+  `out/review/iot-phone-landscape/review.srt` (138 captions, 47 complete clips).
+- Previous landscape artifact and subtitles are retained as `previous.mp4` and
+  `previous.srt` in the review folder. Portrait is unchanged and awaits approval.
+Final phase 1 result, 2026-10-05:
+- Updated landscape: `out/iot-phone-walkthrough.mp4`, 71,208,915 bytes;
+  `out/iot-phone-walkthrough.srt` updated to the 318.1s timeline. The review page
+  is also at `out/iot-phone-walkthrough/contact.html`.
+- Final source check, destination lint and brief validation pass. Final frame
+  gate passes: 1273 samples, 40% inert, median content area 97%, no problems.
+  Final narration loudness check passes: 318.14s, -16.10 LUFS, -4.32 dBTP.
+- T37 remains `[!]` solely for the inherited voice verification flags recorded
+  above; no requested visual fix is blocked. This is a rendered review candidate,
+  not an approved release. The voice result is reused after the final ring-only
+  change because the audio source, timing and edit spans are unchanged.
+- All requested visual notes are implemented. Stop for Nathan's landscape review;
+  do not revise or render portrait, publish, archive, or close out until approved.
