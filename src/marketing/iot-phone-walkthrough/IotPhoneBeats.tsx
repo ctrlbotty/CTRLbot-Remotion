@@ -588,7 +588,7 @@ export const EpsonBeat: React.FC<{frame: number; frames: number; review?: boolea
   }
 
   const productPageBtn = review
-    ? {x: 184, y: 89.2, width: 162, height: 42}
+    ? {x: 195, y: 89.2, width: 151, height: 42}
     : {x: 184, y: 87, width: 162, height: 42};
   const ringStart = Math.max(epsonCue + 30, linkCue - 45);
 
