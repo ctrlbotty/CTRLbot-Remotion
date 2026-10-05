@@ -41,7 +41,6 @@ Revision 2 (2026-10-01): the hybrid format, as W01's revision 2
 |----|--------|-------|---------|----------|-----|
 | open | card | CTRLbot IoT runs the room from a tablet | `MasterControlCard` | The tricon and the CTRLbot IoT lockup are on screen at frame 0; the promise line streams in beneath them | 5 |
 | proof | stage | One tap, and it is there | `TabletEui` | The tablet EUI; a source is tapped and the display fills with it in the same moment, ringed | 6 |
-| first-run | chapter | A short tour opens the first time | `FirstRunEducation` | The first-run walkthrough over the setup screen steps forward, then its ✕ is tapped and it closes | 13.5 |
 | ai | chapter | CTRLbot AI is a living manual | `CtrlbotAi` | The question list; a question is tapped and its answer lands, readable | 22 |
 | database | chapter | Everything starts with a driver | `DriverCatalog` | The catalog, on the app's blue wash, scrolls; the sort filter is tapped and opens on Projector, Display, Switchers, End Points | 23 |
 | epson | chapter | Every driver carries its device's details | `DriverDetail` + `ProductWebView` | Epson PowerLite in the detail pane; the manufacturer link is ringed and tapped, and the web view's address bar loads for under two seconds; back on the pane, the connection info is ringed | 23.5 |
@@ -57,7 +56,7 @@ Revision 2 (2026-10-01): the hybrid format, as W01's revision 2
 | matrox-test | chapter | Test each encoder and decoder | `ConnectTest` | The Matrox system with encoders and decoders side by side; a decoder takes an encoder on "switch" | 8 |
 | matrox-switch | chapter | Encoders and decoders, set up for the room | `ActivitiesSwitch` | The switch type goes to AVoIP Encoders/Decoders on "encoders"; the ConvertIP lists fill and are ringed | 23.5 |
 | m2m | chapter | Many to many, by tap, drag or All | `TabletEui` | Four displays with sources and displays in one frame: a source tapped then a display; a source dragged onto a display; All tapped, and every display takes it | 24.5 |
-| settings | chapter | Help is built in | `SettingsSupport` | Settings → Support: User Manual, Quick Start, Factory Reset and Database Management ringed on their words | 21 |
+| settings | chapter | Help is built in | `SettingsSupport` | Wide on the setup screen, the rail's Set row is ringed and tapped and Settings opens with Set selected; the camera pans right, and User Manual, Quick Start, Factory Reset and Database Management ringed on their words | 21 |
 | close | card | The name, once, at the end | `MasterControlCard` | The CTRLbot IoT lockup and its outcome line; no URL | 5 |
 
 ## Anything unusual
@@ -118,7 +117,6 @@ Audiowide only where marked.
 | beat | eyebrow | title | body |
 |------|---------|-------|------|
 | open | — | **CTRLbot IoT** (Audiowide) | Room control from an Android phone or tablet. No processor, no laptop, no extra software. |
-| first-run | First run | A short tour to start | The app opens with a walkthrough of setup. Close it any time, and open it again from Settings → Quick Start. |
 | ai | CTRLbot AI | A living manual | Ask anything about the app or how to set it up, and it answers, or helps you troubleshoot. |
 | database | Device | Start with a driver | Dozens of manufacturers, hundreds of models and thousands of tested commands. RS-232 and IR go through an end point. Sort by type to find yours. |
 | epson | Device | Everything about the device | Pick a model to see its information and everything the connection needs, with links to the manufacturer and product pages. |
@@ -147,7 +145,6 @@ beat's start + 0.25s, and each next clip at the previous clip's end + 0.2s.
 | beat | clips (source ranges) | what is said |
 |------|-----------------------|--------------|
 | open | 1.4–11.3 | Welcome to CTRLbot … the CTRLbot IoT app that's available for Android, for phone, tablet, |
-| first-run | 14.7–27.1 | When you first open up the app, you'll have a nice little walkthrough … click on the quick start. |
 | ai | 28.1–33.5, 34.5–41.9, 43.3–49.6 | The first thing you'll see … our CTRLbot AI. And this is going to help you … a living manual. So anything … you can just put in right here. |
 | database | 53.9–64.0, 64.4–76.0 | It all begins with adding devices … IP, RS-232 and IR as well. In order to use RS-232 or IR … our sorting right here. |
 | epson | 76.8–78.2, 79.6–86.2, 86.3–94.8, 95.7–101.4 | Let's just add a projector. And you can see when I click … great information. If I want, I can go to the manufacturer webpage … product page as well. And down here … to make the connection. |
@@ -164,7 +161,7 @@ beat's start + 0.25s, and each next clip at the previous clip's end + 0.2s.
 | matrox-switch | 340.1–341.9, 342.3–349.4, 349.9–357.7, 358.5–363.9 | let's go back over to activities. So now we'll want to change the switcher over to encoders and decoders. And you can see here our ConvertIP … ready to go. And we'll leave the audio … set up for the display. |
 | m2m | 364.8–368.3, 369.0–373.4, 374.0–379.1, 379.6–382.2, 382.3–389.5 | Now, when we come in here, we have a very different interface, right? … one press, and then you can click over here. We also have a drag and drop feature … drag it over. And of course, we have our send to all. At any time … where it needs to go. |
 | settings | 399.4–403.9, 404.1–407.3, 408.6–414.1, 414.7–421.0 | At any time, if you need to start over or you need help with the user manual, · So full user manual … right here. And the quick start … play that right here. And if you need to do a factory reset or update the database … right here. |
-| close | 423.0–423.9 | Thank you for your time. |
+| close | — | Silent (revision 3: Nathan cut "Thank you for your time.") |
 
 Cut on purpose: "and Chromebook" (11.4s), the stumbles around 312–329s ("the way that we,
 we organize these is, is interesting"), the IPMX "universal control protocol" aside
@@ -320,7 +317,6 @@ displays together. The subject is never in the right 140 px column.
 | beat | First-Run source | cue → action → result |
 |------|------------------|-----------------------|
 | proof | `EuiHandoff` (switch one display) | welcome "app" → a source tapped, the display fills |
-| first-run | `CtrlbotIntro` | first-run "walkthrough" → the tour steps · "close" → ✕ tapped, the tour closes |
 | ai | `CtrlbotIntro` | ai-intro "AI" → the question list · ai-manual "troubleshoot" → a question tapped · "manual" → the answer lands |
 | database | `DeviceSetup` | db-devices "library" → the catalog scrolls · db-sorting "sorting" → the filter opens |
 | epson | — | epson-info "projector" → Epson tapped, the detail pane · epson-webpage "manufacturer" → link ringed and tapped, the web view loads for at most 2s · epson-connection "connection" → the connection info ringed |
@@ -336,7 +332,7 @@ displays together. The subject is never in the right 140 px column.
 | matrox-test | — | matrox-test-individual "individual" → a decoder tapped · matrox-test-switch "switch" → it takes an encoder |
 | matrox-switch | `BuildRoom` | matrox-switch-back "activities" → Activities · matrox-switch-change "encoders" → the switch type changes · matrox-switch-convertip "convert" → the lists ringed |
 | m2m | `EuiHandoff` (route across displays) | m2m-press-click "press" → a source tapped · "click" → a display tapped · m2m-drag-drop "drag" → a drag onto a display · m2m-send-all "all" → All tapped |
-| settings | — | settings-manual "manual" → User Manual ringed · settings-quick-start "quick" → Quick Start ringed · settings-reset "factory" → Factory Reset ringed · "database" → Database Management ringed |
+| settings | — | settings-start-over "start" → Set tapped in the rail, Settings opens, Set selected · settings-manual "manual" → User Manual ringed · settings-quick-start "quick" → Quick Start ringed · settings-reset "factory" → Factory Reset ringed · "database" → Database Management ringed |
 
 - [x] T19: Re-plan W04's edit with `narration:edit` and the changes above — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughNarration.ts, src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughNarration.generated.ts, public/narration/iot-tablet-walkthrough/edit.m4a
   - Nathan, 2026-10-02: `add` 15.5→16s and `terminal` 6→5.5s; `matrox-test` 7→8s and `matrox-add` 31.5→30.5s (total 343.5s unchanged). The first build left `add` with a 0.60s hold and `matrox-test` with 0.48s.
@@ -361,6 +357,16 @@ displays together. The subject is never in the right 140 px column.
   - The voice check must hear "manual", "interface", "it", "IPMX" and "here" whole, and "user manual" once in the settings beat.
   - Picture: a portrait still at every Test and EUI cue shows the named tab or state.
   - Regression: `First-Run-Tablet` and the `Proof-*` stills look as before.
+
+### Revision 3 · 2026-10-05 — Nathan's review
+
+Notes on `out/iot-tablet-walkthrough.mp4` (landscape leads, portrait follows once approved).
+The cut is now 330s (9900 frames); every beat after `proof` moved 13.5s earlier.
+
+- [x] T34: Drop the `first-run` beat (0:11–0:24) so the cut opens on CTRLbot AI, and drop the closing "Thank you for your time" so `close` plays silent — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughNarration.ts, src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts, src/Root.tsx
+  - Narration rebuilt with `narration:edit --seconds=330`; `IotTabletBeats.tsx` loses `FirstRunBeat`.
+- [x] T35: Settings (was 5:20, now 5:04) opens wide on the setup screen with the rail's Set row ringed and tapped on "start", Settings opens with Set selected, then the camera pans right into Support on "manual" — files: src/marketing/iot-tablet-walkthrough/IotTabletBeats.tsx, src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts
+- [ ] T36: Carry T34–T35 to `iot-tablet-walkthrough-portrait` after Nathan approves the landscape cut — files: src/marketing/iot-tablet-walkthrough/iotTabletWalkthroughData.ts
 
 ## Deferred
 

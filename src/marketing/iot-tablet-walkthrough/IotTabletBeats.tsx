@@ -9,7 +9,6 @@ import {
   TABLET_EUI_REGIONS,
 } from '../../app-ui/TabletEui';
 import type {EuiInput, EuiOutput} from '../../app-ui/PhoneEui';
-import {FirstRunEducation, firstRunEducationRegions} from '../../app-ui/FirstRunEducation';
 import {AI_QUESTIONS, CtrlbotAi, aiRegions} from '../../app-ui/CtrlbotAi';
 import {
   DriverCatalog,
@@ -135,48 +134,6 @@ export const OpenBeat: React.FC<{frame: number; frames: number}> = () => (
     outputLabel="Display 1"
   />
 );
-
-/**
- * First-run beat (13.5s = 405 frames):
- * The first-run walkthrough over the setup screen steps forward, then its ✕ closes it.
- * Cues: first-run "walkthrough" (tour steps forward) · "close" (✕ tapped, tour closes).
- */
-export const FirstRunBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
-  const cueTour = CUE_FRAMES.firstRunTour - BEATS['first-run'].from;
-  const cueClose = CUE_FRAMES.firstRunClose - BEATS['first-run'].from;
-
-  const regions = firstRunEducationRegions('tablet');
-  const closeReg = regions.closeButton;
-  const closeX = closeReg.x + closeReg.width / 2;
-  const closeY = closeReg.y + closeReg.height / 2;
-
-  const nextBtn = regions.nextButton;
-  const nextX = nextBtn.x + nextBtn.width / 2;
-  const nextY = nextBtn.y + nextBtn.height / 2;
-
-  const step = frame < cueTour ? 1 : 2;
-  const cardOpacity =
-    frame < cueClose
-      ? 1
-      : interpolate(frame, [cueClose, cueClose + 15], [1, 0], {
-          easing: Easing.bezier(0.16, 1, 0.3, 1),
-          extrapolateLeft: 'clamp',
-          extrapolateRight: 'clamp',
-        });
-
-  return (
-    <>
-      <FirstRunEducation
-        device="tablet"
-        step={step}
-        cardOpacity={cardOpacity}
-        showClose={cardOpacity > 0}
-      />
-      <TapIndicator x={nextX} y={nextY} at={cueTour} name="Tour step tap" />
-      <TapIndicator x={closeX} y={closeY} at={cueClose} name="Close ✕ tap" />
-    </>
-  );
-};
 
 /**
  * AI beat (22s = 660 frames):
@@ -1890,27 +1847,41 @@ export const M2mBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
 
 /**
  * Settings beat (21s = 630 frames):
- * Settings → Support: User Manual, Quick Start, Factory Reset and Database Management
- * ringed on their words.
+ * Wide on the setup screen, the rail's Set row ringed and tapped on "start"; Settings →
+ * Support opens with Set selected, and the camera pans right into it on "manual". User
+ * Manual, Quick Start, Factory Reset and Database Management are ringed on their words.
+ * Cues: settings-start-over "start" -> Set tapped, Settings opens
  * Cues: settings-manual "manual" (abs 9675, rel 150) -> User Manual ringed
  *       · settings-quick-start "quick" (abs 9759, rel 234) -> Quick Start ringed
  *       · settings-reset "factory" (abs 9933, rel 408) -> Factory Reset ringed
  *       · settings-reset "database" (abs 10003, rel 478) -> Database Management ringed
  */
 export const SettingsBeat: React.FC<{frame: number; frames: number}> = ({frame}) => {
+  const cueStart = CUE_FRAMES.settingsStart - BEATS.settings.from;
   const cueManual = CUE_FRAMES.settingsManual - BEATS.settings.from;
   const cueQuick = CUE_FRAMES.settingsQuick - BEATS.settings.from;
   const cueFactory = CUE_FRAMES.settingsFactory - BEATS.settings.from;
   const cueDatabase = CUE_FRAMES.settingsDatabase - BEATS.settings.from;
 
   const settingsRegs = settingsSupportRegions('tablet');
+  const setRow = tabletNavRegions.row('set', true);
+  const setCenter = centerOf(setRow);
+  // The screen changes a few frames after the tap lands, as it does in the app.
+  const opened = frame >= cueStart + 6;
 
   return (
     <>
-      <SettingsSupport
-        device="tablet"
-        resetButtonState="idle"
-      />
+      {opened ? (
+        <SettingsSupport device="tablet" resetButtonState="idle" activeNav="set" />
+      ) : (
+        <ActivitiesAudio device="tablet" activeTab="audio" deviceName="EPSON PowerLite - New" />
+      )}
+
+      {/* Cue 0: the rail's Set row ringed, then tapped on "start" */}
+      {frame < cueManual ? (
+        <FocusRing region={setRow} appearAt={0} radius={8} name="Set nav ring" />
+      ) : null}
+      <TapIndicator x={setCenter.x} y={setCenter.y} at={cueStart} name="Set nav tap" />
 
       {/* Cue 1: User Manual ringed on "manual" */}
       {frame >= cueManual && frame < cueQuick ? (
@@ -1978,7 +1949,6 @@ export const BEAT_RENDERERS: Record<
   React.FC<{frame: number; frames: number}>
 > = {
   open: OpenBeat,
-  'first-run': FirstRunBeat,
   ai: AiBeat,
   database: DatabaseBeat,
   epson: EpsonBeat,

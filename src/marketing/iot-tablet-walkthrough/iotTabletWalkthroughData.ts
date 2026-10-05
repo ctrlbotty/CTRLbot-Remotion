@@ -1,7 +1,6 @@
-// Revision 2: one 343.5-second timeline (10305 frames) for both shapes, timed to the edited narration.
+// Revision 3: one 330-second timeline (9900 frames) for both shapes, timed to the edited narration.
 import {fullFrame, padRegion, type Region, type Shot} from '../../camera/Camera';
 import {TABLET_VIEWPORT} from '../../app-ui/viewports';
-import {firstRunEducationRegions} from '../../app-ui/FirstRunEducation';
 import {aiRegions} from '../../app-ui/CtrlbotAi';
 import {catalogRegions} from '../../app-ui/DriverCatalog';
 import {productWebRegions} from '../../app-ui/ProductWebView';
@@ -19,35 +18,33 @@ import {NARRATION_EDIT} from './iotTabletWalkthroughNarration.generated';
 export const BEATS = {
   open: {from: 0, duration: 150, layout: 'card'},
   proof: {from: 150, duration: 180, layout: 'stage'},
-  'first-run': {from: 330, duration: 405, layout: 'chapter'},
-  ai: {from: 735, duration: 660, layout: 'chapter'},
-  database: {from: 1395, duration: 690, layout: 'chapter'},
-  epson: {from: 2085, duration: 705, layout: 'chapter'},
-  add: {from: 2790, duration: 480, layout: 'chapter'},
-  terminal: {from: 3270, duration: 165, layout: 'chapter'},
-  test: {from: 3435, duration: 840, layout: 'chapter'},
-  activities: {from: 4275, duration: 570, layout: 'chapter'},
-  'switch-audio': {from: 4845, duration: 495, layout: 'chapter'},
-  eui: {from: 5340, duration: 750, layout: 'chapter'},
-  exit: {from: 6090, duration: 240, layout: 'chapter'},
-  discovery: {from: 6330, duration: 600, layout: 'chapter'},
-  'matrox-add': {from: 6930, duration: 915, layout: 'chapter'},
-  'matrox-test': {from: 7845, duration: 240, layout: 'chapter'},
-  'matrox-switch': {from: 8085, duration: 705, layout: 'chapter'},
-  m2m: {from: 8790, duration: 735, layout: 'chapter'},
-  settings: {from: 9525, duration: 630, layout: 'chapter'},
-  close: {from: 10155, duration: 150, layout: 'card'},
+  ai: {from: 330, duration: 660, layout: 'chapter'},
+  database: {from: 990, duration: 690, layout: 'chapter'},
+  epson: {from: 1680, duration: 705, layout: 'chapter'},
+  add: {from: 2385, duration: 480, layout: 'chapter'},
+  terminal: {from: 2865, duration: 165, layout: 'chapter'},
+  test: {from: 3030, duration: 840, layout: 'chapter'},
+  activities: {from: 3870, duration: 570, layout: 'chapter'},
+  'switch-audio': {from: 4440, duration: 495, layout: 'chapter'},
+  eui: {from: 4935, duration: 750, layout: 'chapter'},
+  exit: {from: 5685, duration: 240, layout: 'chapter'},
+  discovery: {from: 5925, duration: 600, layout: 'chapter'},
+  'matrox-add': {from: 6525, duration: 915, layout: 'chapter'},
+  'matrox-test': {from: 7440, duration: 240, layout: 'chapter'},
+  'matrox-switch': {from: 7680, duration: 705, layout: 'chapter'},
+  m2m: {from: 8385, duration: 735, layout: 'chapter'},
+  settings: {from: 9120, duration: 630, layout: 'chapter'},
+  close: {from: 9750, duration: 150, layout: 'card'},
 } as const;
 
 export type TabletBeatName = keyof typeof BEATS;
 export type BeatName = Exclude<TabletBeatName, 'proof'>;
 export const BEAT_NAMES = Object.keys(BEATS) as TabletBeatName[];
-export const IOT_TABLET_WALKTHROUGH_FRAMES = 10305;
+export const IOT_TABLET_WALKTHROUGH_FRAMES = 9900;
 
 export const COPY: Record<TabletBeatName, BeatCopy> = {
   open: {headline: 'CTRLbot IoT', body: 'Set up and run a whole room from an Android tablet.'},
   proof: {eyebrow: 'End user interface', title: 'One tap, and it is there'},
-  'first-run': {eyebrow: 'First run', title: 'A short tour to start'},
   ai: {eyebrow: 'CTRLbot AI', title: 'A living manual'},
   database: {
     eyebrow: 'Device',
@@ -74,8 +71,6 @@ export const COPY: Record<TabletBeatName, BeatCopy> = {
 // Absolute composition frames; beat shot times below subtract the beat's start.
 export const CUE_FRAMES = {
   welcomeApp: cueFrame(NARRATION_EDIT, 'welcome', 'app'),
-  firstRunTour: cueFrame(NARRATION_EDIT, 'first-run-tour', 'walkthrough'),
-  firstRunClose: cueFrame(NARRATION_EDIT, 'first-run-tour', 'close'),
   aiIntro: cueFrame(NARRATION_EDIT, 'ai-intro', 'AI'),
   aiTroubleshoot: cueFrame(NARRATION_EDIT, 'ai-manual', 'troubleshoot'),
   aiManual: cueFrame(NARRATION_EDIT, 'ai-manual', 'manual'),
@@ -120,13 +115,13 @@ export const CUE_FRAMES = {
   m2mClick: cueFrame(NARRATION_EDIT, 'm2m-press-click', 'click'),
   m2mDrag: cueFrame(NARRATION_EDIT, 'm2m-drag-drop', 'drag'),
   m2mAll: cueFrame(NARRATION_EDIT, 'm2m-send-all', 'all'),
+  settingsStart: cueFrame(NARRATION_EDIT, 'settings-start-over', 'start'),
   settingsManual: cueFrame(NARRATION_EDIT, 'settings-manual', 'manual'),
   settingsQuick: cueFrame(NARRATION_EDIT, 'settings-quick-start', 'quick'),
   settingsFactory: cueFrame(NARRATION_EDIT, 'settings-reset', 'factory'),
   settingsDatabase: cueFrame(NARRATION_EDIT, 'settings-reset', 'database'),
 };
 
-const firstRunRegionsMap = firstRunEducationRegions('tablet');
 const aiRegionsMap = aiRegions('tablet');
 const catalogRegionsMap = catalogRegions('tablet');
 const webRegionsMap = productWebRegions('tablet');
@@ -141,7 +136,6 @@ const settingsRegionsMap = settingsSupportRegions('tablet');
 
 export const BEAT_REGIONS: Partial<Record<TabletBeatName, Region>> = {
   proof: TABLET_EUI_MANY_TO_ONE_REGIONS.full,
-  'first-run': firstRunRegionsMap.card,
   ai: aiRegionsMap.questions,
   database: catalogRegionsMap.full,
   epson: fullFrame(TABLET_VIEWPORT),
@@ -210,7 +204,6 @@ export const BEAT_SHOTS: Partial<Record<TabletBeatName, Shot[]>> = {
     {at: BEATS.proof.duration / 2, region: STAGE_PUSH},
     {at: BEATS.proof.duration, region: fullFrame(TABLET_VIEWPORT)},
   ],
-  'first-run': [{at: 0, region: atLeast(firstRunRegionsMap.card)}],
   ai: [
     {at: 0, region: aiRegionsMap.content},
     {at: CUE_FRAMES.aiIntro - BEATS.ai.from, region: atLeast(aiRegionsMap.questions)},
@@ -268,8 +261,10 @@ export const BEAT_SHOTS: Partial<Record<TabletBeatName, Shot[]>> = {
     {at: CUE_FRAMES.matroxEncoders - BEATS['matrox-switch'].from, region: avoipRegionsMap.content},
   ],
   m2m: [{at: 0, region: TABLET_EUI_REGIONS.full}],
+  // Wide on the rail while Set is tapped, then pan right into Support on "manual".
   settings: [
-    {at: 0, region: atLeast(settingsRegionsMap.userManual)},
+    {at: 0, region: fullFrame(TABLET_VIEWPORT)},
+    {at: CUE_FRAMES.settingsManual - BEATS.settings.from, region: atLeast(settingsRegionsMap.userManual)},
     {at: CUE_FRAMES.settingsQuick - BEATS.settings.from, region: atLeast(settingsRegionsMap.quickStart)},
     {at: CUE_FRAMES.settingsFactory - BEATS.settings.from, region: atLeast(settingsRegionsMap.factoryReset)},
     {at: CUE_FRAMES.settingsDatabase - BEATS.settings.from, region: atLeast(settingsRegionsMap.databaseManagement)},

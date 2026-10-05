@@ -282,7 +282,7 @@ export const RemotionRoot = () => (
       <Composition
         id="iot-tablet-walkthrough"
         component={IotTabletWalkthrough}
-        durationInFrames={10305}
+        durationInFrames={9900}
         fps={30}
         width={1920}
         height={1080}
@@ -290,7 +290,7 @@ export const RemotionRoot = () => (
       <Composition
         id="iot-tablet-walkthrough-portrait"
         component={IotTabletWalkthroughPortrait}
-        durationInFrames={10305}
+        durationInFrames={9900}
         fps={30}
         width={1080}
         height={1920}
