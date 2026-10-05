@@ -251,6 +251,11 @@ Pending: T4–T17, in the run order under *Revision 2*; never redo a checked tas
 
 ## Concurrency
 
+**Update 2026-10-05: Codex finished and Nathan committed its work, so revision 2 runs in the
+main checkout. The lane below is not used, and T16 reduces to the final regression check.
+Nathan said "Implement W05" without answering the two questions, so the recommended cut
+list applies and tasks are author-verified (Claude) on objective gates.**
+
 Codex is finishing W01–W03 review fixes in the main checkout, with uncommitted edits that
 include `src/Root.tsx`. Revision 2 therefore runs in a worktree lane (COORDINATION.md,
 *Lanes*): branch `w05` in `../CTRLbot-Remotion.worktrees/w05`, made from main once this plan
@@ -286,7 +291,7 @@ and T15 are committed, with node_modules as a junction. Every W05 commit lands o
   - Terms only: "Pooser" → PUSR, "all research" → Hall Research, "Luxel" → Luxul, "Global Cache" → Global Caché, "RS -232" → RS-232, "MGX", "Acer", "advice like this" → "a device like this" if the recording says so. Listen at 114–116s and write what is said ("RS-485" or "RS-45"). Keep filler and false starts; change no timestamp; never edit the JSON.
 - [x] T2: Let a caption correction key be two words, so `all research` becomes Hall Research without touching "send to all" — files: src/audio/narrationCaptions.ts
   - One-word keys behave exactly as today. Verify: `npm run check`; `narration:srt` for W01 and W04 writes byte-identical .srt files before and after (to a scratch path, never over `out/`).
-- [ ] T15: Re-point the ingest at the renamed recording, `video input/W05 Feature walkthroug.mp4`, reusing every transcription output — files: ingest/iot-latest-features/ingest.json
+- [x] T15: Re-point the ingest at the renamed recording, `video input/W05 Feature walkthroug.mp4`, reusing every transcription output — files: ingest/iot-latest-features/ingest.json
   - Runs in the main checkout, because the recording is only there: `npm run ingest:recording -- iot-latest-features "W05 Feature walkthroug.mp4"`, no `--force`. The file is byte-identical to the one ingested on 2026-10-01 (95,370,153 bytes, same mtime); only its name changed ("Feture" to "Feature"), which is why `--list` reports it "not ingested" and `shorts.mjs` cannot find it.
   - Every step must print `reuse`. Nothing is transcribed and the GPU is not used. It also rewrites the untracked `contact.html`.
   - Verify: `--list` shows the recording with a corrected transcript. `git diff --stat` shows only `ingest.json`. `words.json`, `captions.json`, `heard.json` and `transcript.md` are unchanged. Commit it in main with this plan, staging exactly these two paths.
