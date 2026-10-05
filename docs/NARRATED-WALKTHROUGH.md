@@ -223,6 +223,42 @@ and is not a defect.
 voice code. A regression check of the shorts compares `src/shorts/shorts.generated.ts` and
 each `narration.m4a`, then restores `build.json` with `git checkout`.
 
+## What W02–W04's revision taught
+
+Found while rebuilding W02, W03 and W04 in October 2026. The measurements are in each
+brief's Review notes.
+
+**Do the hold arithmetic before the first build.** A beat needs its lead (0.25s), its clips,
+a 0.3s gap between clips and a 1.0s hold, all inside its Sec. Three beats did not fit:
+
+- W03 settings, 0.82s hold;
+- W04 add, 0.60s;
+- W04 matrox-test, 0.48s.
+
+Each time the fix was Nathan's: half a second or a second moved from a neighbour that had
+hold to spare (W03 close to settings; W04 terminal to add and matrox-add to matrox-test),
+with the total unchanged. Nobody trims his words or shrinks the gaps to make a beat fit. The
+measured lengths go to him as a question.
+
+**`narration:verify` cannot hear a clipped ending.** It compares words, and a word with its
+last syllable cut still transcribes. So measure the level at each clip's edges in
+`edit.m4a`. A clip whose last 30–80 ms is louder than about -35 dB, with silence after it,
+was cut mid-word: W03's test-saves ended "connection." at -15.6 dB. Raising `sourceEnd` and
+`notAfter` did not move those cuts, because the voice edit had already picked its quiet
+point. Setting `wholeEdges: true` on a clip extends it through its last word's decay and its
+first word's soft onset (W03 T32). Clips without the flag rebuild byte-identical, which is
+how W01, W02 and the shorts stay as approved.
+
+**The render's voice check can disagree with the edit's.** The same audio passed
+`narration:verify` on `edit.m4a` with no defects, then failed on the render, at two kinds of
+edge:
+
+- first words sitting at the -50 dB line ("Oh," at -50.5 dB);
+- Whisper misreads ("If" for "At").
+
+Whisper hears a different window each time. After two repair rounds, these went to Nathan as
+timestamps to listen to. That is the stop rule, not a reason to change the gate.
+
 ## For the next walkthrough
 
 Nathan only needs to provide the new narrated app recording and identify the intended

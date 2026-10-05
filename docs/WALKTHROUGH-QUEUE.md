@@ -2,14 +2,13 @@
 
 Approved by Nathan on 2026-10-02. Restarted the same afternoon with a new coordinator: Claude (desktop Code session) coordinates, verifies and commits; Gemini 3.8 Flash High implements through Antigravity's CLI, one fresh headless conversation per task (`agy -p ... --model gemini-3.8-flash-high --output-format json --print-timeout 25m`). Prompts, results and token use are in `out/coordinator/agy/`. Publishing is outside this run.
 
-## Current status — READY FOR NATHAN'S REVIEW (updated 2026-10-02)
+## Current status — REVIEW-FIX LOOP (updated 2026-10-05)
 
-- **W02 Terminator:** delivered. `out/terminator-walkthrough{,-portrait}.mp4`, SRT, contact sheets. All gates pass.
-- **W03 IoT phone:** final candidates in `out/iot-phone-walkthrough{,-portrait}.mp4`, SRT, contact sheets. All visual and loudness gates pass. T31 stays `[!]` only on two render-level voice flags: listen at 4:26 ("If") and 4:51 ("Oh,").
-- **W04 IoT tablet:** final candidates in `out/iot-tablet-walkthrough{,-portrait}.mp4`, SRT, contact sheets. All visual and loudness gates pass. T27 stays `[!]` only on one voice flag: listen at 5:06 ("And").
-- **W05 IoT latest features:** T1, T2 and T3 done. T4–T14 not started; they wait on Nathan's review, because they change surfaces W03 and W04 show. Open question: RS-485 or RS-45 at 1:54.
-- **Stopped:** no workers running. Close-out (archive, RELEASE-NOTES, Roadmap) only after Nathan approves.
-- **Method:** Claude coordinates and verifies in clean worktrees; Gemini 3.8 Flash High implements via `agy`. Prompts, results and token use are in `out/coordinator/agy/`.
+- **W02, W03, W04:** all about 95%. Nathan reviews the landscape cut of each and sends notes. An agent fixes them with `docs/REVIEW-FIX-PROMPT.md`, stops for approval, then carries the same fixes to the portrait cut. Renders, captions and contact sheets are in `out/`.
+- **Open voice flags:** W03 at 4:26 ("If") and 4:51 ("Oh,"); W04 at 5:06 ("And"). Edit-level verify is clean, so Nathan's listening decides.
+- **W05:** T1–T3 done. T4–T14 wait for W03/W04 approval, because they change shared surfaces. Open question: RS-485 or RS-45 at 1:54.
+- **Workers:** none running. The coordinator method and its scripts (`verify:task`, `video:feature`) are in `docs/COORDINATION.md`.
+- **Close-out** (archive, RELEASE-NOTES, Roadmap) only after Nathan approves each cut.
 
 ## Dispatch rules
 

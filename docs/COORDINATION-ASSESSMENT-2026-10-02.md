@@ -29,3 +29,16 @@ Independent visual inspection is necessary: a typecheck cannot establish that a 
 The next run succeeds only when W02 has its revised landscape and portrait MP4s, narration checks, landscape SRT and contact sheets ready for Nathan's review. First inspect existing T13 stills; do not rebuild the already verified narration/helper work. Finish T14/T15, then T16. W03's timing transfer remains unanswered and must not be inferred from elapsed time. Preserve W05's unverified shared-file edits.
 
 Keep the heartbeat paused during handoff. Claude receives the existing checkout and checkpoints, not authorization to reset files, publish or close out the videos. The current implementation state and preservation rules are in `docs/WALKTHROUGH-QUEUE.md`; the concise executor instructions are in `docs/CLAUDE-W02-HANDOFF.md`.
+
+## Restart outcome — same day
+
+Claude restarted the run as coordinator. It dispatched Gemini headlessly through `agy` instead
+of operating the desktop windows, and verified each task in a clean worktree instead of
+freezing the lanes:
+
+- **Delivered:** W02, and review renders of W03 and W04 in two lanes.
+- **Workload:** 26 worker tasks. Typical beat tasks ran 4–9 minutes.
+- **Failures, both bounded:** one 25-minute stall where a worker measured pixels (since
+  forbidden in every prompt), and one 30-minute quota pause (one queued retry, no polling).
+
+The method is in [COORDINATION.md](COORDINATION.md). The rules above still apply.

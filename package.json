@@ -21,6 +21,8 @@
     "video:lint": "node scripts/video-lint.mjs",
     "video:lint:selftest": "node scripts/video-lint.mjs --selftest",
     "video:frames": "node scripts/video-frames.mjs",
+    "video:feature": "node scripts/feature-gates.mjs",
+    "verify:task": "node scripts/verify-task.mjs",
     "loop:seam": "node scripts/loop-seam.mjs",
     "loop:copy": "node scripts/loop-copy.mjs",
     "loop:render": "node scripts/loop-render.mjs"

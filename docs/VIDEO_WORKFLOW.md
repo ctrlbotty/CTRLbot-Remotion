@@ -278,6 +278,53 @@ straight back. Render a window with
 short allowlist — `select` and `fps` are not in it, so extracting a frame range from
 the rendered mp4 does not work and the still sequence is the route.
 
+### Rules that came out of the walkthrough revisions
+
+W02, W03 and W04 rebuilt on `WalkthroughShell`, October 2026. The briefs' Review notes have
+the evidence. How the run was coordinated is in [COORDINATION.md](COORDINATION.md).
+
+**Removing a shared helper is one coupled task.** Taking `beatShots()` out of a video's data
+file breaks the composition that imports it, so `npm run check` cannot pass in between. The
+data file, the composition and the video's `Root.tsx` registration move in one task: W02 T11,
+W03 T24 (which absorbed T25) and W04 T20 (which absorbed T21). A decomposition that splits
+them leaves one task unverifiable.
+
+**A chapter shot smaller than half the surface is a 3–4x zoom.** `Camera` with
+`fit="expand"` fills the frame with whatever region it is given. A button-sized region put
+DISCONNECT, All and the setup icon across the whole frame. Each walkthrough's data file now
+wraps its chapter shots in `atLeast(region, 0.5)`, which grows a region about its centre to
+at least half the surface each way (W03 T33, W04 T28). Name a small control with a ring, not
+with the camera.
+
+**A cue's shot must contain the cue's result, and follow the screen when it changes.** On
+"save" the camera stayed on the Connect button while the saved line it rang was out of shot.
+On "off" it stayed on the many-to-one layout's power button while the surface switched to
+Powering Off and Welcome, and portrait showed five seconds of black. When a beat's surface
+changes state, the shot list needs a shot for the new state.
+
+**A stage beat whose only change is a nav highlight is a still.** W02's proof and recap
+measured 83% and 87% inert, and took the portrait cut to 61%. A push to 0.94 and back,
+anchored top-left so the navigation stays whole, brought them to 59% and 75%, and the cut to
+56% (W02 T21). The per-beat measurement found them; the whole-cut number only said
+something was static.
+
+**Check a brief's diagram against the narration and the scene beside it.** W02's server
+diagram drew "hello world →" from the PC to the tablet, exactly as specified. The narration
+says the app sends commands to the server, and the next shot shows the server receiving
+them. The spec was wrong, and the arrows now run from the client (T20). A typecheck and a
+correct-looking still both passed it.
+
+**Overlays use only UI the app has, and claims match the recording.** When a surface lacks a
+control the narration names, ring the nearest real element. Do not draw a new one. A worker
+added a Luxul switch to W03's discovery list. It was right only because the recording's
+stills (`f_0036`, `f_0037`) show that exact match. Check that before accepting it.
+
+**Look at the cue frames, not the contact sheet's.** A contact sheet renders one settled
+frame per beat, and a cue action lands between them. Every verification in this run rendered
+the frames the worker reported for its cues, plus 10–15 frames, in both shapes, tiled into
+one image per shape (`npm run verify:task`). That is how the misplaced pin ring, the black
+power-off and the backwards arrows were found.
+
 ### Adding a rule
 
 A new rule must fail `src/compositions/MasterControlPromo.tsx` or pass
@@ -342,6 +389,15 @@ This workflow is the same rules with an exit code.
 ---
 
 ## Handing a video to AGY, Gemini, or Codex
+
+Three ways to run the line:
+
+- **One agent runs the whole brief.** Paste the prompt below.
+- **A coordinator runs workers task by task.** Claude dispatches Gemini through `agy`, or
+  Codex through `codex exec`, verifies each task in a clean worktree, and commits it. See
+  [COORDINATION.md](COORDINATION.md).
+- **Nathan's notes on a nearly finished cut.** Fix the lead shape, stop, then carry the fixes
+  to the other shape. Use [REVIEW-FIX-PROMPT.md](REVIEW-FIX-PROMPT.md).
 
 Replace `<SLUG>` and paste from the repository root.
 

@@ -1,5 +1,8 @@
 # Claude handoff — finish W02 from the checkpoint
 
+> **Completed 2026-10-02.** W02 was delivered the same day (T13–T16, T20, T21). The method that
+> worked is in [COORDINATION.md](COORDINATION.md). This handoff is history.
+
 Nathan requested this Claude takeover handoff. Executor: Claude Code (Sonnet 5.5 Medium requested by Nathan); this document does not configure the host model. Work in the current checkout, `C:\0-Repo\3 - CTRLbot Content\CTRLbot-Remotion`.
 
 Read `docs/COORDINATION-ASSESSMENT-2026-10-02.md`, `AGENTS.md`, the current status in `docs/WALKTHROUGH-QUEUE.md`, and authoritative brief `videos/terminator-walkthrough.md`. The assessment explains the failed run; it adds no extra acceptance gates.

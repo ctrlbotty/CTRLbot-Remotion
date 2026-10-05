@@ -22,6 +22,8 @@ npm run narration:check -- out/<slug>-narrated.mp4
 npm run loop:render    # the web loops — 2x supersampled, see below. NOT `npm run render`
 npm run loop:seam -- out/web/eui-loop-route-v2.mp4    # the loop gate
 npm run loop:copy -- <path.json>                      # hand the copy timings to the site
+npm run verify:task -- <composition> --files=<a,b> --frames=<f1,f2>  # one task, clean worktree, cue stills
+npm run video:feature -- <slug> --narration=<.ts> --clips=<EXPORT> --corrections=<EXPORT>  # final gates, both shapes
 ```
 
 Render a scene or a still:
@@ -136,7 +138,8 @@ ingest/         one folder per recording: transcript.md, words.json, captions.js
 src/shorts/     the 30-second shorts: shortsData.ts (one entry each) and Short.tsx
 scripts/        video-lint, video-frames, loop-seam — the gates; loop-render, loop-copy;
                 ingest-recording and narration — the recording pipeline;
-                lib/voice.mjs — the narration edit the shorts are cut with
+                lib/voice.mjs — the narration edit the shorts are cut with;
+                verify-task, feature-gates — clean-worktree runs, in ../<repo>.worktrees/
 ```
 
 ## Shorts are data
@@ -275,11 +278,13 @@ a company license. Confirm before commercial production:
 
 ## Persistent coordination memory
 
-The 2026-10-02 W02–W05 run spent too much capacity on verifier repair and coordination before delivering a watchable cut. Before coordinating another run, read `docs/COORDINATION-ASSESSMENT-2026-10-02.md` and the current status at the top of `docs/WALKTHROUGH-QUEUE.md`.
+The 2026-10-02 W02–W05 run first stalled: it spent its capacity on verifier repair, and on driving the agents' desktop windows by screenshot, before any cut was watchable. Restarted the same day, with Claude dispatching Gemini headlessly through `agy`, it delivered W02 and review renders of W03 and W04. Before coordinating a run, read three documents: `docs/COORDINATION.md` (the method that worked), `docs/COORDINATION-ASSESSMENT-2026-10-02.md` (why the first attempt failed), and the status block at the top of `docs/WALKTHROUGH-QUEUE.md`. For Nathan's notes on a nearly finished cut, use `docs/REVIEW-FIX-PROMPT.md`.
 
 - Prioritize a playable artifact and one finished lane. Start with one implementation worker; add parallel lanes only after delivery momentum and disjoint ownership are established. Independent review starts when implementation is ready.
+- Dispatch workers headlessly (`agy -p`, `codex exec`), never by operating their windows, and act on the completion notification rather than polling. A worker prompt is a file. It names the owned paths, gives the evidence rows and one worked example, forbids measurement scripts, pixel scanning and background commands, and ends in a fixed report block.
+- Verify as a non-author in a clean worktree at HEAD plus the task's files (`npm run verify:task`), at the task's cue frames in both shapes. No lane is frozen for another lane's review.
 - Reuse passing checks and cached transcription for unchanged inputs. Keep required gates; add investigation only for a reproduced defect, with bounded acceptance and at most two repair rounds. A new task ID does not reset stop-loss for the same unresolved bottleneck.
-- Release accepted dependencies in the active run. Heartbeats recover/checkpoint; they must not leave ready work waiting for the next interval.
+- Release accepted dependencies in the active run. Dispatch is event-driven; a heartbeat only recovers or checkpoints a stalled run, and never leaves ready work waiting.
 - Use fresh concise worker contexts, one writer per file and one render/audio/GPU slot. Keep current status separate from history. Preserve mixed shared-file edits with explicit UTF-8 and scoped staging.
 - Report missing deliverables and blocked progress early. At approximately 20% remaining quota, checkpoint before dispatching long work. On explicit wrap-up, stop workers, preserve unverified changes and pause the heartbeat.
 - Do not claim a preview is final, infer unanswered approval, or restart a paused run without Nathan's instruction.
@@ -296,10 +301,10 @@ contract for the assembly line.
 - **Plan home:** `videos/<slug>.md`, one brief per cut, from `videos/_TEMPLATE.md`. A narrated cut names its recording's folder in `ingest/`
 - **Task granularity:** one sentence naming its files, 1 to 3 files, independently renderable. Syntax: `- [ ]` pending, `- [x]` verified and committed, `- [!]` blocked
 - **Direction gate:** no. The line runs every task, then renders, without stopping for approval. Nathan reviews once, at the end: the renders in `out/` and the contact sheet at `out/<slug>/contact.html`. His notes come back as new tasks and the line runs again
-- **Verifier:** an independent `beat-verifier` per task (`.claude/agents/beat-verifier.md`), tuned lenient, that runs the gates and looks at the rendered still. Two repair rounds, then `[!]` and stop
-- **Per-task check:** `npm run check`, `npm run video:lint`, and `npm run video:frames -- <slug> contact --beat=<beat>`, then the still held against that beat's evidence line
-- **Feature check:** `npm run video:lint -- --destination=<destination>`, `npm run video:frames -- <slug> contact`, the render, and `npm run video:frames -- <slug> check out/<slug>.mp4`. A long video does each for both shapes (`VIDEO_COMPOSITION=<slug>-portrait` for the portrait one) and adds `npm run narration:check` on both renders and `npm run narration:srt` for the landscape captions
+- **Verifier:** an independent, non-author check per task, tuned lenient: the coordinator, or a `beat-verifier` (`.claude/agents/beat-verifier.md`). It runs the gates in a clean worktree at HEAD plus the task's files, and looks at stills at the task's cue frames in both shapes (`npm run verify:task`). Two repair rounds, then `[!]` and stop
+- **Per-task check:** `npm run check`, `npm run video:lint`, and `npm run video:frames -- <slug> contact --beat=<beat>`, or `npm run verify:task` at the cue frames. Then the still is held against that beat's evidence line
+- **Feature check:** `npm run video:lint -- --destination=<destination>`, `npm run video:frames -- <slug> contact`, the render, and `npm run video:frames -- <slug> check out/<slug>.mp4`. A long video does each for both shapes (`VIDEO_COMPOSITION=<slug>-portrait` for the portrait one) and adds `npm run narration:check` on both renders and `npm run narration:srt` for the landscape captions. `npm run video:feature` runs the whole set for a narrated walkthrough in a clean worktree
 - **Local run:** `npm run dev` for Remotion Studio, and the contact sheet in a browser
 - **Deploy path:** none from a run. The deliverable is the render in `out/`. Publishing to YouTube, the social feeds, the Play Store listing or ctrlbot.io is a separate step, and ctrlbot.io loops follow that repository's `docs/MOTION-PIPELINE.md`
 - **Close out:** archive the brief as `videos/archive/<date>-<slug>.md` with a row in that README, add the cut to `RELEASE-NOTES.md`, and remove it from `Roadmap.md`. Move a recording to `video input/archive/` once every cut planned from it is delivered
-- **Executor:** Gemini 3.8 Flash, High reasoning. It has to be able to look at a rendered still, because the verifier's verdict depends on it
+- **Executor:** Gemini 3.8 Flash, High reasoning, dispatched headlessly through Antigravity's `agy` by a coordinator (`docs/COORDINATION.md`); Codex through `codex exec` is the alternative. An executor that runs a brief alone also verifies, so it has to be able to look at a rendered still

@@ -90,6 +90,18 @@ filler prompt does not change that. It only writes an "uh" down when the phrase 
 enough to leave it nothing to tidy. That is why ingest runs `heard.py`: an acoustic model
 spells every sound, and Whisper hears one phrase at a time.
 
+**`Root.tsx` can carry stray carriage returns.** An encoding repair during W02's migration
+committed two CRs inside an otherwise LF file. Every later diff then showed the two
+`durationInFrames={4140}` lines as changed, with no visible difference. Compare with
+`git diff --ignore-cr-at-eol`, and write files back as UTF-8 with their existing line
+endings. Both CRs were removed in W05's T3 commit.
+
+**A region estimated from text width is a guess; check it on a still.** T14's pin ring was
+placed after the label "Server 1 (23)", estimated at 0.6 of the font size per character. It
+landed 23 window pixels to the right, on the ✕. At 0.45 it sits on the pin. Where a region
+has to be estimated, comment it as an estimate and look at the rendered frame before
+accepting it.
+
 **A mono voice measures 3 dB quieter than the same voice in a render.** The prepared
 narration is mono at -16 LUFS; Remotion writes stereo, both channels carrying it, and the
 render measures about -13 LUFS. Same loudness to a listener, different number.

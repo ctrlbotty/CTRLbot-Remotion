@@ -1,6 +1,6 @@
 # CTRLbot Content Roadmap
 
-Updated October 2, 2026. **Upcoming work only.** What is already delivered is in
+Updated October 5, 2026. **Upcoming work only.** What is already delivered is in
 [RELEASE-NOTES.md](RELEASE-NOTES.md). How a video gets made is in [README.md](README.md).
 
 Thirty motion-graphic videos: six narrated walkthroughs and twenty-four 30-second shorts.
@@ -17,7 +17,8 @@ Everything that can be made now gets made now. What cannot waits on one thing, n
 | Can be made | Videos | Waiting on |
 | --- | --- | --- |
 | **Done** | S02 CTRLbot Terminator, S03 CTRLbot.AI | Nothing. Rendered, first in the queue |
-| **Rebuilding now, staggered** | W02, W03, W04; W05 first build | W01 approved. Shared narration verifier and region maps unlock later tasks; Codex coordinates file ownership and one render at a time (`docs/WALKTHROUGH-QUEUE.md`) |
+| **In review, about 95%** | W02, W03, W04 | Nathan's notes, one cut at a time. The landscape render is fixed first, then the same fixes are carried to portrait (`docs/REVIEW-FIX-PROMPT.md`). Renders, captions and contact sheets are in `out/`; status in `docs/WALKTHROUGH-QUEUE.md` |
+| **Next, after W03 and W04 are approved** | W05 | T1–T3 done. Its surface tasks change screens that W03 and W04 show, so they wait for that approval. Confirm "RS-485" or "RS-45" at 1:54 of its recording |
 | **Now** | S01 CTRLbot Mirror | Nothing. The recording is in and ingested |
 | **Now, if short slogans are recorded** | Any short made from a slogan over a motion graphic or image | One narrated slogan per short, in `video input/` |
 | **This week, once recorded** | IoT shorts S05 to S24 | CTRLbot IoT recordings made through CTRLbot Mirror; W05 is already ingested |
@@ -150,8 +151,8 @@ poster frame, a captions file, and the title, description and tags to paste.
 ## Deferred
 
 - **The Driver catalog background.** The approved First-Run cuts use grey; the app now uses a
-  blue wash. The blue is opt-in on `DriverCatalog` today. Switch the callers deliberately,
-  together, when W03 and W04 are rebuilt, and re-verify both cuts.
+  blue wash. W03 and W04's rebuilt catalog beats opt into the blue (`SETUP_BACKGROUND`);
+  confirm it during their review. The First-Run cuts stay grey until they are updated.
 - **The rejected promo render is gone.** `out/master-control-promo.mp4`, one of the three
   files the gates were calibrated against, is no longer on disk. The recorded measurements
   still stand. If a gate ever needs recalibrating, register

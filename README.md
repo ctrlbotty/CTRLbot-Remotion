@@ -41,6 +41,13 @@ The gates are calibrated against the cuts in `out/` — two approved, one reject
 their thresholds are measurements, not preferences. `npm run video:lint:selftest` proves
 they still tell those cuts apart.
 
+Two other ways to run the line:
+
+- **Coordinated.** Claude runs Gemini or Codex workers task by task, verifying each in a
+  clean worktree: [docs/COORDINATION.md](docs/COORDINATION.md).
+- **Review fixes.** Nathan's notes on a nearly finished cut, landscape first, then carried to
+  portrait: [docs/REVIEW-FIX-PROMPT.md](docs/REVIEW-FIX-PROMPT.md).
+
 ### Narrated walkthroughs
 
 Most videos now start from Nathan demonstrating a product in his own voice. The recording
