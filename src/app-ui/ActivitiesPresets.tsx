@@ -31,6 +31,11 @@ export type PresetCommandStep = {
   type?: string;
   deviceName?: string;
   commandName?: string;
+  /**
+   * A Delay step (`preset_command_card.xml`'s `ll_delay_fields`): seconds, milliseconds and
+   * an optional message the end user sees while the preset runs. Tablet only.
+   */
+  delay?: {seconds: number; ms: number; message: string; caret?: boolean};
 };
 
 export const DEFAULT_PRESETS: PresetItem[] = [
@@ -514,6 +519,17 @@ export const activitiesPresetsRegions = (
       height: l.viewport.height - l.cmdStepsY,
     },
 
+    /** Tablet: a Delay step's message field. Step cards before it are command cards. */
+    delayMessage: (stepIndex = 0) => {
+      const cardY = l.cmdStepsY + stepIndex * (l.cmdCardH + l.c.cmdCardMarginBottom);
+      return {
+        x: l.editBodyX + l.c.cmdCardPad + DELAY_MESSAGE_X,
+        y: cardY + l.c.cmdCardPad + 22 + l.c.cmdHeaderMarginBottom,
+        width: l.editBodyW - l.c.cmdCardPad * 2 - DELAY_MESSAGE_X,
+        height: l.c.cmdSelectorH,
+      };
+    },
+
     /** Individual command step card */
     commandStep: (stepIndex = 0) => ({
       x: l.editBodyX,
@@ -682,6 +698,78 @@ export const activitiesPresetsRegions = (
 
 export const presetRegions = activitiesPresetsRegions;
 export const presetsRegions = activitiesPresetsRegions;
+
+
+// The Delay step's one row, tablet: type, seconds, milliseconds, message (f_0038, f_0039).
+const DELAY_TYPE_W = 130;
+const DELAY_NUM_W = 70;
+const DELAY_SECONDS_W = 64;
+const DELAY_MS_W = 30;
+const DELAY_GAP = 12;
+const DELAY_UNIT_GAP = 8;
+const DELAY_MESSAGE_X =
+  DELAY_TYPE_W + DELAY_GAP + DELAY_NUM_W + DELAY_UNIT_GAP + DELAY_SECONDS_W + DELAY_GAP +
+  DELAY_NUM_W + DELAY_UNIT_GAP + DELAY_MS_W + DELAY_GAP;
+
+const DelayRow = ({delay}: {delay: NonNullable<PresetCommandStep['delay']>}) => {
+  const c = ACTIVITIES_PRESETS_LAYOUT.tablet;
+  const underline = (value: string, width: number | undefined, placeholder = '') => (
+    <div
+      style={{
+        width,
+        flex: width ? undefined : 1,
+        height: c.cmdSelectorH,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 2,
+        borderBottom: `1px solid ${appColors.gray50}`,
+        fontSize: 13,
+        color: value ? appColors.white : appColors.gray50,
+      }}
+    >
+      {value || placeholder}
+      {delay.caret && width === undefined ? (
+        <span style={{width: 2, height: 18, backgroundColor: appColors.blue}} />
+      ) : null}
+    </div>
+  );
+  const unit = (text: string, width: number) => (
+    <span style={{width, fontSize: 12, color: appColors.gray50}}>{text}</span>
+  );
+  return (
+    <div style={{display: 'flex', alignItems: 'center', height: c.cmdSelectorH}}>
+      <div
+        style={{
+          width: DELAY_TYPE_W,
+          height: c.cmdSelectorH,
+          marginRight: DELAY_GAP,
+          backgroundColor: appColors.gray20,
+          borderRadius: 4,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '0 12px',
+          boxSizing: 'border-box',
+          fontSize: 13,
+          fontWeight: 600,
+          color: appColors.white,
+        }}
+      >
+        <span>DELAY</span>
+        <span style={{fontSize: 10, color: appColors.gray50}}>▾</span>
+      </div>
+      {underline(String(delay.seconds), DELAY_NUM_W)}
+      <span style={{width: DELAY_UNIT_GAP}} />
+      {unit('seconds', DELAY_SECONDS_W)}
+      <span style={{width: DELAY_GAP}} />
+      {underline(String(delay.ms), DELAY_NUM_W)}
+      <span style={{width: DELAY_UNIT_GAP}} />
+      {unit('ms', DELAY_MS_W)}
+      <span style={{width: DELAY_GAP}} />
+      {underline(delay.message, undefined, 'Optional message')}
+    </div>
+  );
+};
 
 export const ActivitiesPresets: React.FC<ActivitiesPresetsProps> = ({
   device = 'phone',
@@ -929,6 +1017,10 @@ export const ActivitiesPresets: React.FC<ActivitiesPresetsProps> = ({
                       </div>
                     </div>
 
+                    {step.delay ? (
+                      <DelayRow delay={step.delay} />
+                    ) : (
+                    <>
                     {/* Selectors */}
                     <div
                       style={{
@@ -1018,6 +1110,8 @@ export const ActivitiesPresets: React.FC<ActivitiesPresetsProps> = ({
                         SEND
                       </div>
                     </div>
+                    </>
+                    )}
                   </div>
                 ))}
               </div>

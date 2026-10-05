@@ -655,6 +655,20 @@ export const RemotionRoot = () => (
       <Still id="Proof-Tablet-ProductWebView" component={ProductWebView} defaultProps={{device: 'tablet'}} width={1280} height={800} />
       <Still id="Proof-Phone-ActivitiesPresets" component={ActivitiesPresets} width={360} height={780} />
       <Still id="Proof-Tablet-ActivitiesPresets" component={ActivitiesPresets} defaultProps={{device: 'tablet'}} width={1280} height={800} />
+      <Still
+        id="Proof-Tablet-Presets-Delay"
+        component={ActivitiesPresets}
+        width={1280}
+        height={800}
+        defaultProps={{
+          device: 'tablet',
+          mode: 'edit',
+          commandSteps: [
+            {step: 1, label: 'ACER XL2320P - New — POWER ON', type: 'DEVICE', deviceName: 'ACER XL2320P - New', commandName: 'POWER ON'},
+            {step: 2, label: 'Delay', delay: {seconds: 1, ms: 0, message: 'hello world'}},
+          ],
+        }}
+      />
       <Still id="Proof-Phone-ActivitiesSwitch" component={ActivitiesSwitch} width={360} height={780} />
       <Still id="Proof-Tablet-ActivitiesSwitch" component={ActivitiesSwitch} defaultProps={{device: 'tablet', switchType: 'avoip'}} width={1280} height={800} />
       <Still id="Proof-Phone-ActivitiesAudio" component={ActivitiesAudio} width={360} height={780} />

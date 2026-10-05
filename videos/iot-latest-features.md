@@ -305,7 +305,7 @@ and T15 are committed, with node_modules as a junction. Every W05 commit lands o
   - Rev 2: runs after T17. The open list's region is exported relative to the detail pane, whose origin T17's header moves. The proof stills render inside the catalog with T17's header, as `f_0008` and `f_0011` do. Names and order are checked against `assets/data/drivers/IP_RS232/GLOBAL_CACHE/` and `PUSR/PUSR_End_Points.json` in the app.
 - [x] T5: Add the RS-232 end-point state to `ConnectionPanel`'s tablet layout: the End Point field, RS-232 Configuration, terminal left and commands right, and a progress line, with a `Proof-Tablet-Connection-Rs232` still — files: src/app-ui/ConnectionPanel.tsx, src/Root.tsx
   - From `layout/driver_connection.xml`; stills `f_0022`–`f_0024`. Export its regions through `connectionRegions('tablet')` the way the existing ones are. Commands are the ones `f_0024` shows.
-- [ ] T6: Add an Edit Preset Delay step with a message field to `ActivitiesPresets`' tablet layout, with a `Proof-Tablet-Presets-Delay` still — files: src/app-ui/ActivitiesPresets.tsx, src/Root.tsx
+- [x] T6: Add an Edit Preset Delay step with a message field to `ActivitiesPresets`' tablet layout, with a `Proof-Tablet-Presets-Delay` still — files: src/app-ui/ActivitiesPresets.tsx, src/Root.tsx
   - Stills `f_0037`–`f_0039`, without the keyboard. The message text is a prop, so it can type in.
 - [ ] T7: Add to `EuiPower` the power-off ✕ with its countdown and the status line under the ring, with `Proof-Tablet-Power-Cancel` and `Proof-Tablet-Power-Message` stills — files: src/app-ui/EuiPower.tsx, src/Root.tsx
   - From `layout/dialog_power_off.xml` (`layout_power_cancel`, `power_cancel_progress`, `btn_power_cancel`, `tv_status_message`); stills `f_0046` and the recording at 400.5s and 406.5s. Export the ✕'s region in `EUI_POWER_REGIONS`.
@@ -477,6 +477,8 @@ Then the run stops for Nathan's review. T16 follows on his go.
 - **Blocked:** nothing else; W02 T17 and W03 T20 and T21 are committed.
 
 ## Review notes
+
+- T6, 2026-10-05: author-verified (Claude) on objective gates. Check and lint pass. `Proof-Phone-ActivitiesPresets`, `Proof-Tablet-ActivitiesPresets`, W04 frame 4350 and W03 portrait frame 3700 are byte-identical before and after. `Proof-Tablet-Presets-Delay` matches `f_0039` without the keyboard: Edit Preset, Power On, the Acer POWER ON step, then a Delay step reading DELAY, 1 seconds, 0 ms, hello world. A step's `delay` prop carries the message, so it can type in, with an optional caret. `activitiesPresetsRegions('tablet').delayMessage(i)` is exported. Note: `f_0038` also shows a "1 Power On Button" event under + EVENTS; the surface has no event card, so it is left out.
 
 - T5, 2026-10-05: author-verified (Claude) on objective gates. Check and lint pass. `Proof-Tablet-Connection` and `Proof-Phone-Connection` and W04 frame 2700 are byte-identical before and after. The state is its own component, `Rs232ConnectionPanel`, beside `ConnectionPanel` in the same file, because `driver_connect_edit.xml` swaps the whole lower half for an RS-232 driver. Its regions come from `rs232ConnectionRegions()` rather than `connectionRegions('tablet')`: the end point button, field and CONNECT RS-232/DISCONNECT action; the left column (details before connecting, the terminal after); the configuration; the commands and each row; the toast. `Proof-Tablet-Connection-Rs232` matches `f_0024`. Simplified from `f_0022`: the Driver Details column omits Volume Set and Switcher Config.
 
