@@ -25,7 +25,7 @@
 import type {CSSProperties, ReactNode} from 'react';
 import {Interactive} from 'remotion';
 import {AppIcon, type AppIconName} from './AppIcon';
-import {SETUP_BACKGROUND} from './DriverCatalog';
+import {catalogRegions, DriverCatalog, SETUP_BACKGROUND, type DriverEntry} from './DriverCatalog';
 import {TABLET_VIEWPORT} from './viewports';
 import {appColors} from '../design/tokens.generated';
 
@@ -241,12 +241,15 @@ export const DriverDetail = ({
   title,
   scroll = 0,
   ringManufacturer = false,
+  manufacturerLink = true,
   children,
 }: {
   title: string;
   /** dp the pane's content is scrolled by. */
   scroll?: number;
   ringManufacturer?: boolean;
+  /** Global Caché's pane has no Manufacturer link (`f_0008`); PUSR's has one (`f_0011`). */
+  manufacturerLink?: boolean;
   children: ReactNode;
 }) => (
   <Interactive.Div
@@ -267,7 +270,7 @@ export const DriverDetail = ({
       <SectionHeading style={{flex: 1}}>{title}</SectionHeading>
       <div
         style={{
-          display: 'flex',
+          display: manufacturerLink ? 'flex' : 'none',
           alignItems: 'center',
           gap: 5,
           fontFamily: FACE,
@@ -304,16 +307,95 @@ export const DriverDetail = ({
   </Interactive.Div>
 );
 
+/**
+ * Where the Model row sits inside a tablet `DriverDetail`, from the pane's origin: 36dp top
+ * padding, the 40dp title row, 14dp to the content, then the 11sp "Model" caption (estimated
+ * at Montserrat's 1.219 line height) and 4dp. The open list hangs from the field.
+ */
+const MODEL_LABEL_H = SIZE.label * 1.219;
+const MODEL_FIELD_TOP = 36 + FIELD_H + 14 + MODEL_LABEL_H + 4;
+/** An Android spinner's dropdown row is 48dp; the list is as wide as the recording shows. */
+const MODEL_ITEM_H = 48;
+const MODEL_LIST_W = 248;
+
+/**
+ * Regions of a tablet `DriverDetail`, in surface dp, given the pane's region from
+ * `catalogRegions('tablet', …).detailPane`. `description` assumes a Model row above Device
+ * Info and is estimated the same way (headings and captions at 1.219, body at 1.45).
+ */
+export const driverDetailRegions = (
+  pane: {x: number; y: number; width: number; height: number},
+  {modelWidth = 286, items = 0, descriptionLines = 3}: {modelWidth?: number; items?: number; descriptionLines?: number} = {},
+) => {
+  const fieldY = pane.y + MODEL_FIELD_TOP;
+  const listH = Math.min(items * MODEL_ITEM_H, pane.y + pane.height - (fieldY + FIELD_H));
+  const descriptionY = fieldY + FIELD_H + 20 + SIZE.heading * 1.219 + 8 + MODEL_LABEL_H + 4;
+  return {
+    modelField: {x: pane.x, y: fieldY, width: modelWidth, height: FIELD_H},
+    modelList: {x: pane.x, y: fieldY + FIELD_H, width: MODEL_LIST_W, height: listH},
+    description: {
+      x: pane.x,
+      y: descriptionY,
+      width: pane.width - 30,
+      height: descriptionLines * SIZE.value * 1.45,
+    },
+  };
+};
+
 /** The model row — the dropdown of code sets, and the link out to the product page. */
-export const ModelRow = ({model}: {model: string}) => (
+export const ModelRow = ({
+  model,
+  productPage = true,
+  width = 286,
+  open,
+}: {
+  model: string;
+  /** Global Caché has no Product Page link; its field runs the width of the pane instead. */
+  productPage?: boolean;
+  width?: number;
+  /** The spinner's list, open under the field, in the order the app lists the models. */
+  open?: readonly string[];
+}) => (
   <div style={{display: 'flex', flexDirection: 'column', gap: 4}}>
     <FieldLabel>Model</FieldLabel>
-    <div style={{display: 'flex', gap: 10}}>
-      <ValueField value={model} width={286} />
+    <div style={{position: 'relative', display: 'flex', gap: 10}}>
+      <ValueField value={model} width={width} />
+      {open ? (
+        <div
+          style={{
+            position: 'absolute',
+            zIndex: 5,
+            left: 0,
+            top: FIELD_H,
+            width: MODEL_LIST_W,
+            backgroundColor: appColors.black,
+            boxShadow: `0 8px 24px ${appColors.black75}`,
+          }}
+        >
+          {open.map((item) => (
+            <div
+              key={item}
+              style={{
+                height: MODEL_ITEM_H,
+                display: 'flex',
+                alignItems: 'center',
+                paddingLeft: 16,
+                fontFamily: FACE,
+                fontWeight: 400,
+                fontSize: SIZE.value,
+                whiteSpace: 'nowrap',
+                color: appColors.white,
+              }}
+            >
+              {item}
+            </div>
+          ))}
+        </div>
+      ) : null}
       <div
         style={{
+          display: productPage ? 'flex' : 'none',
           height: FIELD_H,
-          display: 'flex',
           alignItems: 'center',
           gap: 6,
           paddingLeft: 14,
@@ -1098,3 +1180,97 @@ export const ConnectionLog = ({lines}: {lines: string[]}) => (
     </div>
   </div>
 );
+
+// ── v1.0.9 end points (W05) ──────────────────────────────────────────────────────────
+
+/** The End Points list as the W05 recording shows it (`f_0007`). */
+export const END_POINT_DRIVERS: DriverEntry[] = [
+  {manufacturer: 'GLOBAL CACHE', model: 'Most Models', deviceType: 'endPoint'},
+  {manufacturer: 'HALL RESEARCH', model: 'HT-VERSA-4K-R', deviceType: 'endPoint'},
+  {manufacturer: 'IPMX', model: 'Most Decoders', deviceType: 'endPoint'},
+  {manufacturer: 'KRAMER', model: 'KDS-DEC7', deviceType: 'endPoint'},
+  {manufacturer: 'MATROX', model: 'MGX D1', deviceType: 'endPoint'},
+  {manufacturer: 'PUSR', model: 'USR-W630', deviceType: 'endPoint'},
+];
+
+/**
+ * Global Caché's models in the app's order (`GLOBAL_CACHE_End_Points.json`), from the first
+ * the open spinner shows in `f_0008`/`f_0009` ("Flex IR 3 Emitter") to the screen's bottom.
+ */
+export const GLOBAL_CACHE_MODELS_SHOWN = [
+  'Flex IR 3 Emitter',
+  'Flex IR Blaster',
+  'Flex IR Emitter',
+  'Flex Relay Sensor',
+  'Flex Serial RS232',
+  'Flex Serial RS485',
+  'GC-100-06',
+  'GC-100-12',
+  'Global Connect IR',
+  'Global Connect Relay',
+  'Global Connect Serial',
+  'iTach IP2CC',
+] as const;
+
+/** `PUSR_End_Points.json`'s description, as the pane shows it in `f_0011`. */
+export const PUSR_DESCRIPTION =
+  "The PUSR USR-W630 puts one RS-232 or RS-485 port on the network over WiFi or either of its two Ethernet ports. Serial data crosses TCP port 8899 unchanged, and the W630's own settings are read and written over UDP 48899.";
+
+/** The pane's content width beside a 430dp list: 1280 - 200 - 430 - 30, less its 30dp padding. */
+export const DETAIL_CONTENT_W = 590;
+
+/** Global Caché End Points with the Model spinner open (`f_0008`). */
+export const GlobalCacheModelsDetail = ({open = true}: {open?: boolean}) => (
+  <DriverDetail title="GLOBAL CACHE End Points" manufacturerLink={false}>
+    <ModelRow
+      model="Most Models"
+      productPage={false}
+      width={DETAIL_CONTENT_W}
+      open={open ? GLOBAL_CACHE_MODELS_SHOWN : undefined}
+    />
+  </DriverDetail>
+);
+
+/** PUSR End Points: USR-W630, its description and Control Info (`f_0011`). */
+export const PusrDetail = ({ringDescription = false}: {ringDescription?: boolean}) => (
+  <DriverDetail title="PUSR End Points">
+    <ModelRow model="USR-W630" />
+    <div
+      style={{
+        outline: ringDescription ? `2px solid ${appColors.blue}` : undefined,
+        borderRadius: ringDescription ? 4 : undefined,
+      }}
+    >
+      <DeviceInfo>{PUSR_DESCRIPTION}</DeviceInfo>
+    </div>
+    <Accordion label="Specs" />
+    <Accordion label="Setup" />
+    <Accordion label="Support" />
+    <ControlInfo controlType="IP" ipType="UDP" keepAlive="Disabled" onConnection="Enabled" show={5} />
+  </DriverDetail>
+);
+
+const EndPointCatalog = ({selected, detail}: {selected: number; detail: ReactNode}) => (
+  <DriverCatalog
+    device="tablet"
+    drivers={END_POINT_DRIVERS}
+    typeFilter="endPoint"
+    selectedIndex={selected}
+    findDevices="15 devices found"
+    background={SETUP_BACKGROUND}
+    detail={detail}
+  />
+);
+
+export const TabletDetailModelsProof = () => (
+  <EndPointCatalog selected={0} detail={<GlobalCacheModelsDetail />} />
+);
+
+export const TabletDetailPusrProof = () => <EndPointCatalog selected={5} detail={<PusrDetail />} />;
+
+/** `catalogRegions` re-exported beside the pane's own, so a beat imports one place. */
+export const endPointPaneRegions = () =>
+  driverDetailRegions(catalogRegions('tablet', {findDevices: '15 devices found'}).detailPane, {
+    modelWidth: DETAIL_CONTENT_W,
+    items: GLOBAL_CACHE_MODELS_SHOWN.length,
+  });

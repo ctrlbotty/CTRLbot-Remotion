@@ -300,7 +300,7 @@ and T15 are committed, with node_modules as a junction. Every W05 commit lands o
 
 - [x] T3: Add a `netSwitcher` device type to `DriverCatalog`, listed as Net Switchers in the type filter, with a `Proof-Tablet-Catalog-NetSwitchers` still — files: src/app-ui/DriverCatalog.tsx, src/Root.tsx
   - Stills `f_0004`–`f_0007`: the filter list Manufacturer, Projector, Display, Switchers, End Points, Net Switchers; the End Points list. Icon from the app's drawables via `public/app-assets/`; no new colour.
-- [ ] T4: Give `DriverDetail` an open Model dropdown listing a driver's models, with `Proof-Tablet-Detail-Models` and `Proof-Tablet-Detail-Pusr` stills — files: src/app-ui/DriverDatabase.tsx, src/Root.tsx
+- [x] T4: Give `DriverDetail` an open Model dropdown listing a driver's models, with `Proof-Tablet-Detail-Models` and `Proof-Tablet-Detail-Pusr` stills — files: src/app-ui/DriverDatabase.tsx, src/Root.tsx
   - Stills `f_0008`–`f_0011`. Model names exactly as `f_0008`/`f_0009` show them; PUSR's description from the app's driver data, as `f_0011`.
   - Rev 2: runs after T17. The open list's region is exported relative to the detail pane, whose origin T17's header moves. The proof stills render inside the catalog with T17's header, as `f_0008` and `f_0011` do. Names and order are checked against `assets/data/drivers/IP_RS232/GLOBAL_CACHE/` and `PUSR/PUSR_End_Points.json` in the app.
 - [ ] T5: Add the RS-232 end-point state to `ConnectionPanel`'s tablet layout: the End Point field, RS-232 Configuration, terminal left and commands right, and a progress line, with a `Proof-Tablet-Connection-Rs232` still — files: src/app-ui/ConnectionPanel.tsx, src/Root.tsx
@@ -477,6 +477,8 @@ Then the run stops for Nathan's review. T16 follows on his go.
 - **Blocked:** nothing else; W02 T17 and W03 T20 and T21 are committed.
 
 ## Review notes
+
+- T4, 2026-10-05: author-verified (Claude) on objective gates. Check and lint pass. No `Proof-*` still used `DriverDatabase`, so the regression was W04 frames 1800 and 2200 and `device-database` frame 900, all byte-identical before and after. `Proof-Tablet-Detail-Models` matches `f_0008`: the End Points list with Global Caché selected, its pane without a Manufacturer link, Most Models across the pane and the open spinner from Flex IR 3 Emitter to iTach IP2CC, in the app's order. `Proof-Tablet-Detail-Pusr` matches `f_0011`: USR-W630, Product Page, the driver's description, the accordions and Control Info IP/UDP. `driverDetailRegions()` estimates the caption and heading heights at Montserrat's 1.219 line height (commented). Parts exported for W05's beats: `END_POINT_DRIVERS`, `GlobalCacheModelsDetail`, `PusrDetail` (with `ringDescription`) and `endPointPaneRegions()`.
 
 - T17, 2026-10-05: author-verified (Claude) on objective gates. Check and lint pass. `Proof-Tablet-Catalog`, `Proof-Phone-Catalog` and `Proof-Tablet-Catalog-NetSwitchers` are byte-identical before and after. `Proof-Tablet-Catalog-FindDevices` matches `f_0004`: Device Drivers, the search field across the screen and "15 devices found" with the app's `ic_search` at the right end, the list below. The button's width is estimated from its label (0.58 of 13sp per character), and markup and region share that number. `catalogRegions('tablet', {findDevices})` exports `findDevices` and `detailPane`, which starts at y=68 under the header.
 

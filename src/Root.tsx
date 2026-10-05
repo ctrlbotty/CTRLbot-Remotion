@@ -22,6 +22,7 @@ import {
   TabletCtrlbotProof,
   TabletEuiProof,
 } from './scenes/SurfaceProofs';
+import {TabletDetailModelsProof, TabletDetailPusrProof} from './app-ui/DriverDatabase';
 import {MasterControlCard} from './marketing/eui-promo/MasterControlCard';
 import {EuiPromo, euiPromoDuration} from './marketing/eui-promo/EuiPromo';
 import {EuiPromo as EuiPromoV3, euiPromoDuration as euiPromoV3Duration} from './marketing/eui-promo-v3/EuiPromo';
@@ -636,6 +637,8 @@ export const RemotionRoot = () => (
           background: SETUP_BACKGROUND,
         }}
       />
+      <Still id="Proof-Tablet-Detail-Models" component={TabletDetailModelsProof} width={1280} height={800} />
+      <Still id="Proof-Tablet-Detail-Pusr" component={TabletDetailPusrProof} width={1280} height={800} />
       <Still id="Proof-Phone-Connection" component={PhoneConnectionProof} width={360} height={780} />
       <Still id="Proof-Tablet-Connection" component={TabletConnectionProof} width={1280} height={800} />
       <Still id="Proof-Phone-Capture" component={PhoneCaptureProof} width={360} height={780} />
