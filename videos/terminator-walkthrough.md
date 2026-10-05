@@ -417,7 +417,7 @@ User authorizes restoring the narrated overview and additional time. Landscape i
 - [x] T22: Restore the five-tool overview and spoken transition in a separate landscape narration edit — files: src/marketing/terminator-walkthrough/terminatorLandscapeNarration.ts, src/marketing/terminator-walkthrough/terminatorLandscapeNarration.generated.ts, public/narration/terminator-walkthrough/landscape-edit.m4a
 - [x] T23: Follow the narrated sidebar overview and extend only the landscape registration to 4980 frames — files: src/marketing/terminator-walkthrough/TerminatorLandscapeReview.tsx, src/Root.tsx
 - [x] T24: Lower and fit the HTTP ring, highlight the Serial and SSH menu entries, and show the navigation before moving toward the pane — files: src/marketing/terminator-walkthrough/TerminatorBeats.tsx, src/marketing/terminator-walkthrough/TerminatorLandscapeReview.tsx
-- [ ] T25: Check and render the revised landscape cut, preserve the previous review, and provide the contact sheet and subtitles for Nathan — files: videos/terminator-walkthrough.md
+- [x] T25: Check and render the revised landscape cut, preserve the previous review, and provide the contact sheet and subtitles for Nathan — files: videos/terminator-walkthrough.md
 
 Review timestamps move +28s: old 0:27 HTTP becomes 0:55; old 1:32 COM becomes 2:00; old 1:48 SSH becomes 2:16. Overview runs approximately 0:16–0:40, then the spoken start at 0:40–0:43 and scan at 0:44.5.
 
@@ -425,3 +425,5 @@ Rebuild landscape audio: npm run narration:edit -- src/marketing/terminator-walk
 
 - Revision 3 checks, 2026-10-05: clean-worktree check and lint pass (0 errors, 0 warnings); 10 beats / 166s validate. Landscape cue frames 600/840/1110/1650/1680/3600/3630/4080/4110 visually inspected, with portrait spot checks preserving its previous timeline. HTTP ring fits the first button; Serial and SSH show their complete menu entries before moving toward the pane. Evidence: out/review/terminator-2026-10-05/cue-frames.png.
 - Landscape render gates: 664 samples, 32% inert, median content 98%, no problems. Narration check: AAC 48kHz stereo, 166.06s, -16.17 LUFS, -3.35 dBTP; passes. Edit narration verification: 19 clips, zero edge defects, 8 ASR differences noted (including an extra conjunction in the overview and omitted conjunction in the transition; no failed edges). Updated .srt: 69 captions, 349 words. The old landscape render and subtitles are preserved as out/terminator-walkthrough-before-review-2026-10-05.{mp4,srt}.
+
+- T25: The landscape review render and .srt are available at the original out/ paths; the updated contact sheet is out/terminator-walkthrough/contact.html. Picture/audio gates and clean-worktree cue checks passed. Implementation commit: 4485a19. Portrait remains byte-identical (SHA256 29457A5DC517E4A92918ADCD821C813A7396A85871332ACBC4223C6A91C96119). Await Nathan’s landscape approval before portrait changes or close-out.
