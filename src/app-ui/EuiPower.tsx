@@ -125,6 +125,20 @@ const PowerProgressRing = ({
   );
 };
 
+// dialog_power_off.xml's `layout_power_cancel`: a 56dp countdown ring (white over gray_25,
+// 4dp track) around a 28dp `ic_close`, 16dp from the top and 17dp from the end of the dialog,
+// which fills the EUI between its bar and its seekbar. Tablet only.
+// The synced tokens predate these dimens (values/dimens.xml power_cancel_*), so they are
+// repeated here; re-running sync:tokens would also move every other drifted token.
+const CANCEL_SIZE = 56;
+const CANCEL_TRACK = 4;
+const CANCEL_ICON = 28;
+const CANCEL_X = TABLET_VIEWPORT.width - 17 - CANCEL_SIZE;
+const CANCEL_Y = TABLET_CONTENT_TOP + 16;
+// tv_status_message: 30sp italic gray_75, 16dp under the ring's 32dp bottom margin.
+const STATUS_TOP = POWER_PROGRESS_POSITION.tablet.y + POWER_PROGRESS_SIZE + 32 + 16;
+const STATUS_SIZE = 30;
+
 export const EUI_POWER_REGIONS = {
   phone: {
     full: {x: 0, y: 0, width: PHONE_VIEWPORT.width, height: PHONE_VIEWPORT.height},
@@ -137,6 +151,10 @@ export const EUI_POWER_REGIONS = {
   },
   tablet: {
     full: {x: 0, y: 0, width: TABLET_VIEWPORT.width, height: TABLET_VIEWPORT.height},
+    /** The power-off cancel: countdown ring and ✕. */
+    cancel: {x: CANCEL_X, y: CANCEL_Y, width: CANCEL_SIZE, height: CANCEL_SIZE},
+    /** The status line under the ring ("Done", or a preset step's message). */
+    statusMessage: {x: 340, y: STATUS_TOP - 6, width: 600, height: STATUS_SIZE * 1.3 + 12},
     welcomePower: {
       x:
         TABLET_RIGHT_COLUMN_X +
@@ -160,6 +178,10 @@ type EuiPowerCaptureProps = {
       state: 'powering-off' | 'powering-on';
       /** Length of the powering state; the ring closes before its final hold. */
       durationInFrames: number;
+      /** Tablet, powering off: the cancel ✕, with the share of its countdown still left (1 to 0). */
+      cancel?: number;
+      /** Tablet: the line under the ring, replacing the capture's "Done"; '' leaves it blank. */
+      statusMessage?: string;
     }
 );
 
@@ -192,6 +214,65 @@ export const EuiPowerCapture = (props: EuiPowerCaptureProps) => {
           durationInFrames={props.durationInFrames}
         />
       )}
+      {device === 'tablet' && state !== 'off' && props.statusMessage !== undefined ? (
+        // The captures carry the app's final "Done" under the ring, so the line is masked
+        // with the capture's own field colour first; an empty message hides it.
+        <div
+          style={{
+            position: 'absolute',
+            left: 340,
+            width: 600,
+            top: STATUS_TOP - 6,
+            height: STATUS_SIZE * 1.3 + 12,
+            paddingTop: 6,
+            boxSizing: 'border-box',
+            backgroundColor: CAPTURE_FIELD,
+            textAlign: 'center',
+            fontFamily: 'Montserrat, sans-serif',
+            fontStyle: 'italic',
+            fontSize: STATUS_SIZE,
+            color: appColors.gray75,
+          }}
+        >
+          {props.statusMessage}
+        </div>
+      ) : null}
+      {device === 'tablet' && state === 'powering-off' && props.cancel !== undefined ? (
+        <svg
+          width={CANCEL_SIZE}
+          height={CANCEL_SIZE}
+          viewBox={`0 0 ${CANCEL_SIZE} ${CANCEL_SIZE}`}
+          style={{position: 'absolute', left: CANCEL_X, top: CANCEL_Y}}
+        >
+          <circle
+            cx={CANCEL_SIZE / 2}
+            cy={CANCEL_SIZE / 2}
+            r={(CANCEL_SIZE - CANCEL_TRACK) / 2}
+            fill="none"
+            stroke={appColors.gray25}
+            strokeWidth={CANCEL_TRACK}
+          />
+          <circle
+            cx={CANCEL_SIZE / 2}
+            cy={CANCEL_SIZE / 2}
+            r={(CANCEL_SIZE - CANCEL_TRACK) / 2}
+            fill="none"
+            stroke={appColors.white}
+            strokeWidth={CANCEL_TRACK}
+            strokeDasharray={Math.PI * (CANCEL_SIZE - CANCEL_TRACK)}
+            strokeDashoffset={Math.PI * (CANCEL_SIZE - CANCEL_TRACK) * (1 - props.cancel)}
+            transform={`rotate(-90 ${CANCEL_SIZE / 2} ${CANCEL_SIZE / 2})`}
+          />
+          <g transform={`translate(${(CANCEL_SIZE - CANCEL_ICON) / 2} ${(CANCEL_SIZE - CANCEL_ICON) / 2})`}>
+            <path
+              d={`M${CANCEL_ICON * 0.25} ${CANCEL_ICON * 0.25}L${CANCEL_ICON * 0.75} ${CANCEL_ICON * 0.75}M${CANCEL_ICON * 0.75} ${CANCEL_ICON * 0.25}L${CANCEL_ICON * 0.25} ${CANCEL_ICON * 0.75}`}
+              stroke={appColors.white}
+              strokeWidth={2.4}
+              strokeLinecap="round"
+            />
+          </g>
+        </svg>
+      ) : null}
       <div
         style={{
           position: 'absolute',

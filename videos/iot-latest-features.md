@@ -307,7 +307,7 @@ and T15 are committed, with node_modules as a junction. Every W05 commit lands o
   - From `layout/driver_connection.xml`; stills `f_0022`–`f_0024`. Export its regions through `connectionRegions('tablet')` the way the existing ones are. Commands are the ones `f_0024` shows.
 - [x] T6: Add an Edit Preset Delay step with a message field to `ActivitiesPresets`' tablet layout, with a `Proof-Tablet-Presets-Delay` still — files: src/app-ui/ActivitiesPresets.tsx, src/Root.tsx
   - Stills `f_0037`–`f_0039`, without the keyboard. The message text is a prop, so it can type in.
-- [ ] T7: Add to `EuiPower` the power-off ✕ with its countdown and the status line under the ring, with `Proof-Tablet-Power-Cancel` and `Proof-Tablet-Power-Message` stills — files: src/app-ui/EuiPower.tsx, src/Root.tsx
+- [x] T7: Add to `EuiPower` the power-off ✕ with its countdown and the status line under the ring, with `Proof-Tablet-Power-Cancel` and `Proof-Tablet-Power-Message` stills — files: src/app-ui/EuiPower.tsx, src/Root.tsx
   - From `layout/dialog_power_off.xml` (`layout_power_cancel`, `power_cancel_progress`, `btn_power_cancel`, `tv_status_message`); stills `f_0046` and the recording at 400.5s and 406.5s. Export the ✕'s region in `EUI_POWER_REGIONS`.
   - Rev 2, checked 2026-10-05: at 400.5s Powering Off has a red ring with "Done" under it and no ✕; at 406.5s Powering On has a green ring with "hello world" under it. `dialog_power_on.xml` has its own `tv_status_message`. The ✕ icon is the app's `ic_close` (`public/app-assets/ic_close.svg`) unless the layout names another drawable.
 - [x] T17: Add the catalog's full-width header, with its Discover button showing "15 devices found", to `DriverCatalog`'s tablet layout, with a `Proof-Tablet-Catalog-FindDevices` still — files: src/app-ui/DriverCatalog.tsx, src/Root.tsx
@@ -477,6 +477,8 @@ Then the run stops for Nathan's review. T16 follows on his go.
 - **Blocked:** nothing else; W02 T17 and W03 T20 and T21 are committed.
 
 ## Review notes
+
+- T7, 2026-10-05: author-verified (Claude) on objective gates. Check and lint pass. W04 frame 5560, W03 portrait frame 5900 and EUI promo frames 60, 1700 and 1760 are byte-identical before and after. `Proof-Tablet-Power-Cancel` matches `f_0046`: Powering Off with the 56dp countdown ring and ✕ in the top-right corner, and no status line. `Proof-Tablet-Power-Message` matches the recording at 406.5s: Powering On with "hello world" under the ring. Two findings: the power captures have the app's "Done" baked in under the ring, so a given `statusMessage` (including '') masks it with the capture's field colour first; and the synced tokens predate `power_cancel_*`, so those four dimens are repeated from `values/dimens.xml` with a comment rather than re-running `sync:tokens`, which would move other drifted tokens. `EUI_POWER_REGIONS.tablet.cancel` and `.statusMessage` are exported.
 
 - T6, 2026-10-05: author-verified (Claude) on objective gates. Check and lint pass. `Proof-Phone-ActivitiesPresets`, `Proof-Tablet-ActivitiesPresets`, W04 frame 4350 and W03 portrait frame 3700 are byte-identical before and after. `Proof-Tablet-Presets-Delay` matches `f_0039` without the keyboard: Edit Preset, Power On, the Acer POWER ON step, then a Delay step reading DELAY, 1 seconds, 0 ms, hello world. A step's `delay` prop carries the message, so it can type in, with an optional caret. `activitiesPresetsRegions('tablet').delayMessage(i)` is exported. Note: `f_0038` also shows a "1 Power On Button" event under + EVENTS; the surface has no event card, so it is left out.
 
