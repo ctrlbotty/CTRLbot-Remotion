@@ -41,18 +41,16 @@ The hybrid format, as W01's revision 2 (`videos/archive/2026-10-02-mirror-walkth
 |----|--------|-------|---------|----------|-----|
 | open | card | What is new in CTRLbot IoT | `MasterControlCard` | The tricon and the CTRLbot IoT lockup are on screen at frame 0; the line streams in beneath them | 5 |
 | proof | stage | Drag a source onto a display | `TabletEui` | The tablet EUI; a source is pressed, dragged and dropped on a display, which fills with it, ringed | 7 |
-| net-switches | chapter | Network switches have their own category | `DriverCatalog` | The type filter opens with Net Switchers in it; Net Switchers is picked and the list shows LUXUL AMS-1208P (f_0004–f_0005) | 7 |
 | avoip | chapter | Three more AV-over-IP manufacturers | `DriverCatalog` | End Points is picked; Kramer, Matrox and Hall Research rows are ringed one after another (f_0006–f_0007) | 12 |
 | global-cache | chapter | Global Caché by exact model | `DriverDetail` | Global Caché End Points in the detail pane; the Model dropdown opens on the Flex, GC-100, Global Connect and iTach models, Most Models above them (f_0008–f_0010) | 13 |
 | pusr | chapter | Serial through a PUSR USR-W630 | `DriverDetail` | PUSR End Points in the detail pane, model USR-W630; its description is ringed (f_0011) | 14.5 |
 | discovery | chapter | Find Devices matches and adds them | `DiscoverDevices` | The catalog's 15 devices found button is ringed in its corner, then Discover Devices: the Global Cache iTachFlexEthernet row shows its matched driver, Add Driver is tapped, "1 device added" (f_0012, f_0017–f_0020) | 8.5 |
 | rs232 | chapter | Connect an RS-232 device through the end point | `ConnectionPanel` | Configure Connection for the Acer XL2320P with the RS232 End Point set; CONNECT shows its progress, then connected, with the terminal on the left and the commands on the right (f_0022–f_0024) | 19.5 |
-| terminal | chapter | A terminal for every device | `ConnectTest` | Test Device Drivers, Global Cache selected, Terminal tab: GET DEVICES is sent and its reply lands in the terminal, readable (f_0027–f_0028) | 8.5 |
-| webpage | chapter | The device's own web page, in the app | `ConnectTest` + `ProductWebView` | The Web page tab is tapped and the device's page opens inside the app, held under 2s (f_0032) | 8.5 |
-| message | chapter | A message on a preset step | `ActivitiesPresets` | Edit Preset, Power On: a Delay step with `hello world` typed into its message (f_0037–f_0039) | 5.5 |
+| terminal | chapter | A terminal for every device | recording (footage) | The recording: Test Device Drivers with the terminal beside the commands, then the terminal opened as its own page and getdevices typed and sent (277.3–292.6s, the second piece at 1.55x) | 8.5 |
+| webpage | chapter | The device's own web page, in the app | recording (footage) | The recording: the Web page tab tapped, the iTach's own configuration page, then Flex Link Cable (304.1–309.1s and 312.6–316.1s) | 8.5 |
 | eui | chapter | Drag to a display, or send to All | `TabletEui` | A source dragged onto a display; a source tapped, then All, and every display takes it (f_0042–f_0045, f_0049) | 11.5 |
-| power | chapter | Change your mind before it powers off | `TabletEui` + `EuiPower` | Power is tapped; Powering Off shows the ✕ in its corner, ringed; then powering on shows `hello world` under the ring (f_0046, recording 406.5s) | 11.5 |
-| close | card | The name, once, at the end | `MasterControlCard` | The CTRLbot IoT lockup and its line; no URL | 4 |
+| power | chapter | Change your mind before it powers off | `TabletEui` + `EuiPower` | Power is tapped; Powering Off shows the ✕ in its corner, ringed; the power-off completes and the beat holds on Welcome (f_0046) | 9 |
+| close | card | The name, once, at the end | `MasterControlCard` | The CTRLbot IoT lockup and its line; no URL; no narration | 4 |
 
 ## Anything unusual
 
@@ -138,7 +136,6 @@ Chapters are step labels: eyebrow and title, a body only where given.
 |------|---------|-------|------|
 | open (card) | New in v1.0.9 | lockup **CTRLbot IoT** | line: New devices, new end points, and drag to route. |
 | proof (stage) | End user interface | Drag a source onto a display | Press, hold and drop it to route. |
-| net-switches | Device | Net Switchers, a new category | — |
 | avoip | AV-over-IP | Kramer, Matrox and Hall Research | — |
 | global-cache | End points | Global Caché by exact model | iTach, GC-100, Flex or Global Connect, each with its own ports. Most Models is still there. |
 | pusr | End points | Serial through a PUSR USR-W630 | — |
@@ -146,7 +143,6 @@ Chapters are step labels: eyebrow and title, a body only where given.
 | rs232 | Connect | RS-232 through an end point | — |
 | terminal | Connect | A terminal for every device | — |
 | webpage | Connect | The device's own web page | — |
-| message | Activities | A message on a preset step | The end user sees it while the preset runs. |
 | eui | End user interface | Drag to a display, or send to All | — |
 | power | End user interface | Change your mind before it powers off | Tap ✕ and nothing is sent. |
 | close (card) | — | lockup **CTRLbot IoT** | line: All of it in v1.0.9. |
@@ -162,7 +158,6 @@ one's planned end, and at least 1.0s held after a beat's last clip. `welcome` ru
 | beat | id | source | what is said |
 |------|----|--------|--------------|
 | open → proof | welcome | 0.85–14.2 | Welcome to CTRLbot. This will be a short walkthrough of the latest features and benefits of the CTRLbot IoT app |
-| net-switches | net-category | 39.55–45.6 | And what we did was we added a new category called network switches. |
 | avoip | avoip-more | 57.15–61.25 | And on that note, we added a lot more AV over IP endpoints. |
 | avoip | avoip-brands | 71.75–79.5 | We also added Kramer, Matrox, and Hall Research endpoints for AV over IP. |
 | global-cache | gc-models | 80.35–94.8 | As far as endpoints for RS-232, IP to RS-232, or IP to IR, we've added additional models for Global Caché. |
@@ -176,12 +171,9 @@ one's planned end, and at least 1.0s held after a beat's last clip. `welcome` ru
 | terminal | term-open | 277.55–280.65 | you can open up the terminal now directly, right? |
 | terminal | term-send | 283.95–288.5 | If I wanted to send a command directly, I can do that from right here as well. |
 | webpage | web | 304.25–311.45 | And additionally, if the device has a webpage, right, then you'll be able to access that webpage directly, |
-| message | msg | 340.85–344.85 | you can basically add messages, right? (the repeated "you can" comes out) |
 | eui | eui-drag | 372.95–379.6 | Another great feature now is you can drag and drop the sources on there. |
 | eui | eui-all | 389.25–393.75 | And of course you can select a source and send to all by hitting that all button. |
 | power | power-x | 396.05–403.95 | Also, just a little safety feature. We have a little X in the corner. So if you want to cancel or power off, you're able to do that now. |
-| power | power-message | 407.75–409.75 | And there's our hello world message. |
-| close | thanks | 411.85–412.95 | thanks for joining me. |
 
 Cut on purpose: the database-size claim and "Luxel … coming up" (22–56s), the IPMX aside
 (61.8–71.3s), "complete line" (95–97s), RS-485 and "connect the tablet straight to the
@@ -199,7 +191,6 @@ and `power` show the whole EUI. The subject is never in the right 140 px column.
 | beat | cue → action → result |
 |------|-----------------------|
 | proof | welcome "features" → a source pressed · 0.6s later → dragged onto a display, which fills, ringed |
-| net-switches | net-category "category" → the type filter opens · "switches" → Net Switchers picked, LUXUL ringed |
 | avoip | avoip-more "endpoints" → End Points picked · avoip-brands "Kramer", "Matrox", "Research" → each row ringed on its word |
 | global-cache | gc-models "endpoints" → Global Caché selected, the pane opens · "models" → the Model dropdown opens, the list ringed |
 | pusr | pusr "PUSR" → PUSR selected, USR-W630 in the pane · "convert" → the description ringed |
@@ -207,7 +198,6 @@ and `power` show the whole EUI. The subject is never in the right 140 px column.
 | rs232 | rs-acer "Acer" → Configure Connection for the Acer · rs-endpoint "end" → the RS232 End Point field ringed · "connect" → CONNECT tapped, the progress line · rs-terminal "terminal" → connected, the terminal ringed · rs-layout "commands" → the commands column ringed |
 | terminal | term-open "terminal" → the Terminal tab · term-send "send" → GET DEVICES tapped, Sent then Received land |
 | webpage | web "webpage" (first) → the Web page tab tapped · "directly" → the page opens; leave it by the beat end |
-| message | msg "messages" → the Delay step's message ringed as `hello world` types in |
 | eui | eui-drag "drag" → a drag onto a display · eui-all "source" → a source tapped · "all" (first) → All tapped, every display takes it |
 | power | power-x "safety" → power tapped, Powering Off · "X" → the ✕ ringed · power-message "hello" → powering on, `hello world` under the ring |
 
@@ -371,7 +361,6 @@ and a 1.0s hold. Allow about ±5s; T8 measures the real lengths. (A second estim
 | Beat | Brief Sec | Every clip needs | Recommended Sec |
 |---|---|---|---|
 | open + proof | 5 + 7 | 13.7 | 5 + 9 |
-| net-switches | 6 | 7.0 | 7 |
 | avoip | 10 | 13.1 | 9, without `avoip-more` |
 | global-cache | 12 | 15.2 | 15.5 |
 | pusr | 11 | 17.0 | 17 |
@@ -379,7 +368,6 @@ and a 1.0s hold. Allow about ±5s; T8 measures the real lengths. (A second estim
 | rs232 | 16 | 20.1 | 13, without `rs-layout` |
 | terminal | 9 | 8.8 | 9 |
 | webpage | 6 | 8.5 | 8.5 |
-| message | 6 | 5.3 | 5.5 |
 | eui | 16 | 19.8 | 12.5, without `eui-select` |
 | power | 10 | 10.9 | 11 |
 | close | 4 | 2.1 | 4 |
