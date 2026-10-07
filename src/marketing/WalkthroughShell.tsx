@@ -56,6 +56,12 @@ export type WalkthroughBeat = {
   shots?: Shot[];
   render?: (info: {frame: number; frames: number; format: WalkthroughFormat}) => ReactNode;
   calloutSide?: 'left' | 'right' | 'top' | 'bottom';
+  /**
+   * Stage beats only, landscape. A device bezel, its own background (given the beat's
+   * progress 0..1) and a whole-panel zoom from `zoom[0]` to `zoom[1]` across the beat.
+   * The zoom scales the device, not the camera inside it, so no corner control is cropped.
+   */
+  stage?: {bezel?: number; zoom?: [number, number]; background?: (t: number) => string};
 };
 
 export type NarrationEdit = {
@@ -408,8 +414,22 @@ export const WalkthroughShell = ({
                           contentSize={contentSize}
                           shots={stageShots}
                           copy={copyElement}
-                          background={stageBg}
+                          background={
+                            beat.stage?.background
+                              ? beat.stage.background((frame - beat.from) / beat.duration)
+                              : stageBg
+                          }
                           panelHeight={STAGE.panelHeight}
+                          bezel={beat.stage?.bezel}
+                          panelScale={
+                            beat.stage?.zoom
+                              ? interpolate(frame, [beat.from, beat.from + beat.duration], beat.stage.zoom, {
+                                  easing: Easing.bezier(0.4, 0, 0.6, 1),
+                                  extrapolateLeft: 'clamp',
+                                  extrapolateRight: 'clamp',
+                                })
+                              : undefined
+                          }
                         >
                           <BeatContent beat={beat} format={format} />
                         </Stage>

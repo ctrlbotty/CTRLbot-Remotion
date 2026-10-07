@@ -11,6 +11,7 @@ import {discoverDevicesRegions} from '../../app-ui/DiscoverDevices';
 import {TABLET_EUI_REGIONS} from '../../app-ui/TabletEui';
 import {cueFrame, type BeatCopy, type WalkthroughBeat} from '../WalkthroughShell';
 import {NARRATION_EDIT} from './iotLatestFeaturesNarration.generated';
+import {background} from '../../design/theme';
 
 export const BEATS = {
   open: {from: 0, duration: 150, layout: 'card'},
@@ -134,17 +135,22 @@ export const unionRegion = (a: Region, b: Region): Region => {
 export const LIST_COLUMN: Region = {x: 200, y: 0, width: 430, height: TABLET_VIEWPORT.height};
 const full = fullFrame(TABLET_VIEWPORT);
 
-// Stage framing stays wider than 94% of the window; emphasis is supplied by beat overlays.
-const STAGE_PUSH = {x: 0, y: 0, width: TABLET_VIEWPORT.width * 0.94, height: TABLET_VIEWPORT.height * 0.94};
+/**
+ * The proof beat's device: bezelled so the EUI's black bars read against the frame, on the
+ * card's promo glow (picking up where the open card's bloom ends, 59%/41%) so the
+ * background carries through the crossfade, and zoomed as a whole rather than cropped.
+ */
+const PROOF_STAGE: NonNullable<WalkthroughBeat['stage']> = {
+  bezel: 22,
+  zoom: [0.92, 1.03],
+  background: (t) => background.promo(59 + t * 9, 41 + t * 8),
+};
 
 const at = (cue: number, beat: LatestBeatName) => cue - BEATS[beat].from;
 
 export const BEAT_SHOTS: Partial<Record<LatestBeatName, Shot[]>> = {
-  proof: [
-    {at: 0, region: full},
-    {at: BEATS.proof.duration / 2, region: STAGE_PUSH},
-    {at: BEATS.proof.duration, region: full},
-  ],
+  // The whole tablet zooms (see PROOF_STAGE); the camera inside it holds the full surface.
+  proof: [{at: 0, region: full}],
   'net-switches': [
     {at: 0, region: full},
     {at: at(CUE_FRAMES.netCategory, 'net-switches'), region: atLeast(LIST_COLUMN)},
@@ -246,6 +252,7 @@ export const walkthroughBeats = (format: 'landscape' | 'portrait'): WalkthroughB
     copy: COPY[id],
     shots: (format === 'portrait' ? PORTRAIT_SHOTS[id] : undefined) ?? BEAT_SHOTS[id],
     calloutSide: CALLOUT_SIDE[id] ?? 'left',
+    ...(id === 'proof' && format === 'landscape' ? {stage: PROOF_STAGE} : {}),
     ...(id === 'open' || id === 'close'
       ? {
           card: {
