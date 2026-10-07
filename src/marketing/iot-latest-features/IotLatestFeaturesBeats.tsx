@@ -96,7 +96,7 @@ export const ProofBeat: React.FC<BeatProps> = ({frame}) => {
       <TabletEui
         inputs={EUI_INPUTS}
         outputs={outputsOf([null, dropped ? 'TABLE HDMI' : null])}
-        selectedInput={null}
+        selectedInput={dropped ? 2 : null}
         volume={0.48}
         pressed={frame >= press && frame < dragStart ? 'input-3' : null}
         drag={dragBetween(frame, dragStart, dragLength, from, to, 2)}
@@ -107,25 +107,7 @@ export const ProofBeat: React.FC<BeatProps> = ({frame}) => {
   );
 };
 
-// ── net-switches, avoip, global-cache, pusr ──────────────────────────────────────────
-
-/** Net Switchers: the type filter opens on "category"; Net Switchers is picked on "switches". */
-export const NetSwitchesBeat: React.FC<BeatProps> = ({frame}) => {
-  const open = cue(CUE_FRAMES.netCategory, 'net-switches');
-  const pick = cue(CUE_FRAMES.netSwitches, 'net-switches');
-  const filtered = frame >= pick + 8;
-  return (
-    <>
-      <Catalog
-        typeFilter={filtered ? 'netSwitcher' : undefined}
-        openMenu={frame >= open && frame < pick + 8 ? {control: 'sort'} : undefined}
-      />
-      <TapIndicator x={centerOf(SORT_CONTROL).x} y={centerOf(SORT_CONTROL).y} at={open} name="Sort tap" />
-      <TapIndicator x={centerOf(sortItem(5)).x} y={centerOf(sortItem(5)).y} at={pick} name="Net Switchers tap" />
-      {filtered ? <FocusRing region={catalogMap.card(0)} appearAt={pick + 8} radius={5} name="Luxul ring" /> : null}
-    </>
-  );
-};
+// ── avoip, global-cache, pusr ──────────────────────────────────────────
 
 /** AV-over-IP: End Points picked on "endpoints"; Kramer, Matrox and Hall Research ringed on their words. */
 export const AvoipBeat: React.FC<BeatProps> = ({frame}) => {
@@ -333,34 +315,7 @@ export const TerminalBeat: React.FC<BeatProps> = () => <Footage beat="terminal" 
 /** Web page: the Web page tab tapped and the iTach's own pages, through to Flex Link Cable. */
 export const WebpageBeat: React.FC<BeatProps> = () => <Footage beat="webpage" />;
 
-// ── message, eui, power ──────────────────────────────────────────────────────────────
-
-const MESSAGE = 'hello world';
-
-/** Message: Edit Preset, Power On; `hello world` types into the Delay step's message, ringed on "messages". */
-export const MessageBeat: React.FC<BeatProps> = ({frame}) => {
-  const messages = cue(CUE_FRAMES.msgMessages, 'message');
-  const typed = Math.round(
-    interpolate(frame, [messages - 18, messages + 14], [0, MESSAGE.length], {
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
-    }),
-  );
-  return (
-    <>
-      <ActivitiesPresets
-        device="tablet"
-        mode="edit"
-        editPresetName="Power On"
-        commandSteps={[
-          {step: 1, label: 'ACER XL2320P - New — POWER ON', type: 'DEVICE', deviceName: 'ACER XL2320P - New', commandName: 'POWER ON'},
-          {step: 2, label: 'Delay', delay: {seconds: 1, ms: 0, message: MESSAGE.slice(0, typed), caret: typed < MESSAGE.length}},
-        ]}
-      />
-      <FocusRing region={presetsMap.delayMessage(1)} appearAt={messages} radius={4} name="Message ring" />
-    </>
-  );
-};
+// ── eui, power ──────────────────────────────────────────────────────────────
 
 /** EUI: a drag onto a display on "drag"; a source tapped on "source", then All on "all", and every display takes it. */
 export const EuiBeat: React.FC<BeatProps> = ({frame}) => {
@@ -380,7 +335,8 @@ export const EuiBeat: React.FC<BeatProps> = ({frame}) => {
       <TabletEui
         inputs={EUI_INPUTS}
         outputs={outputsOf(sources)}
-        selectedInput={frame >= source ? 2 : null}
+        // A drop selects: the dragged source and the display it landed on both go blue.
+        selectedInput={frame >= source ? 2 : frame >= drag + dragLength ? 1 : null}
         volume={0.48}
         pressed={
           frame >= drag && frame < drag + 6
@@ -406,15 +362,13 @@ export const EuiBeat: React.FC<BeatProps> = ({frame}) => {
 
 /**
  * Power: power tapped on "safety", Powering Off with the cancel countdown; the ✕ ringed on
- * "X". The power-off runs to completion (the recording does not cancel), Welcome, then
- * Powering On with `hello world` under the ring on "hello".
+ * "X". The power-off runs to completion (the recording does not cancel) and the beat holds
+ * on Welcome. Review 2026-10-07 cut the hello-world power-on.
  */
 export const PowerBeat: React.FC<BeatProps> = ({frame, frames}) => {
   const safety = cue(CUE_FRAMES.powerSafety, 'power');
   const x = cue(CUE_FRAMES.powerX, 'power');
-  const hello = cue(CUE_FRAMES.powerHello, 'power');
   const offEnd = x + 75;
-  const onStart = hello - 24;
   const countdown = interpolate(frame, [safety, offEnd - 30], [1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
@@ -440,28 +394,16 @@ export const PowerBeat: React.FC<BeatProps> = ({frame, frames}) => {
           statusMessage={frame < offEnd - 30 ? '' : 'Done'}
         />
       </Sequence>
-      <Sequence from={offEnd} durationInFrames={onStart - offEnd} layout="none">
+      <Sequence from={offEnd} durationInFrames={frames + 15 - offEnd} layout="none">
         <EuiPowerCapture device="tablet" state="off" volume={0.48} />
       </Sequence>
-      <Sequence from={onStart} durationInFrames={frames - onStart} layout="none">
-        <EuiPowerCapture
-          device="tablet"
-          state="powering-on"
-          durationInFrames={frames - onStart + 30}
-          volume={0.48}
-          statusMessage={frame >= hello ? MESSAGE : ''}
-        />
-      </Sequence>
       {frame >= x && frame < offEnd - 30 ? <FocusRing region={power.cancel} appearAt={x} radius={28} name="Cancel ring" /> : null}
-      <TapIndicator x={centerOf(power.welcomePower).x} y={centerOf(power.welcomePower).y} at={onStart - 4} name="Power on tap" />
-      {frame >= hello ? <FocusRing region={power.statusMessage} appearAt={hello} radius={4} name="Message ring" /> : null}
     </>
   );
 };
 
 export const BEAT_RENDERERS: Partial<Record<LatestBeatName, React.FC<BeatProps>>> = {
   proof: ProofBeat,
-  'net-switches': NetSwitchesBeat,
   avoip: AvoipBeat,
   'global-cache': GlobalCacheBeat,
   pusr: PusrBeat,
@@ -469,7 +411,6 @@ export const BEAT_RENDERERS: Partial<Record<LatestBeatName, React.FC<BeatProps>>
   rs232: Rs232Beat,
   terminal: TerminalBeat,
   webpage: WebpageBeat,
-  message: MessageBeat,
   eui: EuiBeat,
   power: PowerBeat,
 };

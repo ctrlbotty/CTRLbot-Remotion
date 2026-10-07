@@ -1,4 +1,4 @@
-// W05 revision 2: one 136-second timeline (4080 frames) for both shapes, timed to the edited
+// W05 revision 3 (review 2026-10-07): one 121-second timeline (3630 frames) for both shapes, timed to the edited
 // narration. Beat lengths are T8's measured clips plus their leads, gaps and 1.0s holds.
 import {fullFrame, type Region, type Shot} from '../../camera/Camera';
 import {TABLET_VIEWPORT} from '../../app-ui/viewports';
@@ -16,28 +16,25 @@ import {background} from '../../design/theme';
 export const BEATS = {
   open: {from: 0, duration: 150, layout: 'card'},
   proof: {from: 150, duration: 210, layout: 'stage'},
-  'net-switches': {from: 360, duration: 210, layout: 'chapter'},
-  avoip: {from: 570, duration: 360, layout: 'chapter'},
-  'global-cache': {from: 930, duration: 390, layout: 'chapter'},
-  pusr: {from: 1320, duration: 435, layout: 'chapter'},
-  discovery: {from: 1755, duration: 255, layout: 'chapter'},
-  rs232: {from: 2010, duration: 585, layout: 'chapter'},
-  terminal: {from: 2595, duration: 255, layout: 'chapter'},
-  webpage: {from: 2850, duration: 255, layout: 'chapter'},
-  message: {from: 3105, duration: 165, layout: 'chapter'},
-  eui: {from: 3270, duration: 345, layout: 'chapter'},
-  power: {from: 3615, duration: 345, layout: 'chapter'},
-  close: {from: 3960, duration: 120, layout: 'card'},
+  avoip: {from: 360, duration: 360, layout: 'chapter'},
+  'global-cache': {from: 720, duration: 390, layout: 'chapter'},
+  pusr: {from: 1110, duration: 435, layout: 'chapter'},
+  discovery: {from: 1545, duration: 255, layout: 'chapter'},
+  rs232: {from: 1800, duration: 585, layout: 'chapter'},
+  terminal: {from: 2385, duration: 255, layout: 'chapter'},
+  webpage: {from: 2640, duration: 255, layout: 'chapter'},
+  eui: {from: 2895, duration: 345, layout: 'chapter'},
+  power: {from: 3240, duration: 270, layout: 'chapter'},
+  close: {from: 3510, duration: 120, layout: 'card'},
 } as const;
 
 export type LatestBeatName = keyof typeof BEATS;
 export const BEAT_NAMES = Object.keys(BEATS) as LatestBeatName[];
-export const IOT_LATEST_FEATURES_FRAMES = 4080;
+export const IOT_LATEST_FEATURES_FRAMES = 3630;
 
 export const COPY: Record<LatestBeatName, BeatCopy> = {
   open: {eyebrow: 'New in v1.0.9', headline: 'CTRLbot IoT', body: 'New devices, new end points, and drag to route.'},
   proof: {eyebrow: 'End user interface', title: 'Drag a source onto a display', body: 'Press, hold and drop it to route.'},
-  'net-switches': {eyebrow: 'Device', title: 'Net Switchers, a new category'},
   avoip: {eyebrow: 'AV-over-IP', title: 'Kramer, Matrox and Hall Research'},
   'global-cache': {
     eyebrow: 'End points',
@@ -49,7 +46,6 @@ export const COPY: Record<LatestBeatName, BeatCopy> = {
   rs232: {eyebrow: 'Connect', title: 'RS-232 through an end point'},
   terminal: {eyebrow: 'Connect', title: 'A terminal for every device'},
   webpage: {eyebrow: 'Connect', title: "The device's own web page"},
-  message: {eyebrow: 'Activities', title: 'A message on a preset step', body: 'The end user sees it while the preset runs.'},
   eui: {eyebrow: 'End user interface', title: 'Drag to a display, or send to All'},
   power: {eyebrow: 'End user interface', title: 'Change your mind before it powers off', body: 'Tap ✕ and nothing is sent.'},
   close: {headline: 'CTRLbot IoT', body: 'All of it in v1.0.9.'},
@@ -58,8 +54,6 @@ export const COPY: Record<LatestBeatName, BeatCopy> = {
 // Absolute composition frames; beat shot times subtract the beat's start.
 export const CUE_FRAMES = {
   welcomeFeatures: cueFrame(NARRATION_EDIT, 'welcome', 'features'),
-  netCategory: cueFrame(NARRATION_EDIT, 'net-category', 'category'),
-  netSwitches: cueFrame(NARRATION_EDIT, 'net-category', 'switches'),
   avoipEndpoints: cueFrame(NARRATION_EDIT, 'avoip-more', 'endpoints'),
   avoipKramer: cueFrame(NARRATION_EDIT, 'avoip-brands', 'Kramer'),
   avoipMatrox: cueFrame(NARRATION_EDIT, 'avoip-brands', 'Matrox'),
@@ -81,13 +75,11 @@ export const CUE_FRAMES = {
   termSend: cueFrame(NARRATION_EDIT, 'term-send', 'send'),
   webWebpage: cueFrame(NARRATION_EDIT, 'web', 'webpage'),
   webDirectly: cueFrame(NARRATION_EDIT, 'web', 'directly'),
-  msgMessages: cueFrame(NARRATION_EDIT, 'msg', 'messages'),
   euiDrag: cueFrame(NARRATION_EDIT, 'eui-drag', 'drag'),
   euiSource: cueFrame(NARRATION_EDIT, 'eui-all', 'source'),
   euiAll: cueFrame(NARRATION_EDIT, 'eui-all', 'all'),
   powerSafety: cueFrame(NARRATION_EDIT, 'power-x', 'safety'),
   powerX: cueFrame(NARRATION_EDIT, 'power-x', 'X'),
-  powerHello: cueFrame(NARRATION_EDIT, 'power-message', 'hello'),
 };
 
 /** Every catalog beat shows the v1.0.9 header, so it does not jump between beats. */
@@ -151,10 +143,6 @@ const at = (cue: number, beat: LatestBeatName) => cue - BEATS[beat].from;
 export const BEAT_SHOTS: Partial<Record<LatestBeatName, Shot[]>> = {
   // The whole tablet zooms (see PROOF_STAGE); the camera inside it holds the full surface.
   proof: [{at: 0, region: full}],
-  'net-switches': [
-    {at: 0, region: full},
-    {at: at(CUE_FRAMES.netCategory, 'net-switches'), region: atLeast(LIST_COLUMN)},
-  ],
   avoip: [{at: 0, region: atLeast(LIST_COLUMN)}],
   'global-cache': [
     {at: 0, region: full},
@@ -177,10 +165,6 @@ export const BEAT_SHOTS: Partial<Record<LatestBeatName, Shot[]>> = {
   // Footage beats: the whole screen, which the recording already composes.
   terminal: [{at: 0, region: full}],
   webpage: [{at: 0, region: full}],
-  message: [
-    {at: 0, region: presetsMap.content ?? full},
-    {at: at(CUE_FRAMES.msgMessages, 'message'), region: atLeast(presetsMap.delayMessage(1))},
-  ],
   eui: [{at: 0, region: TABLET_EUI_REGIONS.full}],
   power: [{at: 0, region: full}],
 };
@@ -195,7 +179,6 @@ const LIST_CROP = crop(200);
 const PANE_CROP = crop(560);
 
 export const PORTRAIT_SHOTS: Partial<Record<LatestBeatName, Shot[]>> = {
-  'net-switches': [{at: 0, region: LIST_CROP}],
   'global-cache': [
     {at: 0, region: LIST_CROP},
     {at: at(CUE_FRAMES.gcEndpoints, 'global-cache') + 20, region: PANE_CROP},
@@ -223,15 +206,10 @@ export const PORTRAIT_SHOTS: Partial<Record<LatestBeatName, Shot[]>> = {
     {at: at(CUE_FRAMES.termSend, 'terminal'), region: atLeast(testMap.terminal)},
   ],
   webpage: [{at: 0, region: crop(220)}],
-  message: [
-    {at: 0, region: crop(200)},
-    {at: at(CUE_FRAMES.msgMessages, 'message'), region: crop(560, 160, 420)},
-  ],
 };
 
 /** Landscape step labels go where the cued subject is not. */
 const CALLOUT_SIDE: Partial<Record<LatestBeatName, 'left' | 'right' | 'top'>> = {
-  'net-switches': 'right',
   avoip: 'right',
   // The selected PUSR card is the list's last row, under a left label.
   pusr: 'right',

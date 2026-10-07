@@ -515,3 +515,13 @@ Then the run stops for Nathan's review. T16 follows on his go.
 |------|-------------------------------------|-------|
 
 - T2, 2026-10-02: Independent coordinator takeover PASS WITH NOTES. Frozen check/lint pass; independently regenerated W01/W04 scratch SRT hashes equal baseline/result, and focused Hall Research/send to all/punctuation/one-word/timing examples pass. Replacement supports more cases than needed, a note. No existing deliverables overwritten.
+
+## Review 2026-10-07 (Nathan, landscape first)
+
+- [x] R1: proof beat zooms the whole bezelled tablet on the card's promo glow, instead of a camera push that cropped it (`5c68c11`).
+- [x] R2: discovery holds the whole catalog; landscape chapter drifts anchor top-left so a push keeps the header.
+- [x] R3: terminal and web page beats play the recording (`scripts/walkthrough-footage.mjs`, `footage.json`) (`a3b7156`).
+- [x] R4: cut net-switches, the preset message beat, the hello-world power-on and "thanks for joining me"; the close card is silent. 136s to 121s (3630 frames).
+- [x] R5: a drop selects: the dragged source and its display go blue (EUI and proof beats).
+- [ ] R6: portrait, the same fixes, after landscape is approved.
+- [ ] Open question: move RS-232, discovery and message-free beats to footage too (see the "prefer recording footage" rule).

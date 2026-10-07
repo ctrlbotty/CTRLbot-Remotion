@@ -23,7 +23,7 @@ export type NarrationEdit = {
 
 export const NARRATION_EDIT: NarrationEdit = {
   "src": "narration/iot-latest-features/edit.m4a",
-  "seconds": 136,
+  "seconds": 121,
   "clips": [
     {
       "id": "welcome",
@@ -53,29 +53,8 @@ export const NARRATION_EDIT: NarrationEdit = {
       ]
     },
     {
-      "id": "net-category",
-      "at": 12.25,
-      "start": 39.825,
-      "end": 45.62,
-      "seconds": 5.283,
-      "removed": [
-        {
-          "from": 42.455,
-          "to": 42.46,
-          "kind": "filler",
-          "heard": "Uh,"
-        },
-        {
-          "from": 42.48,
-          "to": 42.94,
-          "kind": "filler",
-          "heard": "Uh,"
-        }
-      ]
-    },
-    {
       "id": "avoip-more",
-      "at": 19.25,
+      "at": 12.25,
       "start": 57.245,
       "end": 61.33,
       "seconds": 4.085,
@@ -83,7 +62,7 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "id": "avoip-brands",
-      "at": 23.61,
+      "at": 16.61,
       "start": 71.73,
       "end": 79.36,
       "seconds": 6.347,
@@ -116,7 +95,7 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "id": "gc-models",
-      "at": 30.875,
+      "at": 23.875,
       "start": 79.975,
       "end": 95.21,
       "seconds": 11.65,
@@ -185,7 +164,7 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "id": "pusr",
-      "at": 44.25,
+      "at": 37.25,
       "start": 97.66,
       "end": 114.38,
       "seconds": 13.179,
@@ -248,7 +227,7 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "id": "disc-corner",
-      "at": 58.74,
+      "at": 51.74,
       "start": 141.59,
       "end": 144.22,
       "seconds": 2.63,
@@ -256,7 +235,7 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "id": "disc-click",
-      "at": 61.68,
+      "at": 54.68,
       "start": 164.8,
       "end": 170.25,
       "seconds": 4.121,
@@ -283,7 +262,7 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "id": "rs-acer",
-      "at": 66.92,
+      "at": 59.92,
       "start": 206.72,
       "end": 211.45,
       "seconds": 4.73,
@@ -291,7 +270,7 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "id": "rs-endpoint",
-      "at": 72.205,
+      "at": 65.205,
       "start": 219.175,
       "end": 223.97,
       "seconds": 3.768,
@@ -299,7 +278,7 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "id": "rs-terminal",
-      "at": 76.35,
+      "at": 69.35,
       "start": 227.685,
       "end": 230.805,
       "seconds": 3.12,
@@ -307,7 +286,7 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "id": "rs-layout",
-      "at": 79.77,
+      "at": 72.77,
       "start": 231.14,
       "end": 238.77,
       "seconds": 5.948,
@@ -346,10 +325,10 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "id": "term-open",
-      "at": 86.75,
-      "start": 277.56,
+      "at": 79.75,
+      "start": 277.69,
       "end": 280.26,
-      "seconds": 2.423,
+      "seconds": 2.293,
       "removed": [
         {
           "from": 278.395,
@@ -361,7 +340,7 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "id": "term-send",
-      "at": 89.47,
+      "at": 82.47,
       "start": 284.275,
       "end": 288.38,
       "seconds": 4.105,
@@ -369,7 +348,7 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "id": "web",
-      "at": 95.25,
+      "at": 88.25,
       "start": 304.33,
       "end": 311.6,
       "seconds": 6.763,
@@ -389,23 +368,8 @@ export const NARRATION_EDIT: NarrationEdit = {
       ]
     },
     {
-      "id": "msg",
-      "at": 103.75,
-      "start": 341.31,
-      "end": 344.45,
-      "seconds": 2.621,
-      "removed": [
-        {
-          "from": 343.095,
-          "to": 343.555,
-          "kind": "extra",
-          "heard": "a"
-        }
-      ]
-    },
-    {
       "id": "eui-drag",
-      "at": 109.215,
+      "at": 96.715,
       "start": 372.915,
       "end": 379.51,
       "seconds": 5.706,
@@ -432,7 +396,7 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "id": "eui-all",
-      "at": 115.26,
+      "at": 102.76,
       "start": 389.47,
       "end": 393.835,
       "seconds": 4.113,
@@ -447,26 +411,10 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "id": "power-x",
-      "at": 120.75,
+      "at": 108.25,
       "start": 396.185,
       "end": 403.86,
       "seconds": 7.675,
-      "removed": []
-    },
-    {
-      "id": "power-message",
-      "at": 128.7,
-      "start": 407.74,
-      "end": 409.82,
-      "seconds": 2.08,
-      "removed": []
-    },
-    {
-      "id": "thanks",
-      "at": 132.25,
-      "start": 411.995,
-      "end": 412.96,
-      "seconds": 0.965,
       "removed": []
     }
   ],
@@ -613,1850 +561,1654 @@ export const NARRATION_EDIT: NarrationEdit = {
     },
     {
       "text": " And",
-      "startMs": 12275,
-      "endMs": 12395,
-      "timestampMs": 12335,
-      "confidence": null
-    },
-    {
-      "text": " what",
-      "startMs": 12395,
-      "endMs": 12875,
-      "timestampMs": 12635,
-      "confidence": null
-    },
-    {
-      "text": " we",
-      "startMs": 12875,
-      "endMs": 13015,
-      "timestampMs": 12945,
-      "confidence": null
-    },
-    {
-      "text": " did",
-      "startMs": 13015,
-      "endMs": 13195,
-      "timestampMs": 13105,
-      "confidence": null
-    },
-    {
-      "text": " was",
-      "startMs": 13195,
-      "endMs": 13395,
-      "timestampMs": 13295,
-      "confidence": null
-    },
-    {
-      "text": " we",
-      "startMs": 13395,
-      "endMs": 13695,
-      "timestampMs": 13545,
-      "confidence": null
-    },
-    {
-      "text": " added",
-      "startMs": 13695,
-      "endMs": 14525,
-      "timestampMs": 14110,
-      "confidence": null
-    },
-    {
-      "text": " a",
-      "startMs": 14983,
-      "endMs": 15063,
-      "timestampMs": 15023,
-      "confidence": null
-    },
-    {
-      "text": " new",
-      "startMs": 15063,
-      "endMs": 15243,
-      "timestampMs": 15153,
-      "confidence": null
-    },
-    {
-      "text": " category",
-      "startMs": 15243,
-      "endMs": 15953,
-      "timestampMs": 15598,
-      "confidence": null
-    },
-    {
-      "text": " called",
-      "startMs": 16023,
-      "endMs": 16543,
-      "timestampMs": 16283,
-      "confidence": null
-    },
-    {
-      "text": " network",
-      "startMs": 16703,
-      "endMs": 17063,
-      "timestampMs": 16883,
-      "confidence": null
-    },
-    {
-      "text": " switches.",
-      "startMs": 17063,
-      "endMs": 17533,
-      "timestampMs": 17298,
-      "confidence": null
-    },
-    {
-      "text": " And",
-      "startMs": 19285,
-      "endMs": 19405,
-      "timestampMs": 19345,
+      "startMs": 12285,
+      "endMs": 12405,
+      "timestampMs": 12345,
       "confidence": null
     },
     {
       "text": " on",
-      "startMs": 19405,
-      "endMs": 19545,
-      "timestampMs": 19475,
+      "startMs": 12405,
+      "endMs": 12545,
+      "timestampMs": 12475,
       "confidence": null
     },
     {
       "text": " that",
-      "startMs": 19545,
-      "endMs": 19765,
-      "timestampMs": 19655,
+      "startMs": 12545,
+      "endMs": 12765,
+      "timestampMs": 12655,
       "confidence": null
     },
     {
       "text": " note,",
-      "startMs": 19765,
-      "endMs": 19985,
-      "timestampMs": 19875,
+      "startMs": 12765,
+      "endMs": 12985,
+      "timestampMs": 12875,
       "confidence": null
     },
     {
       "text": " we",
-      "startMs": 19985,
-      "endMs": 20185,
-      "timestampMs": 20085,
+      "startMs": 12985,
+      "endMs": 13185,
+      "timestampMs": 13085,
       "confidence": null
     },
     {
       "text": " added",
-      "startMs": 20185,
-      "endMs": 20620,
-      "timestampMs": 20403,
+      "startMs": 13185,
+      "endMs": 13620,
+      "timestampMs": 13403,
       "confidence": null
     },
     {
       "text": " a",
-      "startMs": 20725,
-      "endMs": 20825,
-      "timestampMs": 20775,
+      "startMs": 13725,
+      "endMs": 13825,
+      "timestampMs": 13775,
       "confidence": null
     },
     {
       "text": " lot",
-      "startMs": 20825,
-      "endMs": 21245,
-      "timestampMs": 21035,
+      "startMs": 13825,
+      "endMs": 14245,
+      "timestampMs": 14035,
       "confidence": null
     },
     {
       "text": " more",
-      "startMs": 21245,
-      "endMs": 21645,
-      "timestampMs": 21445,
+      "startMs": 14245,
+      "endMs": 14645,
+      "timestampMs": 14445,
       "confidence": null
     },
     {
       "text": " AV",
-      "startMs": 21645,
-      "endMs": 21905,
-      "timestampMs": 21775,
+      "startMs": 14645,
+      "endMs": 14905,
+      "timestampMs": 14775,
       "confidence": null
     },
     {
       "text": " over",
-      "startMs": 21905,
-      "endMs": 22165,
-      "timestampMs": 22035,
+      "startMs": 14905,
+      "endMs": 15165,
+      "timestampMs": 15035,
       "confidence": null
     },
     {
       "text": " IP",
-      "startMs": 22165,
-      "endMs": 22330,
-      "timestampMs": 22248,
+      "startMs": 15165,
+      "endMs": 15330,
+      "timestampMs": 15248,
       "confidence": null
     },
     {
       "text": " endpoints.",
-      "startMs": 22645,
-      "endMs": 23295,
-      "timestampMs": 22970,
+      "startMs": 15645,
+      "endMs": 16295,
+      "timestampMs": 15970,
       "confidence": null
     },
     {
       "text": " We",
-      "startMs": 23870,
-      "endMs": 24030,
-      "timestampMs": 23950,
+      "startMs": 16870,
+      "endMs": 17030,
+      "timestampMs": 16950,
       "confidence": null
     },
     {
       "text": " also",
-      "startMs": 24030,
-      "endMs": 24350,
-      "timestampMs": 24190,
+      "startMs": 17030,
+      "endMs": 17350,
+      "timestampMs": 17190,
       "confidence": null
     },
     {
       "text": " added",
-      "startMs": 24350,
-      "endMs": 24730,
-      "timestampMs": 24540,
+      "startMs": 17350,
+      "endMs": 17730,
+      "timestampMs": 17540,
       "confidence": null
     },
     {
       "text": " Kramer,",
-      "startMs": 24730,
-      "endMs": 25330,
-      "timestampMs": 25030,
+      "startMs": 17730,
+      "endMs": 18330,
+      "timestampMs": 18030,
       "confidence": null
     },
     {
       "text": " Matrox,",
-      "startMs": 25658,
-      "endMs": 26318,
-      "timestampMs": 25988,
+      "startMs": 18658,
+      "endMs": 19318,
+      "timestampMs": 18988,
       "confidence": null
     },
     {
       "text": " and",
-      "startMs": 26918,
-      "endMs": 27183,
-      "timestampMs": 27050,
+      "startMs": 19918,
+      "endMs": 20183,
+      "timestampMs": 20050,
       "confidence": null
     },
     {
       "text": " all",
-      "startMs": 27518,
-      "endMs": 27718,
-      "timestampMs": 27618,
+      "startMs": 20518,
+      "endMs": 20718,
+      "timestampMs": 20618,
       "confidence": null
     },
     {
       "text": " research",
-      "startMs": 27718,
-      "endMs": 28393,
-      "timestampMs": 28056,
+      "startMs": 20718,
+      "endMs": 21393,
+      "timestampMs": 21056,
       "confidence": null
     },
     {
       "text": " endpoints",
-      "startMs": 28501,
-      "endMs": 28894,
-      "timestampMs": 28697,
+      "startMs": 21501,
+      "endMs": 21894,
+      "timestampMs": 21697,
       "confidence": null
     },
     {
       "text": " for",
-      "startMs": 29007,
-      "endMs": 29227,
-      "timestampMs": 29117,
+      "startMs": 22007,
+      "endMs": 22227,
+      "timestampMs": 22117,
       "confidence": null
     },
     {
       "text": " AV",
-      "startMs": 29227,
-      "endMs": 29407,
-      "timestampMs": 29317,
+      "startMs": 22227,
+      "endMs": 22407,
+      "timestampMs": 22317,
       "confidence": null
     },
     {
       "text": " over",
-      "startMs": 29407,
-      "endMs": 29727,
-      "timestampMs": 29567,
+      "startMs": 22407,
+      "endMs": 22727,
+      "timestampMs": 22567,
       "confidence": null
     },
     {
       "text": " IP.",
-      "startMs": 29727,
-      "endMs": 29957,
-      "timestampMs": 29842,
+      "startMs": 22727,
+      "endMs": 22957,
+      "timestampMs": 22842,
       "confidence": null
     },
     {
       "text": " As",
-      "startMs": 31290,
-      "endMs": 31410,
-      "timestampMs": 31350,
+      "startMs": 24290,
+      "endMs": 24410,
+      "timestampMs": 24350,
       "confidence": null
     },
     {
       "text": " far",
-      "startMs": 31410,
-      "endMs": 31870,
-      "timestampMs": 31640,
+      "startMs": 24410,
+      "endMs": 24870,
+      "timestampMs": 24640,
       "confidence": null
     },
     {
       "text": " as",
-      "startMs": 31870,
-      "endMs": 32375,
-      "timestampMs": 32123,
+      "startMs": 24870,
+      "endMs": 25375,
+      "timestampMs": 25123,
       "confidence": null
     },
     {
       "text": " endpoints",
-      "startMs": 32450,
-      "endMs": 32970,
-      "timestampMs": 32710,
+      "startMs": 25450,
+      "endMs": 25970,
+      "timestampMs": 25710,
       "confidence": null
     },
     {
       "text": " for",
-      "startMs": 33290,
-      "endMs": 33765,
-      "timestampMs": 33528,
+      "startMs": 26290,
+      "endMs": 26765,
+      "timestampMs": 26528,
       "confidence": null
     },
     {
       "text": " RS-232,",
-      "startMs": 34118,
-      "endMs": 35228,
-      "timestampMs": 34673,
+      "startMs": 27118,
+      "endMs": 28228,
+      "timestampMs": 27673,
       "confidence": null
     },
     {
       "text": " IP",
-      "startMs": 35281,
-      "endMs": 35661,
-      "timestampMs": 35471,
+      "startMs": 28281,
+      "endMs": 28661,
+      "timestampMs": 28471,
       "confidence": null
     },
     {
       "text": " to",
-      "startMs": 35661,
-      "endMs": 35961,
-      "timestampMs": 35811,
+      "startMs": 28661,
+      "endMs": 28961,
+      "timestampMs": 28811,
       "confidence": null
     },
     {
       "text": " RS-232,",
-      "startMs": 36041,
-      "endMs": 36936,
-      "timestampMs": 36489,
+      "startMs": 29041,
+      "endMs": 29936,
+      "timestampMs": 29489,
       "confidence": null
     },
     {
       "text": " or",
-      "startMs": 37109,
-      "endMs": 37269,
-      "timestampMs": 37189,
+      "startMs": 30109,
+      "endMs": 30269,
+      "timestampMs": 30189,
       "confidence": null
     },
     {
       "text": " IP",
-      "startMs": 37269,
-      "endMs": 37854,
-      "timestampMs": 37562,
+      "startMs": 30269,
+      "endMs": 30854,
+      "timestampMs": 30562,
       "confidence": null
     },
     {
       "text": " to",
-      "startMs": 37869,
-      "endMs": 38129,
-      "timestampMs": 37999,
+      "startMs": 30869,
+      "endMs": 31129,
+      "timestampMs": 30999,
       "confidence": null
     },
     {
       "text": " IR,",
-      "startMs": 38129,
-      "endMs": 38609,
-      "timestampMs": 38369,
+      "startMs": 31129,
+      "endMs": 31609,
+      "timestampMs": 31369,
       "confidence": null
     },
     {
       "text": " we've",
-      "startMs": 38609,
-      "endMs": 38849,
-      "timestampMs": 38729,
+      "startMs": 31609,
+      "endMs": 31849,
+      "timestampMs": 31729,
       "confidence": null
     },
     {
       "text": " added",
-      "startMs": 38849,
-      "endMs": 39154,
-      "timestampMs": 39002,
+      "startMs": 31849,
+      "endMs": 32154,
+      "timestampMs": 32002,
       "confidence": null
     },
     {
       "text": " additional",
-      "startMs": 39472,
-      "endMs": 40412,
-      "timestampMs": 39942,
+      "startMs": 32472,
+      "endMs": 33412,
+      "timestampMs": 32942,
       "confidence": null
     },
     {
       "text": " models",
-      "startMs": 40525,
-      "endMs": 41130,
-      "timestampMs": 40828,
+      "startMs": 33525,
+      "endMs": 34130,
+      "timestampMs": 33828,
       "confidence": null
     },
     {
       "text": " for",
-      "startMs": 41130,
-      "endMs": 41250,
-      "timestampMs": 41190,
+      "startMs": 34130,
+      "endMs": 34250,
+      "timestampMs": 34190,
       "confidence": null
     },
     {
       "text": " Global",
-      "startMs": 41435,
-      "endMs": 41755,
-      "timestampMs": 41595,
+      "startMs": 34435,
+      "endMs": 34755,
+      "timestampMs": 34595,
       "confidence": null
     },
     {
       "text": " Cache.",
-      "startMs": 41755,
-      "endMs": 42485,
-      "timestampMs": 42120,
+      "startMs": 34755,
+      "endMs": 35485,
+      "timestampMs": 35120,
       "confidence": null
     },
     {
       "text": " We",
-      "startMs": 44550,
-      "endMs": 44710,
-      "timestampMs": 44630,
+      "startMs": 37550,
+      "endMs": 37710,
+      "timestampMs": 37630,
       "confidence": null
     },
     {
       "text": " also",
-      "startMs": 44710,
-      "endMs": 45350,
-      "timestampMs": 45030,
+      "startMs": 37710,
+      "endMs": 38350,
+      "timestampMs": 38030,
       "confidence": null
     },
     {
       "text": " added",
-      "startMs": 45350,
-      "endMs": 45790,
-      "timestampMs": 45570,
+      "startMs": 38350,
+      "endMs": 38790,
+      "timestampMs": 38570,
       "confidence": null
     },
     {
       "text": " a",
-      "startMs": 45950,
-      "endMs": 46145,
-      "timestampMs": 46048,
+      "startMs": 38950,
+      "endMs": 39145,
+      "timestampMs": 39048,
       "confidence": null
     },
     {
       "text": " Pooser,",
-      "startMs": 46148,
-      "endMs": 46588,
-      "timestampMs": 46368,
+      "startMs": 39148,
+      "endMs": 39588,
+      "timestampMs": 39368,
       "confidence": null
     },
     {
       "text": " which",
-      "startMs": 46728,
-      "endMs": 46968,
-      "timestampMs": 46848,
+      "startMs": 39728,
+      "endMs": 39968,
+      "timestampMs": 39848,
       "confidence": null
     },
     {
       "text": " is",
-      "startMs": 46968,
-      "endMs": 47188,
-      "timestampMs": 47078,
+      "startMs": 39968,
+      "endMs": 40188,
+      "timestampMs": 40078,
       "confidence": null
     },
     {
       "text": " an",
-      "startMs": 47188,
-      "endMs": 47381,
-      "timestampMs": 47285,
+      "startMs": 40188,
+      "endMs": 40381,
+      "timestampMs": 40285,
       "confidence": null
     },
     {
       "text": " industrial",
-      "startMs": 47411,
-      "endMs": 48216,
-      "timestampMs": 47814,
+      "startMs": 40411,
+      "endMs": 41216,
+      "timestampMs": 40814,
       "confidence": null
     },
     {
       "text": " -type",
-      "startMs": 48491,
-      "endMs": 48869,
-      "timestampMs": 48680,
+      "startMs": 41491,
+      "endMs": 41869,
+      "timestampMs": 41680,
       "confidence": null
     },
     {
       "text": " wireless",
-      "startMs": 48929,
-      "endMs": 49724,
-      "timestampMs": 49327,
+      "startMs": 41929,
+      "endMs": 42724,
+      "timestampMs": 42327,
       "confidence": null
     },
     {
       "text": " or",
-      "startMs": 50087,
-      "endMs": 50412,
-      "timestampMs": 50250,
+      "startMs": 43087,
+      "endMs": 43412,
+      "timestampMs": 43250,
       "confidence": null
     },
     {
       "text": " wired",
-      "startMs": 50545,
-      "endMs": 51160,
-      "timestampMs": 50853,
+      "startMs": 43545,
+      "endMs": 44160,
+      "timestampMs": 43853,
       "confidence": null
     },
     {
       "text": " Ethernet",
-      "startMs": 51398,
-      "endMs": 51978,
-      "timestampMs": 51688,
+      "startMs": 44398,
+      "endMs": 44978,
+      "timestampMs": 44688,
       "confidence": null
     },
     {
       "text": " portal",
-      "startMs": 52376,
-      "endMs": 52866,
-      "timestampMs": 52621,
+      "startMs": 45376,
+      "endMs": 45866,
+      "timestampMs": 45621,
       "confidence": null
     },
     {
       "text": " and",
-      "startMs": 53376,
-      "endMs": 53636,
-      "timestampMs": 53506,
+      "startMs": 46376,
+      "endMs": 46636,
+      "timestampMs": 46506,
       "confidence": null
     },
     {
       "text": " allows",
-      "startMs": 53896,
-      "endMs": 54436,
-      "timestampMs": 54166,
+      "startMs": 46896,
+      "endMs": 47436,
+      "timestampMs": 47166,
       "confidence": null
     },
     {
       "text": " you",
-      "startMs": 54436,
-      "endMs": 54596,
-      "timestampMs": 54516,
+      "startMs": 47436,
+      "endMs": 47596,
+      "timestampMs": 47516,
       "confidence": null
     },
     {
       "text": " to",
-      "startMs": 54596,
-      "endMs": 55116,
-      "timestampMs": 54856,
+      "startMs": 47596,
+      "endMs": 48116,
+      "timestampMs": 47856,
       "confidence": null
     },
     {
       "text": " convert",
-      "startMs": 55116,
-      "endMs": 55716,
-      "timestampMs": 55416,
+      "startMs": 48116,
+      "endMs": 48716,
+      "timestampMs": 48416,
       "confidence": null
     },
     {
       "text": " IP",
-      "startMs": 55716,
-      "endMs": 55944,
-      "timestampMs": 55830,
+      "startMs": 48716,
+      "endMs": 48944,
+      "timestampMs": 48830,
       "confidence": null
     },
     {
       "text": " to",
-      "startMs": 56139,
-      "endMs": 56419,
-      "timestampMs": 56279,
+      "startMs": 49139,
+      "endMs": 49419,
+      "timestampMs": 49279,
       "confidence": null
     },
     {
       "text": " RS-232",
-      "startMs": 56419,
-      "endMs": 57389,
-      "timestampMs": 56904,
+      "startMs": 49419,
+      "endMs": 50389,
+      "timestampMs": 49904,
       "confidence": null
     },
     {
       "text": " this",
-      "startMs": 58780,
-      "endMs": 58980,
-      "timestampMs": 58880,
+      "startMs": 51780,
+      "endMs": 51980,
+      "timestampMs": 51880,
       "confidence": null
     },
     {
       "text": " device",
-      "startMs": 58980,
-      "endMs": 59380,
-      "timestampMs": 59180,
+      "startMs": 51980,
+      "endMs": 52380,
+      "timestampMs": 52180,
       "confidence": null
     },
     {
       "text": " discovery",
-      "startMs": 59380,
-      "endMs": 59900,
-      "timestampMs": 59640,
+      "startMs": 52380,
+      "endMs": 52900,
+      "timestampMs": 52640,
       "confidence": null
     },
     {
       "text": " up",
-      "startMs": 59900,
-      "endMs": 60020,
-      "timestampMs": 59960,
+      "startMs": 52900,
+      "endMs": 53020,
+      "timestampMs": 52960,
       "confidence": null
     },
     {
       "text": " here",
-      "startMs": 60020,
-      "endMs": 60180,
-      "timestampMs": 60100,
+      "startMs": 53020,
+      "endMs": 53180,
+      "timestampMs": 53100,
       "confidence": null
     },
     {
       "text": " in",
-      "startMs": 60180,
-      "endMs": 60300,
-      "timestampMs": 60240,
+      "startMs": 53180,
+      "endMs": 53300,
+      "timestampMs": 53240,
       "confidence": null
     },
     {
       "text": " the",
-      "startMs": 60300,
-      "endMs": 60400,
-      "timestampMs": 60350,
+      "startMs": 53300,
+      "endMs": 53400,
+      "timestampMs": 53350,
       "confidence": null
     },
     {
       "text": " corner,",
-      "startMs": 60400,
-      "endMs": 60760,
-      "timestampMs": 60580,
+      "startMs": 53400,
+      "endMs": 53760,
+      "timestampMs": 53580,
       "confidence": null
     },
     {
       "text": " right?",
-      "startMs": 61100,
-      "endMs": 61370,
-      "timestampMs": 61235,
+      "startMs": 54100,
+      "endMs": 54370,
+      "timestampMs": 54235,
       "confidence": null
     },
     {
       "text": " it'll",
-      "startMs": 61680,
-      "endMs": 61950,
-      "timestampMs": 61815,
+      "startMs": 54680,
+      "endMs": 54950,
+      "timestampMs": 54815,
       "confidence": null
     },
     {
       "text": " allow",
-      "startMs": 61950,
-      "endMs": 62250,
-      "timestampMs": 62100,
+      "startMs": 54950,
+      "endMs": 55250,
+      "timestampMs": 55100,
       "confidence": null
     },
     {
       "text": " you",
-      "startMs": 62250,
-      "endMs": 62450,
-      "timestampMs": 62350,
+      "startMs": 55250,
+      "endMs": 55450,
+      "timestampMs": 55350,
       "confidence": null
     },
     {
       "text": " to",
-      "startMs": 62450,
-      "endMs": 62770,
-      "timestampMs": 62610,
+      "startMs": 55450,
+      "endMs": 55770,
+      "timestampMs": 55610,
       "confidence": null
     },
     {
       "text": " add",
-      "startMs": 62770,
-      "endMs": 63420,
-      "timestampMs": 63095,
+      "startMs": 55770,
+      "endMs": 56420,
+      "timestampMs": 56095,
       "confidence": null
     },
     {
       "text": " that",
-      "startMs": 63678,
-      "endMs": 63898,
-      "timestampMs": 63788,
+      "startMs": 56678,
+      "endMs": 56898,
+      "timestampMs": 56788,
       "confidence": null
     },
     {
       "text": " driver",
-      "startMs": 63898,
-      "endMs": 64393,
-      "timestampMs": 64146,
+      "startMs": 56898,
+      "endMs": 57393,
+      "timestampMs": 57145,
       "confidence": null
     },
     {
       "text": " just",
-      "startMs": 64621,
-      "endMs": 64861,
-      "timestampMs": 64741,
+      "startMs": 57621,
+      "endMs": 57861,
+      "timestampMs": 57741,
       "confidence": null
     },
     {
       "text": " with",
-      "startMs": 64861,
-      "endMs": 65141,
-      "timestampMs": 65001,
+      "startMs": 57861,
+      "endMs": 58141,
+      "timestampMs": 58001,
       "confidence": null
     },
     {
       "text": " one",
-      "startMs": 65141,
-      "endMs": 65321,
-      "timestampMs": 65231,
+      "startMs": 58141,
+      "endMs": 58321,
+      "timestampMs": 58231,
       "confidence": null
     },
     {
       "text": " click",
-      "startMs": 65321,
-      "endMs": 65661,
-      "timestampMs": 65491,
+      "startMs": 58321,
+      "endMs": 58661,
+      "timestampMs": 58491,
       "confidence": null
     },
     {
       "text": " I'm",
-      "startMs": 67080,
-      "endMs": 67275,
-      "timestampMs": 67177,
+      "startMs": 60080,
+      "endMs": 60275,
+      "timestampMs": 60177,
       "confidence": null
     },
     {
       "text": " gonna",
-      "startMs": 67520,
-      "endMs": 67780,
-      "timestampMs": 67650,
+      "startMs": 60520,
+      "endMs": 60780,
+      "timestampMs": 60650,
       "confidence": null
     },
     {
       "text": " also",
-      "startMs": 67780,
-      "endMs": 68100,
-      "timestampMs": 67940,
+      "startMs": 60780,
+      "endMs": 61100,
+      "timestampMs": 60940,
       "confidence": null
     },
     {
       "text": " just",
-      "startMs": 68100,
-      "endMs": 68420,
-      "timestampMs": 68260,
+      "startMs": 61100,
+      "endMs": 61420,
+      "timestampMs": 61260,
       "confidence": null
     },
     {
       "text": " add",
-      "startMs": 68420,
-      "endMs": 68900,
-      "timestampMs": 68660,
+      "startMs": 61420,
+      "endMs": 61900,
+      "timestampMs": 61660,
       "confidence": null
     },
     {
       "text": " an",
-      "startMs": 68900,
-      "endMs": 69120,
-      "timestampMs": 69010,
+      "startMs": 61900,
+      "endMs": 62120,
+      "timestampMs": 62010,
       "confidence": null
     },
     {
       "text": " Acer",
-      "startMs": 69280,
-      "endMs": 69640,
-      "timestampMs": 69460,
+      "startMs": 62280,
+      "endMs": 62640,
+      "timestampMs": 62460,
       "confidence": null
     },
     {
       "text": " projector,",
-      "startMs": 69640,
-      "endMs": 70380,
-      "timestampMs": 70010,
+      "startMs": 62640,
+      "endMs": 63380,
+      "timestampMs": 63010,
       "confidence": null
     },
     {
       "text": " RS-232.",
-      "startMs": 70560,
-      "endMs": 71610,
-      "timestampMs": 71085,
+      "startMs": 63560,
+      "endMs": 64610,
+      "timestampMs": 64085,
       "confidence": null
     },
     {
       "text": " end",
-      "startMs": 72260,
-      "endMs": 72420,
-      "timestampMs": 72340,
+      "startMs": 65260,
+      "endMs": 65420,
+      "timestampMs": 65340,
       "confidence": null
     },
     {
       "text": " point",
-      "startMs": 72420,
-      "endMs": 72700,
-      "timestampMs": 72560,
+      "startMs": 65420,
+      "endMs": 65700,
+      "timestampMs": 65560,
       "confidence": null
     },
     {
       "text": " right",
-      "startMs": 72700,
-      "endMs": 72920,
-      "timestampMs": 72810,
+      "startMs": 65700,
+      "endMs": 65920,
+      "timestampMs": 65810,
       "confidence": null
     },
     {
       "text": " in",
-      "startMs": 72920,
-      "endMs": 73080,
-      "timestampMs": 73000,
+      "startMs": 65920,
+      "endMs": 66080,
+      "timestampMs": 66000,
       "confidence": null
     },
     {
       "text": " here",
-      "startMs": 73080,
-      "endMs": 73475,
-      "timestampMs": 73278,
+      "startMs": 66080,
+      "endMs": 66475,
+      "timestampMs": 66278,
       "confidence": null
     },
     {
       "text": " and",
-      "startMs": 73973,
-      "endMs": 74453,
-      "timestampMs": 74213,
+      "startMs": 66973,
+      "endMs": 67453,
+      "timestampMs": 67213,
       "confidence": null
     },
     {
       "text": " we",
-      "startMs": 74453,
-      "endMs": 74593,
-      "timestampMs": 74523,
+      "startMs": 67453,
+      "endMs": 67593,
+      "timestampMs": 67523,
       "confidence": null
     },
     {
       "text": " can",
-      "startMs": 74593,
-      "endMs": 74753,
-      "timestampMs": 74673,
+      "startMs": 67593,
+      "endMs": 67753,
+      "timestampMs": 67673,
       "confidence": null
     },
     {
       "text": " connect",
-      "startMs": 74753,
-      "endMs": 75073,
-      "timestampMs": 74913,
+      "startMs": 67753,
+      "endMs": 68073,
+      "timestampMs": 67913,
       "confidence": null
     },
     {
       "text": " to",
-      "startMs": 75073,
-      "endMs": 75253,
-      "timestampMs": 75163,
+      "startMs": 68073,
+      "endMs": 68253,
+      "timestampMs": 68163,
       "confidence": null
     },
     {
       "text": " it",
-      "startMs": 75253,
-      "endMs": 75333,
-      "timestampMs": 75293,
+      "startMs": 68253,
+      "endMs": 68333,
+      "timestampMs": 68293,
       "confidence": null
     },
     {
       "text": " directly.",
-      "startMs": 75333,
-      "endMs": 75933,
-      "timestampMs": 75633,
+      "startMs": 68333,
+      "endMs": 68933,
+      "timestampMs": 68633,
       "confidence": null
     },
     {
       "text": " this",
-      "startMs": 76655,
-      "endMs": 76875,
-      "timestampMs": 76765,
+      "startMs": 69655,
+      "endMs": 69875,
+      "timestampMs": 69765,
       "confidence": null
     },
     {
       "text": " whole",
-      "startMs": 76875,
-      "endMs": 77445,
-      "timestampMs": 77160,
+      "startMs": 69875,
+      "endMs": 70445,
+      "timestampMs": 70160,
       "confidence": null
     },
     {
       "text": " terminal",
-      "startMs": 77535,
-      "endMs": 78125,
-      "timestampMs": 77830,
+      "startMs": 70535,
+      "endMs": 71125,
+      "timestampMs": 70830,
       "confidence": null
     },
     {
       "text": " is",
-      "startMs": 78175,
-      "endMs": 78375,
-      "timestampMs": 78275,
+      "startMs": 71175,
+      "endMs": 71375,
+      "timestampMs": 71275,
       "confidence": null
     },
     {
       "text": " new",
-      "startMs": 78375,
-      "endMs": 78715,
-      "timestampMs": 78545,
+      "startMs": 71375,
+      "endMs": 71715,
+      "timestampMs": 71545,
       "confidence": null
     },
     {
       "text": " right",
-      "startMs": 78715,
-      "endMs": 78995,
-      "timestampMs": 78855,
+      "startMs": 71715,
+      "endMs": 71995,
+      "timestampMs": 71855,
       "confidence": null
     },
     {
       "text": " here.",
-      "startMs": 78995,
-      "endMs": 79430,
-      "timestampMs": 79212,
+      "startMs": 71995,
+      "endMs": 72430,
+      "timestampMs": 72212,
       "confidence": null
     },
     {
       "text": " also",
-      "startMs": 79830,
-      "endMs": 80173,
-      "timestampMs": 80002,
+      "startMs": 72830,
+      "endMs": 73173,
+      "timestampMs": 73002,
       "confidence": null
     },
     {
       "text": " the",
-      "startMs": 80243,
-      "endMs": 80423,
-      "timestampMs": 80333,
+      "startMs": 73243,
+      "endMs": 73423,
+      "timestampMs": 73333,
       "confidence": null
     },
     {
       "text": " layout,",
-      "startMs": 80423,
-      "endMs": 80903,
-      "timestampMs": 80663,
+      "startMs": 73423,
+      "endMs": 73903,
+      "timestampMs": 73663,
       "confidence": null
     },
     {
       "text": " the",
-      "startMs": 80903,
-      "endMs": 81073,
-      "timestampMs": 80988,
+      "startMs": 73903,
+      "endMs": 74073,
+      "timestampMs": 73988,
       "confidence": null
     },
     {
       "text": " way",
-      "startMs": 81226,
-      "endMs": 81426,
-      "timestampMs": 81326,
+      "startMs": 74226,
+      "endMs": 74426,
+      "timestampMs": 74326,
       "confidence": null
     },
     {
       "text": " that",
-      "startMs": 81426,
-      "endMs": 81566,
-      "timestampMs": 81496,
+      "startMs": 74426,
+      "endMs": 74566,
+      "timestampMs": 74496,
       "confidence": null
     },
     {
       "text": " we",
-      "startMs": 81566,
-      "endMs": 81766,
-      "timestampMs": 81666,
+      "startMs": 74566,
+      "endMs": 74766,
+      "timestampMs": 74666,
       "confidence": null
     },
     {
       "text": " have",
-      "startMs": 81766,
-      "endMs": 82101,
-      "timestampMs": 81934,
+      "startMs": 74766,
+      "endMs": 75101,
+      "timestampMs": 74934,
       "confidence": null
     },
     {
       "text": " the",
-      "startMs": 82104,
-      "endMs": 82224,
-      "timestampMs": 82164,
+      "startMs": 75104,
+      "endMs": 75224,
+      "timestampMs": 75164,
       "confidence": null
     },
     {
       "text": " commands",
-      "startMs": 82224,
-      "endMs": 83034,
-      "timestampMs": 82629,
+      "startMs": 75224,
+      "endMs": 76034,
+      "timestampMs": 75629,
       "confidence": null
     },
     {
       "text": " and",
-      "startMs": 83277,
-      "endMs": 83572,
-      "timestampMs": 83425,
+      "startMs": 76277,
+      "endMs": 76572,
+      "timestampMs": 76425,
       "confidence": null
     },
     {
       "text": " the",
-      "startMs": 83805,
-      "endMs": 84105,
-      "timestampMs": 83955,
+      "startMs": 76805,
+      "endMs": 77105,
+      "timestampMs": 76955,
       "confidence": null
     },
     {
       "text": " configuration",
-      "startMs": 84188,
-      "endMs": 84828,
-      "timestampMs": 84508,
+      "startMs": 77188,
+      "endMs": 77828,
+      "timestampMs": 77508,
       "confidence": null
     },
     {
       "text": " on",
-      "startMs": 84828,
-      "endMs": 84948,
-      "timestampMs": 84888,
+      "startMs": 77828,
+      "endMs": 77948,
+      "timestampMs": 77888,
       "confidence": null
     },
     {
       "text": " the",
-      "startMs": 84948,
-      "endMs": 85153,
-      "timestampMs": 85051,
+      "startMs": 77948,
+      "endMs": 78153,
+      "timestampMs": 78051,
       "confidence": null
     },
     {
       "text": " right.",
-      "startMs": 85308,
-      "endMs": 85678,
-      "timestampMs": 85493,
+      "startMs": 78308,
+      "endMs": 78678,
+      "timestampMs": 78493,
       "confidence": null
     },
     {
       "text": " you",
-      "startMs": 86870,
-      "endMs": 86970,
-      "timestampMs": 86920,
+      "startMs": 79750,
+      "endMs": 79840,
+      "timestampMs": 79795,
       "confidence": null
     },
     {
       "text": " can",
-      "startMs": 86970,
-      "endMs": 87110,
-      "timestampMs": 87040,
+      "startMs": 79840,
+      "endMs": 79980,
+      "timestampMs": 79910,
       "confidence": null
     },
     {
       "text": " open",
-      "startMs": 87110,
-      "endMs": 87330,
-      "timestampMs": 87220,
+      "startMs": 79980,
+      "endMs": 80200,
+      "timestampMs": 80090,
       "confidence": null
     },
     {
       "text": " up",
-      "startMs": 87330,
-      "endMs": 87430,
-      "timestampMs": 87380,
+      "startMs": 80200,
+      "endMs": 80300,
+      "timestampMs": 80250,
       "confidence": null
     },
     {
       "text": " the",
-      "startMs": 87430,
-      "endMs": 87573,
-      "timestampMs": 87502,
+      "startMs": 80300,
+      "endMs": 80443,
+      "timestampMs": 80372,
       "confidence": null
     },
     {
       "text": " terminal",
-      "startMs": 87673,
-      "endMs": 88133,
-      "timestampMs": 87903,
+      "startMs": 80543,
+      "endMs": 81003,
+      "timestampMs": 80773,
       "confidence": null
     },
     {
       "text": " now",
-      "startMs": 88133,
-      "endMs": 88473,
-      "timestampMs": 88303,
+      "startMs": 81003,
+      "endMs": 81343,
+      "timestampMs": 81173,
       "confidence": null
     },
     {
       "text": " directly,",
-      "startMs": 88473,
-      "endMs": 89133,
-      "timestampMs": 88803,
+      "startMs": 81343,
+      "endMs": 82003,
+      "timestampMs": 81673,
       "confidence": null
     },
     {
       "text": " If",
-      "startMs": 89485,
-      "endMs": 89605,
-      "timestampMs": 89545,
+      "startMs": 82485,
+      "endMs": 82605,
+      "timestampMs": 82545,
       "confidence": null
     },
     {
       "text": " I",
-      "startMs": 89605,
-      "endMs": 89705,
-      "timestampMs": 89655,
+      "startMs": 82605,
+      "endMs": 82705,
+      "timestampMs": 82655,
       "confidence": null
     },
     {
       "text": " wanted",
-      "startMs": 89705,
-      "endMs": 90045,
-      "timestampMs": 89875,
+      "startMs": 82705,
+      "endMs": 83045,
+      "timestampMs": 82875,
       "confidence": null
     },
     {
       "text": " to",
-      "startMs": 90045,
-      "endMs": 90585,
-      "timestampMs": 90315,
+      "startMs": 83045,
+      "endMs": 83585,
+      "timestampMs": 83315,
       "confidence": null
     },
     {
       "text": " send",
-      "startMs": 90585,
-      "endMs": 90845,
-      "timestampMs": 90715,
+      "startMs": 83585,
+      "endMs": 83845,
+      "timestampMs": 83715,
       "confidence": null
     },
     {
       "text": " a",
-      "startMs": 90845,
-      "endMs": 90965,
-      "timestampMs": 90905,
+      "startMs": 83845,
+      "endMs": 83965,
+      "timestampMs": 83905,
       "confidence": null
     },
     {
       "text": " command",
-      "startMs": 90965,
-      "endMs": 91465,
-      "timestampMs": 91215,
+      "startMs": 83965,
+      "endMs": 84465,
+      "timestampMs": 84215,
       "confidence": null
     },
     {
       "text": " directly,",
-      "startMs": 91465,
-      "endMs": 92005,
-      "timestampMs": 91735,
+      "startMs": 84465,
+      "endMs": 85005,
+      "timestampMs": 84735,
       "confidence": null
     },
     {
       "text": " I",
-      "startMs": 92005,
-      "endMs": 92065,
-      "timestampMs": 92035,
+      "startMs": 85005,
+      "endMs": 85065,
+      "timestampMs": 85035,
       "confidence": null
     },
     {
       "text": " can",
-      "startMs": 92065,
-      "endMs": 92245,
-      "timestampMs": 92155,
+      "startMs": 85065,
+      "endMs": 85245,
+      "timestampMs": 85155,
       "confidence": null
     },
     {
       "text": " do",
-      "startMs": 92245,
-      "endMs": 92385,
-      "timestampMs": 92315,
+      "startMs": 85245,
+      "endMs": 85385,
+      "timestampMs": 85315,
       "confidence": null
     },
     {
       "text": " that",
-      "startMs": 92385,
-      "endMs": 92625,
-      "timestampMs": 92505,
+      "startMs": 85385,
+      "endMs": 85625,
+      "timestampMs": 85505,
       "confidence": null
     },
     {
       "text": " from",
-      "startMs": 92625,
-      "endMs": 92785,
-      "timestampMs": 92705,
+      "startMs": 85625,
+      "endMs": 85785,
+      "timestampMs": 85705,
       "confidence": null
     },
     {
       "text": " right",
-      "startMs": 92785,
-      "endMs": 92965,
-      "timestampMs": 92875,
+      "startMs": 85785,
+      "endMs": 85965,
+      "timestampMs": 85875,
       "confidence": null
     },
     {
       "text": " here",
-      "startMs": 92965,
-      "endMs": 93165,
-      "timestampMs": 93065,
+      "startMs": 85965,
+      "endMs": 86165,
+      "timestampMs": 86065,
       "confidence": null
     },
     {
       "text": " as",
-      "startMs": 93165,
-      "endMs": 93365,
-      "timestampMs": 93265,
+      "startMs": 86165,
+      "endMs": 86365,
+      "timestampMs": 86265,
       "confidence": null
     },
     {
       "text": " well.",
-      "startMs": 93365,
-      "endMs": 93575,
-      "timestampMs": 93470,
+      "startMs": 86365,
+      "endMs": 86575,
+      "timestampMs": 86470,
       "confidence": null
     },
     {
       "text": " And",
-      "startMs": 95380,
-      "endMs": 95540,
-      "timestampMs": 95460,
+      "startMs": 88380,
+      "endMs": 88540,
+      "timestampMs": 88460,
       "confidence": null
     },
     {
       "text": " additionally,",
-      "startMs": 95540,
-      "endMs": 96420,
-      "timestampMs": 95980,
+      "startMs": 88540,
+      "endMs": 89420,
+      "timestampMs": 88980,
       "confidence": null
     },
     {
       "text": " if",
-      "startMs": 96480,
-      "endMs": 96580,
-      "timestampMs": 96530,
+      "startMs": 89480,
+      "endMs": 89580,
+      "timestampMs": 89530,
       "confidence": null
     },
     {
       "text": " the",
-      "startMs": 96580,
-      "endMs": 96680,
-      "timestampMs": 96630,
+      "startMs": 89580,
+      "endMs": 89680,
+      "timestampMs": 89630,
       "confidence": null
     },
     {
       "text": " device",
-      "startMs": 96680,
-      "endMs": 97240,
-      "timestampMs": 96960,
+      "startMs": 89680,
+      "endMs": 90240,
+      "timestampMs": 89960,
       "confidence": null
     },
     {
       "text": " has",
-      "startMs": 97360,
-      "endMs": 97820,
-      "timestampMs": 97590,
+      "startMs": 90360,
+      "endMs": 90820,
+      "timestampMs": 90590,
       "confidence": null
     },
     {
       "text": " a",
-      "startMs": 97820,
-      "endMs": 97900,
-      "timestampMs": 97860,
+      "startMs": 90820,
+      "endMs": 90900,
+      "timestampMs": 90860,
       "confidence": null
     },
     {
       "text": " webpage,",
-      "startMs": 97900,
-      "endMs": 98580,
-      "timestampMs": 98240,
+      "startMs": 90900,
+      "endMs": 91580,
+      "timestampMs": 91240,
       "confidence": null
     },
     {
       "text": " right,",
-      "startMs": 98580,
-      "endMs": 98920,
-      "timestampMs": 98750,
+      "startMs": 91580,
+      "endMs": 91920,
+      "timestampMs": 91750,
       "confidence": null
     },
     {
       "text": " then",
-      "startMs": 99033,
-      "endMs": 99193,
-      "timestampMs": 99113,
+      "startMs": 92033,
+      "endMs": 92193,
+      "timestampMs": 92113,
       "confidence": null
     },
     {
       "text": " you'll",
-      "startMs": 99193,
-      "endMs": 99533,
-      "timestampMs": 99363,
+      "startMs": 92193,
+      "endMs": 92533,
+      "timestampMs": 92363,
       "confidence": null
     },
     {
       "text": " be",
-      "startMs": 99533,
-      "endMs": 99673,
-      "timestampMs": 99603,
+      "startMs": 92533,
+      "endMs": 92673,
+      "timestampMs": 92603,
       "confidence": null
     },
     {
       "text": " able",
-      "startMs": 99673,
-      "endMs": 99833,
-      "timestampMs": 99753,
+      "startMs": 92673,
+      "endMs": 92833,
+      "timestampMs": 92753,
       "confidence": null
     },
     {
       "text": " to",
-      "startMs": 99833,
-      "endMs": 100013,
-      "timestampMs": 99923,
+      "startMs": 92833,
+      "endMs": 93013,
+      "timestampMs": 92923,
       "confidence": null
     },
     {
       "text": " access",
-      "startMs": 100133,
-      "endMs": 100553,
-      "timestampMs": 100343,
+      "startMs": 93133,
+      "endMs": 93553,
+      "timestampMs": 93343,
       "confidence": null
     },
     {
       "text": " that",
-      "startMs": 100553,
-      "endMs": 100753,
-      "timestampMs": 100653,
+      "startMs": 93553,
+      "endMs": 93753,
+      "timestampMs": 93653,
       "confidence": null
     },
     {
       "text": " webpage",
-      "startMs": 100753,
-      "endMs": 101413,
-      "timestampMs": 101083,
+      "startMs": 93753,
+      "endMs": 94413,
+      "timestampMs": 94083,
       "confidence": null
     },
     {
       "text": " directly,",
-      "startMs": 101413,
-      "endMs": 101973,
-      "timestampMs": 101693,
-      "confidence": null
-    },
-    {
-      "text": " you",
-      "startMs": 103760,
-      "endMs": 103880,
-      "timestampMs": 103820,
-      "confidence": null
-    },
-    {
-      "text": " can",
-      "startMs": 103880,
-      "endMs": 104135,
-      "timestampMs": 104008,
-      "confidence": null
-    },
-    {
-      "text": " basically",
-      "startMs": 104353,
-      "endMs": 105113,
-      "timestampMs": 104733,
-      "confidence": null
-    },
-    {
-      "text": " add",
-      "startMs": 105113,
-      "endMs": 105463,
-      "timestampMs": 105288,
-      "confidence": null
-    },
-    {
-      "text": " messages,",
-      "startMs": 105621,
-      "endMs": 106331,
-      "timestampMs": 105976,
+      "startMs": 94413,
+      "endMs": 94973,
+      "timestampMs": 94693,
       "confidence": null
     },
     {
       "text": " Another",
-      "startMs": 109270,
-      "endMs": 109790,
-      "timestampMs": 109530,
+      "startMs": 96770,
+      "endMs": 97290,
+      "timestampMs": 97030,
       "confidence": null
     },
     {
       "text": " great",
-      "startMs": 109790,
-      "endMs": 110050,
-      "timestampMs": 109920,
+      "startMs": 97290,
+      "endMs": 97550,
+      "timestampMs": 97420,
       "confidence": null
     },
     {
       "text": " feature",
-      "startMs": 110050,
-      "endMs": 110610,
-      "timestampMs": 110330,
+      "startMs": 97550,
+      "endMs": 98110,
+      "timestampMs": 97830,
       "confidence": null
     },
     {
       "text": " now",
-      "startMs": 110730,
-      "endMs": 111225,
-      "timestampMs": 110978,
+      "startMs": 98230,
+      "endMs": 98725,
+      "timestampMs": 98478,
       "confidence": null
     },
     {
       "text": " is",
-      "startMs": 111453,
-      "endMs": 111748,
-      "timestampMs": 111601,
+      "startMs": 98953,
+      "endMs": 99248,
+      "timestampMs": 99101,
       "confidence": null
     },
     {
       "text": " you",
-      "startMs": 111793,
-      "endMs": 111973,
-      "timestampMs": 111883,
+      "startMs": 99293,
+      "endMs": 99473,
+      "timestampMs": 99383,
       "confidence": null
     },
     {
       "text": " can",
-      "startMs": 111973,
-      "endMs": 112308,
-      "timestampMs": 112141,
+      "startMs": 99473,
+      "endMs": 99808,
+      "timestampMs": 99641,
       "confidence": null
     },
     {
       "text": " drag",
-      "startMs": 112641,
-      "endMs": 113001,
-      "timestampMs": 112821,
+      "startMs": 100141,
+      "endMs": 100501,
+      "timestampMs": 100321,
       "confidence": null
     },
     {
       "text": " and",
-      "startMs": 113001,
-      "endMs": 113181,
-      "timestampMs": 113091,
+      "startMs": 100501,
+      "endMs": 100681,
+      "timestampMs": 100591,
       "confidence": null
     },
     {
       "text": " drop",
-      "startMs": 113181,
-      "endMs": 113681,
-      "timestampMs": 113431,
+      "startMs": 100681,
+      "endMs": 101181,
+      "timestampMs": 100931,
       "confidence": null
     },
     {
       "text": " the",
-      "startMs": 113861,
-      "endMs": 114001,
-      "timestampMs": 113931,
+      "startMs": 101361,
+      "endMs": 101501,
+      "timestampMs": 101431,
       "confidence": null
     },
     {
       "text": " sources",
-      "startMs": 114001,
-      "endMs": 114561,
-      "timestampMs": 114281,
+      "startMs": 101501,
+      "endMs": 102061,
+      "timestampMs": 101781,
       "confidence": null
     },
     {
       "text": " on",
-      "startMs": 114561,
-      "endMs": 114741,
-      "timestampMs": 114651,
+      "startMs": 102061,
+      "endMs": 102241,
+      "timestampMs": 102151,
       "confidence": null
     },
     {
       "text": " there.",
-      "startMs": 114741,
-      "endMs": 114861,
-      "timestampMs": 114801,
+      "startMs": 102241,
+      "endMs": 102361,
+      "timestampMs": 102301,
       "confidence": null
     },
     {
       "text": " And",
-      "startMs": 115300,
-      "endMs": 115420,
-      "timestampMs": 115360,
+      "startMs": 102800,
+      "endMs": 102920,
+      "timestampMs": 102860,
       "confidence": null
     },
     {
       "text": " of",
-      "startMs": 115420,
-      "endMs": 115540,
-      "timestampMs": 115480,
+      "startMs": 102920,
+      "endMs": 103040,
+      "timestampMs": 102980,
       "confidence": null
     },
     {
       "text": " course",
-      "startMs": 115540,
-      "endMs": 115820,
-      "timestampMs": 115680,
+      "startMs": 103040,
+      "endMs": 103320,
+      "timestampMs": 103180,
       "confidence": null
     },
     {
       "text": " you",
-      "startMs": 115820,
-      "endMs": 115870,
-      "timestampMs": 115845,
+      "startMs": 103320,
+      "endMs": 103370,
+      "timestampMs": 103345,
       "confidence": null
     },
     {
       "text": " can",
-      "startMs": 115860,
-      "endMs": 116060,
-      "timestampMs": 115960,
+      "startMs": 103360,
+      "endMs": 103560,
+      "timestampMs": 103460,
       "confidence": null
     },
     {
       "text": " select",
-      "startMs": 116060,
-      "endMs": 116400,
-      "timestampMs": 116230,
+      "startMs": 103560,
+      "endMs": 103900,
+      "timestampMs": 103730,
       "confidence": null
     },
     {
       "text": " a",
-      "startMs": 116808,
-      "endMs": 116888,
-      "timestampMs": 116848,
+      "startMs": 104308,
+      "endMs": 104388,
+      "timestampMs": 104348,
       "confidence": null
     },
     {
       "text": " source",
-      "startMs": 116888,
-      "endMs": 117408,
-      "timestampMs": 117148,
+      "startMs": 104388,
+      "endMs": 104908,
+      "timestampMs": 104648,
       "confidence": null
     },
     {
       "text": " and",
-      "startMs": 117408,
-      "endMs": 117588,
-      "timestampMs": 117498,
+      "startMs": 104908,
+      "endMs": 105088,
+      "timestampMs": 104998,
       "confidence": null
     },
     {
       "text": " send",
-      "startMs": 117588,
-      "endMs": 117828,
-      "timestampMs": 117708,
+      "startMs": 105088,
+      "endMs": 105328,
+      "timestampMs": 105208,
       "confidence": null
     },
     {
       "text": " to",
-      "startMs": 117828,
-      "endMs": 118008,
-      "timestampMs": 117918,
+      "startMs": 105328,
+      "endMs": 105508,
+      "timestampMs": 105418,
       "confidence": null
     },
     {
       "text": " all",
-      "startMs": 118008,
-      "endMs": 118168,
-      "timestampMs": 118088,
+      "startMs": 105508,
+      "endMs": 105668,
+      "timestampMs": 105588,
       "confidence": null
     },
     {
       "text": " by",
-      "startMs": 118168,
-      "endMs": 118308,
-      "timestampMs": 118238,
+      "startMs": 105668,
+      "endMs": 105808,
+      "timestampMs": 105738,
       "confidence": null
     },
     {
       "text": " hitting",
-      "startMs": 118308,
-      "endMs": 118568,
-      "timestampMs": 118438,
+      "startMs": 105808,
+      "endMs": 106068,
+      "timestampMs": 105938,
       "confidence": null
     },
     {
       "text": " that",
-      "startMs": 118568,
-      "endMs": 118808,
-      "timestampMs": 118688,
+      "startMs": 106068,
+      "endMs": 106308,
+      "timestampMs": 106188,
       "confidence": null
     },
     {
       "text": " all",
-      "startMs": 118808,
-      "endMs": 118948,
-      "timestampMs": 118878,
+      "startMs": 106308,
+      "endMs": 106448,
+      "timestampMs": 106378,
       "confidence": null
     },
     {
       "text": " button.",
-      "startMs": 118948,
-      "endMs": 119333,
-      "timestampMs": 119141,
+      "startMs": 106448,
+      "endMs": 106833,
+      "timestampMs": 106641,
       "confidence": null
     },
     {
       "text": " Also,",
-      "startMs": 120835,
-      "endMs": 121335,
-      "timestampMs": 121085,
+      "startMs": 108335,
+      "endMs": 108835,
+      "timestampMs": 108585,
       "confidence": null
     },
     {
       "text": " just",
-      "startMs": 121335,
-      "endMs": 121695,
-      "timestampMs": 121515,
+      "startMs": 108835,
+      "endMs": 109195,
+      "timestampMs": 109015,
       "confidence": null
     },
     {
       "text": " a",
-      "startMs": 121695,
-      "endMs": 121865,
-      "timestampMs": 121780,
+      "startMs": 109195,
+      "endMs": 109365,
+      "timestampMs": 109280,
       "confidence": null
     },
     {
       "text": " little",
-      "startMs": 122015,
-      "endMs": 122295,
-      "timestampMs": 122155,
+      "startMs": 109515,
+      "endMs": 109795,
+      "timestampMs": 109655,
       "confidence": null
     },
     {
       "text": " safety",
-      "startMs": 122295,
-      "endMs": 122715,
-      "timestampMs": 122505,
+      "startMs": 109795,
+      "endMs": 110215,
+      "timestampMs": 110005,
       "confidence": null
     },
     {
       "text": " feature.",
-      "startMs": 122715,
-      "endMs": 123195,
-      "timestampMs": 122955,
+      "startMs": 110215,
+      "endMs": 110695,
+      "timestampMs": 110455,
       "confidence": null
     },
     {
       "text": " We",
-      "startMs": 123195,
-      "endMs": 123335,
-      "timestampMs": 123265,
+      "startMs": 110695,
+      "endMs": 110835,
+      "timestampMs": 110765,
       "confidence": null
     },
     {
       "text": " have",
-      "startMs": 123335,
-      "endMs": 123515,
-      "timestampMs": 123425,
+      "startMs": 110835,
+      "endMs": 111015,
+      "timestampMs": 110925,
       "confidence": null
     },
     {
       "text": " a",
-      "startMs": 123515,
-      "endMs": 123595,
-      "timestampMs": 123555,
+      "startMs": 111015,
+      "endMs": 111095,
+      "timestampMs": 111055,
       "confidence": null
     },
     {
       "text": " little",
-      "startMs": 123595,
-      "endMs": 124015,
-      "timestampMs": 123805,
+      "startMs": 111095,
+      "endMs": 111515,
+      "timestampMs": 111305,
       "confidence": null
     },
     {
       "text": " X",
-      "startMs": 124015,
-      "endMs": 124475,
-      "timestampMs": 124245,
+      "startMs": 111515,
+      "endMs": 111975,
+      "timestampMs": 111745,
       "confidence": null
     },
     {
       "text": " in",
-      "startMs": 124475,
-      "endMs": 124575,
-      "timestampMs": 124525,
+      "startMs": 111975,
+      "endMs": 112075,
+      "timestampMs": 112025,
       "confidence": null
     },
     {
       "text": " the",
-      "startMs": 124575,
-      "endMs": 124695,
-      "timestampMs": 124635,
+      "startMs": 112075,
+      "endMs": 112195,
+      "timestampMs": 112135,
       "confidence": null
     },
     {
       "text": " corner.",
-      "startMs": 124695,
-      "endMs": 125130,
-      "timestampMs": 124913,
+      "startMs": 112195,
+      "endMs": 112630,
+      "timestampMs": 112413,
       "confidence": null
     },
     {
       "text": " So",
-      "startMs": 125395,
-      "endMs": 125495,
-      "timestampMs": 125445,
+      "startMs": 112895,
+      "endMs": 112995,
+      "timestampMs": 112945,
       "confidence": null
     },
     {
       "text": " if",
-      "startMs": 125495,
-      "endMs": 125575,
-      "timestampMs": 125535,
+      "startMs": 112995,
+      "endMs": 113075,
+      "timestampMs": 113035,
       "confidence": null
     },
     {
       "text": " you",
-      "startMs": 125575,
-      "endMs": 125715,
-      "timestampMs": 125645,
+      "startMs": 113075,
+      "endMs": 113215,
+      "timestampMs": 113145,
       "confidence": null
     },
     {
       "text": " want",
-      "startMs": 125715,
-      "endMs": 125855,
-      "timestampMs": 125785,
+      "startMs": 113215,
+      "endMs": 113355,
+      "timestampMs": 113285,
       "confidence": null
     },
     {
       "text": " to",
-      "startMs": 125855,
-      "endMs": 125955,
-      "timestampMs": 125905,
+      "startMs": 113355,
+      "endMs": 113455,
+      "timestampMs": 113405,
       "confidence": null
     },
     {
       "text": " cancel",
-      "startMs": 125955,
-      "endMs": 126575,
-      "timestampMs": 126265,
+      "startMs": 113455,
+      "endMs": 114075,
+      "timestampMs": 113765,
       "confidence": null
     },
     {
       "text": " or",
-      "startMs": 126575,
-      "endMs": 126875,
-      "timestampMs": 126725,
+      "startMs": 114075,
+      "endMs": 114375,
+      "timestampMs": 114225,
       "confidence": null
     },
     {
       "text": " power",
-      "startMs": 126875,
-      "endMs": 127255,
-      "timestampMs": 127065,
+      "startMs": 114375,
+      "endMs": 114755,
+      "timestampMs": 114565,
       "confidence": null
     },
     {
       "text": " off,",
-      "startMs": 127255,
-      "endMs": 127305,
-      "timestampMs": 127280,
+      "startMs": 114755,
+      "endMs": 114805,
+      "timestampMs": 114780,
       "confidence": null
     },
     {
       "text": " you're",
-      "startMs": 127255,
-      "endMs": 127355,
-      "timestampMs": 127305,
+      "startMs": 114755,
+      "endMs": 114855,
+      "timestampMs": 114805,
       "confidence": null
     },
     {
       "text": " able",
-      "startMs": 127355,
-      "endMs": 127470,
-      "timestampMs": 127413,
+      "startMs": 114855,
+      "endMs": 114970,
+      "timestampMs": 114913,
       "confidence": null
     },
     {
       "text": " to",
-      "startMs": 127470,
-      "endMs": 127595,
-      "timestampMs": 127532,
+      "startMs": 114970,
+      "endMs": 115095,
+      "timestampMs": 115032,
       "confidence": null
     },
     {
       "text": " do",
-      "startMs": 127595,
-      "endMs": 127755,
-      "timestampMs": 127675,
+      "startMs": 115095,
+      "endMs": 115255,
+      "timestampMs": 115175,
       "confidence": null
     },
     {
       "text": " that",
-      "startMs": 127755,
-      "endMs": 127975,
-      "timestampMs": 127865,
+      "startMs": 115255,
+      "endMs": 115475,
+      "timestampMs": 115365,
       "confidence": null
     },
     {
       "text": " now.",
-      "startMs": 127975,
-      "endMs": 128385,
-      "timestampMs": 128180,
-      "confidence": null
-    },
-    {
-      "text": " And",
-      "startMs": 128700,
-      "endMs": 128930,
-      "timestampMs": 128815,
-      "confidence": null
-    },
-    {
-      "text": " there's",
-      "startMs": 128930,
-      "endMs": 129030,
-      "timestampMs": 128980,
-      "confidence": null
-    },
-    {
-      "text": " our",
-      "startMs": 129030,
-      "endMs": 129325,
-      "timestampMs": 129178,
-      "confidence": null
-    },
-    {
-      "text": " hello",
-      "startMs": 129510,
-      "endMs": 129890,
-      "timestampMs": 129700,
-      "confidence": null
-    },
-    {
-      "text": " world",
-      "startMs": 129890,
-      "endMs": 130350,
-      "timestampMs": 130120,
-      "confidence": null
-    },
-    {
-      "text": " message.",
-      "startMs": 130350,
-      "endMs": 130540,
-      "timestampMs": 130445,
-      "confidence": null
-    },
-    {
-      "text": " thanks",
-      "startMs": 132255,
-      "endMs": 132495,
-      "timestampMs": 132375,
-      "confidence": null
-    },
-    {
-      "text": " for",
-      "startMs": 132495,
-      "endMs": 132575,
-      "timestampMs": 132535,
-      "confidence": null
-    },
-    {
-      "text": " joining",
-      "startMs": 132575,
-      "endMs": 132895,
-      "timestampMs": 132735,
-      "confidence": null
-    },
-    {
-      "text": " me.",
-      "startMs": 132895,
-      "endMs": 133175,
-      "timestampMs": 133035,
+      "startMs": 115475,
+      "endMs": 115885,
+      "timestampMs": 115680,
       "confidence": null
     }
   ],
@@ -2543,1116 +2295,996 @@ export const NARRATION_EDIT: NarrationEdit = {
         "ms": 10647
       }
     ],
-    "net-category": [
-      {
-        "text": "And",
-        "ms": 12275
-      },
-      {
-        "text": "what",
-        "ms": 12395
-      },
-      {
-        "text": "we",
-        "ms": 12875
-      },
-      {
-        "text": "did",
-        "ms": 13015
-      },
-      {
-        "text": "was",
-        "ms": 13195
-      },
-      {
-        "text": "we",
-        "ms": 13395
-      },
-      {
-        "text": "added",
-        "ms": 13695
-      },
-      {
-        "text": "a",
-        "ms": 14983
-      },
-      {
-        "text": "new",
-        "ms": 15063
-      },
-      {
-        "text": "category",
-        "ms": 15243
-      },
-      {
-        "text": "called",
-        "ms": 16023
-      },
-      {
-        "text": "network",
-        "ms": 16703
-      },
-      {
-        "text": "switches.",
-        "ms": 17063
-      }
-    ],
     "avoip-more": [
       {
         "text": "And",
-        "ms": 19285
+        "ms": 12285
       },
       {
         "text": "on",
-        "ms": 19405
+        "ms": 12405
       },
       {
         "text": "that",
-        "ms": 19545
+        "ms": 12545
       },
       {
         "text": "note,",
-        "ms": 19765
+        "ms": 12765
       },
       {
         "text": "we",
-        "ms": 19985
+        "ms": 12985
       },
       {
         "text": "added",
-        "ms": 20185
+        "ms": 13185
       },
       {
         "text": "a",
-        "ms": 20725
+        "ms": 13725
       },
       {
         "text": "lot",
-        "ms": 20825
+        "ms": 13825
       },
       {
         "text": "more",
-        "ms": 21245
+        "ms": 14245
       },
       {
         "text": "AV",
-        "ms": 21645
+        "ms": 14645
       },
       {
         "text": "over",
-        "ms": 21905
+        "ms": 14905
       },
       {
         "text": "IP",
-        "ms": 22165
+        "ms": 15165
       },
       {
         "text": "endpoints.",
-        "ms": 22645
+        "ms": 15645
       }
     ],
     "avoip-brands": [
       {
         "text": "We",
-        "ms": 23870
+        "ms": 16870
       },
       {
         "text": "also",
-        "ms": 24030
+        "ms": 17030
       },
       {
         "text": "added",
-        "ms": 24350
+        "ms": 17350
       },
       {
         "text": "Kramer,",
-        "ms": 24730
+        "ms": 17730
       },
       {
         "text": "Matrox,",
-        "ms": 25658
+        "ms": 18658
       },
       {
         "text": "and",
-        "ms": 26918
+        "ms": 19918
       },
       {
         "text": "all",
-        "ms": 27518
+        "ms": 20518
       },
       {
         "text": "research",
-        "ms": 27718
+        "ms": 20718
       },
       {
         "text": "endpoints",
-        "ms": 28501
+        "ms": 21501
       },
       {
         "text": "for",
-        "ms": 29007
+        "ms": 22007
       },
       {
         "text": "AV",
-        "ms": 29227
+        "ms": 22227
       },
       {
         "text": "over",
-        "ms": 29407
+        "ms": 22407
       },
       {
         "text": "IP.",
-        "ms": 29727
+        "ms": 22727
       }
     ],
     "gc-models": [
       {
         "text": "As",
-        "ms": 31290
+        "ms": 24290
       },
       {
         "text": "far",
-        "ms": 31410
+        "ms": 24410
       },
       {
         "text": "as",
-        "ms": 31870
+        "ms": 24870
       },
       {
         "text": "endpoints",
-        "ms": 32450
+        "ms": 25450
       },
       {
         "text": "for",
-        "ms": 33290
+        "ms": 26290
       },
       {
         "text": "RS",
-        "ms": 34118
+        "ms": 27118
       },
       {
         "text": "-232,",
-        "ms": 34298
+        "ms": 27298
       },
       {
         "text": "IP",
-        "ms": 35281
+        "ms": 28281
       },
       {
         "text": "to",
-        "ms": 35661
+        "ms": 28661
       },
       {
         "text": "RS",
-        "ms": 36041
+        "ms": 29041
       },
       {
         "text": "-232,",
-        "ms": 36181
+        "ms": 29181
       },
       {
         "text": "or",
-        "ms": 37109
+        "ms": 30109
       },
       {
         "text": "IP",
-        "ms": 37269
+        "ms": 30269
       },
       {
         "text": "to",
-        "ms": 37869
+        "ms": 30869
       },
       {
         "text": "IR,",
-        "ms": 38129
+        "ms": 31129
       },
       {
         "text": "we've",
-        "ms": 38609
+        "ms": 31609
       },
       {
         "text": "added",
-        "ms": 38849
+        "ms": 31849
       },
       {
         "text": "additional",
-        "ms": 39472
+        "ms": 32472
       },
       {
         "text": "models",
-        "ms": 40525
+        "ms": 33525
       },
       {
         "text": "for",
-        "ms": 41130
+        "ms": 34130
       },
       {
         "text": "Global",
-        "ms": 41435
+        "ms": 34435
       },
       {
         "text": "Cache.",
-        "ms": 41755
+        "ms": 34755
       }
     ],
     "pusr": [
       {
         "text": "We",
-        "ms": 44550
+        "ms": 37550
       },
       {
         "text": "also",
-        "ms": 44710
+        "ms": 37710
       },
       {
         "text": "added",
-        "ms": 45350
+        "ms": 38350
       },
       {
         "text": "a",
-        "ms": 45950
+        "ms": 38950
       },
       {
         "text": "Pooser,",
-        "ms": 46148
+        "ms": 39148
       },
       {
         "text": "which",
-        "ms": 46728
+        "ms": 39728
       },
       {
         "text": "is",
-        "ms": 46968
+        "ms": 39968
       },
       {
         "text": "an",
-        "ms": 47188
+        "ms": 40188
       },
       {
         "text": "industrial",
-        "ms": 47411
+        "ms": 40411
       },
       {
         "text": "-type",
-        "ms": 48491
+        "ms": 41491
       },
       {
         "text": "wireless",
-        "ms": 48929
+        "ms": 41929
       },
       {
         "text": "or",
-        "ms": 50087
+        "ms": 43087
       },
       {
         "text": "wired",
-        "ms": 50545
+        "ms": 43545
       },
       {
         "text": "Ethernet",
-        "ms": 51398
+        "ms": 44398
       },
       {
         "text": "portal",
-        "ms": 52376
+        "ms": 45376
       },
       {
         "text": "and",
-        "ms": 53376
+        "ms": 46376
       },
       {
         "text": "allows",
-        "ms": 53896
+        "ms": 46896
       },
       {
         "text": "you",
-        "ms": 54436
+        "ms": 47436
       },
       {
         "text": "to",
-        "ms": 54596
+        "ms": 47596
       },
       {
         "text": "convert",
-        "ms": 55116
+        "ms": 48116
       },
       {
         "text": "IP",
-        "ms": 55716
+        "ms": 48716
       },
       {
         "text": "to",
-        "ms": 56139
+        "ms": 49139
       },
       {
         "text": "RS",
-        "ms": 56419
+        "ms": 49419
       },
       {
         "text": "-232",
-        "ms": 56539
+        "ms": 49539
       }
     ],
     "disc-corner": [
       {
         "text": "this",
-        "ms": 58780
+        "ms": 51780
       },
       {
         "text": "device",
-        "ms": 58980
+        "ms": 51980
       },
       {
         "text": "discovery",
-        "ms": 59380
+        "ms": 52380
       },
       {
         "text": "up",
-        "ms": 59900
+        "ms": 52900
       },
       {
         "text": "here",
-        "ms": 60020
+        "ms": 53020
       },
       {
         "text": "in",
-        "ms": 60180
+        "ms": 53180
       },
       {
         "text": "the",
-        "ms": 60300
+        "ms": 53300
       },
       {
         "text": "corner,",
-        "ms": 60400
+        "ms": 53400
       },
       {
         "text": "right?",
-        "ms": 61100
+        "ms": 54100
       }
     ],
     "disc-click": [
       {
         "text": "it'll",
-        "ms": 61680
+        "ms": 54680
       },
       {
         "text": "allow",
-        "ms": 61950
+        "ms": 54950
       },
       {
         "text": "you",
-        "ms": 62250
+        "ms": 55250
       },
       {
         "text": "to",
-        "ms": 62450
+        "ms": 55450
       },
       {
         "text": "add",
-        "ms": 62770
+        "ms": 55770
       },
       {
         "text": "that",
-        "ms": 63678
+        "ms": 56678
       },
       {
         "text": "driver",
-        "ms": 63898
+        "ms": 56898
       },
       {
         "text": "just",
-        "ms": 64621
+        "ms": 57621
       },
       {
         "text": "with",
-        "ms": 64861
+        "ms": 57861
       },
       {
         "text": "one",
-        "ms": 65141
+        "ms": 58141
       },
       {
         "text": "click",
-        "ms": 65321
+        "ms": 58321
       }
     ],
     "rs-acer": [
       {
         "text": "I'm",
-        "ms": 67080
+        "ms": 60080
       },
       {
         "text": "gonna",
-        "ms": 67520
+        "ms": 60520
       },
       {
         "text": "also",
-        "ms": 67780
+        "ms": 60780
       },
       {
         "text": "just",
-        "ms": 68100
+        "ms": 61100
       },
       {
         "text": "add",
-        "ms": 68420
+        "ms": 61420
       },
       {
         "text": "an",
-        "ms": 68900
+        "ms": 61900
       },
       {
         "text": "Acer",
-        "ms": 69280
+        "ms": 62280
       },
       {
         "text": "projector,",
-        "ms": 69640
+        "ms": 62640
       },
       {
         "text": "RS",
-        "ms": 70560
+        "ms": 63560
       },
       {
         "text": "-232.",
-        "ms": 70760
+        "ms": 63760
       }
     ],
     "rs-endpoint": [
       {
         "text": "end",
-        "ms": 72260
+        "ms": 65260
       },
       {
         "text": "point",
-        "ms": 72420
+        "ms": 65420
       },
       {
         "text": "right",
-        "ms": 72700
+        "ms": 65700
       },
       {
         "text": "in",
-        "ms": 72920
+        "ms": 65920
       },
       {
         "text": "here",
-        "ms": 73080
+        "ms": 66080
       },
       {
         "text": "and",
-        "ms": 73973
+        "ms": 66973
       },
       {
         "text": "we",
-        "ms": 74453
+        "ms": 67453
       },
       {
         "text": "can",
-        "ms": 74593
+        "ms": 67593
       },
       {
         "text": "connect",
-        "ms": 74753
+        "ms": 67753
       },
       {
         "text": "to",
-        "ms": 75073
+        "ms": 68073
       },
       {
         "text": "it",
-        "ms": 75253
+        "ms": 68253
       },
       {
         "text": "directly.",
-        "ms": 75333
+        "ms": 68333
       }
     ],
     "rs-terminal": [
       {
         "text": "this",
-        "ms": 76655
+        "ms": 69655
       },
       {
         "text": "whole",
-        "ms": 76875
+        "ms": 69875
       },
       {
         "text": "terminal",
-        "ms": 77535
+        "ms": 70535
       },
       {
         "text": "is",
-        "ms": 78175
+        "ms": 71175
       },
       {
         "text": "new",
-        "ms": 78375
+        "ms": 71375
       },
       {
         "text": "right",
-        "ms": 78715
+        "ms": 71715
       },
       {
         "text": "here.",
-        "ms": 78995
+        "ms": 71995
       }
     ],
     "rs-layout": [
       {
         "text": "also",
-        "ms": 79830
+        "ms": 72830
       },
       {
         "text": "the",
-        "ms": 80243
+        "ms": 73243
       },
       {
         "text": "layout,",
-        "ms": 80423
+        "ms": 73423
       },
       {
         "text": "the",
-        "ms": 80903
+        "ms": 73903
       },
       {
         "text": "way",
-        "ms": 81226
+        "ms": 74226
       },
       {
         "text": "that",
-        "ms": 81426
+        "ms": 74426
       },
       {
         "text": "we",
-        "ms": 81566
+        "ms": 74566
       },
       {
         "text": "have",
-        "ms": 81766
+        "ms": 74766
       },
       {
         "text": "the",
-        "ms": 82104
+        "ms": 75104
       },
       {
         "text": "commands",
-        "ms": 82224
+        "ms": 75224
       },
       {
         "text": "and",
-        "ms": 83277
+        "ms": 76277
       },
       {
         "text": "the",
-        "ms": 83805
+        "ms": 76805
       },
       {
         "text": "configuration",
-        "ms": 84188
+        "ms": 77188
       },
       {
         "text": "on",
-        "ms": 84828
+        "ms": 77828
       },
       {
         "text": "the",
-        "ms": 84948
+        "ms": 77948
       },
       {
         "text": "right.",
-        "ms": 85308
+        "ms": 78308
       }
     ],
     "term-open": [
       {
         "text": "you",
-        "ms": 86870
+        "ms": 79750
       },
       {
         "text": "can",
-        "ms": 86970
+        "ms": 79840
       },
       {
         "text": "open",
-        "ms": 87110
+        "ms": 79980
       },
       {
         "text": "up",
-        "ms": 87330
+        "ms": 80200
       },
       {
         "text": "the",
-        "ms": 87430
+        "ms": 80300
       },
       {
         "text": "terminal",
-        "ms": 87673
+        "ms": 80543
       },
       {
         "text": "now",
-        "ms": 88133
+        "ms": 81003
       },
       {
         "text": "directly,",
-        "ms": 88473
+        "ms": 81343
       }
     ],
     "term-send": [
       {
         "text": "If",
-        "ms": 89485
+        "ms": 82485
       },
       {
         "text": "I",
-        "ms": 89605
+        "ms": 82605
       },
       {
         "text": "wanted",
-        "ms": 89705
+        "ms": 82705
       },
       {
         "text": "to",
-        "ms": 90045
+        "ms": 83045
       },
       {
         "text": "send",
-        "ms": 90585
+        "ms": 83585
       },
       {
         "text": "a",
-        "ms": 90845
+        "ms": 83845
       },
       {
         "text": "command",
-        "ms": 90965
+        "ms": 83965
       },
       {
         "text": "directly,",
-        "ms": 91465
+        "ms": 84465
       },
       {
         "text": "I",
-        "ms": 92005
+        "ms": 85005
       },
       {
         "text": "can",
-        "ms": 92065
+        "ms": 85065
       },
       {
         "text": "do",
-        "ms": 92245
+        "ms": 85245
       },
       {
         "text": "that",
-        "ms": 92385
+        "ms": 85385
       },
       {
         "text": "from",
-        "ms": 92625
+        "ms": 85625
       },
       {
         "text": "right",
-        "ms": 92785
+        "ms": 85785
       },
       {
         "text": "here",
-        "ms": 92965
+        "ms": 85965
       },
       {
         "text": "as",
-        "ms": 93165
+        "ms": 86165
       },
       {
         "text": "well.",
-        "ms": 93365
+        "ms": 86365
       }
     ],
     "web": [
       {
         "text": "And",
-        "ms": 95380
+        "ms": 88380
       },
       {
         "text": "additionally,",
-        "ms": 95540
+        "ms": 88540
       },
       {
         "text": "if",
-        "ms": 96480
+        "ms": 89480
       },
       {
         "text": "the",
-        "ms": 96580
+        "ms": 89580
       },
       {
         "text": "device",
-        "ms": 96680
+        "ms": 89680
       },
       {
         "text": "has",
-        "ms": 97360
+        "ms": 90360
       },
       {
         "text": "a",
-        "ms": 97820
+        "ms": 90820
       },
       {
         "text": "webpage,",
-        "ms": 97900
+        "ms": 90900
       },
       {
         "text": "right,",
-        "ms": 98580
+        "ms": 91580
       },
       {
         "text": "then",
-        "ms": 99033
+        "ms": 92033
       },
       {
         "text": "you'll",
-        "ms": 99193
+        "ms": 92193
       },
       {
         "text": "be",
-        "ms": 99533
+        "ms": 92533
       },
       {
         "text": "able",
-        "ms": 99673
+        "ms": 92673
       },
       {
         "text": "to",
-        "ms": 99833
+        "ms": 92833
       },
       {
         "text": "access",
-        "ms": 100133
+        "ms": 93133
       },
       {
         "text": "that",
-        "ms": 100553
+        "ms": 93553
       },
       {
         "text": "webpage",
-        "ms": 100753
+        "ms": 93753
       },
       {
         "text": "directly,",
-        "ms": 101413
-      }
-    ],
-    "msg": [
-      {
-        "text": "you",
-        "ms": 103760
-      },
-      {
-        "text": "can",
-        "ms": 103880
-      },
-      {
-        "text": "basically",
-        "ms": 104353
-      },
-      {
-        "text": "add",
-        "ms": 105113
-      },
-      {
-        "text": "messages,",
-        "ms": 105621
+        "ms": 94413
       }
     ],
     "eui-drag": [
       {
         "text": "Another",
-        "ms": 109270
+        "ms": 96770
       },
       {
         "text": "great",
-        "ms": 109790
+        "ms": 97290
       },
       {
         "text": "feature",
-        "ms": 110050
+        "ms": 97550
       },
       {
         "text": "now",
-        "ms": 110730
+        "ms": 98230
       },
       {
         "text": "is",
-        "ms": 111453
+        "ms": 98953
       },
       {
         "text": "you",
-        "ms": 111793
+        "ms": 99293
       },
       {
         "text": "can",
-        "ms": 111973
+        "ms": 99473
       },
       {
         "text": "drag",
-        "ms": 112641
+        "ms": 100141
       },
       {
         "text": "and",
-        "ms": 113001
+        "ms": 100501
       },
       {
         "text": "drop",
-        "ms": 113181
+        "ms": 100681
       },
       {
         "text": "the",
-        "ms": 113861
+        "ms": 101361
       },
       {
         "text": "sources",
-        "ms": 114001
+        "ms": 101501
       },
       {
         "text": "on",
-        "ms": 114561
+        "ms": 102061
       },
       {
         "text": "there.",
-        "ms": 114741
+        "ms": 102241
       }
     ],
     "eui-all": [
       {
         "text": "And",
-        "ms": 115300
+        "ms": 102800
       },
       {
         "text": "of",
-        "ms": 115420
+        "ms": 102920
       },
       {
         "text": "course",
-        "ms": 115540
+        "ms": 103040
       },
       {
         "text": "you",
-        "ms": 115820
+        "ms": 103320
       },
       {
         "text": "can",
-        "ms": 115860
+        "ms": 103360
       },
       {
         "text": "select",
-        "ms": 116060
+        "ms": 103560
       },
       {
         "text": "a",
-        "ms": 116808
+        "ms": 104308
       },
       {
         "text": "source",
-        "ms": 116888
+        "ms": 104388
       },
       {
         "text": "and",
-        "ms": 117408
+        "ms": 104908
       },
       {
         "text": "send",
-        "ms": 117588
+        "ms": 105088
       },
       {
         "text": "to",
-        "ms": 117828
+        "ms": 105328
       },
       {
         "text": "all",
-        "ms": 118008
+        "ms": 105508
       },
       {
         "text": "by",
-        "ms": 118168
+        "ms": 105668
       },
       {
         "text": "hitting",
-        "ms": 118308
+        "ms": 105808
       },
       {
         "text": "that",
-        "ms": 118568
+        "ms": 106068
       },
       {
         "text": "all",
-        "ms": 118808
+        "ms": 106308
       },
       {
         "text": "button.",
-        "ms": 118948
+        "ms": 106448
       }
     ],
     "power-x": [
       {
         "text": "Also,",
-        "ms": 120835
+        "ms": 108335
       },
       {
         "text": "just",
-        "ms": 121335
+        "ms": 108835
       },
       {
         "text": "a",
-        "ms": 121695
+        "ms": 109195
       },
       {
         "text": "little",
-        "ms": 122015
+        "ms": 109515
       },
       {
         "text": "safety",
-        "ms": 122295
+        "ms": 109795
       },
       {
         "text": "feature.",
-        "ms": 122715
+        "ms": 110215
       },
       {
         "text": "We",
-        "ms": 123195
+        "ms": 110695
       },
       {
         "text": "have",
-        "ms": 123335
+        "ms": 110835
       },
       {
         "text": "a",
-        "ms": 123515
+        "ms": 111015
       },
       {
         "text": "little",
-        "ms": 123595
+        "ms": 111095
       },
       {
         "text": "X",
-        "ms": 124015
+        "ms": 111515
       },
       {
         "text": "in",
-        "ms": 124475
+        "ms": 111975
       },
       {
         "text": "the",
-        "ms": 124575
+        "ms": 112075
       },
       {
         "text": "corner.",
-        "ms": 124695
+        "ms": 112195
       },
       {
         "text": "So",
-        "ms": 125395
+        "ms": 112895
       },
       {
         "text": "if",
-        "ms": 125495
+        "ms": 112995
       },
       {
         "text": "you",
-        "ms": 125575
+        "ms": 113075
       },
       {
         "text": "want",
-        "ms": 125715
+        "ms": 113215
       },
       {
         "text": "to",
-        "ms": 125855
+        "ms": 113355
       },
       {
         "text": "cancel",
-        "ms": 125955
+        "ms": 113455
       },
       {
         "text": "or",
-        "ms": 126575
+        "ms": 114075
       },
       {
         "text": "power",
-        "ms": 126875
+        "ms": 114375
       },
       {
         "text": "off,",
-        "ms": 127255
+        "ms": 114755
       },
       {
         "text": "you're",
-        "ms": 127255
+        "ms": 114755
       },
       {
         "text": "able",
-        "ms": 127355
+        "ms": 114855
       },
       {
         "text": "to",
-        "ms": 127470
+        "ms": 114970
       },
       {
         "text": "do",
-        "ms": 127595
+        "ms": 115095
       },
       {
         "text": "that",
-        "ms": 127755
+        "ms": 115255
       },
       {
         "text": "now.",
-        "ms": 127975
-      }
-    ],
-    "power-message": [
-      {
-        "text": "And",
-        "ms": 128700
-      },
-      {
-        "text": "there's",
-        "ms": 128930
-      },
-      {
-        "text": "our",
-        "ms": 129030
-      },
-      {
-        "text": "hello",
-        "ms": 129510
-      },
-      {
-        "text": "world",
-        "ms": 129890
-      },
-      {
-        "text": "message.",
-        "ms": 130350
-      }
-    ],
-    "thanks": [
-      {
-        "text": "thanks",
-        "ms": 132255
-      },
-      {
-        "text": "for",
-        "ms": 132495
-      },
-      {
-        "text": "joining",
-        "ms": 132575
-      },
-      {
-        "text": "me.",
-        "ms": 132895
+        "ms": 115475
       }
     ]
   }
