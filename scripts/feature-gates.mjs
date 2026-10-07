@@ -17,10 +17,12 @@
 // --destinations defaults to social-walkthrough, the ceiling a cut over 2:20 needs.
 // --steps=fast runs only check, lint and validate. Renders run one shape at a time. A failing
 // step is reported and the run goes on, because one failed gate must not hide the others.
-// A render already in out/ is kept once as `<name>.prev.mp4` before it is replaced. This does
-// not mark a task done, archive a brief or publish anything: the results go in the brief.
+// The renders replace those in out/, which holds only the videos; the .srt goes in
+// out/<slug>/ beside the contact sheet. Nothing is kept as a `.prev` copy: git has the
+// source of every earlier cut. This does not mark a task done, archive a brief or publish
+// anything: the results go in the brief.
 
-import {copyFileSync, cpSync, existsSync, mkdirSync, renameSync, rmSync} from 'node:fs';
+import {copyFileSync, cpSync, existsSync, mkdirSync, rmSync} from 'node:fs';
 import {join} from 'node:path';
 import {cleanWorktree, parseArgs, run} from './lib/worktree.mjs';
 
@@ -80,13 +82,16 @@ for (const line of [
 
 if (fast) process.exit(results.every((result) => result.status === 0) ? 0 : 1);
 
-// Deliverables back into the main checkout, keeping the previous render once.
+// Deliverables back into the main checkout: videos at out/'s top level, captions in out/<slug>/.
 const outMain = join(main, 'out');
-for (const file of [`${slug}.mp4`, `${portrait}.mp4`, `${slug}.srt`]) {
+for (const [file, target] of [
+  [`${slug}.mp4`, join(outMain, `${slug}.mp4`)],
+  [`${portrait}.mp4`, join(outMain, `${portrait}.mp4`)],
+  [`${slug}.srt`, join(outMain, slug, `${slug}.srt`)],
+]) {
   const source = join(path, 'out', file);
   if (!existsSync(source)) continue;
-  const target = join(outMain, file);
-  if (existsSync(target)) renameSync(target, target.replace(/(\.[a-z0-9]+)$/, '.prev$1'));
+  mkdirSync(join(target, '..'), {recursive: true});
   copyFileSync(source, target);
 }
 for (const shape of [slug, portrait]) {

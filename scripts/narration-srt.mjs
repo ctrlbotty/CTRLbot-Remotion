@@ -2,7 +2,7 @@
 //
 //   npm run narration:srt -- <narration.ts> <export> <ingest slug> <out.srt>
 //   npm run narration:srt -- src/marketing/mirror-walkthrough/mirrorWalkthroughNarration.ts \
-//     MIRROR_WALKTHROUGH_NARRATION_CLIPS mirror-walkthrough out/mirror-walkthrough.srt
+//     MIRROR_WALKTHROUGH_NARRATION_CLIPS mirror-walkthrough out/mirror-walkthrough/mirror-walkthrough.srt
 //
 // The portrait cut burns its captions in; the landscape cut keeps its frame for the step
 // text and ships them as this file. Both come from src/audio/narrationCaptions.ts — the

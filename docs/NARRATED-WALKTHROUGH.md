@@ -148,7 +148,7 @@ The cut stays under 2:20, X's limit without Premium; the brief's destination is
 ```powershell
 npm run render -- <slug> out/<slug>.mp4 --codec=h264 --crf=20
 npm run render -- <slug>-portrait out/<slug>-portrait.mp4 --codec=h264 --crf=20
-npm run narration:srt -- <narration.ts> <CLIPS export> <ingest slug> out/<slug>.srt --edit=<generated.ts>
+npm run narration:srt -- <narration.ts> <CLIPS export> <ingest slug> out/<slug>/<slug>.srt --edit=<generated.ts>
 ```
 
 Never pass `--muted`: both renders carry the narration.
