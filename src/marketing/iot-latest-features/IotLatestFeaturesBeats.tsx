@@ -2,13 +2,14 @@
 // the spoken cues in CUE_FRAMES. Frames are beat-local; a cue is its absolute frame minus the
 // beat's start. Built on W04's IotTabletBeats.tsx, never imported from it.
 import React from 'react';
-import {Easing, interpolate, Sequence} from 'remotion';
+import {Easing, interpolate, Sequence, staticFile} from 'remotion';
+import {Video} from '@remotion/media';
+import {TABLET_VIEWPORT} from '../../app-ui/viewports';
 import {TabletEui, TABLET_EUI_REGIONS} from '../../app-ui/TabletEui';
 import type {EuiInput, EuiOutput} from '../../app-ui/PhoneEui';
 import {DriverCatalog, SETUP_BACKGROUND, type DriverEntry} from '../../app-ui/DriverCatalog';
 import {END_POINT_DRIVERS, GlobalCacheModelsDetail, PusrDetail} from '../../app-ui/DriverDatabase';
 import {ACER_RS232_COMMANDS, Rs232ConnectionPanel} from '../../app-ui/ConnectionPanel';
-import {ConnectTest, connectTestRegions, type ConnectTestSubTab, type TerminalEntry} from '../../app-ui/ConnectTest';
 import {ActivitiesPresets} from '../../app-ui/ActivitiesPresets';
 import {DiscoverDevices, type DiscoveredDevice} from '../../app-ui/DiscoverDevices';
 import {EuiPowerCapture, EUI_POWER_REGIONS} from '../../app-ui/EuiPower';
@@ -312,79 +313,25 @@ export const Rs232Beat: React.FC<BeatProps> = ({frame}) => {
   );
 };
 
-/** Global Caché's commands as the Test terminal lists them (`f_0028`, the app's labels). */
-const GC_COMMANDS = [
-  {name: 'GET DEVICE MODE', code: 'getdevices\\r'},
-  {name: 'GET FIRMWARE VERSION', code: 'getversion\\r'},
-  {name: 'GET NETWORK', code: 'get_NET,0:1\\r'},
-  {name: 'GET CABLE MODE', code: 'get_IR,1:1\\r'},
-  {name: 'SET MODE IR_BLASTER', code: 'set_IR,1:1,IRTRIPORT_BLASTER\\r'},
-  {name: 'SEND IR 1', code: 'sendir,1:1,%i,%f,%r,%o,%c\\r'},
-];
-const GC_SUBTABS: Array<{id: ConnectTestSubTab; label: string}> = [
-  {id: 'buttons', label: 'Buttons'},
-  {id: 'terminal', label: 'Terminal'},
-  {id: 'web', label: 'Web page'},
-];
-const GC_DEVICES = [
-  {name: 'ACER XL2320P - New', checked: true},
-  {name: 'MATROX MGX (8)', isParent: true},
-  {name: 'Global Cache iTachFlexEthernet', checked: true},
-];
-const GC_CONNECTED: TerminalEntry = {text: '[11:11:36] Connected to Global Cache iTachFlexEthernet', kind: 'status'};
-const GC_SENT: TerminalEntry = {text: '[11:11:50] Sent: getdevices [0D]', kind: 'sent'};
-const GC_RECEIVED: TerminalEntry = {text: '[11:11:51] Received: device,0,0 ETHERNET device,1,1 SERIAL endlistdevices', kind: 'received'};
-
-const GlobalCacheTest = ({tab, lines}: {tab: ConnectTestSubTab; lines: TerminalEntry[]}) => (
-  <ConnectTest
-    device="tablet"
-    topTab="test"
-    testTab={tab}
-    deviceName="Global Cache iTachFlexEthernet"
-    connected
-    statusColor="green"
-    terminalLines={lines}
-    commands={GC_COMMANDS}
-    subTabs={GC_SUBTABS}
-    deviceList={GC_DEVICES}
-    webUrl="192.168.0.159"
-    webTitle="Global Cache iTachFlexEthernet"
+/**
+ * Footage beats play the recording itself, cut to the screen at 1280x800 by
+ * `scripts/walkthrough-footage.mjs` from `footage.json`, synced to the narration's source
+ * times. Nathan's review (2026-10-07): the real Test layout, the terminal's own page and the
+ * device's real web page are the feature; a rebuild cannot match them.
+ */
+const Footage = ({beat}: {beat: 'terminal' | 'webpage'}) => (
+  <Video
+    src={staticFile(`walkthrough/iot-latest-features/${beat}.mp4`)}
+    muted
+    style={{width: TABLET_VIEWPORT.width, height: TABLET_VIEWPORT.height, display: 'block'}}
   />
 );
 
-const testRegions = connectTestRegions('tablet', {testTab: 'terminal', subTabs: GC_SUBTABS});
+/** Terminal: the Test tab's side-by-side terminal, then the terminal opened as its own page and a command typed and sent. */
+export const TerminalBeat: React.FC<BeatProps> = () => <Footage beat="terminal" />;
 
-/** Terminal: the Terminal tab on "terminal"; GET DEVICE MODE sent on "send", its reply lands. */
-export const TerminalBeat: React.FC<BeatProps> = ({frame}) => {
-  const open = cue(CUE_FRAMES.termOpen, 'terminal');
-  const send = cue(CUE_FRAMES.termSend, 'terminal');
-  const tab = testRegions.subTab('terminal');
-  const sendButton = testRegions.sendButton(0);
-  const lines = [GC_CONNECTED, ...(frame >= send ? [GC_SENT] : []), ...(frame >= send + 15 ? [GC_RECEIVED] : [])];
-  return (
-    <>
-      <GlobalCacheTest tab={frame >= open ? 'terminal' : 'buttons'} lines={lines} />
-      <TapIndicator x={centerOf(tab).x} y={centerOf(tab).y} at={open} name="Terminal tab tap" />
-      <TapIndicator x={centerOf(sendButton).x} y={centerOf(sendButton).y} at={send} name="Send tap" />
-      {frame >= send + 15 ? <FocusRing region={testRegions.terminal} appearAt={send + 15} radius={0} name="Reply ring" /> : null}
-    </>
-  );
-};
-
-/** Web page: the tab tapped on "webpage"; the device's page opens in the app, held under 2s. */
-export const WebpageBeat: React.FC<BeatProps> = ({frame}) => {
-  const web = cue(CUE_FRAMES.webWebpage, 'webpage');
-  const WEB_HOLD = 55; // under two seconds, as W04
-  const tab = testRegions.subTab('web');
-  const showing = frame >= web && frame < web + WEB_HOLD;
-  return (
-    <>
-      <GlobalCacheTest tab={showing ? 'web' : 'terminal'} lines={[GC_CONNECTED, GC_SENT, GC_RECEIVED]} />
-      <TapIndicator x={centerOf(tab).x} y={centerOf(tab).y} at={web} name="Web page tab tap" />
-      {showing ? <FocusRing region={tab} appearAt={web} radius={4} name="Web page tab ring" /> : null}
-    </>
-  );
-};
+/** Web page: the Web page tab tapped and the iTach's own pages, through to Flex Link Cable. */
+export const WebpageBeat: React.FC<BeatProps> = () => <Footage beat="webpage" />;
 
 // ── message, eui, power ──────────────────────────────────────────────────────────────
 

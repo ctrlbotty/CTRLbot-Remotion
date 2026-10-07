@@ -1,0 +1,16 @@
+{
+  "slug": "iot-latest-features",
+  "source": "video input/W05 Feature walkthroug.mp4",
+  "screen": {"x": 204, "y": 204, "width": 1290, "height": 810},
+  "size": {"width": 1280, "height": 800},
+  "beats": {
+    "terminal": [
+      {"from": 277.31, "frames": 89},
+      {"from": 284.0, "frames": 166, "speed": 1.55}
+    ],
+    "webpage": [
+      {"from": 304.08, "frames": 150},
+      {"from": 312.6, "frames": 105}
+    ]
+  }
+}

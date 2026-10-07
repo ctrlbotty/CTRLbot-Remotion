@@ -164,10 +164,8 @@ export const BEAT_SHOTS: Partial<Record<LatestBeatName, Shot[]>> = {
     {at: 0, region: full},
     {at: at(CUE_FRAMES.pusrConvert, 'pusr'), region: atLeast(paneMap.description)},
   ],
-  discovery: [
-    {at: 0, region: full},
-    {at: at(CUE_FRAMES.discCorner, 'discovery'), region: discoverMap.list},
-  ],
+  // Held whole: a push into the list cropped the header, and the corner button is the subject.
+  discovery: [{at: 0, region: full}],
   rs232: [
     {at: 0, region: rs232Map.content},
     {at: at(CUE_FRAMES.rsEnd, 'rs232'), region: atLeast(unionRegion(rs232Map.endPointField, rs232Map.connectAction))},
@@ -176,11 +174,9 @@ export const BEAT_SHOTS: Partial<Record<LatestBeatName, Shot[]>> = {
     {at: at(CUE_FRAMES.rsTerminal, 'rs232'), region: atLeast(rs232Map.terminal)},
     {at: at(CUE_FRAMES.rsCommands, 'rs232'), region: atLeast(unionRegion(rs232Map.config, rs232Map.commands))},
   ],
-  terminal: [
-    {at: 0, region: testMap.content},
-    {at: at(CUE_FRAMES.termSend, 'terminal'), region: atLeast(testMap.terminal)},
-  ],
-  webpage: [{at: 0, region: testMap.content}],
+  // Footage beats: the whole screen, which the recording already composes.
+  terminal: [{at: 0, region: full}],
+  webpage: [{at: 0, region: full}],
   message: [
     {at: 0, region: presetsMap.content ?? full},
     {at: at(CUE_FRAMES.msgMessages, 'message'), region: atLeast(presetsMap.delayMessage(1))},
@@ -239,8 +235,8 @@ const CALLOUT_SIDE: Partial<Record<LatestBeatName, 'left' | 'right' | 'top'>> = 
   avoip: 'right',
   // The selected PUSR card is the list's last row, under a left label.
   pusr: 'right',
-  // The terminal's lines sit at its foot; a top label darkens only empty terminal.
-  terminal: 'top',
+  // Footage: the terminal's lines are at the top, the keyboard at the foot; the right is empty.
+  terminal: 'right',
   // The web view's address bar is at its top, so the label goes bottom right.
   webpage: 'right',
 };

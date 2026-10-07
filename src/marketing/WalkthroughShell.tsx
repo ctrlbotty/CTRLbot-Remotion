@@ -80,6 +80,8 @@ export type WalkthroughShellProps = {
   corrections?: Record<string, string>;
   preload?: ReactNode;
   background?: string;
+  /** Where a chapter hold's drift is anchored. Defaults to 'center'. */
+  driftAnchor?: DriftAnchor;
 };
 
 /**
@@ -144,14 +146,23 @@ const groupSegments = (beats: WalkthroughBeat[]): BeatSegment[] => {
  * pull back pushes in instead, since nothing in it is small enough to crop.
  */
 const DRIFT = 0.08;
-const drift = (region: Region, content: {width: number; height: number}): Region => {
+export type DriftAnchor = 'center' | 'top-left';
+const drift = (
+  region: Region,
+  content: {width: number; height: number},
+  anchor: DriftAnchor = 'center',
+): Region => {
   const grow = 1 + DRIFT;
   const pullBack = region.width * grow <= content.width && region.height * grow <= content.height;
   const k = pullBack ? grow : 1 - DRIFT;
   const width = region.width * k;
   const height = region.height * k;
-  const x = Math.max(0, Math.min(region.x + (region.width - width) / 2, content.width - width));
-  const y = Math.max(0, Math.min(region.y + (region.height - height) / 2, content.height - height));
+  // 'top-left' holds the region's top-left corner, so a push into a whole screen keeps its
+  // header and nav rail instead of cropping them (W05 review).
+  const ox = anchor === 'top-left' ? 0 : (region.width - width) / 2;
+  const oy = anchor === 'top-left' ? 0 : (region.height - height) / 2;
+  const x = Math.max(0, Math.min(region.x + ox, content.width - width));
+  const y = Math.max(0, Math.min(region.y + oy, content.height - height));
   return {x, y, width, height};
 };
 
@@ -162,6 +173,7 @@ const buildChapterShots = (
   beats: WalkthroughBeat[],
   segmentFrom: number,
   contentSize: {width: number; height: number},
+  anchor: DriftAnchor = 'center',
 ): Shot[] => {
   const shots: Shot[] = [];
   let currentRegion = fullFrame(contentSize);
@@ -184,7 +196,7 @@ const buildChapterShots = (
     } else {
       // Drift on the previous region until 20 frames before the new beat, then move
       const moveStart = Math.max(0, beatRelFrom - 20);
-      shots.push({at: moveStart, region: drift(currentRegion, contentSize)});
+      shots.push({at: moveStart, region: drift(currentRegion, contentSize, anchor)});
       shots.push({at: beatRelFrom, region: targetRegion});
       currentRegion = targetRegion;
     }
@@ -194,7 +206,7 @@ const buildChapterShots = (
       for (let s = 1; s < beat.shots.length; s++) {
         const shot = beat.shots[s];
         const moveStart = Math.max(beatRelFrom, beatRelFrom + shot.at - 20);
-        shots.push({at: moveStart, region: drift(currentRegion, contentSize)});
+        shots.push({at: moveStart, region: drift(currentRegion, contentSize, anchor)});
         shots.push({at: beatRelFrom + shot.at, region: shot.region});
         currentRegion = shot.region;
       }
@@ -202,7 +214,7 @@ const buildChapterShots = (
       for (let r = 1; r < beat.regions.length; r++) {
         const nextReg = beat.regions[r];
         const pushAt = beatRelFrom + Math.round((beat.duration * r) / beat.regions.length);
-        shots.push({at: pushAt - 20, region: drift(currentRegion, contentSize)});
+        shots.push({at: pushAt - 20, region: drift(currentRegion, contentSize, anchor)});
         shots.push({at: pushAt, region: nextReg});
         currentRegion = nextReg;
       }
@@ -212,7 +224,7 @@ const buildChapterShots = (
   // The last hold drifts too, through the segment's crossfade out.
   const last = beats[beats.length - 1];
   if (last) {
-    shots.push({at: last.from - segmentFrom + last.duration + 15, region: drift(currentRegion, contentSize)});
+    shots.push({at: last.from - segmentFrom + last.duration + 15, region: drift(currentRegion, contentSize, anchor)});
   }
 
   // interpolate() needs strictly increasing times: a keyframe landing on an earlier one's
@@ -270,6 +282,7 @@ export const WalkthroughShell = ({
   corrections,
   preload,
   background: customBackground,
+  driftAnchor,
 }: WalkthroughShellProps) => {
   const frame = useCurrentFrame();
   const segments = useMemo(() => groupSegments(beats), [beats]);
@@ -444,6 +457,7 @@ export const WalkthroughShell = ({
                     segment.beats,
                     segment.from,
                     contentSize,
+                    driftAnchor,
                   );
 
                   return (
