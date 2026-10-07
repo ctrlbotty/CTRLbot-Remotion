@@ -132,10 +132,10 @@ const full = fullFrame(TABLET_VIEWPORT);
  * card's promo glow (picking up where the open card's bloom ends, 59%/41%) so the
  * background carries through the crossfade, and zoomed as a whole rather than cropped.
  */
-const PROOF_STAGE: NonNullable<WalkthroughBeat['stage']> = {
-  bezel: 22,
-  zoom: [0.92, 1.03],
-  background: (t) => background.promo(59 + t * 9, 41 + t * 8),
+const PROOF_STAGE: Record<'landscape' | 'portrait', NonNullable<WalkthroughBeat['stage']>> = {
+  landscape: {bezel: 22, zoom: [0.92, 1.03], background: (t) => background.promo(59 + t * 9, 41 + t * 8)},
+  // Portrait's panel spans the frame, so it zooms up to 1.0; the card's portrait bloom ends at 42%/48%.
+  portrait: {bezel: 18, zoom: [0.9, 1.0], background: (t) => background.promo(42 + t * 8, 48 + t * 6)},
 };
 
 const at = (cue: number, beat: LatestBeatName) => cue - BEATS[beat].from;
@@ -197,15 +197,16 @@ export const PORTRAIT_SHOTS: Partial<Record<LatestBeatName, Shot[]>> = {
   rs232: [
     {at: 0, region: crop(200)},
     {at: at(CUE_FRAMES.rsEnd, 'rs232'), region: crop(544)},
-    {at: at(CUE_FRAMES.rsConnect, 'rs232'), region: crop(400)},
+    // 1080 dp wide while it connects: the surface sits at about 1.0x, so the toasts at its
+    // foot land above the caption band instead of under it.
+    {at: at(CUE_FRAMES.rsConnect, 'rs232'), region: {x: 200, y: 0, width: 1080, height: TABLET_VIEWPORT.height}},
     {at: at(CUE_FRAMES.rsTerminal, 'rs232'), region: crop(200)},
     {at: at(CUE_FRAMES.rsCommands, 'rs232'), region: crop(560)},
   ],
-  terminal: [
-    {at: 0, region: crop(220)},
-    {at: at(CUE_FRAMES.termSend, 'terminal'), region: atLeast(testMap.terminal)},
-  ],
-  webpage: [{at: 0, region: crop(220)}],
+  // Footage: the terminal pane, then the terminal's own page, both start at the nav rail.
+  terminal: [{at: 0, region: crop(70)}],
+  // Footage: the web view runs from the rail to about 890 dp; its page is centred in it.
+  webpage: [{at: 0, region: crop(76)}],
 };
 
 /** Landscape step labels go where the cued subject is not. */
@@ -226,7 +227,7 @@ export const walkthroughBeats = (format: 'landscape' | 'portrait'): WalkthroughB
     copy: COPY[id],
     shots: (format === 'portrait' ? PORTRAIT_SHOTS[id] : undefined) ?? BEAT_SHOTS[id],
     calloutSide: CALLOUT_SIDE[id] ?? 'left',
-    ...(id === 'proof' && format === 'landscape' ? {stage: PROOF_STAGE} : {}),
+    ...(id === 'proof' ? {stage: PROOF_STAGE[format]} : {}),
     ...(id === 'open' || id === 'close'
       ? {
           card: {

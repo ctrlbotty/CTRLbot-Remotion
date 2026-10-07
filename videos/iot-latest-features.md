@@ -523,5 +523,5 @@ Then the run stops for Nathan's review. T16 follows on his go.
 - [x] R3: terminal and web page beats play the recording (`scripts/walkthrough-footage.mjs`, `footage.json`) (`a3b7156`).
 - [x] R4: cut net-switches, the preset message beat, the hello-world power-on and "thanks for joining me"; the close card is silent. 136s to 121s (3630 frames).
 - [x] R5: a drop selects: the dragged source and its display go blue (EUI and proof beats).
-- [ ] R6: portrait, the same fixes, after landscape is approved.
+- [x] R6: portrait: the proof beat's bezel, glow and whole-device zoom; footage crops from the rail; top-left drift; the RS-232 connect shot at 1080 dp so its toasts clear the captions.
 - [ ] Open question: move RS-232, discovery and message-free beats to footage too (see the "prefer recording footage" rule).

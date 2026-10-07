@@ -62,6 +62,8 @@ export const PortraitStage = ({
   captions,
   background: stageBackground = background.stage,
   panelRadius = radius.xl,
+  bezel = 0,
+  panelScale,
   children,
 }: {
   /** Natural size of the surface, in the plane it lays itself out in. */
@@ -74,6 +76,10 @@ export const PortraitStage = ({
   captions?: ReactNode;
   background?: string;
   panelRadius?: number;
+  /** Frame pixels of device edge drawn outside the panel, as `<Stage>`'s. */
+  bezel?: number;
+  /** Scales the whole device, bezel included, about its centre. */
+  panelScale?: number;
   /** The surface itself — a live component from `app-ui/`. */
   children: ReactNode;
 }) => {
@@ -85,19 +91,38 @@ export const PortraitStage = ({
         <div style={{position: 'absolute', ...layout.text}}>{copy}</div>
       ) : null}
 
-      {/* A rig, not a design element — plain div, like <Stage>'s panel. */}
+      {/* A rig, not a design element — plain div, like <Stage>'s panel. The bezel, when
+          there is one, is drawn outside the panel so the camera's viewport is unchanged. */}
       <div
         style={{
           position: 'absolute',
-          ...layout.panel,
-          overflow: 'hidden',
-          borderRadius: panelRadius,
-          boxShadow: `0 40px 120px ${color.scrim}`,
+          left: layout.panel.left - bezel,
+          top: layout.panel.top - bezel,
+          width: layout.panel.width + bezel * 2,
+          height: layout.panel.height + bezel * 2,
+          scale: panelScale !== undefined ? String(panelScale) : undefined,
+          borderRadius: bezel > 0 ? radius.xl : undefined,
+          backgroundColor: bezel > 0 ? color.bezel : undefined,
+          border: bezel > 0 ? `1px solid ${color.lineSoft}` : undefined,
+          boxShadow: bezel > 0 ? `0 40px 120px ${color.scrim}` : undefined,
         }}
       >
-        <Camera contentSize={contentSize} shots={shots} viewport={{width: layout.panel.width, height: layout.panel.height}}>
-          {children}
-        </Camera>
+        <div
+          style={{
+            position: 'absolute',
+            left: bezel,
+            top: bezel,
+            width: layout.panel.width,
+            height: layout.panel.height,
+            overflow: 'hidden',
+            borderRadius: bezel > 0 ? radius.sm : panelRadius,
+            boxShadow: bezel > 0 ? undefined : `0 40px 120px ${color.scrim}`,
+          }}
+        >
+          <Camera contentSize={contentSize} shots={shots} viewport={{width: layout.panel.width, height: layout.panel.height}}>
+            {children}
+          </Camera>
+        </div>
       </div>
 
       {captions}

@@ -29,7 +29,7 @@ const Walkthrough = ({format}: {format: WalkthroughFormat}) => (
     edit={NARRATION_EDIT}
     corrections={IOT_LATEST_CAPTION_CORRECTIONS}
     preload={<PromoPreload />}
-    driftAnchor={format === 'landscape' ? 'top-left' : undefined}
+    driftAnchor="top-left"
   />
 );
 
