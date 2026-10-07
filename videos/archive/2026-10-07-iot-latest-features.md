@@ -513,3 +513,11 @@ Then the run stops for Nathan's review. T16 follows on his go.
 - [x] R5: a drop selects: the dragged source and its display go blue (EUI and proof beats).
 - [x] R6: portrait: the proof beat's bezel, glow and whole-device zoom; footage crops from the rail; top-left drift; the RS-232 connect shot at 1080 dp so its toasts clear the captions.
 - [ ] Open question: move RS-232, discovery and message-free beats to footage too (see the "prefer recording footage" rule).
+
+## Delivered 2026-10-07 (approved by Nathan)
+
+`npm run video:feature` at `2684d42`, clean `render` worktree: check, lint, validate (12 beats, 121s), both contact sheets, both renders, both frame checks and both narration checks pass. Landscape 15% inert, median content area 97%; portrait 26% inert, 75%. 121.05s, -16.08 LUFS, -4.42 dBTP. The .srt has 50 captions (`out/iot-latest-features/iot-latest-features.srt`).
+
+narration:verify on the render reports one edge, "A." after gc-models at 35.1s. Adjudicated as recognition, not a leak: it is the second syllable of "Caché" (heard.json hears the source as "for global cash, eh?"), the clip ends at 95.21s, and the next speech starts at 95.47s. The edit-level verify passes with 0 edge defects.
+
+Deliverables: `out/iot-latest-features.mp4`, `out/iot-latest-features-portrait.mp4`, captions and contact sheets in `out/iot-latest-features/` and `out/iot-latest-features-portrait/`. The recording stays in `video input/` for the IoT shorts.

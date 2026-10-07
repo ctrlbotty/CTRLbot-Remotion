@@ -11,6 +11,7 @@ is finished. Copy `../_TEMPLATE.md` instead.
 
 | Brief | Produced | Outcome |
 |---|---|---|
+| `2026-10-07-iot-latest-features.md` | `iot-latest-features`, `iot-latest-features-portrait`, `src/marketing/iot-latest-features/` | W05 CTRLbot IoT: latest features, approved at 2:01 after review cut Net Switchers, the preset message and the hello-world power-on. The terminal and web page beats play the recording (`scripts/walkthrough-footage.mjs`). Landscape 15% inert, portrait 26%. Recording retained for the IoT shorts. |
 | `2026-10-02-mirror-walkthrough-r2.md` | `mirror-walkthrough`, `mirror-walkthrough-portrait` | W01 approved revision 2, 2:16; landscape 25% inert, portrait 29%, both narration checks passed. Shared walkthrough shell and hard clip edges. Recording retained for S01. |
 | `2026-08-02-play-store-promo.md` | `V1-Play-Store-Promo` — `src/marketing/play-store-promo-v1/` | 26s, 1920×1080, EUI only. 42% inert against a 60% ceiling; lint clean; poster frame composed. |
 | `2026-08-03-playStore_promo2.md` | `Play-Store-EUI-Promo`, `src/marketing/eui-promo/` | 60s EUI promo; all 12 tasks verified. Its beat-state screenshots, once `videos/play store promo/`, are `2026-08-03-playStore_promo2-reference/` beside it. |

@@ -42,6 +42,9 @@ const {main, path, rev} = cleanWorktree('render', options.base ?? 'HEAD');
 const logs = join(path, 'out', `feature-${slug}`);
 mkdirSync(logs, {recursive: true});
 console.log(`render worktree at ${rev}`);
+// A previous run's deliverables stay in the worktree's out/; clear them so a failed render
+// cannot hand an old cut back to the main checkout as if it were this one.
+for (const file of [`${slug}.mp4`, `${portrait}.mp4`, `${slug}.srt`]) rmSync(join(path, 'out', file), {force: true});
 
 const results = [];
 const step = (name, command, env = {}) => {
@@ -84,13 +87,17 @@ if (fast) process.exit(results.every((result) => result.status === 0) ? 0 : 1);
 
 // Deliverables back into the main checkout: videos at out/'s top level, captions in out/<slug>/.
 const outMain = join(main, 'out');
-for (const [file, target] of [
-  [`${slug}.mp4`, join(outMain, `${slug}.mp4`)],
-  [`${portrait}.mp4`, join(outMain, `${portrait}.mp4`)],
-  [`${slug}.srt`, join(outMain, slug, `${slug}.srt`)],
+const passed = (name) => results.find((result) => result.name === name)?.status === 0;
+for (const [file, target, producedBy] of [
+  [`${slug}.mp4`, join(outMain, `${slug}.mp4`), 'render-landscape'],
+  [`${portrait}.mp4`, join(outMain, `${portrait}.mp4`), 'render-portrait'],
+  [`${slug}.srt`, join(outMain, slug, `${slug}.srt`), 'srt'],
 ]) {
   const source = join(path, 'out', file);
-  if (!existsSync(source)) continue;
+  if (!passed(producedBy) || !existsSync(source)) {
+    console.log(`not copied: ${file} (${producedBy} did not pass)`);
+    continue;
+  }
   mkdirSync(join(target, '..'), {recursive: true});
   copyFileSync(source, target);
 }

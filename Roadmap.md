@@ -1,6 +1,6 @@
 # CTRLbot Content Roadmap
 
-Updated October 5, 2026. **Upcoming work only.** What is already delivered is in
+Updated October 7, 2026. **Upcoming work only.** What is already delivered is in
 [RELEASE-NOTES.md](RELEASE-NOTES.md). How a video gets made is in [README.md](README.md).
 
 Thirty motion-graphic videos: six narrated walkthroughs and twenty-four 30-second shorts.
@@ -17,8 +17,7 @@ Everything that can be made now gets made now. What cannot waits on one thing, n
 | Can be made | Videos | Waiting on |
 | --- | --- | --- |
 | **Done** | S02 CTRLbot Terminator, S03 CTRLbot.AI | Nothing. Rendered, first in the queue |
-| **In review, about 95%** | W02, W03, W04 | Nathan's notes, one cut at a time. The landscape render is fixed first, then the same fixes are carried to portrait (`docs/REVIEW-FIX-PROMPT.md`). Renders, captions and contact sheets are in `out/`; status in `docs/WALKTHROUGH-QUEUE.md` |
-| **Next, after W03 and W04 are approved** | W05 | T1–T3 done. Its surface tasks change screens that W03 and W04 show, so they wait for that approval. Confirm "RS-485" or "RS-45" at 1:54 of its recording |
+| **In review, about 95%** | W02, W03, W04 | Nathan's notes, one cut at a time. The landscape render is fixed first, then the same fixes are carried to portrait (`docs/REVIEW-FIX-PROMPT.md`). Renders are in `out/`, captions and contact sheets in `out/<slug>/`; status in `docs/WALKTHROUGH-QUEUE.md` |
 | **Now** | S01 CTRLbot Mirror | Nothing. The recording is in and ingested |
 | **Now, if short slogans are recorded** | Any short made from a slogan over a motion graphic or image | One narrated slogan per short, in `video input/` |
 | **This week, once recorded** | IoT shorts S05 to S24 | CTRLbot IoT recordings made through CTRLbot Mirror; W05 is already ingested |
@@ -45,8 +44,6 @@ edit.
 | W02 | CTRLbot Terminator | Scan the network, run a test server, and talk to devices over TCP, Telnet, serial and SSH from one PC app. | Rebuilt on W01's format. The server chapter shows both sides, the PC server and the CTRLbot IoT client. Readable command and reply. Both cuts pass every gate, and nothing says Terminator can be downloaded until its public release is verified. |
 | W03 | CTRLbot IoT on the phone | Set up and run a whole room from a phone: driver, connection, test, Activities, the hand-over, Find Devices and AV-over-IP. | Rebuilt on W01's format with the phone full-frame, reusing the approved First-Run phone framing and annotations wherever the app has not changed. The clipped words and the repeated fragment fixed, the hold shown honestly, both cuts pass every gate. The portrait cut is over the Shorts and X limits and goes to TikTok and LinkedIn. |
 | W04 | CTRLbot IoT on the tablet | The same room on a tablet, where sources and displays fit side by side. | Rebuilt on W01's format, reusing the approved First-Run tablet framing where the app has not changed. Every Test and power-off screen changes on its spoken cue, the clipped words fixed, portrait crops clear the feeds' button column, both cuts pass every gate. |
-
-| W05 | CTRLbot IoT: latest features | Recorded tablet features: Net Switchers, AV-over-IP, Global Caché by exact model, PUSR serial control, discovery, the RS-232 connection and Test terminal, device web page, preset messages and power-off countdown. | Both narrated shapes pass the gates; every claim matches the recording and current app. The message appears on power on. CEC and line-out remain S21 and S22. |
 | W06 | CTRLbot.IO website tour | The updated ctrlbot.io: the Mirror and Terminator demonstrations, more detail behind every block, and the complete THE APP page. | Recorded against the live site after ctrlbot.io R01 to R03 ship, and every claim matches the page as published. |
 
 The in-app First-Run videos (phone Review 13, tablet Review 08) stay as they are. Updating

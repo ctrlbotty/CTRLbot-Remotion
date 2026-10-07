@@ -5,6 +5,14 @@
 A cut is delivered when its render is in `out/` and its brief is archived in
 `videos/archive/`. Publishing is a separate step and is not tracked here.
 
+## 2026-10-07: W05 CTRLbot IoT latest features approved
+
+- Narrated cuts, 2:01: `out/iot-latest-features.mp4` (1920x1080, captions in `out/iot-latest-features/iot-latest-features.srt`) and `out/iot-latest-features-portrait.mp4` (1080x1920, captions burned in). AV-over-IP end points, Global Caché by exact model, PUSR serial, Find Devices, RS-232 through an end point, the Test terminal, the device's own web page, drag to route and the power-off cancel.
+- **Footage where the recording is the feature.** The terminal and web page beats play Nathan's recording, cut to the screen by `scripts/walkthrough-footage.mjs` from a per-video `footage.json` and synced to the narration's source times; rebuilt surfaces stay where a state has to be built. Review cut Net Switchers, the preset message and the hello-world power-on, and the close card is silent.
+- Stage beats take a bezel, their own background and a whole-device zoom (`WalkthroughShell` `stage`, both shapes); chapter drift can anchor top-left so a push keeps a screen's header. A drop on the EUI selects the source and its display.
+- Gates: landscape 15% inert, portrait 26%; -16.08 LUFS, -4.42 dBTP. Brief: `videos/archive/2026-10-07-iot-latest-features.md`.
+- `out/` holds only finished videos at its top level: captions now go in `out/<slug>/`, and `video:feature` no longer keeps `.prev` copies or copies a deliverable whose step failed.
+
 ## 2026-10-02: W01 CTRLbot Mirror revision 2 approved
 
 - Approved narrated hybrid cuts, 2:16: `out/mirror-walkthrough.mp4` and `out/mirror-walkthrough-portrait.mp4`, with landscape captions in `out/mirror-walkthrough.srt` and contact sheets in each cut's output folder.

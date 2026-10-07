@@ -2,11 +2,11 @@
 
 Approved by Nathan on 2026-10-02. Restarted the same afternoon with a new coordinator: Claude (desktop Code session) coordinates, verifies and commits; Gemini 3.8 Flash High implements through Antigravity's CLI, one fresh headless conversation per task (`agy -p ... --model gemini-3.8-flash-high --output-format json --print-timeout 25m`). Prompts, results and token use are in `out/coordinator/agy/`. Publishing is outside this run.
 
-## Current status — REVIEW-FIX LOOP (updated 2026-10-05)
+## Current status — REVIEW-FIX LOOP (updated 2026-10-07)
 
-- **W02, W03, W04:** all about 95%. Nathan reviews the landscape cut of each and sends notes. An agent fixes them with `docs/REVIEW-FIX-PROMPT.md`, stops for approval, then carries the same fixes to the portrait cut. Renders, captions and contact sheets are in `out/`.
+- **W02, W03, W04:** all about 95%. Nathan reviews the landscape cut of each and sends notes. An agent fixes them with `docs/REVIEW-FIX-PROMPT.md`, stops for approval, then carries the same fixes to the portrait cut. Renders are in `out/`; captions and contact sheets are in `out/<slug>/`.
 - **Open voice flags:** W03 at 4:26 ("If") and 4:51 ("Oh,"); W04 at 5:06 ("And"). Edit-level verify is clean, so Nathan's listening decides.
-- **W05:** T1–T3 done. T4–T14 wait for W03/W04 approval, because they change shared surfaces. Open question: RS-485 or RS-45 at 1:54.
+- **W05:** approved and delivered 2026-10-07 (2:01, both shapes); brief archived as `videos/archive/2026-10-07-iot-latest-features.md`. Its terminal and web page beats play the recording.
 - **Workers:** none running. The coordinator method and its scripts (`verify:task`, `video:feature`) are in `docs/COORDINATION.md`.
 - **Close-out** (archive, RELEASE-NOTES, Roadmap) only after Nathan approves each cut.
 
