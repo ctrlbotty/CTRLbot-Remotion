@@ -233,7 +233,7 @@ export const loopBg = (t: number) =>
 export type LoopBeat = {
   /** 0..1 within the loop. The fraction the block starts arriving on. */
   at: number;
-  /** One headline, 5-12 words, ALL CAPS, preserving brand casing. Bold Archivo. */
+  /** One headline, 5-12 words, ALL CAPS, preserving brand casing, no punctuation. Bold Archivo. */
   headline: string;
   /**
    * Three to four sentences, sentence case. Fades in whole after the headline; no
@@ -270,7 +270,7 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
   route: [
     {
       at: 0,
-      headline: 'MANY TO ONE: THINK MATRIX, THE BLUE PILL',
+      headline: 'MANY TO ONE SWITCHING IS THE MATRIX BLUE PILL',
       body:
         'Simply select a source and the switcher routes it to the display or projector in ' +
         'the room. Many sources feed one destination. Whatever is selected is what the room ' +
@@ -290,7 +290,7 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
     },
     {
       at: 0.52,
-      headline: 'SEND TO ALL: TWO PRESSES ROUTE ONE SOURCE EVERYWHERE',
+      headline: 'TWO PRESSES SEND ONE SOURCE TO EVERY SCREEN',
       body:
         'Simply select a source and then the All button and it is routed to all displays or ' +
         'projectors in the room. One source feeds every destination at once. It is the ' +
@@ -310,7 +310,7 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
     // hold, which it needs at 20 words.
     {
       at: 0.55,
-      headline: 'ONE PRESS MUTES THE ROOM, ONE MORE BRINGS IT BACK',
+      headline: 'ONE PRESS MUTES THE ROOM AND ONE MORE BRINGS IT BACK',
       body:
         'Mute the speaker audio and then easily unmute to return to the previous level. The ' +
         'original volume is restored instantly. Nobody has to remember where the level was ' +
@@ -332,7 +332,7 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
     },
     {
       at: 0.144186,
-      headline: 'MANY TO ONE: THINK MATRIX, THE BLUE PILL',
+      headline: 'MANY TO ONE SWITCHING IS THE MATRIX BLUE PILL',
       body:
         'Simply select a source and the switcher routes it to the display or projector in ' +
         'the room. Many sources feed one destination. Whatever is selected is what the room ' +
@@ -348,7 +348,7 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
     },
     {
       at: 0.533953,
-      headline: 'SEND TO ALL: TWO PRESSES ROUTE ONE SOURCE EVERYWHERE',
+      headline: 'TWO PRESSES SEND ONE SOURCE TO EVERY SCREEN',
       body:
         'Simply select a source and then the All button and it is routed to all displays or ' +
         'projectors in the room. One source feeds every destination at once. It is the ' +
@@ -363,7 +363,7 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
     },
     {
       at: 0.806977,
-      headline: 'ONE PRESS MUTES THE ROOM, ONE MORE BRINGS IT BACK',
+      headline: 'ONE PRESS MUTES THE ROOM AND ONE MORE BRINGS IT BACK',
       body:
         'Mute the speaker audio and then easily unmute to return to the previous level. The ' +
         'original volume is restored instantly. Nobody has to remember where the level was ' +
@@ -387,7 +387,7 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
   ai: [
     {
       at: 0,
-      headline: 'BREAK. ASK. FIX. IT ASKS BEFORE IT ANSWERS.',
+      headline: 'IT ASKS THE RIGHT QUESTIONS BEFORE IT ANSWERS',
       body:
         'You enter a problem, bug, issue about anything tech, health or home and it asks ' +
         'before it really answers. Because the best answers come from the right questions. ' +
@@ -452,7 +452,7 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
     },
     {
       at: 0.125,
-      headline: 'CONTROL DRIVERS FOR PROJECTORS, DISPLAYS, SWITCHERS AND END POINTS',
+      headline: 'CONTROL DRIVERS FOR THE PROJECTORS AND DISPLAYS IN THE ROOM',
       body:
         'Hundreds of devices and thousands of commands make up a database that is growing ' +
         'exponentially. Each driver is reviewed by a person before it ships in the app. New ' +
@@ -460,7 +460,7 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
     },
     {
       at: 0.229167,
-      headline: 'EACH DRIVER DOUBLES AS THE MANUAL\'S CHEAT SHEET',
+      headline: 'EACH DRIVER DOUBLES AS A CHEAT SHEET FOR THE MANUAL',
       body:
         'Every driver carries its exact description and setup instructions right in the ' +
         'interface. You no longer have to hunt for PDFs or remember specific requirements. ' +
@@ -468,7 +468,7 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
     },
     {
       at: 0.375,
-      headline: 'EVERYTHING YOU NEED TO CONNECT, ALREADY FILLED IN',
+      headline: 'EVERYTHING YOU NEED TO CONNECT COMES ALREADY FILLED IN',
       body:
         'The database carries the specific connection details for every model. It covers ' +
         'IP, RS-232 and IR, with the ports and parameters already filled in. You start from ' +
@@ -476,7 +476,7 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
     },
     {
       at: 0.510417,
-      headline: 'THE API: EVERY COMMAND THE DEVICE TAKES',
+      headline: 'THE API LISTS EVERY COMMAND THE DEVICE TAKES',
       body:
         'Every command the device answers to, with the exact payload that goes down the ' +
         'wire. Encoding and line endings come set, so nothing is hand-typed. Pick a command ' +
@@ -504,7 +504,7 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
       // connection screen closes and the catalog is back — and a panel still describing
       // the terminal over a picture of the list reads as a bug.
       at: 0.916667,
-      headline: 'THAT WAS ONE DRIVER, AND HUNDREDS MORE WORK THE SAME',
+      headline: 'THAT WAS ONE DRIVER AND HUNDREDS MORE WORK THE SAME',
       body:
         'That was one driver. Every one in the list opens the same way. Pick any device and ' +
         'the same screens are waiting.',
