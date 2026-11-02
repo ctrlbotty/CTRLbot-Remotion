@@ -146,6 +146,26 @@ export const MIRROR_PAIR_AT = 0.78;
 export const MIRROR_STOP_AT = 0.86;
 export const MIRROR_REST_AT = 0.93;
 
+/** 12s: pick Raw TCP (Telnet), connect, send a projector power query, read the reply. */
+export const TERMINATOR_LOOP_FRAMES = 360;
+
+/**
+ * CTRLbot Terminator loop timeline, as fractions of the cycle. It opens on the Scan tab
+ * at rest and closes on the same tab after the pointer returns to it.
+ */
+export const TERMINATOR_SELECT_AT = 0.1;
+/** Press on Connect; the session is live from here. */
+export const TERMINATOR_CONNECT_AT = 0.22;
+/** The query is typed across these two, then Send is pressed at TERMINATOR_SEND_AT. */
+export const TERMINATOR_TYPE_FROM = 0.32;
+export const TERMINATOR_TYPE_TO = 0.5;
+export const TERMINATOR_SEND_AT = 0.56;
+/** The reply lands in the Received log. */
+export const TERMINATOR_REPLY_AT = 0.6;
+/** Scan selected again; the tab is back at rest by TERMINATOR_REST_AT. */
+export const TERMINATOR_BACK_AT = 0.86;
+export const TERMINATOR_REST_AT = 0.93;
+
 export type LoopVariant = 'wide' | 'square';
 
 export const loopFrame = (variant: LoopVariant) =>
@@ -422,6 +442,29 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
         'Copy the pairing address and code from the device into Mirror and press Pair. The ' +
         'same device then connects without a cable. Stop mirroring and it stays listed, ready ' +
         'for the next session.',
+    },
+  ],
+  // Placeholder beats only: the site copy is written elsewhere. Words lead the action:
+  // beat two is up before Send at TERMINATOR_SEND_AT.
+  // The command is PJLink's projector power query; claims are checked against the
+  // Terminator README (Raw TCP/Telnet client, serial, SSH, Verbose CRLF). Terminator has no
+  // public release yet, so nothing here says it can be downloaded.
+  terminator: [
+    {
+      at: 0,
+      headline: 'OPEN A RAW CONNECTION TO A DEVICE ON THE NETWORK',
+      body:
+        'Pick Raw TCP and enter the address and port the device listens on. CTRLbot ' +
+        'Terminator connects and logs it, ready to send. Telnet, serial COM ports and SSH ' +
+        'sit one click away in the same window.',
+    },
+    {
+      at: 0.5,
+      headline: 'SEND A COMMAND AND READ EXACTLY WHAT COMES BACK',
+      body:
+        'Type the command, choose the line ending and press Send. The reply lands in ' +
+        'Received Data with the carriage return shown, so nothing hides in the line ending. ' +
+        'It proves a device answers before it joins the room.',
     },
   ],
   // CTRLbot.AI, not the Android app — the one loop here whose subject is the website.

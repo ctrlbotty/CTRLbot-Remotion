@@ -75,6 +75,7 @@ import {LoopApp} from './marketing/web-loops/LoopApp';
 import {LoopFull} from './marketing/web-loops/LoopFull';
 import {LoopAi, aiLoopDuration} from './marketing/web-loops/LoopAi';
 import {LoopMirror} from './marketing/web-loops/LoopMirror';
+import {LoopTerminator} from './marketing/web-loops/LoopTerminator';
 import {DevicesStill} from './marketing/web-loops/DevicesStill';
 import {FirstRunEducation} from './app-ui/FirstRunEducation';
 import {ConnectTest} from './app-ui/ConnectTest';
@@ -92,6 +93,7 @@ import {
   FULL_LOOP_FRAMES,
   MATRIX_LOOP_FRAMES,
   MIRROR_LOOP_FRAMES,
+  TERMINATOR_LOOP_FRAMES,
   WEB_LOOP,
   WEB_LOOP_SQUARE,
 } from './marketing/web-loops/webLoopData';
@@ -433,6 +435,15 @@ export const RemotionRoot = () => (
         fps={30}
         width={WEB_LOOP.width}
         height={WEB_LOOP.height}
+      />
+      {/* CTRLbot Terminator for /app/: the Windows window in a 1:1 frame, ends on the Scan tab at rest. */}
+      <Composition
+        id="Web-Loop-Terminator"
+        component={LoopTerminator}
+        durationInFrames={TERMINATOR_LOOP_FRAMES}
+        fps={30}
+        width={WEB_LOOP_SQUARE.width}
+        height={WEB_LOOP_SQUARE.height}
       />
       <Still id="Web-Devices-Still" component={DevicesStill} width={1200} height={1200} />
     </Folder>

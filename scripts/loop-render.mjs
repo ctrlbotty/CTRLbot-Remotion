@@ -63,6 +63,7 @@ const LOOPS = [
   // 1920x1200, so it is the left 1600px of the wide frame, not a 4:3 shot. v5 is the
   // same cut with the camera reading the real frame: same shot widths, taller region.
   {id: 'Web-Loop-Mirror', name: 'mirror-loop-v1', width: 1600, height: 1200},
+  {id: 'Web-Loop-Terminator', name: 'terminator-loop-v1', width: 1200, height: 1200},
   {id: 'hub-30', name: 'hub-30-v5', width: 1600, height: 1200},
   {id: 'hub-30-square', name: 'hub-30-sq-v1', width: 1200, height: 1200},
 ];
@@ -118,7 +119,7 @@ for (const loop of selected) {
   run(ffmpeg, [
     '-y', '-loglevel', 'error', '-i', big,
     '-vf', `scale=${loop.width}:${loop.height}:flags=lanczos`,
-    '-c:v', 'libx264', '-crf', String(CRF), '-preset', 'slower', '-pix_fmt', 'yuv420p',
+    '-c:v', 'libx264', '-crf', String(CRF), '-preset', 'slower', '-pix_fmt', 'yuv420p', '-movflags', '+faststart',
     '-an', final,
   ]);
 

@@ -158,3 +158,12 @@ export const TERM_SSH = {
     'show         Show running system information',
   ],
 };
+
+/** A projector's control port, queried with PJLink's power command. Synthetic address. */
+export const TERM_PROJECTOR = {
+  host: '192.168.0.45',
+  port: '4352',
+  command: '%1POWR ?',
+  received: ['%1POWR=1<CR>'],
+  sent: ['[System] Connected to 192.168.0.45:4352', '[Sent] %1POWR ?'],
+};
