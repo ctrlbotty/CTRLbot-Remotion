@@ -217,11 +217,13 @@ export const loopBg = (t: number) =>
  *
  * `at` is a fraction of the loop, on the same 0..1 clock as every state function above.
  *
- * **The three fields are the site's block format, not a shape chosen here.** Every square
- * text block on ctrlbot.io is a 1-3 word Audiowide title, one bold thought, then at least
- * two sentences of body — and these panels sit in that same wall, so they hold the same
- * three levels. The word counts below are the format's, and a beat that breaks them will
- * look like a different kind of block sitting in the middle of the checkerboard.
+ * **The two fields are the site's block format, not a shape chosen here.** Every square
+ * text block on ctrlbot.io is one 5-12 word headline in bold Archivo capitals, then a body
+ * of three to four sentences — and these panels sit in that same wall, so they hold the
+ * same two levels. The counts below are the format's, and a beat that breaks them will
+ * look like a different kind of block sitting in the middle of the checkerboard. (Until
+ * 2 November 2026 the format was a 1-3 word Audiowide title over a 5-9 word thought; the
+ * headline is the two merged.)
  *
  * These carry **no accent run**, which is the one place they part company with
  * `PromoCopy`. The promo sets words in CTRLbot blue between *asterisks*; the site blocks
@@ -231,13 +233,11 @@ export const loopBg = (t: number) =>
 export type LoopBeat = {
   /** 0..1 within the loop. The fraction the block starts arriving on. */
   at: number;
-  /** Audiowide, 1-3 words, ALL CAPS. A title, not a sentence. */
-  title: string;
-  /** One thought, 5-9 words, ALL CAPS. Bold Archivo. */
-  thought: string;
+  /** One headline, 5-12 words, ALL CAPS, preserving brand casing. Bold Archivo. */
+  headline: string;
   /**
-   * Two sentences or more, sentence case. Streamed a word at a time; no accent
-   * markers. The only level of the block that is not upper case — see the block
+   * Three to four sentences, sentence case. Fades in whole after the headline; no
+   * accent markers. The only level of the block that is not upper case — see the block
    * spec in the site's `docs/DESIGN.md`.
    */
   body: string;
@@ -247,22 +247,21 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
   app: [
     {
       at: 0,
-      title: 'THE APP',
-      thought: 'IT BEGINS WITH ONE BUTTON',
+      headline: 'ONE BUTTON STARTS THE WHOLE ROOM',
       body:
-        'A simple power press starts the room and powers on all the connected ' +
-        'devices. The system prepares the hardware automatically.',
+        'A simple power press starts the room and powers on all the connected devices. The ' +
+        'system prepares the hardware automatically. Displays, projectors and switchers ' +
+        'come up without anyone touching them.',
     },
     // 0.70 -> 0.62: the power-off tap is APP_POWER_OFF_TAP_AT = 0.68, so at 0.70 the
     // words arrived after the thing they describe. Words lead the action here, the same
     // way matrix beat two leads its own sequence.
     {
       at: 0.62,
-      title: 'ROOM SHUTDOWN',
-      thought: 'ONE PRESS POWERS OFF THE ROOM',
+      headline: 'ONE PRESS SHUTS THE WHOLE ROOM DOWN SAFELY',
       body:
-        'Tap power to shut down the entire system safely. The room returns to standby ' +
-        'until the next session.',
+        'Tap power to shut down the entire system safely. The room returns to standby until ' +
+        'the next session. Nothing is left running overnight.',
     },
   ],
   // One beat, deliberately. A second one existed and was about the interface — no menus,
@@ -271,11 +270,11 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
   route: [
     {
       at: 0,
-      title: 'MANY TO ONE',
-      thought: 'THINK MATRIX THE BLUE PILL',
+      headline: 'MANY TO ONE: THINK MATRIX, THE BLUE PILL',
       body:
-        'Simply select a source and the switcher routes it to the display or projector ' +
-        'in the room. Many sources feed one destination.',
+        'Simply select a source and the switcher routes it to the display or projector in ' +
+        'the room. Many sources feed one destination. Whatever is selected is what the room ' +
+        'sees.',
     },
   ],
   // Beat two moved 0.58 -> 0.52 when the loop opened cold: Input 1 is selected at 0.60
@@ -283,40 +282,39 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
   matrix: [
     {
       at: 0,
-      title: 'MANY TO MANY',
-      thought: 'FULL MATRIX MODE ROUTING',
+      headline: 'MANY TO MANY IN FULL MATRIX ROUTING MODE',
       body:
-        'Pick the source on the left, then a display or displays on the right. ' +
-        'Route a source to one or more destinations.',
+        'Pick the source on the left, then a display or displays on the right. Route a ' +
+        'source to one or more destinations. Every screen in the room can show something ' +
+        'different.',
     },
     {
       at: 0.52,
-      title: 'SEND TO ALL',
-      thought: 'TWO PRESSES ROUTE THE SOURCE TO EVERYWHERE',
+      headline: 'SEND TO ALL: TWO PRESSES ROUTE ONE SOURCE EVERYWHERE',
       body:
-        'Simply select a source and then the All button and it is routed to all ' +
-        'displays or projectors in the room. One source feeds every destination at once.',
+        'Simply select a source and then the All button and it is routed to all displays or ' +
+        'projectors in the room. One source feeds every destination at once. It is the ' +
+        'fastest way to put one presentation on every screen.',
     },
   ],
   audio: [
     {
       at: 0,
-      title: 'VOLUME CONTROL',
-      thought: 'ADJUST THE SLIDER AND THE ROOM',
+      headline: 'SLIDE THE BAR AND THE ROOM VOLUME FOLLOWS',
       body:
-        'Easily change the speaker volume with the slider or the arrows. ' +
-        'Slide the bar and the room level follows.',
+        'Easily change the speaker volume with the slider or the arrows. Slide the bar and ' +
+        'the room level follows. Nobody has to go looking for the amplifier.',
     },
     // 0.60 -> 0.55: AUDIO_MUTE_AT is 0.62, so 0.60 gave the block 0.2s of lead — the
     // words were still arriving as the speaker cut. 0.55 also buys the beat 0.5s more
     // hold, which it needs at 20 words.
     {
       at: 0.55,
-      title: 'TOGGLE MUTE',
-      thought: 'ONE PRESS FOR A SILENT ROOM',
+      headline: 'ONE PRESS MUTES THE ROOM, ONE MORE BRINGS IT BACK',
       body:
-        'Mute the speaker audio and then easily unmute to return to the previous ' +
-        'level. The original volume is restored instantly.',
+        'Mute the speaker audio and then easily unmute to return to the previous level. The ' +
+        'original volume is restored instantly. Nobody has to remember where the level was ' +
+        'set.',
     },
   ],
   // One homepage row now carries the complete app story. The four original keys stay
@@ -326,59 +324,57 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
   full: [
     {
       at: 0,
-      title: 'THE APP',
-      thought: 'IT BEGINS WITH ONE BUTTON',
+      headline: 'ONE BUTTON STARTS THE WHOLE ROOM',
       body:
-        'A simple power press starts the room and powers on all the connected ' +
-        'devices. The system prepares the hardware automatically.',
+        'A simple power press starts the room and powers on all the connected devices. The ' +
+        'system prepares the hardware automatically. Displays, projectors and switchers ' +
+        'come up without anyone touching them.',
     },
     {
       at: 0.144186,
-      title: 'MANY TO ONE',
-      thought: 'THINK MATRIX THE BLUE PILL',
+      headline: 'MANY TO ONE: THINK MATRIX, THE BLUE PILL',
       body:
-        'Simply select a source and the switcher routes it to the display or projector ' +
-        'in the room. Many sources feed one destination.',
+        'Simply select a source and the switcher routes it to the display or projector in ' +
+        'the room. Many sources feed one destination. Whatever is selected is what the room ' +
+        'sees.',
     },
     {
       at: 0.376744,
-      title: 'MANY TO MANY',
-      thought: 'FULL MATRIX MODE ROUTING',
+      headline: 'MANY TO MANY IN FULL MATRIX ROUTING MODE',
       body:
-        'Pick the source on the left, then a display or displays on the right. ' +
-        'Route a source to one or more destinations.',
+        'Pick the source on the left, then a display or displays on the right. Route a ' +
+        'source to one or more destinations. Every screen in the room can show something ' +
+        'different.',
     },
     {
       at: 0.533953,
-      title: 'SEND TO ALL',
-      thought: 'TWO PRESSES ROUTE THE SOURCE TO EVERYWHERE',
+      headline: 'SEND TO ALL: TWO PRESSES ROUTE ONE SOURCE EVERYWHERE',
       body:
-        'Simply select a source and then the All button and it is routed to all ' +
-        'displays or projectors in the room. One source feeds every destination at once.',
+        'Simply select a source and then the All button and it is routed to all displays or ' +
+        'projectors in the room. One source feeds every destination at once. It is the ' +
+        'fastest way to put one presentation on every screen.',
     },
     {
       at: 0.67907,
-      title: 'VOLUME CONTROL',
-      thought: 'ADJUST THE SLIDER AND THE ROOM',
+      headline: 'SLIDE THE BAR AND THE ROOM VOLUME FOLLOWS',
       body:
-        'Easily change the speaker volume with the slider or the arrows. ' +
-        'Slide the bar and the room level follows.',
+        'Easily change the speaker volume with the slider or the arrows. Slide the bar and ' +
+        'the room level follows. Nobody has to go looking for the amplifier.',
     },
     {
       at: 0.806977,
-      title: 'TOGGLE MUTE',
-      thought: 'ONE PRESS FOR A SILENT ROOM',
+      headline: 'ONE PRESS MUTES THE ROOM, ONE MORE BRINGS IT BACK',
       body:
-        'Mute the speaker audio and then easily unmute to return to the previous ' +
-        'level. The original volume is restored instantly.',
+        'Mute the speaker audio and then easily unmute to return to the previous level. The ' +
+        'original volume is restored instantly. Nobody has to remember where the level was ' +
+        'set.',
     },
     {
       at: 0.911628,
-      title: 'ROOM SHUTDOWN',
-      thought: 'ONE PRESS POWERS OFF THE ROOM',
+      headline: 'ONE PRESS SHUTS THE WHOLE ROOM DOWN SAFELY',
       body:
-        'Tap power to shut down the entire system safely. The room returns to standby ' +
-        'until the next session.',
+        'Tap power to shut down the entire system safely. The room returns to standby until ' +
+        'the next session. Nothing is left running overnight.',
     },
   ],
   // CTRLbot.AI, not the Android app — the one loop here whose subject is the website.
@@ -391,43 +387,42 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
   ai: [
     {
       at: 0,
-      title: 'THE AI',
-      thought: 'BREAK. ASK. FIX. SOLVE IT.',
+      headline: 'BREAK. ASK. FIX. IT ASKS BEFORE IT ANSWERS.',
       body:
-        'You enter a problem, bug, issue about anything tech, health or home and it ' +
-        'asks before it really answers. Because the best answers come from the right questions.',
+        'You enter a problem, bug, issue about anything tech, health or home and it asks ' +
+        'before it really answers. Because the best answers come from the right questions. ' +
+        'There is no account to make and nothing to set up.',
     },
     {
       at: 0.18,
-      title: 'QUICK QUESTIONS',
-      thought: 'IT NARROWS THE FAULT BEFORE ANSWERING',
+      headline: 'QUICK YES AND NO QUESTIONS NARROW THE FAULT',
       body:
-        'It states what it thinks is wrong, then asks fast YES and NO questions built ' +
-        'from the details you gave. Answering each one costs a single click.',
+        'It states what it thinks is wrong, then asks fast YES and NO questions built from ' +
+        'the details you gave. Answering each one costs a single click. Every answer rules ' +
+        'something out before it commits.',
     },
     {
       at: 0.40,
-      title: 'CLICKABLE ANSWERS',
-      thought: 'EVERY OPTION EXPLAINS WHAT IT MEANS',
+      headline: 'EVERY CLICKABLE OPTION EXPLAINS WHAT IT MEANS',
       body:
-        'One sharper question follows, and each button says what choosing it would mean ' +
-        'for the diagnosis. Pass is there for when you genuinely do not know.',
+        'One sharper question follows, and each button says what choosing it would mean for ' +
+        'the diagnosis. Pass is there for when you genuinely do not know. You never have to ' +
+        'guess what a choice will do.',
     },
     {
       at: 0.62,
-      title: 'THREE SOURCES',
-      thought: 'ONE DIRECT ANSWER WITH REAL LINKS',
+      headline: 'ONE DIRECT ANSWER BACKED BY THREE REAL SOURCES',
       body:
         'The answer arrives with three genuine resource links and none of them are ' +
-        'sponsored. It is written to be useful rather than flattering.',
+        'sponsored. It is written to be useful rather than flattering. You can check every ' +
+        'claim it makes for yourself.',
     },
     {
       at: 0.85,
-      title: 'NOTHING KEPT',
-      thought: 'CLOSE IT AND THE SESSION IS GONE',
+      headline: 'CLOSE IT AND THE WHOLE SESSION IS GONE',
       body:
-        'Press the reset and everything clears back to an empty page. There is no ' +
-        'account, no history, and nothing left to delete.',
+        'Press the reset and everything clears back to an empty page. There is no account, ' +
+        'no history, and nothing left to delete. What you asked stays with you.',
     },
   ],
   // One block per beat, including `close`. The `at` values are each beat's `from` over
@@ -439,75 +434,80 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
   // second the blocks were turning over before they could be finished. Lengthening a body
   // here means lengthening its beat there, or it stops being readable again.
   //
+  // 2 November 2026: the block spec moved to a headline and three to four sentences, and
+  // every body here gained a sentence without the cut being retimed. The blocks now fade
+  // in whole rather than a word at a time, which buys back the streaming time, but several
+  // now run past four words a second. Retiming the cut is open work.
+  //
   // `End Point` is two words, here as everywhere, because that is what the app's own sort
   // dropdown says. `RS-232` carries its hyphen for the same reason.
   hub: [
     {
       at: 0,
-      title: 'DEVICE DATABASE',
-      thought: 'ALL MAJOR MANUFACTURERS',
+      headline: 'A DEVICE DATABASE OF THE MAJOR PRO AV MANUFACTURERS',
       body:
-        'A huge database of most Pro AV manufacturers and their devices, with links ' +
-        'out to their home and product pages.',
+        'A huge database of most Pro AV manufacturers and their devices, with links out to ' +
+        'their home and product pages. Every entry starts from the manufacturer\'s own ' +
+        'documentation. Nothing in it is guessed.',
     },
     {
       at: 0.125,
-      title: 'CONTROL DRIVERS',
-      thought: 'PROJECTORS DISPLAYS SWITCHERS END POINTS',
+      headline: 'CONTROL DRIVERS FOR PROJECTORS, DISPLAYS, SWITCHERS AND END POINTS',
       body:
-        'Hundreds of devices and thousands of commands make up a database that is ' +
-        'growing exponentially.',
+        'Hundreds of devices and thousands of commands make up a database that is growing ' +
+        'exponentially. Each driver is reviewed by a person before it ships in the app. New ' +
+        'manufacturers arrive with every release.',
     },
     {
       at: 0.229167,
-      title: 'THE MANUAL',
-      thought: 'EACH DRIVER IS ALSO A CHEAT SHEET',
+      headline: 'EACH DRIVER DOUBLES AS THE MANUAL\'S CHEAT SHEET',
       body:
-        'Every driver carries its exact description and setup instructions right ' +
-        'in the interface. You no longer have to hunt for PDFs or remember specific requirements.',
+        'Every driver carries its exact description and setup instructions right in the ' +
+        'interface. You no longer have to hunt for PDFs or remember specific requirements. ' +
+        'It is the one page of the manual you actually needed.',
     },
     {
       at: 0.375,
-      title: 'CONNECTION',
-      thought: 'EVERYTHING YOU NEED TO CONNECT',
+      headline: 'EVERYTHING YOU NEED TO CONNECT, ALREADY FILLED IN',
       body:
-        'The database carries the specific connection details for every model. It ' +
-        'covers IP, RS-232 and IR, with the ports and parameters already filled in.',
+        'The database carries the specific connection details for every model. It covers ' +
+        'IP, RS-232 and IR, with the ports and parameters already filled in. You start from ' +
+        'the right settings instead of a guess.',
     },
     {
       at: 0.510417,
-      title: 'THE API',
-      thought: 'EVERY COMMAND IT TAKES',
+      headline: 'THE API: EVERY COMMAND THE DEVICE TAKES',
       body:
-        'Every command the device answers to, with the exact payload that goes down ' +
-        'the wire. Encoding and line endings come set, so nothing is hand-typed.',
+        'Every command the device answers to, with the exact payload that goes down the ' +
+        'wire. Encoding and line endings come set, so nothing is hand-typed. Pick a command ' +
+        'and it is ready to send.',
     },
     {
       at: 0.65625,
       // Not "THE CONNECTION": the block four beats earlier is titled CONNECTION and is
       // about what the driver *states*. This one is about the connection being *made*.
-      title: 'LIVE CONNECTION',
-      thought: 'GIVE IT AN ADDRESS AND CONNECT',
+      headline: 'GIVE IT AN ADDRESS AND MAKE A LIVE CONNECTION',
       body:
-        'Add the device, type the address it sits at, and connect. Protocol, port, ' +
-        'encoding and line ending all come from the driver.',
+        'Add the device, type the address it sits at, and connect. Protocol, port, encoding ' +
+        'and line ending all come from the driver. There is nothing else to configure.',
     },
     {
       at: 0.791667,
-      title: 'THE TERMINAL',
-      thought: 'SEND A COMMAND AND WATCH IT LAND',
+      headline: 'SEND A COMMAND FROM THE TERMINAL AND WATCH IT LAND',
       body:
-        'Send a command from the same screen and the log shows exactly what went out. ' +
-        'A real device sends its feedback straight back.',
+        'Send a command from the same screen and the log shows exactly what went out. A ' +
+        'real device sends its feedback straight back. You can prove the driver works ' +
+        'before the room goes live.',
     },
     {
       // The loop's return. It gets a block because the picture changes here — the
       // connection screen closes and the catalog is back — and a panel still describing
       // the terminal over a picture of the list reads as a bug.
       at: 0.916667,
-      title: 'THE HUB',
-      thought: 'AND HUNDREDS MORE LIKE IT',
-      body: 'That was one driver. Every one in the list opens the same way.',
+      headline: 'THAT WAS ONE DRIVER, AND HUNDREDS MORE WORK THE SAME',
+      body:
+        'That was one driver. Every one in the list opens the same way. Pick any device and ' +
+        'the same screens are waiting.',
     },
   ],
 };
