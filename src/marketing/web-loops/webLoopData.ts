@@ -422,7 +422,7 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
       headline: 'CLOSE IT AND THE WHOLE SESSION IS GONE',
       body:
         'Press the reset and everything clears back to an empty page. There is no account, ' +
-        'no history, and nothing left to delete. What you asked stays with you.',
+        'no history, and nothing left to delete. Nothing is tied to an account.',
     },
   ],
   // One block per beat, including `close`. The `at` values are each beat's `from` over
