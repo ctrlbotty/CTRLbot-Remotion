@@ -781,7 +781,12 @@ export const DevicesPanel = ({
   pairingAddress,
   pairingCode,
   pairPressed,
+  serial = MIRROR_DEVICE.serial,
+  addressPlaceholder = '192.168.1.42:37021',
 }: {
+  /** Overrides for a redacted render: the serial shown, and the pairing address hint. */
+  serial?: string;
+  addressPlaceholder?: string;
   selected: boolean;
   details: boolean;
   live: boolean;
@@ -806,7 +811,7 @@ export const DevicesPanel = ({
       </span>
       <div>
         <div style={{...text.sm, fontWeight: 500, color: mist[100]}}>{MIRROR_DEVICE.model}</div>
-        <div style={{...text.px11, marginTop: 2, fontFamily: mirrorFont.mono, color: mist[400]}}>{MIRROR_DEVICE.serial}</div>
+        <div style={{...text.px11, marginTop: 2, fontFamily: mirrorFont.mono, color: mist[400]}}>{serial}</div>
         <div style={{marginTop: sp(2), display: 'flex', gap: 6}}>
           <Badge tone="good">Ready</Badge>
           <Badge>{MIRROR_DEVICE.transport}</Badge>
@@ -864,7 +869,7 @@ export const DevicesPanel = ({
       </div>
       <div style={{display: 'flex', flexDirection: 'column', gap: sp(2)}}>
         <Field label="Pairing address">
-          <Input value={pairingAddress} placeholder="192.168.1.42:37021" mono />
+          <Input value={pairingAddress} placeholder={addressPlaceholder} mono />
         </Field>
         <Field label="Pairing code">
           <Input value={pairingCode} placeholder="123456" mono />

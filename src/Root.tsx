@@ -74,6 +74,7 @@ import {LoopAudio} from './marketing/web-loops/LoopAudio';
 import {LoopApp} from './marketing/web-loops/LoopApp';
 import {LoopFull} from './marketing/web-loops/LoopFull';
 import {LoopAi, aiLoopDuration} from './marketing/web-loops/LoopAi';
+import {LoopMirror} from './marketing/web-loops/LoopMirror';
 import {DevicesStill} from './marketing/web-loops/DevicesStill';
 import {FirstRunEducation} from './app-ui/FirstRunEducation';
 import {ConnectTest} from './app-ui/ConnectTest';
@@ -90,6 +91,7 @@ import {
 import {
   FULL_LOOP_FRAMES,
   MATRIX_LOOP_FRAMES,
+  MIRROR_LOOP_FRAMES,
   WEB_LOOP,
   WEB_LOOP_SQUARE,
 } from './marketing/web-loops/webLoopData';
@@ -419,6 +421,15 @@ export const RemotionRoot = () => (
         id="Web-Loop-Ai"
         component={LoopAi}
         durationInFrames={aiLoopDuration}
+        fps={30}
+        width={WEB_LOOP.width}
+        height={WEB_LOOP.height}
+      />
+      {/* CTRLbot Mirror for /app/: the Windows window, 4:3, ends on the Devices panel at rest. */}
+      <Composition
+        id="Web-Loop-Mirror"
+        component={LoopMirror}
+        durationInFrames={MIRROR_LOOP_FRAMES}
         fps={30}
         width={WEB_LOOP.width}
         height={WEB_LOOP.height}

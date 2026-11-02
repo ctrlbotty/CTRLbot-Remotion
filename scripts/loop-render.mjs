@@ -62,6 +62,7 @@ const LOOPS = [
   // v4 was rendered at 1600x1200 while HubCell still pinned the camera's viewport to
   // 1920x1200, so it is the left 1600px of the wide frame, not a 4:3 shot. v5 is the
   // same cut with the camera reading the real frame: same shot widths, taller region.
+  {id: 'Web-Loop-Mirror', name: 'mirror-loop-v1', width: 1600, height: 1200},
   {id: 'hub-30', name: 'hub-30-v5', width: 1600, height: 1200},
   {id: 'hub-30-square', name: 'hub-30-sq-v1', width: 1200, height: 1200},
 ];

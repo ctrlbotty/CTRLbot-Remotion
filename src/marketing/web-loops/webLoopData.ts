@@ -123,6 +123,29 @@ export const MATRIX_LOOP_FRAMES = 390;
 /** 43s: app power-on + route + matrix + audio + the app's power-off return. */
 export const FULL_LOOP_FRAMES = 1290;
 
+/** 12s: connect over USB, drive the app from the PC, pair over Wi-Fi, stop. */
+export const MIRROR_LOOP_FRAMES = 360;
+
+/**
+ * CTRLbot Mirror loop timeline, as fractions of the cycle. It opens on the Devices panel
+ * with the device listed and nothing selected, and closes on the same panel after Stop.
+ * The `mirror` beats in LOOP_COPY sit just ahead of the three that matter below.
+ */
+export const MIRROR_SELECT_AT = 0.07;
+export const MIRROR_DETAILS_AT = 0.13;
+/** Press on Start mirroring; the stage goes live at MIRROR_LIVE_AT. */
+export const MIRROR_START_AT = 0.21;
+export const MIRROR_LIVE_AT = 0.26;
+/** The mirrored catalog scrolls under the pointer, then takes a tap. */
+export const MIRROR_SCROLL_AT = 0.32;
+export const MIRROR_TAP_AT = 0.46;
+/** Wi-Fi pairing: address typed from here, code after it, Pair pressed at MIRROR_PAIR_AT. */
+export const MIRROR_PAIR_TYPE_AT = 0.6;
+export const MIRROR_PAIR_AT = 0.78;
+/** Stop mirroring pressed; the panel is back at rest by MIRROR_REST_AT. */
+export const MIRROR_STOP_AT = 0.86;
+export const MIRROR_REST_AT = 0.93;
+
 export type LoopVariant = 'wide' | 'square';
 
 export const loopFrame = (variant: LoopVariant) =>
@@ -375,6 +398,30 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
       body:
         'Tap power to shut down the entire system safely. The room returns to standby until ' +
         'the next session. Nothing is left running overnight.',
+    },
+  ],
+  // CTRLbot Mirror. Words lead the action: the connect block is up from the opening
+  // frame (select 0.07), the control block lands before the scroll (0.32), and the Wi-Fi
+  // block before the first pairing keystroke (MIRROR_PAIR_TYPE_AT = 0.60).
+  // Two blocks over the loop's three actions: at 12 seconds, a block per action would give
+  // each about three seconds, which is not enough to read three sentences. The first
+  // covers connecting and controlling (0 to 0.56, 6.7s), the second the Wi-Fi pairing.
+  mirror: [
+    {
+      at: 0,
+      headline: 'CONNECT A TABLET AND RUN THE APP FROM YOUR PC',
+      body:
+        'Plug the Android device in over USB and CTRLbot Mirror lists it as ready. Start ' +
+        'mirroring and the CTRLbot IoT app appears on the PC screen. Scroll the driver ' +
+        'catalog and pick a driver with the mouse.',
+    },
+    {
+      at: 0.56,
+      headline: 'PAIR OVER WIRELESS AND LEAVE THE CABLE BEHIND',
+      body:
+        'Copy the pairing address and code from the device into Mirror and press Pair. The ' +
+        'same device then connects without a cable. Stop mirroring and it stays listed, ready ' +
+        'for the next session.',
     },
   ],
   // CTRLbot.AI, not the Android app — the one loop here whose subject is the website.
