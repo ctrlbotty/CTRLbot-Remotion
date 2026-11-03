@@ -360,64 +360,46 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
         'set.',
     },
   ],
-  // One homepage row now carries the complete app story. The four original keys stay
-  // above because `/app/` still renders and times those compositions independently.
-  // These fractions preserve every source beat's current window inside 1290 frames:
-  // app 0..186, route 186..486, matrix 486..876, audio 876..1176, app 1176..1290.
+  // The /app/ row that carries the complete app story. The four original keys stay above
+  // because those compositions are still registered and timed independently.
+  //
+  // 3 November 2026: condensed from seven blocks to four, one per scene of the cut, so each
+  // block holds long enough to read (Nathan: more text, less streaming). Source windows
+  // inside 1290 frames: app 0..186, route 186..486, matrix 486..876, audio 876..1176,
+  // app 1176..1290. Power on and many-to-one share the first block (0 to 486, 16.2s),
+  // the matrix and All share the second (13s), volume and mute the third (10s), and the
+  // shutdown keeps its own short block so the words never describe audio over a power-off.
   full: [
     {
       at: 0,
-      headline: 'ONE BUTTON STARTS THE WHOLE ROOM',
+      headline: 'PRESS POWER AND PICK A SOURCE',
       body:
-        'A simple power press starts the room and powers on all the connected devices. The ' +
-        'system prepares the hardware automatically. Displays, projectors and switchers ' +
-        'come up without anyone touching them.',
-    },
-    {
-      at: 0.144186,
-      headline: 'MANY TO ONE SWITCHING IS THE MATRIX BLUE PILL',
-      body:
-        'Simply select a source and the switcher routes it to the display or projector in ' +
-        'the room. Many sources feed one destination. Whatever is selected is what the room ' +
-        'sees.',
+        'One press powers on every connected device and brings the room up ready to use. ' +
+        'Select a source and the switcher routes it to the display or projector. Whatever is ' +
+        'selected is what the room sees.',
     },
     {
       at: 0.376744,
-      headline: 'MANY TO MANY IN FULL MATRIX ROUTING MODE',
+      headline: 'ROUTE ANY SOURCE TO ANY SCREEN OR TO ALL OF THEM',
       body:
-        'Pick the source on the left, then a display or displays on the right. Route a ' +
-        'source to one or more destinations. Every screen in the room can show something ' +
-        'different.',
-    },
-    {
-      at: 0.533953,
-      headline: 'TWO PRESSES SEND ONE SOURCE TO EVERY SCREEN',
-      body:
-        'Simply select a source and then the All button and it is routed to all displays or ' +
-        'projectors in the room. One source feeds every destination at once. It is the ' +
-        'fastest way to put one presentation on every screen.',
+        'In full matrix mode, pick a source on the left, then one or more displays on the ' +
+        'right. Every screen in the room can show something different. Press All and one ' +
+        'source goes to every display at once.',
     },
     {
       at: 0.67907,
       headline: 'SLIDE THE BAR AND THE ROOM VOLUME FOLLOWS',
       body:
-        'Easily change the speaker volume with the slider or the arrows. Slide the bar and ' +
-        'the room level follows. Nobody has to go looking for the amplifier.',
-    },
-    {
-      at: 0.806977,
-      headline: 'ONE PRESS MUTES THE ROOM AND ONE MORE BRINGS IT BACK',
-      body:
-        'Mute the speaker audio and then easily unmute to return to the previous level. The ' +
-        'original volume is restored instantly. Nobody has to remember where the level was ' +
-        'set.',
+        'Change the speaker volume with the slider or the arrows and the room level follows. ' +
+        'One press mutes the room and one more brings back the level it was at. Nobody has to ' +
+        'go looking for the amplifier.',
     },
     {
       at: 0.911628,
-      headline: 'ONE PRESS SHUTS THE WHOLE ROOM DOWN SAFELY',
+      headline: 'ONE PRESS SHUTS THE WHOLE ROOM DOWN',
       body:
-        'Tap power to shut down the entire system safely. The room returns to standby until ' +
-        'the next session. Nothing is left running overnight.',
+        'Tap power and the entire system shuts down safely. The room waits in standby for the ' +
+        'next session.',
     },
   ],
   // CTRLbot Mirror. Words lead the action: the connect block is up from the opening
@@ -474,60 +456,45 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
   // Claims are checked against the approved list in
   // `../../0 - CTRLbot.ai/ctrlbot.ai/docs/about/About_CTRLbot_AI.md`. "Three real sources",
   // "no login", and "nothing is saved" are all on it verbatim.
+  //
+  // 3 November 2026: condensed from five blocks to three for reading time. The questions
+  // block runs 0 to 0.40 (12s), the answer block 0.40 to 0.85 (13.5s), the reset 4.5s.
   ai: [
     {
       at: 0,
       headline: 'IT ASKS THE RIGHT QUESTIONS BEFORE IT ANSWERS',
       body:
-        'You enter a problem, bug, issue about anything tech, health or home and it asks ' +
-        'before it really answers. Because the best answers come from the right questions. ' +
-        'There is no account to make and nothing to set up.',
-    },
-    {
-      at: 0.18,
-      headline: 'QUICK YES AND NO QUESTIONS NARROW THE FAULT',
-      body:
-        'It states what it thinks is wrong, then asks fast YES and NO questions built from ' +
-        'the details you gave. Answering each one costs a single click. Every answer rules ' +
-        'something out before it commits.',
+        'Enter a problem, bug or issue about anything tech, health or home and it asks ' +
+        'before it answers, because the best answers come from the right questions. It ' +
+        'states what it thinks is wrong, then asks fast YES and NO questions built from the ' +
+        'details you gave. Each answer is a single click and rules something out.',
     },
     {
       at: 0.40,
-      headline: 'EVERY CLICKABLE OPTION EXPLAINS WHAT IT MEANS',
-      body:
-        'One sharper question follows, and each button says what choosing it would mean for ' +
-        'the diagnosis. Pass is there for when you genuinely do not know. You never have to ' +
-        'guess what a choice will do.',
-    },
-    {
-      at: 0.62,
       headline: 'ONE DIRECT ANSWER BACKED BY THREE REAL SOURCES',
       body:
-        'The answer arrives with three genuine resource links and none of them are ' +
-        'sponsored. It is written to be useful rather than flattering. You can check every ' +
-        'claim it makes for yourself.',
+        'One sharper question follows, and every option says what choosing it would mean for ' +
+        'the diagnosis. The answer arrives with three genuine resource links, none of them ' +
+        'sponsored. It is written to be useful rather than flattering, and you can check ' +
+        'every claim yourself.',
     },
     {
       at: 0.85,
       headline: 'CLOSE IT AND THE WHOLE SESSION IS GONE',
       body:
         'Press the reset and everything clears back to an empty page. There is no account, ' +
-        'no history, and nothing left to delete. Nothing is tied to an account.',
+        'no history and nothing left to delete.',
     },
   ],
-  // One block per beat, including `close`. The `at` values are each beat's `from` over
-  // `HUB_FRAMES` in `../hub-cell/hubCellData.ts` — retime the cut and these have to move
-  // with it.
+  // The `at` values are beat `from`s over `HUB_FRAMES` in `../hub-cell/hubCellData.ts`;
+  // retime the cut and these have to move with it.
   //
-  // **Every block is at or under four words a second of its beat.** That is the whole
-  // reason the cut is 48 seconds rather than 34: the panel is read, and at five words a
-  // second the blocks were turning over before they could be finished. Lengthening a body
-  // here means lengthening its beat there, or it stops being readable again.
-  //
-  // 2 November 2026: the block spec moved to a headline and three to four sentences, and
-  // every body here gained a sentence without the cut being retimed. The blocks now fade
-  // in whole rather than a word at a time, which buys back the streaming time, but several
-  // now run past four words a second. Retiming the cut is open work.
+  // 3 November 2026: condensed from eight blocks to four, one per stretch of the cut, so
+  // the words hold long enough to read (Nathan: more text, less streaming). The catalog
+  // block runs 0 to 0.229 (11s), the driver block through setup, connection details and
+  // the API to 0.656 (20.5s), the live block through connect and terminal to 0.917
+  // (12.5s). The return keeps its own short block: the connection screen closes and the
+  // catalog is back, and words still describing the terminal over the list read as a bug.
   //
   // `End Point` is two words, here as everywhere, because that is what the app's own sort
   // dropdown says. `RS-232` carries its hyphen for the same reason.
@@ -536,68 +503,36 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
       at: 0,
       headline: 'A DEVICE DATABASE OF THE MAJOR PRO AV MANUFACTURERS',
       body:
-        'A huge database of most Pro AV manufacturers and their devices, with links out to ' +
-        'their home and product pages. Every entry starts from the manufacturer\'s own ' +
-        'documentation. Nothing in it is guessed.',
-    },
-    {
-      at: 0.125,
-      headline: 'CONTROL DRIVERS FOR THE PROJECTORS AND DISPLAYS IN THE ROOM',
-      body:
-        'Hundreds of devices and thousands of commands make up a database that is growing ' +
-        'exponentially. Each driver is reviewed by a person before it ships in the app. New ' +
-        'manufacturers arrive with every release.',
+        'Projectors, displays, switchers and end points from the major Pro AV manufacturers, ' +
+        'with links out to every home and product page. Every entry starts from the ' +
+        'manufacturer\'s own documentation, and each driver is reviewed by a person before it ' +
+        'ships in the app. Hundreds of devices and thousands of commands, growing with every ' +
+        'release.',
     },
     {
       at: 0.229167,
-      headline: 'EACH DRIVER DOUBLES AS A CHEAT SHEET FOR THE MANUAL',
+      headline: 'EACH DRIVER IS THE CHEAT SHEET FOR ITS MANUAL',
       body:
-        'Every driver carries its exact description and setup instructions right in the ' +
-        'interface. You no longer have to hunt for PDFs or remember specific requirements. ' +
-        'It is the one page of the manual you actually needed.',
-    },
-    {
-      at: 0.375,
-      headline: 'EVERYTHING YOU NEED TO CONNECT COMES ALREADY FILLED IN',
-      body:
-        'The database carries the specific connection details for every model. It covers ' +
-        'IP, RS-232 and IR, with the ports and parameters already filled in. You start from ' +
-        'the right settings instead of a guess.',
-    },
-    {
-      at: 0.510417,
-      headline: 'THE API LISTS EVERY COMMAND THE DEVICE TAKES',
-      body:
-        'Every command the device answers to, with the exact payload that goes down the ' +
-        'wire. Encoding and line endings come set, so nothing is hand-typed. Pick a command ' +
-        'and it is ready to send.',
+        'Every driver carries its description, setup instructions and the exact connection ' +
+        'details for each model, across IP, RS-232 and IR. The API lists every command the ' +
+        'device takes, with the payload, encoding and line endings already set. You stop ' +
+        'hunting through PDFs and start from the right settings.',
     },
     {
       at: 0.65625,
-      // Not "THE CONNECTION": the block four beats earlier is titled CONNECTION and is
-      // about what the driver *states*. This one is about the connection being *made*.
-      headline: 'GIVE IT AN ADDRESS AND MAKE A LIVE CONNECTION',
+      headline: 'CONNECT TO THE REAL DEVICE AND WATCH THE COMMAND LAND',
       body:
-        'Add the device, type the address it sits at, and connect. Protocol, port, encoding ' +
-        'and line ending all come from the driver. There is nothing else to configure.',
+        'Add the device, type its address and connect, with the protocol, port and line ' +
+        'ending taken from the driver. Send a command from the same screen and the log shows ' +
+        'exactly what went out and what came back. You can prove the driver works before the ' +
+        'room goes live.',
     },
     {
-      at: 0.791667,
-      headline: 'SEND A COMMAND FROM THE TERMINAL AND WATCH IT LAND',
-      body:
-        'Send a command from the same screen and the log shows exactly what went out. A ' +
-        'real device sends its feedback straight back. You can prove the driver works ' +
-        'before the room goes live.',
-    },
-    {
-      // The loop's return. It gets a block because the picture changes here — the
-      // connection screen closes and the catalog is back — and a panel still describing
-      // the terminal over a picture of the list reads as a bug.
       at: 0.916667,
       headline: 'THAT WAS ONE DRIVER AND HUNDREDS MORE WORK THE SAME',
       body:
-        'That was one driver. Every one in the list opens the same way. Pick any device and ' +
-        'the same screens are waiting.',
+        'Every driver in the list opens the same way. Pick any device and the same screens ' +
+        'are waiting.',
     },
   ],
 };
