@@ -486,6 +486,34 @@ export const LOOP_COPY: Record<string, LoopBeat[]> = {
         'no history and nothing left to delete.',
     },
   ],
+  // CTRLbot.IO homepage Hub refresh: 60% web catalog, then 40% app demonstration.
+  // The 48s composition uses the same fractions for each adjacent copy window.
+  hubHome: [
+    {
+      at: 0,
+      headline: 'FIND YOUR DEVICE IN THE OPEN CONTROL LIBRARY',
+      body:
+        'Search THE HUB by manufacturer or model and open the device you need. Read its setup notes, connection settings and control commands on the web. Browsing the catalog does not require an account.',
+    },
+    {
+      at: 0.3,
+      headline: 'COPY COMMANDS DOWNLOAD DRIVERS OR SUGGEST A FIX',
+      body:
+        'Copy a command or download the driver as JSON or CSV. You can also download the whole catalog or suggest a new driver or a correction. Every suggestion is reviewed before it becomes part of a public release.',
+    },
+    {
+      at: 0.6,
+      headline: 'TAKE THE DRIVER FROM THE HUB INTO THE ROOM',
+      body:
+        'CTRLbot IoT can download the published catalog through Update Database. Choose the driver and enter the connection details for your equipment. The driver provides the command and protocol settings used to control it.',
+    },
+    {
+      at: 0.8,
+      headline: 'TEST THE CONNECTION AND SEE THE DEVICE ANSWER',
+      body:
+        'Connect to the equipment and send a command from the app. The log shows what went out and what came back. Confirm the driver on the real device before relying on it in the room.',
+    },
+  ],
   // The `at` values are beat `from`s over `HUB_FRAMES` in `../hub-cell/hubCellData.ts`;
   // retime the cut and these have to move with it.
   //

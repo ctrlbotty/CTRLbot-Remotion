@@ -66,6 +66,11 @@ const LOOPS = [
   {id: 'Web-Loop-Terminator', name: 'terminator-loop-v1', width: 1200, height: 1200},
   {id: 'hub-30', name: 'hub-30-v5', width: 1600, height: 1200},
   {id: 'hub-30-square', name: 'hub-30-sq-v1', width: 1200, height: 1200},
+  // Mixed web Hub and app demonstration for the refreshed homepage and Nathan cells.
+  {id: 'hub-home-refresh-wide', name: 'hub-home-v2', width: 1600, height: 1200},
+  {id: 'hub-home-refresh-square', name: 'hub-home-sq-v2', width: 1200, height: 1200},
+  {id: 'hub-home-refresh-wide-dark', name: 'hub-home-dark-v2', width: 1600, height: 1200},
+  {id: 'hub-home-refresh-square-dark', name: 'hub-home-sq-dark-v2', width: 1200, height: 1200},
 ];
 
 const CRF = 23;
@@ -91,7 +96,11 @@ const run = (command, args) => {
 
 const only = process.argv.slice(2).filter((a) => !a.startsWith('--'));
 const selected = only.length
-  ? LOOPS.filter((l) => only.some((o) => l.id.toLowerCase().includes(o.toLowerCase())))
+  ? LOOPS.filter((l) => only.some((o) => {
+    const query = o.toLowerCase();
+    const exactExists = LOOPS.some((candidate) => candidate.id.toLowerCase() === query);
+    return exactExists ? l.id.toLowerCase() === query : l.id.toLowerCase().includes(query);
+  }))
   : LOOPS;
 
 if (selected.length === 0) {

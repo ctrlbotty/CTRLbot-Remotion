@@ -52,6 +52,7 @@ import {
 } from './marketing/iot-tablet-walkthrough/IotTabletWalkthrough';
 import {IotLatestFeatures, IotLatestFeaturesPortrait} from './marketing/iot-latest-features/IotLatestFeatures';
 import {HubCell, hubCellDuration} from './marketing/hub-cell/HubCell';
+import {HubHomeCell} from './marketing/hub-cell/HubHomeCell';
 import {Short, assertShortReady} from './shorts/Short';
 import {
   MirrorAppsProof,
@@ -338,6 +339,10 @@ export const RemotionRoot = () => (
     {/* THE HUB on ctrlbot.io: a full-bleed device-database media cell. It must loop, so
         its closing catalog state is the same picture as frame 0. */}
     <Folder name="Hub">
+      <Composition id="hub-home-refresh-wide" component={HubHomeCell} defaultProps={{webDark: false}} durationInFrames={1440} fps={30} width={1600} height={1200} />
+      <Composition id="hub-home-refresh-square" component={HubHomeCell} defaultProps={{webDark: false}} durationInFrames={1440} fps={30} width={1200} height={1200} />
+      <Composition id="hub-home-refresh-wide-dark" component={HubHomeCell} defaultProps={{webDark: true}} durationInFrames={1440} fps={30} width={1600} height={1200} />
+      <Composition id="hub-home-refresh-square-dark" component={HubHomeCell} defaultProps={{webDark: true}} durationInFrames={1440} fps={30} width={1200} height={1200} />
       <Composition
         id="hub-30"
         component={HubCell}
